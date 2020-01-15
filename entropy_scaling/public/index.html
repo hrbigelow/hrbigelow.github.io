@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>A connection between Discrete and Continuous Entropy</title>
+    <script src="https://distill.pub/template.v2.js"></script>
+<!--     <script defer src="js/bundle.js"></script>
+     <link rel="stylesheet" type="text/css" href="css/style.css">
+    -->
+
+</head>
+<body>
+
+<d-front-matter>
+    <script type="text/json">{
+  "title": "A connection between discrete and continuous entropy"
+  "description": "A short exploration of "
+  "authors": [
+  {
+      "author": "Henry Bigelow"
+  }
+  ]
+  }</script>
+</d-front-matter>
+
+<d-title style="padding-bottom: 0">
+    <h1>A connection between Discrete and Continuous Entropy</h1>
+</d-title>
+
+<d-byline></d-byline>
+
+<d-article>
+  <h2>Here I present a simple derivation that establishes a connection between
+  entropy of discrete and continuous distributions.  The connection can be
+  understood in terms of a scale effect.</h2>
+
+  <p>Shown above are two probability distributions.  The first,
+  <d-math>P(x)</d-math> is a density, defined on the <i>real</i> number
+  interval <d-math>x: [0, n]</d-math> for <d-math>n</d-math> some
+  <i>integer</i>.  The second, <d-math>M(i)</d-math> is a discrete distribution
+  defined on the integers <d-math>i: [0, n)</d-math>.  We then have:
+
+  <d-math block>
+      \begin{aligned}
+      - H(P) &\equiv \int_0^n{dx\, P(x) \log P(x)} \\
+      &= \sum_{i=0}^{n-1}{\int_i^{i+1}{dx\, P(x) \log P(x)}} \\
+      &= \sum_{i=0}^{n-1}{P(i) \log P(i)} \\
+      &= \sum_{i=0}^{n-1}{M(i) \log M(i)} \\
+      &= -H(M)
+      \end{aligned}
+  </d-math>
+
+  <p>So, we see that the entropies are the same.  Putting this aside now, what
+  happens when we compare <d-math>P(x)</d-math> to a distribution of the same
+  shape, but defined on the domain <d-math>[0, 1]</d-math>?
+
+  <d-math block>
+      \begin{aligned}
+      Q(t) &\equiv n P(nt) \\
+      -H(Q) &\equiv \int_0^1{dt\, Q(t) \log Q(t)} \\
+      &= \int_0^1{ dt\, n P(nt) \log [n P(nt)]} \\
+      &= \int_0^n{ \frac{dx}{n}\, n P(x) [\log n + \log P(x)]} \\
+      &= \int_0^n{ dx\, P(x) \log n} + \int_0^n{dx\, P(x) \log P(x)} \\
+      &= \log n - H(P) \\
+      \\
+      H(Q) &= H(P) - \log n
+      \end{aligned}
+  </d-math>
+
+  <p><d-math>\log n</d-math> happens to be the entropy of the uniform
+  distribution on <d-math>[0, n]</d-math> or any domain of size
+  <d-math>n</d-math> for continuous distributions, or of <d-math>n</d-math>
+  categories for discrete distributions.</p>
+
+  <p>This implies that differences of entropies are scale invariant.  One
+  example is Kullback Leibler divergence.</p>
+
+  <d-math>
+      \begin{aligned}
+      D_{KL}(P||Q) &\equiv \int{dx\, P(x) \log ({P(x) \over Q(x)})} \\
+      &= H(P,Q) - H(P)
+      \end{aligned}
+  </d-math>
+
+  <p>Since KL-divergence is a difference of entropies.  Cross entropy
+  <d-math>H(P,Q)</d-math> also can be expressed as a size and shape component
+  in just the same way.  And so, the size components cancel, since the
+  distributions have the same domain size.</p>
+
+  <p>Another example is mutual information, defined on a two variable joint
+  distribution.</p>
+
+  <d-math>
+      \begin{aligned}
+      I(P(A, B)) &\equiv D_{KL}(P(A, B) || P(A)P(B)) \\
+      &= H(A) - H(A|B) \\
+      &= H(B) - H(B|A)
+      \end{aligned}
+  </d-math>
+
+  <p>Conditional entropy, e.g. <d-math>H(A|B)</d-math> and
+  <d-math>H(B|A)</d-math> also have the property that they can be written as a
+  sum of a size and shape component.  Particularly, if the domain size of
+  <d-math>A</d-math> differs from that of <d-math>B</d-math>, then one would
+  need this cancelation in order to make the last two expressions for mutual
+  information equivalent</p>
+
+<d-appendix>
+</d-appendix>
+
+<script type="text/bibliography">
+  @article{gregor2015draw,
+    title={DRAW: A recurrent neural network for image generation},
+    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
+    journal={arXivreprint arXiv:1502.04623},
+    year={2015},
+    url={https://arxiv.org/pdf/1502.04623.pdf}
+  }
+</script>
+
+</body>
+</html>
+
