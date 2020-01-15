@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>A Visual Proof of Jensen's Inequality</title>
+    <script src="https://distill.pub/template.v2.js"></script>
+<!--     <script defer src="js/bundle.js"></script>
+     <link rel="stylesheet" type="text/css" href="css/style.css">
+    -->
+
+</head>
+<body>
+
+<d-front-matter>
+    <script type="text/json">{
+  "title": "A Visual Proof of Jensen's Inequality"
+  "description": "A presentation of Jensen's Inequality using Convex analysis"
+  "authors": [
+  {
+      "author": "Henry Bigelow"
+  }
+  ]
+  }</script>
+</d-front-matter>
+
+<d-title style="padding-bottom: 0">
+    <h1>A Visual Proof of Jensen's Inequality</h1>
+</d-title>
+
+<d-byline></d-byline>
+
+<d-article>
+  <h2>Here we present a visual proof of Jensen's Inequality, using Convex
+      analysis</h2>
+
+  <p>When I first encountered Jensen's Inequality and studied the proof, it was
+  not intuitive.  However, when I first encountered the definition of a Convex
+  Set, it was much more intuitively rich and cohesive, and it is easy to map
+  Jensen's Inequality over to it as a special case</p>
+
+  <p>A set of points C is called "convex" if it is just <i>not hollow
+      anywhere</i>, meaning, that you can't find a gap between any two points.
+  Every pair of points in the set is filled in all along a line segment of points
+  between them.  This definition applies for sets of points in any number of
+  dimensions.</p>
+
+  <p>You can also take any set of points P, and <i>convexify</i> it, by filling
+  in all of the gaps.  Just go through all the pairs of points, and add all of
+  the points on the line segment to the set.  Repeat this on the current set of
+  points until no new points are added.</p>
+
+
+  CONVEX FUNCTIONS
+
+  <p>A function is called "convex" in the following way:  Take a function f,
+  and plot it, creating a set <d-math>P</d-math> of points <d-math>(x,
+  f(x))</d-math>.  Now, create <d-math>C = Convexify(P)</d-math>.  If, for
+  every point in <d-math>C</d-math>, there is a point in <d-math>P</d-math>
+  vertically below it, then the function <d-math>f</d-math> is called
+  "convex".</p>
+
+  <p>It turns out that these points are all possible convex combinations of
+  the points in P.  A convex combination is a linear combination, in which the
+  coefficients are all positive and sum to 1.  Being linear combinations, they
+  can be written component-wise as:</p>
+
+  <d-math block>
+      \begin{aligned}
+      c_x &= cc(w, X) \\
+      c_y &= cc(w, f*X)
+      \end{aligned}
+  </d-math>
+
+  <p>Now, choose the cooresponding point in P directly below it.  This point
+  will have:
+
+  <d-math block>
+      \begin{aligned}
+      p_x &= cc(w, X) \\
+      p_y &= f(cc(w, X)) 
+      \end{aligned}
+  </d-math>
+
+  Because <d-math>p_y \le c_y</d-math>, we have established that:
+
+  <d-math block>
+      f(cc(w, X)) \le cc(w, f*X)
+  </d-math>
+
+  which is Jensens Inequality.
+
+  <p> Let <d-math>W_n = \{ w: w_i \ge 0, \sum_i{w_i} = 1 \}</d-math>.</p>
+
+  <p>
+  
+
+  So, what is happening here?  It is useful to consider a few principles
+  involved, before putting them together.  The first principle is that each
+  individual point in P is equivalent to the one-hot convex combination in C,
+  in which w is either a one-hot vector, or a Dirac Delta-like distribution
+  with all mass on that point.  
+  </p>
+
+  <p>
+CONVEX COMBINATIONS ARE EXPECTATIONS
+
+    <p>
+    A convex combination is a linear combination with a set of weights that are
+    normalized and positive - in other words, a probability distribution.  It is
+    thus equivalent to an expected value of that distribution.  
+    </p>
+
+    <p>
+    Thus, by definition, if you consider the set of all probability distributions
+    defined over a convex set C, then, their expected values are all points in C.
+    These distributions can be grouped by their expectation point - and it turns
+    out that all interior points have a group of size greater than one, and all
+    boundary points that are not on a flat surface, have a group of size equal to
+    one.  And that distribution is the Dirac-Delta-like one-hot distribution.
+    </p>
+
+
+So, we have a fun new definition for "Convex Set":
+
+A set is convex if and only if the expected value of any probability
+distribution over the set, is also in the set.
+
+  <p>A cc is commutable with another linear operator.  So, we can write:
+
+  <d-math>M(wX) = w(MX) \forall w \in \math{C}</d-math>
+
+  Visually, what this says is that, one can linearly transform a filled-in set
+  
+  
+  
+  <p>The set of all convex
+  combinations, that is, the weight vectors w (in any number of dimensions) is
+  itself a convex set.  So, a cc of these vectors is in the set.  Also, we
+  can flatten a nested cc, by first 
+
+  <d-math block>
+      \begin{aligned}
+      a_i &= \sum_j{w_j A_{ij}} \\
+      b &= \sum_i{w a_i} \\
+      &= \sum_i{w [\sum_j{w_i A_{ij}}]} \\
+      &= \sum_{ij}{w w_i A_{ij}} \\
+      &= \sum_{ij}{(\sum_i{w w_i}) A_{ij}}
+      \end{aligned}
+  </d-math>
+
+
+
+      w_c &= cc(w, [w_i])
+      b &= cc(w_c, A)
+
+
+  </p>
+
+
+<d-appendix>
+</d-appendix>
+
+<script type="text/bibliography">
+  @article{gregor2015draw,
+    title={DRAW: A recurrent neural network for image generation},
+    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
+    journal={arXivreprint arXiv:1502.04623},
+    year={2015},
+    url={https://arxiv.org/pdf/1502.04623.pdf}
+  }
+</script>
+
+</body>
+</html>
+
