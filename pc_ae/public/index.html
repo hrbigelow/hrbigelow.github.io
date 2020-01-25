@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Autoencoder with additional Predictive Coding</title>
+    <script src="https://distill.pub/template.v2.js"></script>
+    <!--    <script defer src="js/main.js"></script> -->
+<!--     <script defer src="js/bundle.js"></script>
+     <link rel="stylesheet" type="text/css" href="css/style.css">
+    -->
+
+</head>
+<body>
+
+<d-front-matter>
+    <script type="text/json">{
+  "title": "Autoencoder with additional Predictive Coding"
+  "description": "An autoencoder after the Kingma VAE, using attention
+  mechanism and predictive coding to combine the recognition model and prior"
+  "authors": [
+  {
+      "author": "Henry Bigelow"
+  }
+  ]
+  }</script>
+</d-front-matter>
+
+<d-title style="padding-bottom: 0">
+    <h1>Autoencoder with additional Predictive Coding</h1>
+</d-title>
+
+<d-byline></d-byline>
+
+<d-article>
+  <h3>I present a modified VAE that combines the prior and recognition model,
+      trains it using a predictive coding loss as well as a reconstruction loss
+      with the decoder.</h3>
+
+  <p>Kingma et al. derive a training objective for a variational autoencoder.
+  The derivation can be understood, in my opinion a little easier than their
+  original one, as follows.</p>
+
+  <p>They start out with a data set <d-math>X</d-math> which is assumed to be
+  distributed according to a model <d-math>p_\theta(z) p_\theta(x|z)</d-math>,
+  and the goal is to estimate <d-math>\theta</d-math>.  At this point, the only
+  useful property of learning this relationship is that it can now be sampled
+  from to generate new samples from <d-math>p_\theta(x)</d-math>.  There is
+  nothing claimed about any useful properties of <d-math>z</d-math> itself.
+  </p>
+
+  <p>Although they make the point that the prior <d-math>p_\theta(z)</d-math>
+  can in principle be complex, they work through an example in which it is an
+  isotropic standard multivariate normal distribution.  The fact that this is a
+  smooth distribution allows one to visualize how the complex output space in
+  <d-math>X</d-math> changes as <d-math>z</d-math> gradually changes.  Other
+  than this, the only practical significance of this is just the ability to
+  create samples.</p>
+
+  <p>For the moment, let's accept that learning <d-math>\theta</d-math> is a
+  worthy goal, and follow their argument about how to do so.  The first step is
+  to minimize the cross-entropy <d-math>\mathbb{E}_{x \sim
+      Data}[p_\theta(x)]</d-math>.  Calculating this using</p>
+  
+  <d-math block>
+      p_\theta(x) \cong \mathbb{E}_{z \sim p_\theta(z)}[p_\theta(x|z)]
+  </d-math>
+
+  <p>is intractable, because in general, the region in z-space where
+  <d-math>p_\theta(x|z)</d-math> has high density will be small, and it is
+  unknown where this region is.  So, we can never get enough samples of
+  <d-math>z</d-math> to make the approximation accurate.</p>
+  
+  <p>But, there is a nice identity:</p>
+
+  <d-math block>
+      p_\theta(x) \equiv \dfrac{p_\theta(x, z)}{p_\theta(z|x)}
+  </d-math>
+
+  <p>which is true <i>for any</i> value of <d-math>z</d-math>.  But now the
+  problem is that we cannot calculate <d-math>p_\theta(z|x)</d-math>.
+
+  <p>That density is defined implicitly, or "induced", as I like to think of
+  it, as
+
+  <d-math block>
+      p_\theta(z|x) \equiv p_\theta(z) p_\theta(x|z) / \sum_z{p_\theta(z)
+      p_\theta(x|z)}
+  </d-math>
+
+  We cannot calculate it, but it is helpful to know that it is a well-defined
+  entity that is determined through our calculatable expressions
+  <d-math>p_\theta(z)</d-math> and <d-math>p_\theta(x|z)</d-math>.</p>
+
+  <p>Instead, what Kingma and Welling do is introduce a distribution
+  <d-math>q_\phi(z|x)</d-math> and set up an objective so that it is forced to
+  be closer and closer to the induced distribution
+  <d-math>p_\theta(z|x)</d-math>.  They rewrite the above as an approximation
+  times an error factor:</p>
+
+  <d-math block>
+      p_\theta(x) \equiv \dfrac{p_\theta(x, z)}{q_\phi(z|x)}
+      \dfrac{q_\phi(z|x)}{p_\theta(z|x)}
+  </d-math>
+  <p>or</p>
+  <d-math block>
+      \log p_\theta(x) \equiv \log \dfrac{p_\theta(x, z)}{q_\phi(z|x)} + \log
+      \dfrac{q_\phi(z|x)}{p_\theta(z|x)}
+  </d-math>
+
+  <p>Note that, even though the formula contains the term parameterized by
+  <d-math>\phi</d-math>, the left-hand side does not depend on
+  <d-math>\phi</d-math>, which is why <d-math>\phi</d-math> doesn't appear in
+  the parameterization.  Its effects cancel.</p>
+
+  <p>So now, we have two terms: one which is calculatable, which is an
+  approximation, and the second one, which is the error term.  Again, this is
+  true for <i>any</i> <d-math>z</d-math>, no matter where it comes from.
+  However there are two more things to note</p>
+
+  <p>First, the error term will be much more accurate for <d-math>z</d-math>
+  values in which both <d-math>q_\phi(z|x)</d-math> and
+  <d-math>p_\theta(z|x)</d-math> are high.  Second, if we calculate an
+  expectation over samples from <d-math>q_\phi(z|x)</d-math>:</p>
+  
+  <d-math block>
+      \mathbb{E}_{z \sim q_\phi(z|x)}[
+      \log \dfrac{p_\theta(x, z)}{q_\phi(z|x)} + \log
+      \dfrac{q_\phi(z|x)}{p_\theta(z|x)}]
+  </d-math>
+  
+  <p>then the second term becomes the always-positive KL-divergence between
+  <d-math>q</d-math> and what it is approximating.</p>
+
+
+  </p>
+
+</d-article>
+
+      
+<d-appendix>
+</d-appendix>
+
+<script type="text/bibliography">
+  @article{gregor2015draw,
+    title={DRAW: A recurrent neural network for image generation},
+    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
+    journal={arXivreprint arXiv:1502.04623},
+    year={2015},
+    url={https://arxiv.org/pdf/1502.04623.pdf}
+  }
+</script>
+
+</body>
+</html>
+
