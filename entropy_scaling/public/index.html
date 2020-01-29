@@ -38,16 +38,17 @@
 </d-front-matter>
 
 <d-title style="padding-bottom: 0">
-    <h1>A connection between Discrete and Continuous Entropy</h1>
+    <h1>Equivalence of entropies of discrete and continuous distributions</h1>
 </d-title>
 
 <d-byline></d-byline>
 
 
 <d-article>
-  <h3>Here I present a simple derivation that establishes a connection between
-  entropy of discrete and continuous distributions.  The connection can be
-  understood in terms of a scale effect.</h3>
+  <h3>I give a simple derivation that shows the equivalence of entropies of
+      discrete and continuous distributions.  The distributions can be
+      understood in terms of shape and domain size, with corresponding terms in
+  the entropy for each.</h3>
 
   <figure>
       <d-figure>
@@ -63,13 +64,13 @@
       </d-figure>
   </figure>
 
-  <p>Shown above are two probability distributions.  The first,
-  <d-math>P(x)</d-math> is a peculiar looking, piecewise-constant density,
-  defined on the <i>real</i> number interval <d-math>x: [0, n]</d-math> for
-  some <i>integer</i> <d-math>n</d-math>.  The second, <d-math>M(i)</d-math> is
-
-  a discrete distribution defined on the integers <d-math>i: [0, n-1]</d-math>.
-  We then have:
+  <p>Shown above are two probability distributions with the same <i>shape</i>.
+  The first, <d-math>P(x)</d-math> is a peculiar looking, piecewise-constant
+  density, defined on the <i>real</i> number interval <d-math>x: [0,
+  n]</d-math> for some <i>integer</i> <d-math>n</d-math>.  The second,
+  <d-math>M(i)</d-math> is a discrete distribution defined on the integers
+  <d-math>i: [0, n-1]</d-math>.  They are the same shape in the sense that
+  <d-math>P(i) = M(i)\, \forall i \in dom(M)</d-math>.  We then have:
 
   <d-math block>
       \begin{aligned}
@@ -84,7 +85,7 @@
   <p>Breaking up the integral into unit-sized intervals with constant value, 
   then solving each one, we see that the entropies are the same.  Putting this
   aside now, what happens when we compare <d-math>P(x)</d-math> to a
-  distribution of the same shape, but defined on the domain <d-math>[0,
+  distribution of the same shape, but defined on the size 1 domain <d-math>[0,
       1]</d-math>?
 
   <d-math block>
@@ -100,10 +101,11 @@
       \end{aligned}
   </d-math>
 
-  <p><d-math>\log n</d-math> happens to be the entropy of the uniform
-  distribution on <d-math>[0, n]</d-math> or any domain of size
-  <d-math>n</d-math> for continuous distributions, or of <d-math>n</d-math>
-  categories for discrete distributions.</p>
+  <p>We see that it differs by <d-math>\log n</d-math>, which happens to be the
+  domain size of <d-math>P</d-math>.  Also, <d-math>\log n</d-math> happens to
+  be the entropy of the uniform distribution on <d-math>[0, n]</d-math> or any
+  domain of size <d-math>n</d-math> for continuous distributions, or of
+  <d-math>n</d-math> categories for discrete distributions.</p>
 
   <p>This is a nice result. It says that we can interpret discrete
   distributions over <d-math>n</d-math> categories as piecewise constant
