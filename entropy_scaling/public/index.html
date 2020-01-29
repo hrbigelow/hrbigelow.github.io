@@ -52,18 +52,22 @@
   <figure>
       <d-figure>
           <svg class="densityplot"></svg>
+          <figcaption><b>P(x), a piecewise-constant density</b></figcaption>
       </d-figure>
   </figure>
   <figure>
       <d-figure>
         <svg class="barchart"></svg>
+        <figcaption><b>M(i), a discrete probability mass
+                function</b></figcaption>
       </d-figure>
   </figure>
 
   <p>Shown above are two probability distributions.  The first,
   <d-math>P(x)</d-math> is a peculiar looking, piecewise-constant density,
   defined on the <i>real</i> number interval <d-math>x: [0, n]</d-math> for
-  <d-math>n</d-math> some <i>integer</i>.  The second, <d-math>M(i)</d-math> is
+  some <i>integer</i> <d-math>n</d-math>.  The second, <d-math>M(i)</d-math> is
+
   a discrete distribution defined on the integers <d-math>i: [0, n-1]</d-math>.
   We then have:
 
@@ -77,9 +81,11 @@
       \end{aligned}
   </d-math>
 
-  <p>So, we see that the entropies are the same.  Putting this aside now, what
-  happens when we compare <d-math>P(x)</d-math> to a distribution of the same
-  shape, but defined on the domain <d-math>[0, 1]</d-math>?
+  <p>Breaking up the integral into unit-sized intervals with constant value, 
+  then solving each one, we see that the entropies are the same.  Putting this
+  aside now, what happens when we compare <d-math>P(x)</d-math> to a
+  distribution of the same shape, but defined on the domain <d-math>[0,
+      1]</d-math>?
 
   <d-math block>
       \begin{aligned}
@@ -99,8 +105,21 @@
   <d-math>n</d-math> for continuous distributions, or of <d-math>n</d-math>
   categories for discrete distributions.</p>
 
-  <p>This implies that differences of entropies are scale invariant.  One
-  example is Kullback Leibler divergence.</p>
+  <p>This is a nice result. It says that we can interpret discrete
+  distributions over <d-math>n</d-math> categories as piecewise constant
+  continuous distributions over a domain of size <d-math>n</d-math>, and the
+  entropy will be the same.  Secondly, it shows that the entropy of a
+  distribution can be conceptualized into two parts: a <i>shape</i> component
+  and a <i>domain size</i> component.</p>
+
+  <p>Finally, this implies that if we have two distributions defined on the
+  same domain, the difference of their entropies only reflects the difference
+  in shape of the two distributions.  Domain size does not play a role.</p>
+
+  <p>The shape + size idea also applies to cross entropies <d-math>H(P,
+      Q)</d-math> and conditional entropes <d-math>H(P|Q)</d-math>.  Because of
+  this, KL-divergence is also domain-size invariant, because it is a difference
+  of entropies over the same domain:</p>
 
   <d-math>
       \begin{aligned}
@@ -109,13 +128,8 @@
       \end{aligned}
   </d-math>
 
-  <p>Since KL-divergence is a difference of entropies.  Cross entropy
-  <d-math>H(P,Q)</d-math> also can be expressed as a size and shape component
-  in just the same way.  And so, the size components cancel, since the
-  distributions have the same domain size.</p>
-
   <p>Another example is mutual information, defined on a two variable joint
-  distribution.</p>
+  distribution:</p>
 
   <d-math>
       \begin{aligned}
@@ -125,12 +139,11 @@
       \end{aligned}
   </d-math>
 
-  <p>Conditional entropy, e.g. <d-math>H(A|B)</d-math> and
-  <d-math>H(B|A)</d-math> also have the property that they can be written as a
-  sum of a size and shape component.  Particularly, if the domain size of
-  <d-math>A</d-math> differs from that of <d-math>B</d-math>, then one would
-  need this cancelation in order to make the last two expressions for mutual
-  information equivalent</p>
+  <p>The first difference above is a difference of entropies over the domain
+  <d-math>A</d-math>, and the second is a difference over <d-math>B</d-math>.
+  Even though the domain sizes may be different, both differences are
+  domain-size invariant, and turn out to be equivalent, which makes mutual
+  information between two variables a symmetric measure.</p>
 
 </d-article>
 
@@ -251,6 +264,9 @@
 <style>
 .chart rect {
     fill: gray;
+}
+figcaption {
+    text-align: center;
 }
 </style>
 
