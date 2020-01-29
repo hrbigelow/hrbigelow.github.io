@@ -5,18 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>A connection between Discrete and Continuous Entropy</title>
     <script src="https://distill.pub/template.v2.js"></script>
-    <script defer src="js/main.js"></script>
-<!--     <script defer src="js/bundle.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <!-- <script defer src="js/main.js"></script>
+     <script defer src="js/bundle.js"></script>
      <link rel="stylesheet" type="text/css" href="css/style.css">
     -->
 
 </head>
 <body>
 
+<script type="text/bibliography">
+  @article{gregor2015draw,
+    title={DRAW: A recurrent neural network for image generation},
+    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
+    journal={arXivreprint arXiv:1502.04623},
+    year={2015},
+    url={https://arxiv.org/pdf/1502.04623.pdf}
+  }
+</script>
+
 <d-front-matter>
     <script type="text/json">{
-  "title": "A connection between discrete and continuous entropy"
-  "description": "A short exploration of "
+  "title": "A connection between discrete and continuous entropy",
+  "description": "A short exploration of scale and shape, and their effect on entropy",
   "authors": [
   {
       "author": "Henry Bigelow"
@@ -31,6 +43,7 @@
 
 <d-byline></d-byline>
 
+
 <d-article>
   <h3>Here I present a simple derivation that establishes a connection between
   entropy of discrete and continuous distributions.  The connection can be
@@ -38,39 +51,21 @@
 
   <figure>
       <d-figure>
-          <div>
-              <svg width="500" height="400" viewBox="0 0 500 400">
-                  <path d="M   0 400.0 H  37M  40 400.0 H  77M  80 400.0 H 117M
-                  120 400.0 H 157M 160 395.6 H 197M 200 300.5 H 237M 240 22.6 H
-                  277M 280 158.0 H 317M 320 373.8 H 357M 360 399.5 H 397M 400
-                  400.0 H 437M 440 400.0 H 477M 480 400.0 H 517"
-                 fill="none"
-                  stroke="rgba(0,0,0,1)" stroke-width="1px"/>
-                  <circle cx="  0" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx=" 40" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx=" 80" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="120" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="160" cy="395.6" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="200" cy="300.5" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="240" cy="22.6" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="280" cy="158.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="320" cy="373.8" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="360" cy="399.5" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="400" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="440" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-<circle cx="480" cy="400.0" r="3" fill="none" stroke="black" stroke-width="1px"/>
-
-
-              </svg>
-          </div>
+          <svg class="densityplot"></svg>
+      </d-figure>
+  </figure>
+  <figure>
+      <d-figure>
+        <svg class="barchart"></svg>
       </d-figure>
   </figure>
 
   <p>Shown above are two probability distributions.  The first,
-  <d-math>P(x)</d-math> is a density, defined on the <i>real</i> number
-  interval <d-math>x: [0, n]</d-math> for <d-math>n</d-math> some
-  <i>integer</i>.  The second, <d-math>M(i)</d-math> is a discrete distribution
-  defined on the integers <d-math>i: [0, n)</d-math>.  We then have:
+  <d-math>P(x)</d-math> is a peculiar looking, piecewise-constant density,
+  defined on the <i>real</i> number interval <d-math>x: [0, n]</d-math> for
+  <d-math>n</d-math> some <i>integer</i>.  The second, <d-math>M(i)</d-math> is
+  a discrete distribution defined on the integers <d-math>i: [0, n-1]</d-math>.
+  We then have:
 
   <d-math block>
       \begin{aligned}
@@ -142,15 +137,122 @@
 <d-appendix>
 </d-appendix>
 
-<script type="text/bibliography">
-  @article{gregor2015draw,
-    title={DRAW: A recurrent neural network for image generation},
-    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
-    journal={arXivreprint arXiv:1502.04623},
-    year={2015},
-    url={https://arxiv.org/pdf/1502.04623.pdf}
-  }
+<script>
+    var chartHeight = 250,
+        chartWidth = 650,
+        margin = {top: 20, right: 20, bottom: 30, left: 20};
+
+    var x = d3.scaleBand()
+        .padding(0.1);
+
+    var xd = d3.scaleLinear()
+
+    var y = d3.scaleLinear()
+        .range([chartHeight - margin.bottom, margin.top]);
+
+    var barChart = d3.select(".barchart")
+        .attr("height", chartHeight);
+
+    var densityPlot = d3.select(".densityplot")
+        .attr("height", chartHeight);
+
+    function xval(maxval, maxvalstring) {
+        return function(i) {
+            if (i < 10) return i;
+            else if (i == maxval) return maxvalstring;
+            else return '.';
+        }
+    }
+
+    function xAxis(g, scale, minval, maxval, maxvalstring) { 
+        yc = chartHeight - margin.bottom;
+        g.attr("transform", (d, i) => `translate(0, ${yc})`)
+        .call(d3.axisBottom(scale).tickValues(d3.range(minval, maxval + 1))
+            .tickFormat(xval(maxval, maxvalstring)).tickSizeOuter(0))
+    }
+
+    function makeDensityPlot(data) {
+        barWidth = (chartWidth - margin.left - margin.right) / data.length;
+        console.log(`data.length = ${data.length}`);
+        xd.domain([0, data.length])
+            .range([margin.left, chartWidth - margin.right]);
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+        console.log(`xd(1): ${xd(1)}, xd(2): ${xd(2)}`);
+
+        densityPlot.attr("width", chartWidth);
+        
+        var segment = densityPlot.selectAll("g")
+            .data(data)
+            .enter()
+            .append("g");
+
+        segment.append("path")
+            .attr("d", (d, i) => `M${xd(i)} ${y(d.value)} h${xd(1) - xd(0)} z`)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2)
+            .attr("fill", "transparent");
+        segment.append("circle")
+            .attr("cx", (d, i) => xd(i+1))
+            .attr("cy", (d, i) => y(d.value))
+            .attr("r", 3)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2)
+            .attr("fill", "white");
+            
+        densityPlot.append("g")
+            .style("font-size", "12px")
+            .call(xAxis, xd, 0, data.length, 'n');
+
+    }
+
+    function makeBarChart(data) {
+        barWidth = (chartWidth - margin.left - margin.right) / data.length;
+        x.domain(d3.range(0, data.length))
+            .range([margin.left, chartWidth - margin.right]);
+
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+        // console.log('data: ' + JSON.stringify(data))
+        barChart.attr("width", chartWidth);
+
+        var bar = barChart.selectAll("g")
+            .data(data)
+            .enter()
+            .append("g");
+
+        bar.append("rect")
+            .attr("x", (d, i) => x(i))
+            .attr("y", d => y(d.value))
+            .attr("width", x.bandwidth())
+            .attr("height", d => y(0) - y(d.value));
+
+        barChart.append("g")
+            .style("font-size", "12px")
+            .call(xAxis, x, 0, data.length - 1, 'n-1');
+    }
+
+    function convType(d) {
+      d.value = +d.value; // coerce to number
+      // console.log('type: ' + d.value)
+      return d;
+    }
+
+    async function populate(file) {
+        data = await d3.tsv(file, convType);
+        makeBarChart(data);
+        makeDensityPlot(data);
+        // console.log(JSON.stringify(res))
+    }
+
+    populate("data.tsv");
+
 </script>
+
+<style>
+.chart rect {
+    fill: gray;
+}
+</style>
 
 </body>
 </html>
