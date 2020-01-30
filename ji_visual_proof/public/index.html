@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>A Visual Proof of Jensen's Inequality</title>
     <script src="https://distill.pub/template.v2.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 <!--     <script defer src="js/bundle.js"></script>
      <link rel="stylesheet" type="text/css" href="css/style.css">
     -->
@@ -14,8 +15,8 @@
 
 <d-front-matter>
     <script type="text/json">{
-  "title": "A Visual Proof of Jensen's Inequality"
-  "description": "A presentation of Jensen's Inequality using Convex analysis"
+  "title": "A Visual Proof of Jensen's Inequality",
+  "description": "A presentation of Jensen's Inequality using Convex analysis",
   "authors": [
   {
       "author": "Henry Bigelow"
@@ -31,135 +32,122 @@
 <d-byline></d-byline>
 
 <d-article>
-  <h2>Here we present a visual proof of Jensen's Inequality, using Convex
-      analysis</h2>
+  <h3>Here I give a visual proof of Jensen's Inequality, using convex
+      analysis.</h3>
 
-  <p>When I first encountered Jensen's Inequality and studied the proof, it was
-  not intuitive.  However, when I first encountered the definition of a Convex
-  Set, it was much more intuitively rich and cohesive, and it is easy to map
-  Jensen's Inequality over to it as a special case</p>
+  <p>Shown below is a convex function and the convex hull of its plot.  </p>
 
-  <p>A set of points C is called "convex" if it is just <i>not hollow
-      anywhere</i>, meaning, that you can't find a gap between any two points.
-  Every pair of points in the set is filled in all along a line segment of points
-  between them.  This definition applies for sets of points in any number of
-  dimensions.</p>
+  <figure>
+      <d-figure>
+          <svg class="plot"></svg>
+          <figcaption>
+              <b>A convex function defined on domain <d-math>X</d-math> (red), and the hull
+                  of its plot (gray).</b>
+          </figcaption>
+      </d-figure>
+  </figure>
 
-  <p>You can also take any set of points P, and <i>convexify</i> it, by filling
-  in all of the gaps.  Just go through all the pairs of points, and add all of
-  the points on the line segment to the set.  Repeat this on the current set of
-  points until no new points are added.</p>
+  <p>In the above, let <d-math>f(x)</d-math> be a function defined on domain
+  <d-math>X</d-math>, and let <d-math>f(X)</d-math> be the image of
+  <d-math>f</d-math> in the same order as elements in <d-math>X</d-math>.  By
+  the definition of <i>convex function</i>, every point in the hull lies on or
+  above the plot itself.  Also by definition of <i>convex hull</i>, every point
+  in the hull consists of some convex combination <d-math>w</d-math> of all of
+  the points <d-math>(x, f(x))</d-math> in the plot itself.</p>
 
-
-  CONVEX FUNCTIONS
-
-  <p>A function is called "convex" in the following way:  Take a function f,
-  and plot it, creating a set <d-math>P</d-math> of points <d-math>(x,
-  f(x))</d-math>.  Now, create <d-math>C = Convexify(P)</d-math>.  If, for
-  every point in <d-math>C</d-math>, there is a point in <d-math>P</d-math>
-  vertically below it, then the function <d-math>f</d-math> is called
-  "convex".</p>
-
-  <p>It turns out that these points are all possible convex combinations of
-  the points in P.  A convex combination is a linear combination, in which the
-  coefficients are all positive and sum to 1.  Being linear combinations, they
-  can be written component-wise as:</p>
+  <p>The points in the hull are every possible convex combination
+  <d-math>w</d-math> of the set of plot points.  The key thing to notice is
+  that, for any point in the hull (i.e. any choice of <d-math>w</d-math>),
+  there exists a point in the plot that is equal or directly below it.  Using
+  this pair of points, we can write:</p>
 
   <d-math block>
       \begin{aligned}
-      c_x &= cc(w, X) \\
-      c_y &= cc(w, f*X)
+      w \cdot X &= x && \text{x exists for this choice of w} \\
+      f(x) &\le w \cdot f(X) \\
+      f(w \cdot X) &\le w \cdot f(X) && \text{Jensen's Inequality}
       \end{aligned}
   </d-math>
 
-  <p>Now, choose the cooresponding point in P directly below it.  This point
-  will have:
-
-  <d-math block>
-      \begin{aligned}
-      p_x &= cc(w, X) \\
-      p_y &= f(cc(w, X)) 
-      \end{aligned}
-  </d-math>
-
-  Because <d-math>p_y \le c_y</d-math>, we have established that:
-
-  <d-math block>
-      f(cc(w, X)) \le cc(w, f*X)
-  </d-math>
-
-  which is Jensens Inequality.
-
-  <p> Let <d-math>W_n = \{ w: w_i \ge 0, \sum_i{w_i} = 1 \}</d-math>.</p>
-
-  <p>
-  
-
-  So, what is happening here?  It is useful to consider a few principles
-  involved, before putting them together.  The first principle is that each
-  individual point in P is equivalent to the one-hot convex combination in C,
-  in which w is either a one-hot vector, or a Dirac Delta-like distribution
-  with all mass on that point.  
-  </p>
-
-  <p>
-CONVEX COMBINATIONS ARE EXPECTATIONS
-
-    <p>
-    A convex combination is a linear combination with a set of weights that are
-    normalized and positive - in other words, a probability distribution.  It is
-    thus equivalent to an expected value of that distribution.  
-    </p>
-
-    <p>
-    Thus, by definition, if you consider the set of all probability distributions
-    defined over a convex set C, then, their expected values are all points in C.
-    These distributions can be grouped by their expectation point - and it turns
-    out that all interior points have a group of size greater than one, and all
-    boundary points that are not on a flat surface, have a group of size equal to
-    one.  And that distribution is the Dirac-Delta-like one-hot distribution.
-    </p>
-
-
-So, we have a fun new definition for "Convex Set":
-
-A set is convex if and only if the expected value of any probability
-distribution over the set, is also in the set.
-
-  <p>A cc is commutable with another linear operator.  So, we can write:
-
-  <d-math>M(wX) = w(MX) \forall w \in \math{C}</d-math>
-
-  Visually, what this says is that, one can linearly transform a filled-in set
-  
-  
-  
-  <p>The set of all convex
-  combinations, that is, the weight vectors w (in any number of dimensions) is
-  itself a convex set.  So, a cc of these vectors is in the set.  Also, we
-  can flatten a nested cc, by first 
-
-  <d-math block>
-      \begin{aligned}
-      a_i &= \sum_j{w_j A_{ij}} \\
-      b &= \sum_i{w a_i} \\
-      &= \sum_i{w [\sum_j{w_i A_{ij}}]} \\
-      &= \sum_{ij}{w w_i A_{ij}} \\
-      &= \sum_{ij}{(\sum_i{w w_i}) A_{ij}}
-      \end{aligned}
-  </d-math>
-
-
-
-      w_c &= cc(w, [w_i])
-      b &= cc(w_c, A)
-
-
-  </p>
+  <p> which is true for any choice of <d-math>w</d-math>.  The final result is
+  Jensen's Inequality.  It says that a convex combination <d-math>w</d-math> of
+  the function values (in domain order) will be not less than the function
+  value of that same convex combination of the points in the domain.</p>
 
 
 <d-appendix>
 </d-appendix>
+
+<script>
+    var plot = d3.select(".plot");
+    var plotHeight = 350, plotWidth = 650;
+    var xmin = -2, xmax = 4, step = (xmax - xmin) / 100;
+    var ymin = -2, ymax = 17;
+    var xScale = d3.scaleLinear().domain([xmin, xmax]).range([0, plotWidth]);
+    var yScale = d3.scaleLinear().domain([ymin, ymax]).range([plotHeight, 0]);
+
+    function curve(x) {
+        return 1.5 * x**2 - 4 * x + 2;
+    }
+
+    function dpath(xmin, xmax, step) {
+        p = 'M';
+        for (x of d3.range(xmin, xmax, step)) {
+            p += ` ${xScale(x).toFixed(2)},${yScale(curve(x)).toFixed(2)}`;
+        }
+        return p;
+    }
+
+    plot.attr("height", plotHeight).attr("width", plotWidth);
+    plot.append("path")
+        .attr("d", dpath(xmin, xmax, step))
+        .attr("fill", "lightgray")
+        .attr("stroke", "none")
+        .attr("stroke-width", 0)
+        .attr("stroke-opacity", 0);
+
+    plot.append("path")
+        .attr("d", dpath(xmin, xmax, step))
+        .attr("fill", "transparent")
+        .attr("stroke", "red")
+        .attr("stroke-width", 3)
+        .attr("stroke-opacity", 1);
+
+    xp = (xmin + xmax) / 2 - 1;
+    plot.append("circle")
+        .attr("cx", xScale(xp))
+        .attr("cy", yScale(curve(xp)))
+        .attr("r", 3)
+        .attr("stroke", "black");
+
+    plot.append("foreignObject")
+        .attr("x", xScale(xp + 0.1))
+        .attr("y", yScale(curve(xp) + 1.3))
+        .attr("width", 100)
+        .attr("height", 30)
+        .html('<d-math>(x, f(x))</d-math>');
+        
+    plot.append("circle")
+        .attr("cx", xScale(xp))
+        .attr("cy", yScale(curve(xp) + 5))
+        .attr("r", 3)
+        .attr("stroke", "black");
+
+    plot.append("foreignObject")
+        .attr("x", xScale(xp + 0.1))
+        .attr("y", yScale(curve(xp) + 6.3))
+        .attr("width", 200)
+        .attr("height", 30)
+    .html('<d-math>(w \\cdot X, w \\cdot f(X))</d-math>');
+        
+    plot.append("circle")
+        .attr("cx", xScale(xp))
+        .attr("cy", yScale(curve(xp) + 5))
+        .attr("r", 3)
+        .attr("stroke", "black");
+    
+    
+</script>
 
 <script type="text/bibliography">
   @article{gregor2015draw,
@@ -170,6 +158,12 @@ distribution over the set, is also in the set.
     url={https://arxiv.org/pdf/1502.04623.pdf}
   }
 </script>
+
+<style>
+figcaption {
+    text-align: center;
+}
+</style>
 
 </body>
 </html>
