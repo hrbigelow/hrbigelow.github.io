@@ -47,24 +47,26 @@
       </d-figure>
   </figure>
 
-  <p>In the above, let <d-math>f(x)</d-math> be a function defined on domain
-  <d-math>X</d-math>, and let <d-math>f(X)</d-math> be the image of
-  <d-math>f</d-math> in the same order as elements in <d-math>X</d-math>.  By
-  the definition of <i>convex function</i>, every point in the hull lies on or
-  above the plot itself.  Also by definition of <i>convex hull</i>, every point
-  in the hull consists of some convex combination <d-math>w</d-math> of all of
-  the points <d-math>(x, f(x))</d-math> in the plot itself.</p>
-
-  <p>The points in the hull are every possible convex combination
-  <d-math>w</d-math> of the set of plot points.  The key thing to notice is
-  that, for any point in the hull (i.e. any choice of <d-math>w</d-math>),
-  there exists a point in the plot that is equal or directly below it.  Using
-  this pair of points, we can write:</p>
+  <p>The plot of the function <d-math>f(x)</d-math> is shown in red.  It is
+  defined on domain <d-math>X</d-math>.  The expression <d-math>f(X)</d-math>
+  denotes the image of <d-math>f</d-math> in the same order as elements in
+  <d-math>X</d-math>.  The hull is shown in gray.  In the above graph, we show
+  an arbitrary hull point, and the plot point directly below it.  By "directly
+      below", I mean the x-coordinate is the same, and the y-coordinate is less
+      than or equal.</p>
+      
+  <p>Two things are guaranteed.  First, by definition of <i>hull</i>, there is
+  a hull point <d-math>(w \cdot X, w \cdot f(X))</d-math> for every possible
+  choice of convex combination <d-math>w</d-math>.  Second, by definition of
+  <i>convex function</i>, every hull point has a plot point on or directly
+  below it.</p>
+  
+  <p>Considering these two points, we have</p>
 
   <d-math block>
       \begin{aligned}
-      w \cdot X &= x && \text{x exists for this choice of w} \\
-      f(x) &\le w \cdot f(X) \\
+      w \cdot X &= x && \text{x is directly...} \\
+      f(x) &\le w \cdot f(X) && \text{...below the hull point for this w}\\
       f(w \cdot X) &\le w \cdot f(X) && \text{Jensen's Inequality}
       \end{aligned}
   </d-math>
