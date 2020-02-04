@@ -50,24 +50,25 @@
   <p>The plot of the function <d-math>f(x)</d-math> is shown in red.  It is
   defined on domain <d-math>X</d-math>.  The expression <d-math>f(X)</d-math>
   denotes the image of <d-math>f</d-math> in the same order as elements in
-  <d-math>X</d-math>.  The hull is shown in gray.  In the above graph, we show
-  an arbitrary hull point, and the plot point directly below it.  By "directly
-      below", I mean the x-coordinate is the same, and the y-coordinate is less
-      than or equal.</p>
+  <d-math>X</d-math>.  The expression <d-math>\langle w, X \rangle</d-math> is
+  shorthand for the inner product <d-math>\int_X{dx\, w(x) x}</d-math> etc.
+  The hull is shown in gray.  In the above graph, we show an arbitrary hull
+  point, and the plot point directly below it.  By "directly below", I mean the
+  x-coordinate is the same, and the y-coordinate is less than or equal.</p>
       
   <p>Two things are guaranteed.  First, by definition of <i>hull</i>, there is
-  a hull point <d-math>(w \cdot X, w \cdot f(X))</d-math> for every possible
-  choice of convex combination <d-math>w</d-math>.  Second, by definition of
-  <i>convex function</i>, every hull point has a plot point on or directly
-  below it.</p>
+  a hull point <d-math>(\langle w, X \rangle, \langle w, f(X) \rangle)</d-math>
+  for every possible choice of convex combination <d-math>w(x)</d-math>.
+  Second, by definition of <i>convex function</i>, every hull point has a plot
+  point on or directly below it.</p>
   
   <p>Considering these two points, we have</p>
 
   <d-math block>
       \begin{aligned}
-      w \cdot X &= x && \text{x is directly...} \\
-      f(x) &\le w \cdot f(X) && \text{...below the hull point for this w}\\
-      f(w \cdot X) &\le w \cdot f(X) && \text{Jensen's Inequality}
+      \langle w, X \rangle &= x && \text{x is directly...} \\
+      f(x) &\le \langle w, f(X) \rangle && \text{...below the hull point for this w}\\
+      f(\langle w, X \rangle) &\le \langle w, f(X) \rangle && \text{Jensen's Inequality}
       \end{aligned}
   </d-math>
 
@@ -140,7 +141,7 @@
         .attr("y", yScale(curve(xp) + 6.3))
         .attr("width", 200)
         .attr("height", 30)
-    .html('<d-math>(w \\cdot X, w \\cdot f(X))</d-math>');
+    .html('<d-math>(\\langle w, X \\rangle, \\langle w, f(X) \\rangle)</d-math>');
         
     plot.append("circle")
         .attr("cx", xScale(xp))
@@ -152,13 +153,6 @@
 </script>
 
 <script type="text/bibliography">
-  @article{gregor2015draw,
-    title={DRAW: A recurrent neural network for image generation},
-    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
-    journal={arXivreprint arXiv:1502.04623},
-    year={2015},
-    url={https://arxiv.org/pdf/1502.04623.pdf}
-  }
 </script>
 
 <style>

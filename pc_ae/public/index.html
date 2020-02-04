@@ -116,11 +116,13 @@
   <p>So now, we have two terms: one which is calculatable, which is an
   approximation, and the second one, which is the error term.  Again, this is
   true for <i>any</i> <d-math>z</d-math>, no matter where it comes from.
-  However there are two more things to note</p>
+  However there are two more things to note.</p>
 
   <p>First, the error term will be much more accurate for <d-math>z</d-math>
   values in which both <d-math>q_\phi(z|x)</d-math> and
-  <d-math>p_\theta(z|x)</d-math> are high.  Second, if we calculate an
+  <d-math>p_\theta(z|x)</d-math> are high.  This isn't a mathematically
+  rigorous statement really.  But, intuitively, the ratio is less sensitive to
+  absolute differences when both values are high.  Second, if we calculate an
   expectation over samples from <d-math>q_\phi(z|x)</d-math>:</p>
   
   <d-math block>
@@ -130,8 +132,152 @@
   </d-math>
   
   <p>then the second term becomes the always-positive KL-divergence between
-  <d-math>q</d-math> and what it is approximating.</p>
+  <d-math>q</d-math> and what it is approximating.  It is important to
+  interpret this formula correctly.  Remember that the term
+  <d-math>p_\theta(z|x)</d-math> is not directly modeled, rather "induced", and
+  that it is not calculatable even from the modeled distributions it is induced
+  from.  It's not obvious, but the two terms are connected in such a way that
+  maximizing the first term will drive the second term to zero.  I'm not sure
+  what to make of this, since the second term is the always-positive
+  KL-divergence <d-math>D_{KL}(q_\phi(z|x)||p_\theta(z|x))</d-math>.  So it
+  would appear that one of the forces might try to increase it, even though
+  overall, the whole expression is maximized when this term goes to zero.  I
+  don't know how to think about this.</p>
+  
+  <p>Putting that aside, we can calculate the gradients with respect to
+  <d-math>\theta</d-math> and <d-math>\phi</d-math>.  So, training works, and
+  we learn all three modeled distributions <d-math>p_\theta(z)</d-math>,
+  <d-math>p_\theta(x|z)</d-math> and <d-math>q_\phi(z|x)</d-math>.  This means
+  they are consistent with the underlying joint distribution <d-math>p(x,
+  z)</d-math>.  Finally, the induced marginal
+  <d-math>p_{\theta,\phi}(x)</d-math> asymptotically approaches the data
+  distribution <d-math>X</d-math> in the limit of a large amount of data. </p>
 
+  <h3>What is a plausible model, inspired by the VAE, about how the brain
+      processes speech?</h3>
+
+  <p>I have been considering the VAE model in the context of unsupervised
+  speech representation learning, using WaveNet as the decoder, where
+  <d-math>X</d-math> is speech audio data, and <d-math>z</d-math> is a
+  time-indexed latent that is supposed to represent something like a "phoneme".
+  From that point of view, I want to map the various cognitive processes and
+  experiences onto the expressions <d-math>p_\theta(z)</d-math>,
+  <d-math>q_\phi(z|x)</d-math>, and <d-math>p_\theta(x|z)</d-math>.  I settled
+  on the following:</p>
+  
+  <p>First, I note that <d-math>z</d-math> and <d-math>x</d-math> are
+  time-indexed, so should be written <d-math>z \equiv [z_1, z_2, ...,
+  z_n]</d-math> and <d-math>x \equiv [x_1, x_2, ..., x_n]</d-math>.  Second,
+  the process of silently imagining words in your head, I interpret as sampling
+  from <d-math>p(z)</d-math>, in which the brain maintains a current state that
+  summarizes previously generated <d-math>z_{t-i}</d-math>'s.  Thus, it is
+  written autoregressively as <d-math>p(z_t | z_{t-k}, ..., z_{t-1})</d-math>.
+  </p>
+
+  <p>The process of pronouncing these imagined phonemes and words involves
+  another circuit that takes this generated state and translates it into motor
+  output for the tongue, larynx, vocal chords, jaw, etc.  This could be modeled
+  as <d-math>p_\theta(m_t | z_t)</d-math> and where we have a fixed function,
+  determined by one's body itself, that translates the motor commands into
+      actual sound, <d-math>x_t = f_{body}(m_t)</d-math>, which is not
+      parameterized.  The final model thus would be <d-math>p_\theta(x_t | z_t)
+          \equiv f_{body}(p_\theta(m_t|z_t))</d-math>.  An important point here
+      is that <d-math>m_t</d-math> is much lower-dimensional than
+      <d-math>x_t</d-math> since there are relatively few muscles involved, and
+      the sound waves produced have very high temporal resolution.</p>
+
+  <p>The peculiar thing now is imagining the process of listening to speech.  I
+  feel it is very likely the case that the same circuits that are involved in
+  speech imagining, which we modeled as <d-math>p(z_t | z_{t-k}, ...,
+  z_{t-1})</d-math> must also be involved in listening.  
+  
+  <p>
+  What about the process of listening to speech?  The intuition is that
+  listening (or any experience) is a predictive activity.  Based on the recent
+  past inputs, we are constantly generating predictions about what might come
+  next.  And, moment-to-moment, the hypothesis is that our brains compare these
+  predictions with the encoding derived from the immediate sensory information.
+      So, if I were to model this, it would be a recognition circuit that is
+      augmented with autoregressive context, as <d-math>q_\phi(z_t | z_{t-k},
+          ..., z_{t-1}, x_t)</d-math> 
+  </p>
+
+  <p>But, if the imagining process, and the listening process both involve
+  moment-to-moment integration of recent past state, isn't it likely they would
+  share the same circuits?  The problem is that the VAE formulation doesn't
+  allow that, because they are two separate models (I think).  But, I believe
+  we can combine them using an attentional trick as follows:</p>
+
+  <p>Allow for a gating mechanism mediated by inhibitory neurons, which allows
+  or prevents signal from the sensory processing circuit to reach the recurrent
+      circuit.  The sensory processing circuit produces a representation
+      <d-math>z^{(s)}_t = f_{sense}(x_t)</d-math>, which will be compared to
+      the autoregressively predicted <d-math>z_t</d-math> to produce an error
+      term <d-math>e_t</d-math>.  The new setup is now:</p>
+
+  <d-math>
+      \begin{aligned}
+      z &\equiv [z_1, ..., z_T] \\
+      p(z) &\equiv \prod_{t=k+1}^T { p_\theta(z_t | z_{t-k}, ..., z_{t-1},
+      e_{t-1}, g_{t-1} = \text{shut}) } \\
+      p(z|x) &\equiv \prod_{t=k+1}^T { p_\theta(z_t | z_{t-k}, ..., z_{t-1},
+      e_{t-1}, g_{t-1} = \text{open}) } \\
+      e &= f_{error}(z_{t-1}, z_{t-1}^{(s)}) && \text{error} \\
+      z^{(s)} &= f_{sense}(x_{t-1}) && \text{sense-derived encoding} \\
+      \end{aligned}
+  </d-math>
+  
+  <p>The error function could be a circuit that is always on, but upstream of
+  the gating mechanism.  If the gate is open, then two things happen.  First,
+  the autoregressive circuit incorporates the error signal and updates itself
+  to try to minimize error.  Second, the error provides additional conditioning
+  input, along with <d-math>z_{t-k},...,z_{t-1}</d-math> which affects the 
+  prediction of latent variable at the next timestep.</p>
+  
+  <p>If the gate is closed, the error signal is ignored.  This will be akin to
+  a person imagining words while ignoring other people talking.  The sounds are
+  going into the person's ears, and some lower level circuits have no choice
+  but to process the information, but an attention mechanism prevents it from
+  affecting the person's train of thought.  Thus, the prediction of latent
+  variable at the next timestep only incorporates the previous latent variables
+  as context, and there is also no training signal.</p>
+
+  <p>Crucially, the system would have to train in such a way that, for any given
+  z-context <d-math>z_{t-k}, ..., z_{t-1}</d-math>, the distribution of 
+  <d-math>e_t</d-math> arising from the data will have zero mean, and thus:</p>
+
+  <d-math>p(z) \propto \sum_{x \sim X}{p(z|x)}</d-math>
+  
+  We then stipulate that the circuit learns over time to make
+  prediction errors that are zero-mean. 
+
+      
+      The problem is that, by the VAE
+      formulation, the prior and recognition model are completely separate.  I
+      wondered how one could combine them in a probabilistically consistent
+      way, and have the following proposal:</p>
+
+  <p>
+
+
+  
+  
+  
+  Now, taking
+  the insight from McAllester and van den Oord (ref, predictive coding),
+  imagine that the activity of listening to spoken speech and recognizing
+  phonemes, words, phrases, etc, involves the brain maintaining a current state
+  which allows it to use information from previous latent states.  As it does
+  this, another circuit processes the current <d-math>x_t</d-math> and
+  generates an "actual" <d-math>z_t</d-math> from which it Now, there are three
+  main activities.  First is the activity of listening to spoken speech, and
+  recognizing phonemes, words, phrases, etc in real time.  
+  
+  The first thing that occurred to me is that the idea of
+  sampling from the prior <d-math>p(z)</d-math> is how I should think about the
+  mental process of imagining (but not pronouncing) words.  
+
+  <p>
 
   </p>
 
