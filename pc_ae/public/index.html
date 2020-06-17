@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
     <title>Autoencoder with additional Predictive Coding</title>
     <script src="https://distill.pub/template.v2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
     <!--    <script defer src="js/main.js"></script> -->
 <!--     <script defer src="js/bundle.js"></script>
      <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -15,9 +17,8 @@
 
 <d-front-matter>
     <script type="text/json">{
-  "title": "Autoencoder with additional Predictive Coding"
-  "description": "An autoencoder after the Kingma VAE, using attention
-  mechanism and predictive coding to combine the recognition model and prior"
+  "title": "Autoencoder with additional Predictive Coding",
+  "description": "An autoencoder after the Kingma VAE, using attention mechanism and predictive coding to combine the recognition model and prior",
   "authors": [
   {
       "author": "Henry Bigelow"
@@ -114,9 +115,68 @@
   the parameterization.  Its effects cancel.</p>
 
   <p>So now, we have two terms: one which is calculatable, which is an
-  approximation, and the second one, which is the error term.  Again, this is
-  true for <i>any</i> <d-math>z</d-math>, no matter where it comes from.
-  However there are two more things to note.</p>
+  approximation, and the second one, which is a correction factor, or error
+  term.  Again, this is true for <i>any</i> <d-math>z</d-math>, no matter where
+  it comes from.</p>
+
+  <p>The next idea puts together four facts conveniently.  First is that,
+  after the log transformation, we can express the product of the two factors
+  as a sum of logs.  Second, because the full expression is constant over
+  <d-math>z</d-math>, we can take an expectation of that expression over any
+  distribution of <d-math>z</d-math>.</p>
+  
+  <d-math block>
+      \log p_\theta(x) \equiv \mathbb{E}_{z \sim p_{any}(z)}[\log
+      \dfrac{p_\theta(x, z)}{q_\phi(z|x)} + \log
+      \dfrac{q_\phi(z|x)}{p_\theta(z|x)}]
+  </d-math>
+  
+  
+  <p>Third, if we specifically choose
+  <d-math>q_\phi(z|x)</d-math> as the distribution, then the second expectation
+  becomes a KL-divergence term, which is known to be always positive.<p>
+  
+  <d-math block>
+      \begin{aligned}
+      \log p_\theta(x) &\equiv \mathbb{E}_{z \sim q_\phi(z|x)}[\log
+      \dfrac{p_\theta(x, z)}{q_\phi(z|x)} + \log
+      \dfrac{q_\phi(z|x)}{p_\theta(z|x)}] && \text{Expectation of constant = constant}\\
+
+      &= \mathbb{E}_{z \sim q_\phi(z|x)}[\log \dfrac{p_\theta(x, z)}{q_\phi(z|x)}] +
+      \mathbb{E}_{z \sim q_\phi(z|x)}[\log \dfrac{q_\phi(z|x)}{p_\theta(z|x)}]
+      && \text{Separate out non-computable terms}
+      \\
+
+      &= \mathbb{E}_{z \sim q_\phi(z|x)}[\log \dfrac{p_\theta(x, z)}{q_\phi(z|x)}] +
+      D_{KL}[q_\phi(z|x) \| p_\theta(z|x)]
+      && \text{Recognize KL-divergence}
+      \\
+
+      &\ge \mathbb{E}_{z \sim q_\phi(z|x)}[\log \dfrac{p_\theta(x, z)}{q_\phi(z|x)}]
+      && \text{Positivity of KL-divergence}
+      \end{aligned}
+  </d-math>
+  
+  <p>Intuitively, what is happening is that each term in the expectation will
+  be pushed up.  Recall that <d-math>\dfrac{d}{dx} \log x = \dfrac{1}{x}
+      \, dx</d-math>.  So, the smaller <d-math>q_\phi(z|x)</d-math> is, the
+  steeper the gradient pushing it down.  Meanwhile, the smaller
+  <d-math>p(z,x)</d-math> is, the steeper the gradient pushing it up.  </p>
+
+  <p>Finally, now that we have two expectations, one of which is always
+  positive, this means the other is a lower bound for the full expression.
+  Conveniently, now, we can calculate the value of the first term.  Even though
+  we cannot calculate the value of the KL-divergence term, it doesn't prevent
+  us from maximizing the full expression, since we can just maximize a lower
+  bound for it.</p>
+
+  <p>
+
+
+  <p>Recall that the full expression given above has the same value for any
+  <d-math>z</d-math> in the domain.  But, for any choice of <d-math>z</d-math>,
+  the first term (the approximation) will vary, and the second term (the
+  correction factor)
 
   <p>First, the error term will be much more accurate for <d-math>z</d-math>
   values in which both <d-math>q_\phi(z|x)</d-math> and
@@ -126,11 +186,13 @@
   expectation over samples from <d-math>q_\phi(z|x)</d-math>:</p>
   
   <d-math block>
+      \begin{aligned}
       \mathbb{E}_{z \sim q_\phi(z|x)}[
       \log \dfrac{p_\theta(x, z)}{q_\phi(z|x)} + \log
       \dfrac{q_\phi(z|x)}{p_\theta(z|x)}]
+      \end{aligned}
   </d-math>
-  
+
   <p>then the second term becomes the always-positive KL-divergence between
   <d-math>q</d-math> and what it is approximating.  It is important to
   interpret this formula correctly.  Remember that the term
@@ -152,6 +214,68 @@
   z)</d-math>.  Finally, the induced marginal
   <d-math>p_{\theta,\phi}(x)</d-math> asymptotically approaches the data
   distribution <d-math>X</d-math> in the limit of a large amount of data. </p>
+
+  <h3>Practice error</h3>
+
+  <p>From the above, we have expressed the learning objective in terms of a
+  code prediction error and a reconstruction error.  The code prediction error
+  corresponds with the human experience of a constant monitoring of
+  moment-to-moment expectations for what comes next, either passively, or when
+  we take action.  The reconstruction error corresponds roughly to a human who
+  can perceive some data <d-math>x</d-math> in the sensory domain, and then,
+  based on that perception <d-math>z</d-math>, produce another
+  <d-math>x</d-math> in the data domain.  In the way that we train an
+  autoencoder, the model is forced (teacher forcing) to reproduce the same
+  <d-math>x</d-math> and we measure the assigned density and optimize it.</p>
+
+  <p>I'd like to introduce a new objective, called <em>practice error</em>,
+  which simulates the human experience of <em>practicing</em>.  By
+  "practicing", I mean, the human has an idea of a desirable behavior of some
+  sort, which he understands only through his representation of the sense
+  perceptions resulting from that behavior.  The trial-and-error process of
+  practicing something consists of:</p>
+
+  <ol>
+      <li>Obtain (through observation or imagination) some 
+          representation <d-math>\hat{z}</d-math> of a desirable observation</li>
+      <li>Generate <d-math>x^{(i)} \sim p_\theta(x|\hat{z})</d-math> through bodily
+      action and the resulting interaction with environment and senses</li>
+      <li>Interpret the result through your senses: <d-math>z^{(j)} \sim
+              q_\phi(z|x^{(i)})</d-math></li>
+      <li>Measure the error between <d-math>\hat{z}</d-math> and
+          <d-math>z^{(j)}</d-math></li>
+      <li>Based on the error, adjust the behavior generation
+          <d-math>p_\theta(x|z)</d-math> and/or the perception
+          <d-math>q_\phi(z|x)</d-math></li>
+      <li>Repeat</li>
+  </ol>
+
+  <p>Mapping this process onto an autoencoder might look like an inverted
+  reconstruction:</p>
+
+  <d-math block>
+      \mathbb{E}_{x^{(i)} \sim p_\theta(x|\hat{z})}[r_\phi(\hat{z}|x^{(i)}, g =
+      \text{open})]
+  </d-math>
+
+  <p>Each <d-math>x^{(i)}</d-math> is a separate trial, representing a
+  particular bodily action, interaction with environment, and resulting sensory
+  data generated.  Once <d-math>x^{(i)}</d-math> is generated, in this scheme,
+  instead of generating a <d-math>z^{(j)}</d-math> and measuring some distance,
+  we simply try to maximize the expected probability assigned to
+  <d-math>\hat{z}</d-math>.  This is not the same as step five above, both
+  procedures will produce the same result, because XXX</p>
+
+  <p>In the above, <d-math>\hat{z}</d-math> was obtained "through observation
+  or imagination".  If the goal is to imitate a particular observation
+  <d-math>\hat{x}</d-math>, then it makes sense to perform the above experiment over
+  multiple <d-math>z</d-math>s that arise from it.  This would then be:</p>
+
+  <d-math block>
+      \mathbb{E}_{z^{(j)} \sim r_\phi(z|\hat{x}, g = \text{open}) \atop
+      x^{(k}) \sim p_\theta(x|z^{(j)})} [ r_\phi(z^{(j)}|x^{(k)}, g
+      = \text{open})]
+  </d-math>
 
   <h3>What is a plausible model, inspired by the VAE, about how the brain
       processes speech?</h3>
@@ -248,38 +372,25 @@
 
   <d-math>p(z) \propto \sum_{x \sim X}{p(z|x)}</d-math>
   
-  We then stipulate that the circuit learns over time to make
-  prediction errors that are zero-mean. 
-
-      
-      The problem is that, by the VAE
-      formulation, the prior and recognition model are completely separate.  I
-      wondered how one could combine them in a probabilistically consistent
-      way, and have the following proposal:</p>
-
-  <p>
-
+  <p> We then stipulate that the circuit learns over time to make prediction
+  errors that are zero-mean.  The problem is that, by the VAE formulation, the
+  prior and recognition model are completely separate.  I wondered how one
+  could combine them in a probabilistically consistent way, and have the
+  following proposal:</p>
 
   
-  
-  
-  Now, taking
-  the insight from McAllester and van den Oord (ref, predictive coding),
-  imagine that the activity of listening to spoken speech and recognizing
-  phonemes, words, phrases, etc, involves the brain maintaining a current state
-  which allows it to use information from previous latent states.  As it does
-  this, another circuit processes the current <d-math>x_t</d-math> and
-  generates an "actual" <d-math>z_t</d-math> from which it Now, there are three
-  main activities.  First is the activity of listening to spoken speech, and
-  recognizing phonemes, words, phrases, etc in real time.  
-  
-  The first thing that occurred to me is that the idea of
-  sampling from the prior <d-math>p(z)</d-math> is how I should think about the
-  mental process of imagining (but not pronouncing) words.  
+  <p> Now, taking the insight from McAllester and van den Oord (ref, predictive
+  coding), imagine that the activity of listening to spoken speech and
+  recognizing phonemes, words, phrases, etc, involves the brain maintaining a
+  current state which allows it to use information from previous latent states.
+  As it does this, another circuit processes the current <d-math>x_t</d-math>
+  and generates an "actual" <d-math>z_t</d-math> from which it Now, there are
+  three main activities.  First is the activity of listening to spoken speech,
+  and recognizing phonemes, words, phrases, etc in real time.  </p>
 
-  <p>
-
-  </p>
+  <p> The first thing that occurred to me is that the idea of sampling from the
+  prior <d-math>p(z)</d-math> is how I should think about the mental process of
+  imagining (but not pronouncing) words.  </p>
 
 </d-article>
 
