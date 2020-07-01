@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What makes a good encoding?</title>
+    <script src="https://distill.pub/template.v2.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+</head>
+<body>
+
+<script type="text/bibliography">
+  @article{quant_noise_mi,
+    title={The effect of quantization vs. noise on Mutual Information},
+    author={Bigelow, Henry}
+  }
+</script>
+
+<d-front-matter>
+    <script type="text/json">{
+  "title": "The effect of quantization vs. noise on Mutual Information reduction",
+  "description": "",
+  "authors": [
+  {
+      "author": "Henry Bigelow"
+  }
+  ]
+  }</script>
+</d-front-matter>
+
+<d-title style="padding-bottom: 0">
+    <h1>How much information does quantization or noise destroy?</h1>
+</d-title>
+
+<d-byline></d-byline>
+
+
+<d-article>
+  <h3>Here I compare loss of information due to quantization or addition of noise</h3>
+
+  <p>Quantizing and adding noise to a latent representation are two methods to
+  "reduce information", or create a "bottleneck". This note attempts to show
+  how that works, and how they are comparable in terms of the mutual
+  information between such variables.  </p>
+
+    <h3>Motivation</h3>
+
+    <p> Deep learning models sometimes employ information reduction techniques
+    of quantization or noising as a means for regularizing a model.  One of the
+    effects of such an operation is to discard information.  Specifically, the
+    Markov chain <d-math>X \leftrightsquigarrow \text{reduce}(X)
+        \leftrightsquigarrow Y</d-math> will produce a lower value for
+    <d-math>I(X;Y)</d-math> than would the chain <d-math>X \leftrightsquigarrow
+        Y</d-math>.  Seen against the backdrop of Tishby's Information
+    Bottleneck principle, we can ask, what is the mutual information
+    <d-math>I(X; \text{reduce}(X))</d-math>, where
+    <d-math>\text{reduce}(X)</d-math> is either quantization or adding
+    noise.</p>
+
+    <p> Although all random variables in an implemented model are effectively
+    discrete, we consider both continuous and discrete cases for theoretical
+    completeness.  To avoid confusion, we are considering the mutual
+    information between a variable and its reduced transformation.  One could
+    also ask, what is the difference in mutual information <d-math>I(X; X) -
+        I(X; \text{reduce}(X))</d-math> as a way of comparing a model that does
+    or does not use a form of information reduction.</p>
+
+    <h3>Setup</h3>
+
+    <p>Assume the following (rather contrived) variables:</p>
+
+    <d-math block>
+        \begin{aligned}
+        X \in \Bbb R &\sim U[0, 8) \\[1ex]
+        Q \in \Bbb N &= \dfrac{\lfloor (X * 2) \rfloor}{2} & \text{"quantized" from X rounded down to nearest} \tfrac{1}{2} \\[1ex]
+        N \in \Bbb R &= X + U[0, \tfrac{1}{2}) \mod 8 & \text{X with added noise in }[0, \tfrac{1}{2})\\[1ex]
+        \\
+        \end{aligned}
+    </d-math>
+
+    <p> <d-math>Q</d-math> takes the value of the nearest
+    <d-math>\tfrac{1}{2}</d-math> value lower bound of <d-math>X</d-math>'s
+    value, while <d-math>N</d-math> adds noise in <d-math>[0,
+        \tfrac{1}{2})</d-math>, wrapping around in case it goes outside
+    <d-math>X</d-math>'s domain.  Thus, <d-math>X</d-math>, <d-math>N</d-math>,
+    and <d-math>Q</d-math> are all uniform distributions.</p>
+
+    <p> From these definitions we have the following properties.  For clarity I
+    notate quantities on discrete variables with <d-math>\Sigma</d-math> and
+    continuous variables with <d-math>\int</d-math>.  As I discuss below, these
+    two styles cannot be combined.  However, mutual information always combines
+    two quantities of the same type.  </p>
+
+    <h3>Quantization Mutual Information</h3>
+
+    <p>
+    Here is the calculation of mutual information due to quantization.
+    </p>
+
+    <d-math block>
+        \begin{aligned}
+        H_{\int}(X) &= 3 & \text{} \\
+        H_{\int}(X|Q) &= -1 \\
+        I_{\int}(X;Q) &= H_{\int}(X) - H_{\int}(X|Q) = 4 \\[2ex]
+        \end{aligned}
+    </d-math>
+
+    <p> Knowing <d-math>Q</d-math> in all cases narrows down the value of
+    <d-math>X</d-math> to a <d-math>\tfrac{1}{2}</d-math> length interval of
+    uniform probability, which has differential entropy -1, so our mutual
+    information is 4.  </p>
+
+    <p>We can calculate this the other way as well:</p>
+
+    <d-math block>
+        \begin{aligned}
+        H_\Sigma(Q) &= 4 & \\
+        H_\Sigma(Q|X) &= 0 \\
+        I_\Sigma(X;Q) &= H_\Sigma(Q) - H_\Sigma(Q|X) = 4 \\[2ex]
+        \end{aligned}
+    </d-math>
+
+    <p> <d-math>Q</d-math> has entropy 4 bits because it is a uniform discrete
+    with 16 classes.  And knowing <d-math>X</d-math> determines
+    <d-math>Q</d-math> exactly, making it a one-hot distribution, so again we
+    get a mutual information of 4.  Unlike the previous, we are using discrete
+    entropies here.  </p>
+
+    <h3>Noise Mutual Information</h3>
+
+    <p> Adding noise has a similar effect.  We again start out with a
+    differential entropy of 3 for <d-math>X</d-math>.  Conditioning on
+    <d-math>N</d-math> narrows <d-math>X</d-math> to a
+    <d-math>\tfrac{1}{2}</d-math> length uniform interval, just like with the
+    quantized case.</p>
+
+    <d-math block>
+        \begin{aligned}
+        H_{\int}(X) &= 3 & \\
+        H_{\int}(X|N) &= -1 \\
+        I_{\int}(X;N) &= 4
+        \end{aligned}
+    </d-math>
+        
+    <p>Calculating the other way, we see that conditioning on
+    <d-math>X</d-math> narrows the noise variable to the
+    <d-math>\tfrac{1}{2}</d-math> length uniform interval, entropy -1, so we
+    have again mutual information of 4.</p>
+
+    <d-math block>
+        \begin{aligned}
+        H_{\int}(N) &= 3 \\
+        H_{\int}(N|X) &= -1 \\
+        I_{\int}(X;N) &= 4
+        \end{aligned}
+    </d-math>
+
+    <h3>Comparison of Quantization and Noise</h3>
+
+    <p> So quantizing to the nearest <d-math>\tfrac{1}{2}</d-math> value produces a
+    relationship with the same mutual information as adding a uniform noise
+    over the same sized interval.  In general, the smaller the quantization
+    interval or noise interval, the more mutual information.  In the limit, we
+    approach maximal mutual information.  </p>
+       
+    <p>Varying a quantization codebook density, or varying the variance of the
+    noise added per data point can allow a network to learn how much mutual
+    information to preserve on a per-sample basis.  </p>
+       
+    <h3>An inconsistency between discrete and continuous ("differential")
+        entropy formulas </h3>
+       
+    <p>As an aside, in the case of continuous random variables, this limit is
+    infinity, which is not consistent with the formulation that <d-math>I(X;X) =
+    H(X)</d-math>.  In other words, a deterministic mapping from a continuous variable
+    to another continuous variable has infinite mutual information between
+    them.  In practice, there are no such variables - everything is quantized.
+    </p>
+        
+    <p> Discrete entropy is formulated as: </p>
+        
+    <d-math block>H_\Sigma(X) \equiv - \sum_{x_i}^N{p(x_i) \log(p(x_i))}
+    </d-math>
+
+    <p>It is bounded in <d-math>[0, \log(N)]</d-math>.</p>
+        
+    <p> Differential entropy is formulated as </p> 
+        
+    <d-math block>H_{\int}(X) \equiv - \int_{\mathcal{X}}{d(x) \log(d(x)) \,dx}</d-math>
+
+    <p>It is bounded in <d-math>[-\infty, \log(|\mathcal{X}|)]</d-math>
+    </p>
+
+    <p>Both attain their maximal value for uniform distributions.  Discrete
+    entropy attains its minimum of 0 for any one-hot distribution, while
+    <d-math>H_{\int}</d-math> takes its minimum of <d-math>-\infty</d-math> for
+    any distribution with support of measure zero.  </p>
+
+    <p>The Shannon coding interpretation to entropy is the minimum expected
+    codeword length for symbols sampled i.i.d. from the distribution.
+    Unfortunately, <d-math>H_{\int}</d-math> doesn't conform to this, because it
+    would take infinite bits to represent values in a continuous domain.  Also,
+    the notion of entropy as self-information, <d-math>H(X) = I(X;X)</d-math>
+    doesn't work for a serendipitous reason: that <d-math>I(X;X)</d-math> is
+    calculated by subtracting entropies <d-math>H_{\int}(X) - H_{\int}(X|X)</d-math>.
+    In this case, the second term would be <d-math>-\infty</d-math> and we
+    would indeed get <d-math>\infty</d-math> (correctly) as our value for
+    self-information.</p>
+
+    </d-article>
+
+<d-appendix>
+</d-appendix>
+
+<script>
+</script>
+
+<style>
+</style>
+
+</body>
+</html>
+
