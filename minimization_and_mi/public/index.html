@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minimizing KL-divergence maximizes Mutual Information</title>
+    <script src="https://distill.pub/template.v2.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+</head>
+<body>
+
+<script type="text/bibliography">
+  @article{minimization_and_mi,
+    title={Minimizing KL-divergence maximizes Mutual Information},
+    author={Bigelow, Henry}
+  }
+</script>
+
+<d-front-matter>
+    <script type="text/json">{
+  "title": "Minimizing KL-divergence maximizes Mutual Information",
+  "description": "",
+  "authors": [
+  {
+      "author": "Henry Bigelow"
+  }
+  ],
+  "katex": {
+    "macros": [
+        "odom": "\\mathcal{O}"
+      ]
+    }
+  }</script>
+</d-front-matter>
+
+<d-title style="padding-bottom: 0">
+    <h1>Minimizing KL-divergence maximizes Mutual Information</h1>
+</d-title>
+
+<d-byline></d-byline>
+
+
+<d-article>
+
+    <h3>Here I show a simple proof of how minimizing KL-divergence
+        maximizes Mutual Information</h3>
+
+    <p> This is a quick note just to show in clear notation, how mutual
+    information within the model converges to the data as a consequence of
+    minimizing cross-entropy.</p>
+
+    <p>We are given the following:</p>
+
+    <d-math block>
+        \begin{aligned}
+        & A \overset{\theta}{\leftrightsquigarrow} X \overset{N}{\leftrightsquigarrow} Y \\[2ex]
+        \mathcal{I} &\equiv \text{domain of the "input"} \\
+        \mathcal{O} &\equiv \text{domain of the "output"} \\
+        X : \mathcal{I} &\equiv \text{input (part of the dataset)} \\
+        Y : \mathcal{O} &\equiv \text{label for X, (part of the dataset)} \\
+        A : \mathcal{O} &\equiv \text{predicted label for }X \\
+        \end{aligned}
+    </d-math>
+
+    <p>The <d-math>X \leftrightsquigarrow Y</d-math> relationship is constant,
+    determined by Nature "N".  The <d-math>X \leftrightsquigarrow A</d-math>
+    relationship is controlled by model parameters <d-math>\theta</d-math> and
+    changes during training.  For clarity, I will notate all quantities
+    dependent on <d-math>\theta</d-math> using a subscript.</p>
+
+    <p> Given this is a supervised learning context, <d-math>I(X;Y) = H(Y) -
+        H(Y|X)</d-math> is usually "close to" <d-math>H(Y)</d-math> but the
+    results here apply regardless the value of <d-math>I(X;Y)</d-math>.</p>
+
+    <h3>Notation: One random variable represents only one distribution</h3>
+
+    <p> I use a notation in which one random variable represents exactly one
+    distribution, but random variables may have the same domain.  In
+    particular, <d-math>A</d-math> and <d-math>Y</d-math> share the same domain
+    <d-math>\mathcal{O}</d-math>, but represent distinct distributions.  </p>
+
+    <p> Another common style is to make random variables domain-centric, that
+    is, to use one random variable for each domain that exists in the problem
+    statement.  Then, one must use different operator letters to signify
+    different distributions.  </p>
+
+    <p> For example, if we did not use <d-math>A</d-math> to represent model
+    predictions, but overload <d-math>Y</d-math> instead, then
+    <d-math>p(Y)</d-math> is now ambiguous.  Does it mean the distribution of
+    labels in the dataset, or over the model predictions?  To disambiguate
+    these, sometimes different operator names are chosen, such as
+    <d-math>p(Y)</d-math> and <d-math>q(Y)</d-math>.  However, this method does
+    not allow combining different random variables in expressions
+    unambiguously, so I favor the first style.  </p>
+
+    <p> With this "One RV, One Distribution" style, we have for example: </p>
+
+    <d-math block>
+        \begin{aligned}
+        \\
+        \mathrm{p}(Y) &\equiv \text{distribution of labels in the dataset} \\[1ex]
+        \mathrm{p}_\theta(A) &\equiv \text{distribution of labels assigned by the model} \\[1ex]
+        \mathrm{p}(Y|X) &\equiv \text{distribution of label } Y \text{ assigned to } X \\[1ex]
+        \mathrm{p}_{\theta}(A|X) &\equiv \text{distribution of label } A \text{ predicted by the model for } X \\
+        \end{aligned}
+    </d-math>
+
+    <p> A perfectly trained model <d-math>\mathrm{p}_{\theta}(A|X)</d-math>
+    should attain the same shape as <d-math>\mathrm{p}(Y|X)</d-math> for every
+    <d-math>x \in X</d-math>, so we can minimize
+    <d-math>D_{\theta}(Y\|A|X)</d-math> or <d-math>D_\theta(A \| Y |
+        X)</d-math> to achieve that.  Since we are dealing with an empirical
+    sample from <d-math>P(X, Y)</d-math>, we can minimize
+    <d-math>D_{\theta}(Y\|A|X)</d-math>: </p>
+
+    <d-math block>
+        \begin{aligned}
+        \\[1ex]
+        D_{\theta}(Y\|A|X) &= E_X E_{Y|X} \log \dfrac{\mathrm{p}(Y|X)}{\mathrm{p}_{\theta}(A\mathord{=}Y|X)} \\[1ex]
+        &= H_{\theta}(Y \bullet A | X) - H(Y|X) \\
+        \end{aligned}
+    </d-math>
+
+    <p> <d-math>H_{\theta}(Y \bullet A | X)</d-math> represents conditional cross entropy (to distinguish from joint
+    entropy).  Since <d-math>H(Y|X)</d-math> is a constant, we can minimize <d-math>D_{\theta}(Y|A|X)</d-math> by
+    minimizing <d-math>H_{\theta}(Y \bullet A | X)</d-math>.  </p>
+
+    <p>The empirical estimate of conditional cross entropy is derived as:</p>
+
+    <d-math block>
+        \begin{aligned}
+        \\[1ex]
+        H_{\theta}(Y \bullet A | X) &= E_X E_{Y|X} [-\log \mathrm{p}_{\theta}(A\mathord{=}Y|X)] \\[1ex]
+        \widetilde{H}_\theta(Y \bullet A|X) &= \dfrac{1}{N} \sum_{x_i \sim \mathcal{D}}^N { E_{Y|X\mathord{=}x_i} [-\log \mathrm{p}_\theta(A\mathord{=}Y|x_i)] } \\[1ex]
+        \end{aligned}
+    </d-math>
+
+    <p>Intuitively, it seems like the following implication would hold:</p>
+
+    <d-math block>
+        \begin{aligned}
+        \\[1ex]
+        H_{\theta}(Y \bullet A | X) \rightarrow 0 &\implies \mathrm{p}_\theta(A|X) \rightarrow \mathrm{p}(Y|X) \\[1ex]
+        &\implies H_\theta(A|X) \rightarrow H(Y|X) \\[1ex]
+        &\implies I_\theta(A;X) \rightarrow I(Y;X)
+        \end{aligned}
+    </d-math>
+
+    <p> The reverse implication does not hold.  If we simply push the mutual
+    information <d-math>I_\theta(A;X)</d-math> upward somehow, this will not
+    automatically lead to a good prediction.  The reason is that Mutual
+    Information is invariant to any one-to-one remapping of elements in a
+    variable's domain, while cross-entropy (and KL-divergence) is not.  But,
+    what this says is that, in order to predict, the model must acquire the
+    same level of mutual information as is in the data.</p>
+
+    </d-article>
+
+</body>
+</html>
+
