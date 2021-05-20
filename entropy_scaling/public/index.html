@@ -118,8 +118,8 @@
   same domain, the difference of their entropies only reflects the difference
   in shape of the two distributions.  Domain size does not play a role.</p>
 
-  <p>The shape + size idea also applies to cross entropies <d-math>H(P,
-      Q)</d-math> and conditional entropes <d-math>H(P|Q)</d-math>.  Because of
+  <p>The shape + size idea also applies to joint entropies <d-math>H(P,
+      Q)</d-math> and conditional entropies <d-math>H(P|Q)</d-math>.  Because of
   this, KL-divergence is also domain-size invariant, because it is a difference
   of entropies over the same domain:</p>
 
@@ -135,7 +135,7 @@
 
   <d-math>
       \begin{aligned}
-      I(P(A, B)) &\equiv D_{KL}(P(A, B) || P(A)P(B)) \\
+      I(A; B) &\equiv D_{KL}(P(A, B) || P(A)P(B)) \\
       &= H(A) - H(A|B) \\
       &= H(B) - H(B|A)
       \end{aligned}
