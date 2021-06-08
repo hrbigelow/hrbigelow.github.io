@@ -6,10 +6,13 @@ export let showdata = false;
 export let showbasis = false;
 export let showscaled = false;
 export let showsolution = false;
+export let contextwidth;
 
-let ctx = new Context(700, 350, [0, 10], [-0.5, 0.5]);
-let plot = new Plot(ctx);
 let colors = [ '#33cc33', '#cccc00', '#cc0000' ];
+
+$: ctx = new Context(contextwidth || 0, 350, [0, 10], [-0.5, 0.5]);
+$: plot = new Plot(ctx);
+
 
 </script>
 
@@ -58,7 +61,7 @@ let colors = [ '#33cc33', '#cccc00', '#cc0000' ];
 
 </style>
 
-
+{#if contextwidth}
 <div class="gauss-grid">
   <div class="grid-item">
       <svg width="{plot.width}" height="{plot.height}" viewBox="0 0
@@ -118,4 +121,7 @@ let colors = [ '#33cc33', '#cccc00', '#cc0000' ];
       </svg>
   </div>
 </div>
-
+{:else}
+    <div class="gauss-grid">
+    </div>
+{/if}

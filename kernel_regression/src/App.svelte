@@ -1,20 +1,23 @@
 <script>
     import MainPlot from './MainPlot.svelte';
+    let cw;
+    // console.log(document.getElementById('testid').clientWidth);
 </script>
 
 <main>
 
     <d-front-matter>
-<script type="text/json">{
-    "title": "Introduction to Kernel Regression",
-  "description": "A gentle introduction to Kernel Regression",
-  "authors": [
-  {
-      "author": "Henry Bigelow"
-  }
-  ]
-  }
-</script>
+    <script type="text/json">{
+        "title": "Introduction to Kernel Regression",
+      "description": "A gentle introduction to Kernel Regression",
+      "authors": [
+      {
+          "author": "Henry Bigelow"
+      }
+      ]
+      }
+    </script>
+
     </d-front-matter>
 
     <d-title style="padding-bottom: 0">
@@ -36,8 +39,10 @@
         In other words, "smooth".  So you would like to find a smooth function to
         fit the data.</p> 
 
-        <figure>
-            <d-figure><MainPlot showdata="true" /></d-figure>
+        <figure bind:clientWidth={cw}>
+            <d-figure>
+                <MainPlot showdata="true" contextwidth="{cw}" />
+            </d-figure>
         </figure>
 
         <p>With this smoothness goal in mind, you have decided to create a function
@@ -49,7 +54,7 @@
 
         <figure>
             <d-figure>
-                <MainPlot showdata="true" showbasis="true" />
+                <MainPlot showdata="true" showbasis="true" contextwidth="{cw}" />
             </d-figure>
         </figure>
 
@@ -72,7 +77,7 @@
 
         <figure>
             <d-figure>
-                <MainPlot showdata="true" showbasis="true" /> 
+                <MainPlot showdata="true" showbasis="true" contextwidth="{cw}" /> 
             </d-figure>
         </figure>
 
@@ -109,7 +114,7 @@
 
         <figure>
             <d-figure>
-                <MainPlot showdata="true" showscaled="true" />
+                <MainPlot showdata="true" showscaled="true" contextwidth="{cw}" />
             </d-figure>
         </figure>
 
@@ -145,7 +150,7 @@
 
         <figure>
             <d-figure>
-                <MainPlot showdata="true" showscaled="true" showsolution="true" />
+                <MainPlot showdata="true" showscaled="true" showsolution="true" contextwidth="{cw}" />
             </d-figure>
         </figure>
 
