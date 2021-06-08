@@ -7,9 +7,9 @@ export let showbasis = false;
 export let showscaled = false;
 export let showsolution = false;
 
-export let ctx = new Context(700, 350, [0, 10], [-0.5, 0.5]);
-export let plot = new Plot(ctx);
-export let colors = [ '#33cc33', '#cccc00', '#cc0000' ];
+let ctx = new Context(700, 350, [0, 10], [-0.5, 0.5]);
+let plot = new Plot(ctx);
+let colors = [ '#33cc33', '#cccc00', '#cc0000' ];
 
 </script>
 

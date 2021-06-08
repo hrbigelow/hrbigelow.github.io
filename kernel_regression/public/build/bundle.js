@@ -8980,31 +8980,21 @@ var app = (function () {
     // (68:10) {#each plot.dataset as [x, y, beta]}
     function create_each_block_6(ctx) {
     	let circle;
-    	let circle_cx_value;
-    	let circle_cy_value;
 
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
     			attr_dev(circle, "class", "data svelte-1jitcyb");
     			set_style(circle, "stroke", "#000000");
-    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[4].u(/*x*/ ctx[7]));
-    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[4].v(/*y*/ ctx[12]));
+    			attr_dev(circle, "cx", /*plot*/ ctx[4].u(/*x*/ ctx[7]));
+    			attr_dev(circle, "cy", /*plot*/ ctx[4].v(/*y*/ ctx[12]));
     			attr_dev(circle, "r", "5");
-    			add_location(circle, file$1, 68, 12, 1206);
+    			add_location(circle, file$1, 68, 12, 1185);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[4].u(/*x*/ ctx[7]))) {
-    				attr_dev(circle, "cx", circle_cx_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[4].v(/*y*/ ctx[12]))) {
-    				attr_dev(circle, "cy", circle_cy_value);
-    			}
-    		},
+    		p: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(circle);
     		}
@@ -9092,35 +9082,21 @@ var app = (function () {
     // (81:12) {#each plot.x as x2}
     function create_each_block_5(ctx) {
     	let circle;
-    	let circle_cx_value;
-    	let circle_cy_value;
 
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
     			attr_dev(circle, "class", "point svelte-1jitcyb");
-    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[4].u(/*x2*/ ctx[15]));
-    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[4].curvePoint(/*x*/ ctx[7], 1, /*x2*/ ctx[15]));
+    			attr_dev(circle, "cx", /*plot*/ ctx[4].u(/*x2*/ ctx[15]));
+    			attr_dev(circle, "cy", /*plot*/ ctx[4].curvePoint(/*x*/ ctx[7], 1, /*x2*/ ctx[15]));
     			attr_dev(circle, "r", "3");
     			set_style(circle, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			add_location(circle, file$1, 81, 14, 1655);
+    			add_location(circle, file$1, 81, 14, 1634);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[4].u(/*x2*/ ctx[15]))) {
-    				attr_dev(circle, "cx", circle_cx_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[4].curvePoint(/*x*/ ctx[7], 1, /*x2*/ ctx[15]))) {
-    				attr_dev(circle, "cy", circle_cy_value);
-    			}
-
-    			if (dirty & /*colors*/ 32) {
-    				set_style(circle, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			}
-    		},
+    		p: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(circle);
     		}
@@ -9140,7 +9116,6 @@ var app = (function () {
     // (78:10) {#each plot.dataset as [x, y, beta], i}
     function create_each_block_4(ctx) {
     	let path;
-    	let path_d_value;
     	let each_1_anchor;
     	let each_value_5 = /*plot*/ ctx[4].x;
     	validate_each_argument(each_value_5);
@@ -9160,9 +9135,9 @@ var app = (function () {
 
     			each_1_anchor = empty();
     			attr_dev(path, "class", "curve svelte-1jitcyb");
-    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[4].curve(/*x*/ ctx[7], 1));
+    			attr_dev(path, "d", /*plot*/ ctx[4].curve(/*x*/ ctx[7], 1));
     			set_style(path, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			add_location(path, file$1, 78, 12, 1495);
+    			add_location(path, file$1, 78, 12, 1474);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, path, anchor);
@@ -9174,14 +9149,6 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && path_d_value !== (path_d_value = /*plot*/ ctx[4].curve(/*x*/ ctx[7], 1))) {
-    				attr_dev(path, "d", path_d_value);
-    			}
-
-    			if (dirty & /*colors*/ 32) {
-    				set_style(path, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			}
-
     			if (dirty & /*plot, colors*/ 48) {
     				each_value_5 = /*plot*/ ctx[4].x;
     				validate_each_argument(each_value_5);
@@ -9295,35 +9262,21 @@ var app = (function () {
     // (96:12) {#each plot.x as x2}
     function create_each_block_3(ctx) {
     	let circle;
-    	let circle_cx_value;
-    	let circle_cy_value;
 
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
     			attr_dev(circle, "class", "point svelte-1jitcyb");
-    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[4].u(/*x2*/ ctx[15]));
-    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[4].curvePoint(/*x*/ ctx[7], /*beta*/ ctx[13], /*x2*/ ctx[15]));
+    			attr_dev(circle, "cx", /*plot*/ ctx[4].u(/*x2*/ ctx[15]));
+    			attr_dev(circle, "cy", /*plot*/ ctx[4].curvePoint(/*x*/ ctx[7], /*beta*/ ctx[13], /*x2*/ ctx[15]));
     			attr_dev(circle, "r", "3");
     			set_style(circle, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			add_location(circle, file$1, 96, 14, 2182);
+    			add_location(circle, file$1, 96, 14, 2161);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[4].u(/*x2*/ ctx[15]))) {
-    				attr_dev(circle, "cx", circle_cx_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[4].curvePoint(/*x*/ ctx[7], /*beta*/ ctx[13], /*x2*/ ctx[15]))) {
-    				attr_dev(circle, "cy", circle_cy_value);
-    			}
-
-    			if (dirty & /*colors*/ 32) {
-    				set_style(circle, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			}
-    		},
+    		p: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(circle);
     		}
@@ -9343,7 +9296,6 @@ var app = (function () {
     // (90:10) {#each plot.dataset as [x, y, beta], i}
     function create_each_block_2(ctx) {
     	let path;
-    	let path_d_value;
     	let each_1_anchor;
     	let each_value_3 = /*plot*/ ctx[4].x;
     	validate_each_argument(each_value_3);
@@ -9364,8 +9316,8 @@ var app = (function () {
     			each_1_anchor = empty();
     			attr_dev(path, "class", "curve svelte-1jitcyb");
     			set_style(path, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[4].curve(/*x*/ ctx[7], /*beta*/ ctx[13]));
-    			add_location(path, file$1, 90, 12, 1985);
+    			attr_dev(path, "d", /*plot*/ ctx[4].curve(/*x*/ ctx[7], /*beta*/ ctx[13]));
+    			add_location(path, file$1, 90, 12, 1964);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, path, anchor);
@@ -9377,14 +9329,6 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*colors*/ 32) {
-    				set_style(path, "stroke", /*colors*/ ctx[5][/*i*/ ctx[9]]);
-    			}
-
-    			if (dirty & /*plot*/ 16 && path_d_value !== (path_d_value = /*plot*/ ctx[4].curve(/*x*/ ctx[7], /*beta*/ ctx[13]))) {
-    				attr_dev(path, "d", path_d_value);
-    			}
-
     			if (dirty & /*plot, colors*/ 48) {
     				each_value_3 = /*plot*/ ctx[4].x;
     				validate_each_argument(each_value_3);
@@ -9430,7 +9374,6 @@ var app = (function () {
     // (104:8) {#if showsolution}
     function create_if_block(ctx) {
     	let path;
-    	let path_d_value;
     	let each_1_anchor;
     	let each_value_1 = /*plot*/ ctx[4].x;
     	validate_each_argument(each_value_1);
@@ -9450,8 +9393,8 @@ var app = (function () {
 
     			each_1_anchor = empty();
     			attr_dev(path, "class", "solution-curve svelte-1jitcyb");
-    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[4].solutionCurve());
-    			add_location(path, file$1, 104, 10, 2463);
+    			attr_dev(path, "d", /*plot*/ ctx[4].solutionCurve());
+    			add_location(path, file$1, 104, 10, 2442);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, path, anchor);
@@ -9463,10 +9406,6 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && path_d_value !== (path_d_value = /*plot*/ ctx[4].solutionCurve())) {
-    				attr_dev(path, "d", path_d_value);
-    			}
-
     			if (dirty & /*plot*/ 16) {
     				each_value_1 = /*plot*/ ctx[4].x;
     				validate_each_argument(each_value_1);
@@ -9512,30 +9451,20 @@ var app = (function () {
     // (106:10) {#each plot.x as x}
     function create_each_block_1(ctx) {
     	let circle;
-    	let circle_cx_value;
-    	let circle_cy_value;
 
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
     			attr_dev(circle, "class", "solution-pt svelte-1jitcyb");
-    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[4].u(/*x*/ ctx[7]));
-    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[4].solutionPoint(/*x*/ ctx[7]));
+    			attr_dev(circle, "cx", /*plot*/ ctx[4].u(/*x*/ ctx[7]));
+    			attr_dev(circle, "cy", /*plot*/ ctx[4].solutionPoint(/*x*/ ctx[7]));
     			attr_dev(circle, "r", "3");
-    			add_location(circle, file$1, 106, 12, 2569);
+    			add_location(circle, file$1, 106, 12, 2548);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[4].u(/*x*/ ctx[7]))) {
-    				attr_dev(circle, "cx", circle_cx_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[4].solutionPoint(/*x*/ ctx[7]))) {
-    				attr_dev(circle, "cy", circle_cy_value);
-    			}
-    		},
+    		p: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(circle);
     		}
@@ -9558,7 +9487,6 @@ var app = (function () {
     	let t0;
     	let tspan;
     	let t1;
-    	let text_1_x_value;
 
     	const block = {
     		c: function create() {
@@ -9567,10 +9495,10 @@ var app = (function () {
     			tspan = svg_element("tspan");
     			t1 = text(/*i*/ ctx[9]);
     			attr_dev(tspan, "class", "ss svelte-1jitcyb");
-    			add_location(tspan, file$1, 115, 36, 2903);
-    			attr_dev(text_1, "x", text_1_x_value = /*plot*/ ctx[4].u(/*x*/ ctx[7]));
+    			add_location(tspan, file$1, 115, 36, 2882);
+    			attr_dev(text_1, "x", /*plot*/ ctx[4].u(/*x*/ ctx[7]));
     			attr_dev(text_1, "y", "25");
-    			add_location(text_1, file$1, 115, 10, 2877);
+    			add_location(text_1, file$1, 115, 10, 2856);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, text_1, anchor);
@@ -9578,11 +9506,7 @@ var app = (function () {
     			append_dev(text_1, tspan);
     			append_dev(tspan, t1);
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 16 && text_1_x_value !== (text_1_x_value = /*plot*/ ctx[4].u(/*x*/ ctx[7]))) {
-    				attr_dev(text_1, "x", text_1_x_value);
-    			}
-    		},
+    		p: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(text_1);
     		}
@@ -9606,13 +9530,8 @@ var app = (function () {
     	let if_block0_anchor;
     	let if_block1_anchor;
     	let if_block2_anchor;
-    	let svg0_width_value;
-    	let svg0_height_value;
-    	let svg0_viewBox_value;
     	let t;
     	let svg1;
-    	let svg1_width_value;
-    	let svg1_viewBox_value;
     	let if_block0 = /*showdata*/ ctx[0] && create_if_block_3(ctx);
     	let if_block1 = /*showbasis*/ ctx[1] && create_if_block_2(ctx);
     	let if_block2 = /*showscaled*/ ctx[2] && create_if_block_1(ctx);
@@ -9644,19 +9563,19 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(svg0, "width", svg0_width_value = /*plot*/ ctx[4].width);
-    			attr_dev(svg0, "height", svg0_height_value = /*plot*/ ctx[4].height);
-    			attr_dev(svg0, "viewBox", svg0_viewBox_value = "0 0\n                  " + /*plot*/ ctx[4].width + " " + /*plot*/ ctx[4].height);
+    			attr_dev(svg0, "width", /*plot*/ ctx[4].width);
+    			attr_dev(svg0, "height", /*plot*/ ctx[4].height);
+    			attr_dev(svg0, "viewBox", "0 0\n                  " + /*plot*/ ctx[4].width + " " + /*plot*/ ctx[4].height);
     			attr_dev(svg0, "class", "plot");
-    			add_location(svg0, file$1, 63, 6, 1001);
-    			attr_dev(svg1, "width", svg1_width_value = /*plot*/ ctx[4].width);
+    			add_location(svg0, file$1, 63, 6, 980);
+    			attr_dev(svg1, "width", /*plot*/ ctx[4].width);
     			attr_dev(svg1, "height", "40");
-    			attr_dev(svg1, "viewBox", svg1_viewBox_value = "0 0\n                  " + /*plot*/ ctx[4].width + " 40");
-    			add_location(svg1, file$1, 112, 6, 2749);
+    			attr_dev(svg1, "viewBox", "0 0\n                  " + /*plot*/ ctx[4].width + " 40");
+    			add_location(svg1, file$1, 112, 6, 2728);
     			attr_dev(div0, "class", "grid-item svelte-1jitcyb");
-    			add_location(div0, file$1, 62, 2, 971);
+    			add_location(div0, file$1, 62, 2, 950);
     			attr_dev(div1, "class", "gauss-grid svelte-1jitcyb");
-    			add_location(div1, file$1, 61, 0, 944);
+    			add_location(div1, file$1, 61, 0, 923);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9732,18 +9651,6 @@ var app = (function () {
     				if_block3 = null;
     			}
 
-    			if (dirty & /*plot*/ 16 && svg0_width_value !== (svg0_width_value = /*plot*/ ctx[4].width)) {
-    				attr_dev(svg0, "width", svg0_width_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && svg0_height_value !== (svg0_height_value = /*plot*/ ctx[4].height)) {
-    				attr_dev(svg0, "height", svg0_height_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && svg0_viewBox_value !== (svg0_viewBox_value = "0 0\n                  " + /*plot*/ ctx[4].width + " " + /*plot*/ ctx[4].height)) {
-    				attr_dev(svg0, "viewBox", svg0_viewBox_value);
-    			}
-
     			if (dirty & /*plot*/ 16) {
     				each_value = /*plot*/ ctx[4].x;
     				validate_each_argument(each_value);
@@ -9766,14 +9673,6 @@ var app = (function () {
     				}
 
     				each_blocks.length = each_value.length;
-    			}
-
-    			if (dirty & /*plot*/ 16 && svg1_width_value !== (svg1_width_value = /*plot*/ ctx[4].width)) {
-    				attr_dev(svg1, "width", svg1_width_value);
-    			}
-
-    			if (dirty & /*plot*/ 16 && svg1_viewBox_value !== (svg1_viewBox_value = "0 0\n                  " + /*plot*/ ctx[4].width + " 40")) {
-    				attr_dev(svg1, "viewBox", svg1_viewBox_value);
     			}
     		},
     		i: noop$1,
@@ -9806,10 +9705,10 @@ var app = (function () {
     	let { showbasis = false } = $$props;
     	let { showscaled = false } = $$props;
     	let { showsolution = false } = $$props;
-    	let { ctx = new Context(700, 350, [0, 10], [-0.5, 0.5]) } = $$props;
-    	let { plot = new Plot(ctx) } = $$props;
-    	let { colors = ["#33cc33", "#cccc00", "#cc0000"] } = $$props;
-    	const writable_props = ["showdata", "showbasis", "showscaled", "showsolution", "ctx", "plot", "colors"];
+    	let ctx = new Context(700, 350, [0, 10], [-0.5, 0.5]);
+    	let plot = new Plot(ctx);
+    	let colors = ["#33cc33", "#cccc00", "#cc0000"];
+    	const writable_props = ["showdata", "showbasis", "showscaled", "showsolution"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<MainPlot> was created with unknown prop '${key}'`);
@@ -9820,9 +9719,6 @@ var app = (function () {
     		if ("showbasis" in $$props) $$invalidate(1, showbasis = $$props.showbasis);
     		if ("showscaled" in $$props) $$invalidate(2, showscaled = $$props.showscaled);
     		if ("showsolution" in $$props) $$invalidate(3, showsolution = $$props.showsolution);
-    		if ("ctx" in $$props) $$invalidate(6, ctx = $$props.ctx);
-    		if ("plot" in $$props) $$invalidate(4, plot = $$props.plot);
-    		if ("colors" in $$props) $$invalidate(5, colors = $$props.colors);
     	};
 
     	$$self.$capture_state = () => ({
@@ -9842,7 +9738,7 @@ var app = (function () {
     		if ("showbasis" in $$props) $$invalidate(1, showbasis = $$props.showbasis);
     		if ("showscaled" in $$props) $$invalidate(2, showscaled = $$props.showscaled);
     		if ("showsolution" in $$props) $$invalidate(3, showsolution = $$props.showsolution);
-    		if ("ctx" in $$props) $$invalidate(6, ctx = $$props.ctx);
+    		if ("ctx" in $$props) ctx = $$props.ctx;
     		if ("plot" in $$props) $$invalidate(4, plot = $$props.plot);
     		if ("colors" in $$props) $$invalidate(5, colors = $$props.colors);
     	};
@@ -9851,7 +9747,7 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [showdata, showbasis, showscaled, showsolution, plot, colors, ctx];
+    	return [showdata, showbasis, showscaled, showsolution, plot, colors];
     }
 
     class MainPlot extends SvelteComponentDev {
@@ -9862,10 +9758,7 @@ var app = (function () {
     			showdata: 0,
     			showbasis: 1,
     			showscaled: 2,
-    			showsolution: 3,
-    			ctx: 6,
-    			plot: 4,
-    			colors: 5
+    			showsolution: 3
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -9905,30 +9798,6 @@ var app = (function () {
     	}
 
     	set showsolution(value) {
-    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get ctx() {
-    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set ctx(value) {
-    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get plot() {
-    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set plot(value) {
-    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get colors() {
-    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set colors(value) {
     		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -10117,11 +9986,7 @@ var app = (function () {
     		});
 
     	mainplot2 = new MainPlot({
-    			props: {
-    				showdata: "true",
-    				",": true,
-    				showbasis: "true"
-    			},
+    			props: { showdata: "true", showbasis: "true" },
     			$$inline: true
     		});
 
@@ -10133,7 +9998,6 @@ var app = (function () {
     	mainplot4 = new MainPlot({
     			props: {
     				showdata: "true",
-    				",": true,
     				showscaled: "true",
     				showsolution: "true"
     			},
@@ -10396,57 +10260,57 @@ var app = (function () {
     			add_location(h31, file, 70, 8, 2934);
     			add_location(d_figure2, file, 73, 12, 2986);
     			add_location(figure2, file, 72, 8, 2965);
-    			add_location(d_math16, file, 79, 30, 3215);
-    			add_location(d_math17, file, 80, 20, 3285);
-    			add_location(d_math18, file, 81, 25, 3374);
-    			add_location(p4, file, 78, 8, 3112);
-    			add_location(d_math19, file, 83, 65, 3500);
-    			add_location(d_math20, file, 84, 40, 3559);
-    			add_location(i, file, 85, 20, 3634);
-    			add_location(d_math21, file, 85, 32, 3646);
-    			add_location(d_math22, file, 86, 18, 3728);
-    			add_location(p5, file, 83, 8, 3443);
-    			add_location(d_math23, file, 90, 12, 3950);
-    			add_location(d_math24, file, 92, 8, 4109);
-    			add_location(d_math25, file, 93, 52, 4239);
-    			add_location(p6, file, 89, 8, 3861);
-    			add_location(p7, file, 96, 8, 4301);
+    			add_location(d_math16, file, 79, 30, 3214);
+    			add_location(d_math17, file, 80, 20, 3284);
+    			add_location(d_math18, file, 81, 25, 3373);
+    			add_location(p4, file, 78, 8, 3111);
+    			add_location(d_math19, file, 83, 65, 3499);
+    			add_location(d_math20, file, 84, 40, 3558);
+    			add_location(i, file, 85, 20, 3633);
+    			add_location(d_math21, file, 85, 32, 3645);
+    			add_location(d_math22, file, 86, 18, 3727);
+    			add_location(p5, file, 83, 8, 3442);
+    			add_location(d_math23, file, 90, 12, 3949);
+    			add_location(d_math24, file, 92, 8, 4108);
+    			add_location(d_math25, file, 93, 52, 4238);
+    			add_location(p6, file, 89, 8, 3860);
+    			add_location(p7, file, 96, 8, 4300);
     			set_custom_element_data(d_math26, "block", "");
-    			add_location(d_math26, file, 99, 8, 4346);
-    			add_location(d_figure3, file, 110, 12, 5055);
-    			add_location(figure3, file, 109, 8, 5034);
-    			add_location(d_math27, file, 116, 8, 5256);
-    			add_location(d_math28, file, 117, 41, 5377);
-    			add_location(d_math29, file, 119, 8, 5511);
-    			add_location(p8, file, 115, 8, 5180);
+    			add_location(d_math26, file, 99, 8, 4345);
+    			add_location(d_figure3, file, 110, 12, 5054);
+    			add_location(figure3, file, 109, 8, 5033);
+    			add_location(d_math27, file, 116, 8, 5255);
+    			add_location(d_math28, file, 117, 41, 5376);
+    			add_location(d_math29, file, 119, 8, 5510);
+    			add_location(p8, file, 115, 8, 5179);
     			set_custom_element_data(d_math30, "block", "");
-    			add_location(d_math30, file, 121, 8, 5559);
-    			add_location(p9, file, 127, 8, 5789);
+    			add_location(d_math30, file, 121, 8, 5558);
+    			add_location(p9, file, 127, 8, 5788);
     			set_custom_element_data(d_math31, "block", "");
-    			add_location(d_math31, file, 129, 8, 5834);
-    			add_location(d_math32, file, 142, 64, 6345);
-    			add_location(d_math33, file, 142, 90, 6371);
-    			add_location(d_math34, file, 143, 18, 6417);
-    			add_location(p10, file, 142, 8, 6289);
-    			add_location(d_figure4, file, 146, 12, 6481);
-    			add_location(figure4, file, 145, 8, 6460);
-    			add_location(h32, file, 151, 8, 6627);
-    			add_location(d_math35, file, 153, 47, 6705);
-    			add_location(d_math36, file, 154, 54, 6804);
-    			add_location(d_math37, file, 155, 18, 6867);
-    			add_location(d_math38, file, 157, 22, 7080);
-    			add_location(p11, file, 153, 8, 6666);
+    			add_location(d_math31, file, 129, 8, 5833);
+    			add_location(d_math32, file, 142, 64, 6344);
+    			add_location(d_math33, file, 142, 90, 6370);
+    			add_location(d_math34, file, 143, 18, 6416);
+    			add_location(p10, file, 142, 8, 6288);
+    			add_location(d_figure4, file, 146, 12, 6480);
+    			add_location(figure4, file, 145, 8, 6459);
+    			add_location(h32, file, 151, 8, 6625);
+    			add_location(d_math35, file, 153, 47, 6703);
+    			add_location(d_math36, file, 154, 54, 6802);
+    			add_location(d_math37, file, 155, 18, 6865);
+    			add_location(d_math38, file, 157, 22, 7078);
+    			add_location(p11, file, 153, 8, 6664);
     			set_custom_element_data(d_math39, "block", "");
-    			add_location(d_math39, file, 159, 8, 7133);
-    			add_location(d_math40, file, 167, 8, 7670);
-    			add_location(d_math41, file, 168, 8, 7744);
-    			add_location(p12, file, 165, 8, 7497);
-    			add_location(d_math42, file, 171, 25, 7922);
-    			add_location(p13, file, 171, 8, 7905);
+    			add_location(d_math39, file, 159, 8, 7131);
+    			add_location(d_math40, file, 167, 8, 7668);
+    			add_location(d_math41, file, 168, 8, 7742);
+    			add_location(p12, file, 165, 8, 7495);
+    			add_location(d_math42, file, 171, 25, 7920);
+    			add_location(p13, file, 171, 8, 7903);
     			set_custom_element_data(d_math43, "block", "");
-    			add_location(d_math43, file, 174, 8, 8075);
+    			add_location(d_math43, file, 174, 8, 8073);
     			add_location(d_article, file, 26, 4, 470);
-    			add_location(d_appendix, file, 190, 4, 8542);
+    			add_location(d_appendix, file, 190, 4, 8540);
     			add_location(main, file, 4, 0, 66);
     		},
     		l: function claim(nodes) {
@@ -10689,10 +10553,7 @@ var app = (function () {
     }
 
     const app = new App({
-    	target: document.body,
-    	props: {
-    		name: 'world'
-    	}
+    	target: document.body
     });
 
     return app;

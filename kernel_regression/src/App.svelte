@@ -72,7 +72,7 @@
 
         <figure>
             <d-figure>
-                <MainPlot showdata="true", showbasis="true" /> 
+                <MainPlot showdata="true" showbasis="true" /> 
             </d-figure>
         </figure>
 
@@ -145,7 +145,7 @@
 
         <figure>
             <d-figure>
-                <MainPlot showdata="true", showscaled="true" showsolution="true" />
+                <MainPlot showdata="true" showscaled="true" showsolution="true" />
             </d-figure>
         </figure>
 
