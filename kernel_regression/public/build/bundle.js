@@ -1,2 +1,10902 @@
-var app=function(){"use strict";function t(){}function e(t){return t()}function r(){return Object.create(null)}function n(t){t.forEach(e)}function o(t){return"function"==typeof t}function i(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function s(t,e){t.appendChild(e)}function a(t,e,r){t.insertBefore(e,r||null)}function u(t){t.parentNode.removeChild(t)}function h(t,e){for(let r=0;r<t.length;r+=1)t[r]&&t[r].d(e)}function l(t){return document.createElement(t)}function c(t){return document.createElementNS("http://www.w3.org/2000/svg",t)}function f(t){return document.createTextNode(t)}function m(){return f(" ")}function d(){return f("")}function g(t,e,r,n){return t.addEventListener(e,r,n),()=>t.removeEventListener(e,r,n)}function w(t,e,r){null==r?t.removeAttribute(e):t.getAttribute(e)!==r&&t.setAttribute(e,r)}function v(t,e,r){e in t?t[e]="boolean"==typeof t[e]&&""===r||r:w(t,e,r)}function p(t,e,r,n){t.style.setProperty(e,r,n?"important":"")}let x,y;function b(){if(void 0===x){x=!1;try{"undefined"!=typeof window&&window.parent&&window.parent.document}catch(t){x=!0}}return x}function M(t){y=t}const _=[],k=[],$=[],E=[],j=Promise.resolve();let S=!1;function N(t){$.push(t)}let R=!1;const A=new Set;function q(){if(!R){R=!0;do{for(let t=0;t<_.length;t+=1){const e=_[t];M(e),C(e.$$)}for(M(null),_.length=0;k.length;)k.pop()();for(let t=0;t<$.length;t+=1){const e=$[t];A.has(e)||(A.add(e),e())}$.length=0}while(_.length);for(;E.length;)E.pop()();S=!1,R=!1,A.clear()}}function C(t){if(null!==t.fragment){t.update(),n(t.before_update);const e=t.dirty;t.dirty=[-1],t.fragment&&t.fragment.p(t.ctx,e),t.after_update.forEach(N)}}const T=new Set;function V(t,e){t&&t.i&&(T.delete(t),t.i(e))}function I(t,e,r,n){if(t&&t.o){if(T.has(t))return;T.add(t),undefined.c.push((()=>{T.delete(t),n&&(r&&t.d(1),n())})),t.o(e)}}function O(t){t&&t.c()}function P(t,r,i,s){const{fragment:a,on_mount:u,on_destroy:h,after_update:l}=t.$$;a&&a.m(r,i),s||N((()=>{const r=u.map(e).filter(o);h?h.push(...r):n(r),t.$$.on_mount=[]})),l.forEach(N)}function L(t,e){const r=t.$$;null!==r.fragment&&(n(r.on_destroy),r.fragment&&r.fragment.d(e),r.on_destroy=r.fragment=null,r.ctx=[])}function z(t,e){-1===t.$$.dirty[0]&&(_.push(t),S||(S=!0,j.then(q)),t.$$.dirty.fill(0)),t.$$.dirty[e/31|0]|=1<<e%31}function D(e,o,i,s,a,h,l=[-1]){const c=y;M(e);const f=e.$$={fragment:null,ctx:null,props:h,update:t,not_equal:a,bound:r(),on_mount:[],on_destroy:[],on_disconnect:[],before_update:[],after_update:[],context:new Map(c?c.$$.context:o.context||[]),callbacks:r(),dirty:l,skip_bound:!1};let m=!1;if(f.ctx=i?i(e,o.props||{},((t,r,...n)=>{const o=n.length?n[0]:r;return f.ctx&&a(f.ctx[t],f.ctx[t]=o)&&(!f.skip_bound&&f.bound[t]&&f.bound[t](o),m&&z(e,t)),r})):[],f.update(),m=!0,n(f.before_update),f.fragment=!!s&&s(f.ctx),o.target){if(o.hydrate){const t=function(t){return Array.from(t.childNodes)}(o.target);f.fragment&&f.fragment.l(t),t.forEach(u)}else f.fragment&&f.fragment.c();o.intro&&V(e.$$.fragment),P(e,o.target,o.anchor,o.customElement),q()}M(c)}class H{$destroy(){L(this,1),this.$destroy=t}$on(t,e){const r=this.$$.callbacks[t]||(this.$$.callbacks[t]=[]);return r.push(e),()=>{const t=r.indexOf(e);-1!==t&&r.splice(t,1)}}$set(t){var e;this.$$set&&(e=t,0!==Object.keys(e).length)&&(this.$$.skip_bound=!0,this.$$set(t),this.$$.skip_bound=!1)}}const U=Object.prototype.toString;function B(t){return U.call(t).endsWith("Array]")}function F(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!B(t))throw new TypeError("input must be an array");if(0===t.length)throw new TypeError("input must not be empty");var r=e.fromIndex,n=void 0===r?0:r,o=e.toIndex,i=void 0===o?t.length:o;if(n<0||n>=t.length||!Number.isInteger(n))throw new Error("fromIndex must be a positive integer smaller than length");if(i<=n||i>t.length||!Number.isInteger(i))throw new Error("toIndex must be an integer greater than fromIndex and at most equal to length");for(var s=t[n],a=n+1;a<i;a++)t[a]>s&&(s=t[a]);return s}function X(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!B(t))throw new TypeError("input must be an array");if(0===t.length)throw new TypeError("input must not be empty");var r=e.fromIndex,n=void 0===r?0:r,o=e.toIndex,i=void 0===o?t.length:o;if(n<0||n>=t.length||!Number.isInteger(n))throw new Error("fromIndex must be a positive integer smaller than length");if(i<=n||i>t.length||!Number.isInteger(i))throw new Error("toIndex must be an integer greater than fromIndex and at most equal to length");for(var s=t[n],a=n+1;a<i;a++)t[a]<s&&(s=t[a]);return s}function W(t){var e,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!B(t))throw new TypeError("input must be an array");if(0===t.length)throw new TypeError("input must not be empty");if(void 0!==r.output){if(!B(r.output))throw new TypeError("output option must be an array if specified");e=r.output}else e=new Array(t.length);var n=X(t),o=F(t);if(n===o)throw new RangeError("minimum and maximum input values are equal. Cannot rescale a constant array");var i=r.min,s=void 0===i?r.autoMinMax?n:0:i,a=r.max,u=void 0===a?r.autoMinMax?o:1:a;if(s>=u)throw new RangeError("min option must be smaller than max option");for(var h=(u-s)/(o-n),l=0;l<t.length;l++)e[l]=(t[l]-n)*h+s;return e}class G{constructor(t){var e,r,n,o,i,s,a,u,h,l=(t=bt.checkMatrix(t)).clone(),c=l.rows,f=l.columns,m=new Array(c),d=1;for(e=0;e<c;e++)m[e]=e;for(u=new Array(c),r=0;r<f;r++){for(e=0;e<c;e++)u[e]=l.get(e,r);for(e=0;e<c;e++){for(h=Math.min(e,r),i=0,n=0;n<h;n++)i+=l.get(e,n)*u[n];u[e]-=i,l.set(e,r,u[e])}for(o=r,e=r+1;e<c;e++)Math.abs(u[e])>Math.abs(u[o])&&(o=e);if(o!==r){for(n=0;n<f;n++)s=l.get(o,n),l.set(o,n,l.get(r,n)),l.set(r,n,s);a=m[o],m[o]=m[r],m[r]=a,d=-d}if(r<c&&0!==l.get(r,r))for(e=r+1;e<c;e++)l.set(e,r,l.get(e,r)/l.get(r,r))}this.LU=l,this.pivotVector=m,this.pivotSign=d}isSingular(){for(var t=this.LU,e=t.columns,r=0;r<e;r++)if(0===t[r][r])return!0;return!1}solve(t){t=yt.checkMatrix(t);var e=this.LU;if(e.rows!==t.rows)throw new Error("Invalid matrix dimensions");if(this.isSingular())throw new Error("LU matrix is singular");var r,n,o,i=t.columns,s=t.subMatrixRow(this.pivotVector,0,i-1),a=e.columns;for(o=0;o<a;o++)for(r=o+1;r<a;r++)for(n=0;n<i;n++)s[r][n]-=s[o][n]*e[r][o];for(o=a-1;o>=0;o--){for(n=0;n<i;n++)s[o][n]/=e[o][o];for(r=0;r<o;r++)for(n=0;n<i;n++)s[r][n]-=s[o][n]*e[r][o]}return s}get determinant(){var t=this.LU;if(!t.isSquare())throw new Error("Matrix must be square");for(var e=this.pivotSign,r=t.columns,n=0;n<r;n++)e*=t[n][n];return e}get lowerTriangularMatrix(){for(var t=this.LU,e=t.rows,r=t.columns,n=new yt(e,r),o=0;o<e;o++)for(var i=0;i<r;i++)n[o][i]=o>i?t[o][i]:o===i?1:0;return n}get upperTriangularMatrix(){for(var t=this.LU,e=t.rows,r=t.columns,n=new yt(e,r),o=0;o<e;o++)for(var i=0;i<r;i++)n[o][i]=o<=i?t[o][i]:0;return n}get pivotPermutationVector(){return this.pivotVector.slice()}}function K(t,e){var r=0;return Math.abs(t)>Math.abs(e)?(r=e/t,Math.abs(t)*Math.sqrt(1+r*r)):0!==e?(r=t/e,Math.abs(e)*Math.sqrt(1+r*r)):0}function Q(t,e,r){for(var n=new Array(t),o=0;o<t;o++){n[o]=new Array(e);for(var i=0;i<e;i++)n[o][i]=r}return n}class Y{constructor(t,e={}){var r=(t=bt.checkMatrix(t)).rows,n=t.columns;const{computeLeftSingularVectors:o=!0,computeRightSingularVectors:i=!0,autoTranspose:s=!1}=e;var a,u=Boolean(o),h=Boolean(i),l=!1;if(r<n)if(s){r=(a=t.transpose()).rows,n=a.columns,l=!0;var c=u;u=h,h=c}else a=t.clone(),console.warn("Computing SVD on a matrix with more columns than rows. Consider enabling autoTranspose");else a=t.clone();var f=Math.min(r,n),m=Math.min(r+1,n),d=new Array(m),g=Q(r,f,0),w=Q(n,n,0),v=new Array(n),p=new Array(r),x=new Array(m);for(let t=0;t<m;t++)x[t]=t;var y=Math.min(r-1,n),b=Math.max(0,Math.min(n-2,r)),M=Math.max(y,b);for(let t=0;t<M;t++){if(t<y){d[t]=0;for(let e=t;e<r;e++)d[t]=K(d[t],a[e][t]);if(0!==d[t]){a[t][t]<0&&(d[t]=-d[t]);for(let e=t;e<r;e++)a[e][t]/=d[t];a[t][t]+=1}d[t]=-d[t]}for(let e=t+1;e<n;e++){if(t<y&&0!==d[t]){let n=0;for(let o=t;o<r;o++)n+=a[o][t]*a[o][e];n=-n/a[t][t];for(let o=t;o<r;o++)a[o][e]+=n*a[o][t]}v[e]=a[t][e]}if(u&&t<y)for(let e=t;e<r;e++)g[e][t]=a[e][t];if(t<b){v[t]=0;for(let e=t+1;e<n;e++)v[t]=K(v[t],v[e]);if(0!==v[t]){v[t+1]<0&&(v[t]=0-v[t]);for(let e=t+1;e<n;e++)v[e]/=v[t];v[t+1]+=1}if(v[t]=-v[t],t+1<r&&0!==v[t]){for(let e=t+1;e<r;e++)p[e]=0;for(let e=t+1;e<r;e++)for(let r=t+1;r<n;r++)p[e]+=v[r]*a[e][r];for(let e=t+1;e<n;e++){let n=-v[e]/v[t+1];for(let o=t+1;o<r;o++)a[o][e]+=n*p[o]}}if(h)for(let e=t+1;e<n;e++)w[e][t]=v[e]}}let _=Math.min(n,r+1);if(y<n&&(d[y]=a[y][y]),r<_&&(d[_-1]=0),b+1<_&&(v[b]=a[b][_-1]),v[_-1]=0,u){for(let t=y;t<f;t++){for(let e=0;e<r;e++)g[e][t]=0;g[t][t]=1}for(let t=y-1;t>=0;t--)if(0!==d[t]){for(let e=t+1;e<f;e++){let n=0;for(let o=t;o<r;o++)n+=g[o][t]*g[o][e];n=-n/g[t][t];for(let o=t;o<r;o++)g[o][e]+=n*g[o][t]}for(let e=t;e<r;e++)g[e][t]=-g[e][t];g[t][t]=1+g[t][t];for(let e=0;e<t-1;e++)g[e][t]=0}else{for(let e=0;e<r;e++)g[e][t]=0;g[t][t]=1}}if(h)for(let t=n-1;t>=0;t--){if(t<b&&0!==v[t])for(let e=t+1;e<n;e++){let r=0;for(let o=t+1;o<n;o++)r+=w[o][t]*w[o][e];r=-r/w[t+1][t];for(let o=t+1;o<n;o++)w[o][e]+=r*w[o][t]}for(let e=0;e<n;e++)w[e][t]=0;w[t][t]=1}for(var k=_-1,$=Number.EPSILON;_>0;){let t,e;for(t=_-2;t>=-1&&-1!==t;t--){const e=Number.MIN_VALUE+$*Math.abs(d[t]+Math.abs(d[t+1]));if(Math.abs(v[t])<=e||Number.isNaN(v[t])){v[t]=0;break}}if(t===_-2)e=4;else{let r;for(r=_-1;r>=t&&r!==t;r--){let e=(r!==_?Math.abs(v[r]):0)+(r!==t+1?Math.abs(v[r-1]):0);if(Math.abs(d[r])<=$*e){d[r]=0;break}}r===t?e=3:r===_-1?e=1:(e=2,t=r)}switch(t++,e){case 1:{let e=v[_-2];v[_-2]=0;for(let r=_-2;r>=t;r--){let o=K(d[r],e),i=d[r]/o,s=e/o;if(d[r]=o,r!==t&&(e=-s*v[r-1],v[r-1]=i*v[r-1]),h)for(let t=0;t<n;t++)o=i*w[t][r]+s*w[t][_-1],w[t][_-1]=-s*w[t][r]+i*w[t][_-1],w[t][r]=o}break}case 2:{let e=v[t-1];v[t-1]=0;for(let n=t;n<_;n++){let o=K(d[n],e),i=d[n]/o,s=e/o;if(d[n]=o,e=-s*v[n],v[n]=i*v[n],u)for(let e=0;e<r;e++)o=i*g[e][n]+s*g[e][t-1],g[e][t-1]=-s*g[e][n]+i*g[e][t-1],g[e][n]=o}break}case 3:{const e=Math.max(Math.abs(d[_-1]),Math.abs(d[_-2]),Math.abs(v[_-2]),Math.abs(d[t]),Math.abs(v[t])),o=d[_-1]/e,i=d[_-2]/e,s=v[_-2]/e,a=d[t]/e,l=v[t]/e,c=((i+o)*(i-o)+s*s)/2,f=o*s*(o*s);let m=0;0===c&&0===f||(m=c<0?0-Math.sqrt(c*c+f):Math.sqrt(c*c+f),m=f/(c+m));let p=(a+o)*(a-o)+m,x=a*l;for(let e=t;e<_-1;e++){let o=K(p,x);0===o&&(o=Number.MIN_VALUE);let i=p/o,s=x/o;if(e!==t&&(v[e-1]=o),p=i*d[e]+s*v[e],v[e]=i*v[e]-s*d[e],x=s*d[e+1],d[e+1]=i*d[e+1],h)for(let t=0;t<n;t++)o=i*w[t][e]+s*w[t][e+1],w[t][e+1]=-s*w[t][e]+i*w[t][e+1],w[t][e]=o;if(o=K(p,x),0===o&&(o=Number.MIN_VALUE),i=p/o,s=x/o,d[e]=o,p=i*v[e]+s*d[e+1],d[e+1]=-s*v[e]+i*d[e+1],x=s*v[e+1],v[e+1]=i*v[e+1],u&&e<r-1)for(let t=0;t<r;t++)o=i*g[t][e]+s*g[t][e+1],g[t][e+1]=-s*g[t][e]+i*g[t][e+1],g[t][e]=o}v[_-2]=p;break}case 4:if(d[t]<=0&&(d[t]=d[t]<0?-d[t]:0,h))for(let e=0;e<=k;e++)w[e][t]=-w[e][t];for(;t<k&&!(d[t]>=d[t+1]);){let e=d[t];if(d[t]=d[t+1],d[t+1]=e,h&&t<n-1)for(let r=0;r<n;r++)e=w[r][t+1],w[r][t+1]=w[r][t],w[r][t]=e;if(u&&t<r-1)for(let n=0;n<r;n++)e=g[n][t+1],g[n][t+1]=g[n][t],g[n][t]=e;t++}_--}}if(l){var E=w;w=g,g=E}this.m=r,this.n=n,this.s=d,this.U=g,this.V=w}solve(t){var e=t,r=this.threshold,n=this.s.length,o=yt.zeros(n,n);for(let t=0;t<n;t++)Math.abs(this.s[t])<=r?o[t][t]=0:o[t][t]=1/this.s[t];var i=this.U,s=this.rightSingularVectors,a=s.mmul(o),u=s.rows,h=i.length,l=yt.zeros(u,h);for(let t=0;t<u;t++)for(let e=0;e<h;e++){let r=0;for(let o=0;o<n;o++)r+=a[t][o]*i[e][o];l[t][e]=r}return l.mmul(e)}solveForDiagonal(t){return this.solve(yt.diag(t))}inverse(){var t=this.V,e=this.threshold,r=t.length,n=t[0].length,o=new yt(r,this.s.length);for(let i=0;i<r;i++)for(let r=0;r<n;r++)Math.abs(this.s[r])>e?o[i][r]=t[i][r]/this.s[r]:o[i][r]=0;var i=this.U,s=i.length,a=i[0].length,u=new yt(r,s);for(let t=0;t<r;t++)for(let e=0;e<s;e++){let r=0;for(let n=0;n<a;n++)r+=o[t][n]*i[e][n];u[t][e]=r}return u}get condition(){return this.s[0]/this.s[Math.min(this.m,this.n)-1]}get norm2(){return this.s[0]}get rank(){for(var t=Math.max(this.m,this.n)*this.s[0]*Number.EPSILON,e=0,r=this.s,n=0,o=r.length;n<o;n++)r[n]>t&&e++;return e}get diagonal(){return this.s}get threshold(){return Number.EPSILON/2*Math.max(this.m,this.n)*this.s[0]}get leftSingularVectors(){return yt.isMatrix(this.U)||(this.U=new yt(this.U)),this.U}get rightSingularVectors(){return yt.isMatrix(this.V)||(this.V=new yt(this.V)),this.V}get diagonalMatrix(){return yt.diag(this.s)}}function Z(t,e,r){var n=r?t.rows:t.rows-1;if(e<0||e>n)throw new RangeError("Row index out of range")}function J(t,e,r){var n=r?t.columns:t.columns-1;if(e<0||e>n)throw new RangeError("Column index out of range")}function tt(t,e){if(e.to1DArray&&(e=e.to1DArray()),e.length!==t.columns)throw new RangeError("vector size must be the same as the number of columns");return e}function et(t,e){if(e.to1DArray&&(e=e.to1DArray()),e.length!==t.rows)throw new RangeError("vector size must be the same as the number of rows");return e}function rt(t,e,r){return{row:nt(t,e),column:ot(t,r)}}function nt(t,e){if("object"!=typeof e)throw new TypeError("unexpected type for row indices");if(e.some((e=>e<0||e>=t.rows)))throw new RangeError("row indices are out of range");return Array.isArray(e)||(e=Array.from(e)),e}function ot(t,e){if("object"!=typeof e)throw new TypeError("unexpected type for column indices");if(e.some((e=>e<0||e>=t.columns)))throw new RangeError("column indices are out of range");return Array.isArray(e)||(e=Array.from(e)),e}function it(t,e,r,n,o){if(5!==arguments.length)throw new RangeError("expected 4 arguments");if(ut("startRow",e),ut("endRow",r),ut("startColumn",n),ut("endColumn",o),e>r||n>o||e<0||e>=t.rows||r<0||r>=t.rows||n<0||n>=t.columns||o<0||o>=t.columns)throw new RangeError("Submatrix indices are out of range")}function st(t){for(var e=yt.zeros(t.rows,1),r=0;r<t.rows;++r)for(var n=0;n<t.columns;++n)e.set(r,0,e.get(r,0)+t.get(r,n));return e}function at(t){for(var e=yt.zeros(1,t.columns),r=0;r<t.rows;++r)for(var n=0;n<t.columns;++n)e.set(0,n,e.get(0,n)+t.get(r,n));return e}function ut(t,e){if("number"!=typeof e)throw new TypeError(`${t} must be a number`)}class ht extends(xt()){constructor(t,e,r){super(),this.matrix=t,this.rows=e,this.columns=r}static get[Symbol.species](){return yt}}class lt extends ht{constructor(t){super(t,t.columns,t.rows)}set(t,e,r){return this.matrix.set(e,t,r),this}get(t,e){return this.matrix.get(e,t)}}class ct extends ht{constructor(t,e){super(t,1,t.columns),this.row=e}set(t,e,r){return this.matrix.set(this.row,e,r),this}get(t,e){return this.matrix.get(this.row,e)}}class ft extends ht{constructor(t,e,r,n,o){it(t,e,r,n,o),super(t,r-e+1,o-n+1),this.startRow=e,this.startColumn=n}set(t,e,r){return this.matrix.set(this.startRow+t,this.startColumn+e,r),this}get(t,e){return this.matrix.get(this.startRow+t,this.startColumn+e)}}class mt extends ht{constructor(t,e,r){var n=rt(t,e,r);super(t,n.row.length,n.column.length),this.rowIndices=n.row,this.columnIndices=n.column}set(t,e,r){return this.matrix.set(this.rowIndices[t],this.columnIndices[e],r),this}get(t,e){return this.matrix.get(this.rowIndices[t],this.columnIndices[e])}}class dt extends ht{constructor(t,e){super(t,(e=nt(t,e)).length,t.columns),this.rowIndices=e}set(t,e,r){return this.matrix.set(this.rowIndices[t],e,r),this}get(t,e){return this.matrix.get(this.rowIndices[t],e)}}class gt extends ht{constructor(t,e){e=ot(t,e),super(t,t.rows,e.length),this.columnIndices=e}set(t,e,r){return this.matrix.set(t,this.columnIndices[e],r),this}get(t,e){return this.matrix.get(t,this.columnIndices[e])}}class wt extends ht{constructor(t,e){super(t,t.rows,1),this.column=e}set(t,e,r){return this.matrix.set(t,this.column,r),this}get(t){return this.matrix.get(t,this.column)}}class vt extends ht{constructor(t){super(t,t.rows,t.columns)}set(t,e,r){return this.matrix.set(this.rows-t-1,e,r),this}get(t,e){return this.matrix.get(this.rows-t-1,e)}}class pt extends ht{constructor(t){super(t,t.rows,t.columns)}set(t,e,r){return this.matrix.set(t,this.columns-e-1,r),this}get(t,e){return this.matrix.get(t,this.columns-e-1)}}function xt(t){void 0===t&&(t=Object);class e extends t{static get[Symbol.species](){return this}static from1DArray(t,e,r){if(t*e!==r.length)throw new RangeError("Data length does not match given dimensions");for(var n=new this(t,e),o=0;o<t;o++)for(var i=0;i<e;i++)n.set(o,i,r[o*e+i]);return n}static rowVector(t){for(var e=new this(1,t.length),r=0;r<t.length;r++)e.set(0,r,t[r]);return e}static columnVector(t){for(var e=new this(t.length,1),r=0;r<t.length;r++)e.set(r,0,t[r]);return e}static empty(t,e){return new this(t,e)}static zeros(t,e){return this.empty(t,e).fill(0)}static ones(t,e){return this.empty(t,e).fill(1)}static rand(t,e,r){void 0===r&&(r=Math.random);for(var n=this.empty(t,e),o=0;o<t;o++)for(var i=0;i<e;i++)n.set(o,i,r());return n}static randInt(t,e,r,n){void 0===r&&(r=1e3),void 0===n&&(n=Math.random);for(var o=this.empty(t,e),i=0;i<t;i++)for(var s=0;s<e;s++){var a=Math.floor(n()*r);o.set(i,s,a)}return o}static eye(t,e,r){void 0===e&&(e=t),void 0===r&&(r=1);for(var n=Math.min(t,e),o=this.zeros(t,e),i=0;i<n;i++)o.set(i,i,r);return o}static diag(t,e,r){var n=t.length;void 0===e&&(e=n),void 0===r&&(r=e);for(var o=Math.min(n,e,r),i=this.zeros(e,r),s=0;s<o;s++)i.set(s,s,t[s]);return i}static min(t,e){t=this.checkMatrix(t),e=this.checkMatrix(e);for(var r=t.rows,n=t.columns,o=new this(r,n),i=0;i<r;i++)for(var s=0;s<n;s++)o.set(i,s,Math.min(t.get(i,s),e.get(i,s)));return o}static max(t,e){t=this.checkMatrix(t),e=this.checkMatrix(e);for(var r=t.rows,n=t.columns,o=new this(r,n),i=0;i<r;i++)for(var s=0;s<n;s++)o.set(i,s,Math.max(t.get(i,s),e.get(i,s)));return o}static checkMatrix(t){return e.isMatrix(t)?t:new this(t)}static isMatrix(t){return null!=t&&"Matrix"===t.klass}get size(){return this.rows*this.columns}apply(t){if("function"!=typeof t)throw new TypeError("callback must be a function");for(var e=this.rows,r=this.columns,n=0;n<e;n++)for(var o=0;o<r;o++)t.call(this,n,o);return this}to1DArray(){for(var t=new Array(this.size),e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)t[e*this.columns+r]=this.get(e,r);return t}to2DArray(){for(var t=new Array(this.rows),e=0;e<this.rows;e++){t[e]=new Array(this.columns);for(var r=0;r<this.columns;r++)t[e][r]=this.get(e,r)}return t}isRowVector(){return 1===this.rows}isColumnVector(){return 1===this.columns}isVector(){return 1===this.rows||1===this.columns}isSquare(){return this.rows===this.columns}isSymmetric(){if(this.isSquare()){for(var t=0;t<this.rows;t++)for(var e=0;e<=t;e++)if(this.get(t,e)!==this.get(e,t))return!1;return!0}return!1}isEchelonForm(){let t=0,e=0,r=-1,n=!0,o=!1;for(;t<this.rows&&n;){for(e=0,o=!1;e<this.columns&&!1===o;)0===this.get(t,e)?e++:1===this.get(t,e)&&e>r?(o=!0,r=e):(n=!1,o=!0);t++}return n}isReducedEchelonForm(){let t=0,e=0,r=-1,n=!0,o=!1;for(;t<this.rows&&n;){for(e=0,o=!1;e<this.columns&&!1===o;)0===this.get(t,e)?e++:1===this.get(t,e)&&e>r?(o=!0,r=e):(n=!1,o=!0);for(let r=e+1;r<this.rows;r++)0!==this.get(t,r)&&(n=!1);t++}return n}set(t,e,r){throw new Error("set method is unimplemented")}get(t,e){throw new Error("get method is unimplemented")}repeat(t,e){t=t||1,e=e||1;for(var r=new this.constructor[Symbol.species](this.rows*t,this.columns*e),n=0;n<t;n++)for(var o=0;o<e;o++)r.setSubMatrix(this,this.rows*n,this.columns*o);return r}fill(t){for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,t);return this}neg(){return this.mulS(-1)}getRow(t){Z(this,t);for(var e=new Array(this.columns),r=0;r<this.columns;r++)e[r]=this.get(t,r);return e}getRowVector(t){return this.constructor.rowVector(this.getRow(t))}setRow(t,e){Z(this,t),e=tt(this,e);for(var r=0;r<this.columns;r++)this.set(t,r,e[r]);return this}swapRows(t,e){Z(this,t),Z(this,e);for(var r=0;r<this.columns;r++){var n=this.get(t,r);this.set(t,r,this.get(e,r)),this.set(e,r,n)}return this}getColumn(t){J(this,t);for(var e=new Array(this.rows),r=0;r<this.rows;r++)e[r]=this.get(r,t);return e}getColumnVector(t){return this.constructor.columnVector(this.getColumn(t))}setColumn(t,e){J(this,t),e=et(this,e);for(var r=0;r<this.rows;r++)this.set(r,t,e[r]);return this}swapColumns(t,e){J(this,t),J(this,e);for(var r=0;r<this.rows;r++){var n=this.get(r,t);this.set(r,t,this.get(r,e)),this.set(r,e,n)}return this}addRowVector(t){t=tt(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)+t[r]);return this}subRowVector(t){t=tt(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)-t[r]);return this}mulRowVector(t){t=tt(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)*t[r]);return this}divRowVector(t){t=tt(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)/t[r]);return this}addColumnVector(t){t=et(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)+t[e]);return this}subColumnVector(t){t=et(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)-t[e]);return this}mulColumnVector(t){t=et(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)*t[e]);return this}divColumnVector(t){t=et(this,t);for(var e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.set(e,r,this.get(e,r)/t[e]);return this}mulRow(t,e){Z(this,t);for(var r=0;r<this.columns;r++)this.set(t,r,this.get(t,r)*e);return this}mulColumn(t,e){J(this,t);for(var r=0;r<this.rows;r++)this.set(r,t,this.get(r,t)*e);return this}max(){for(var t=this.get(0,0),e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.get(e,r)>t&&(t=this.get(e,r));return t}maxIndex(){for(var t=this.get(0,0),e=[0,0],r=0;r<this.rows;r++)for(var n=0;n<this.columns;n++)this.get(r,n)>t&&(t=this.get(r,n),e[0]=r,e[1]=n);return e}min(){for(var t=this.get(0,0),e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)this.get(e,r)<t&&(t=this.get(e,r));return t}minIndex(){for(var t=this.get(0,0),e=[0,0],r=0;r<this.rows;r++)for(var n=0;n<this.columns;n++)this.get(r,n)<t&&(t=this.get(r,n),e[0]=r,e[1]=n);return e}maxRow(t){Z(this,t);for(var e=this.get(t,0),r=1;r<this.columns;r++)this.get(t,r)>e&&(e=this.get(t,r));return e}maxRowIndex(t){Z(this,t);for(var e=this.get(t,0),r=[t,0],n=1;n<this.columns;n++)this.get(t,n)>e&&(e=this.get(t,n),r[1]=n);return r}minRow(t){Z(this,t);for(var e=this.get(t,0),r=1;r<this.columns;r++)this.get(t,r)<e&&(e=this.get(t,r));return e}minRowIndex(t){Z(this,t);for(var e=this.get(t,0),r=[t,0],n=1;n<this.columns;n++)this.get(t,n)<e&&(e=this.get(t,n),r[1]=n);return r}maxColumn(t){J(this,t);for(var e=this.get(0,t),r=1;r<this.rows;r++)this.get(r,t)>e&&(e=this.get(r,t));return e}maxColumnIndex(t){J(this,t);for(var e=this.get(0,t),r=[0,t],n=1;n<this.rows;n++)this.get(n,t)>e&&(e=this.get(n,t),r[0]=n);return r}minColumn(t){J(this,t);for(var e=this.get(0,t),r=1;r<this.rows;r++)this.get(r,t)<e&&(e=this.get(r,t));return e}minColumnIndex(t){J(this,t);for(var e=this.get(0,t),r=[0,t],n=1;n<this.rows;n++)this.get(n,t)<e&&(e=this.get(n,t),r[0]=n);return r}diag(){for(var t=Math.min(this.rows,this.columns),e=new Array(t),r=0;r<t;r++)e[r]=this.get(r,r);return e}sum(t){switch(t){case"row":return st(this);case"column":return at(this);default:return function(t){for(var e=0,r=0;r<t.rows;r++)for(var n=0;n<t.columns;n++)e+=t.get(r,n);return e}(this)}}mean(){return this.sum()/this.size}prod(){for(var t=1,e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)t*=this.get(e,r);return t}norm(t="frobenius"){var e=0;if("max"===t)return this.max();if("frobenius"===t){for(var r=0;r<this.rows;r++)for(var n=0;n<this.columns;n++)e+=this.get(r,n)*this.get(r,n);return Math.sqrt(e)}throw new RangeError(`unknown norm type: ${t}`)}cumulativeSum(){for(var t=0,e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)t+=this.get(e,r),this.set(e,r,t);return this}dot(t){e.isMatrix(t)&&(t=t.to1DArray());var r=this.to1DArray();if(r.length!==t.length)throw new RangeError("vectors do not have the same size");for(var n=0,o=0;o<r.length;o++)n+=r[o]*t[o];return n}mmul(t){t=this.constructor.checkMatrix(t),this.columns!==t.rows&&console.warn("Number of columns of left matrix are not equal to number of rows of right matrix.");for(var e=this.rows,r=this.columns,n=t.columns,o=new this.constructor[Symbol.species](e,n),i=new Array(r),s=0;s<n;s++){for(var a=0;a<r;a++)i[a]=t.get(a,s);for(var u=0;u<e;u++){var h=0;for(a=0;a<r;a++)h+=this.get(u,a)*i[a];o.set(u,s,h)}}return o}strassen2x2(t){var e=new this.constructor[Symbol.species](2,2);const r=this.get(0,0),n=t.get(0,0),o=this.get(0,1),i=t.get(0,1),s=this.get(1,0),a=t.get(1,0),u=this.get(1,1),h=t.get(1,1),l=(r+u)*(n+h),c=(s+u)*n,f=r*(i-h),m=u*(a-n),d=(r+o)*h,g=l+m-d+(o-u)*(a+h),w=f+d,v=c+m,p=l-c+f+(s-r)*(n+i);return e.set(0,0,g),e.set(0,1,w),e.set(1,0,v),e.set(1,1,p),e}strassen3x3(t){var e=new this.constructor[Symbol.species](3,3);const r=this.get(0,0),n=this.get(0,1),o=this.get(0,2),i=this.get(1,0),s=this.get(1,1),a=this.get(1,2),u=this.get(2,0),h=this.get(2,1),l=this.get(2,2),c=t.get(0,0),f=t.get(0,1),m=t.get(0,2),d=t.get(1,0),g=t.get(1,1),w=t.get(1,2),v=t.get(2,0),p=t.get(2,1),x=t.get(2,2),y=(r-i)*(-f+g),b=(-r+i+s)*(c-f+g),M=(i+s)*(-c+f),_=r*c,k=(-r+u+h)*(c-m+w),$=(-r+u)*(m-w),E=(u+h)*(-c+m),j=(-o+h+l)*(g+v-p),S=(o-l)*(g-p),N=o*v,R=(h+l)*(-v+p),A=(-o+s+a)*(w+v-x),q=(o-a)*(w-x),C=(s+a)*(-v+x),T=_+N+n*d,V=(r+n+o-i-s-h-l)*g+b+M+_+j+N+R,I=_+k+E+(r+n+o-s-a-u-h)*w+N+A+C,O=y+s*(-c+f+d-g-w-v+x)+b+_+N+A+q,P=y+b+M+_+a*p,L=N+A+q+C+i*m,z=_+k+$+h*(-c+m+d-g-w-v+p)+j+S+N,D=j+S+N+R+u*f,H=_+k+$+E+l*x;return e.set(0,0,T),e.set(0,1,V),e.set(0,2,I),e.set(1,0,O),e.set(1,1,P),e.set(1,2,L),e.set(2,0,z),e.set(2,1,D),e.set(2,2,H),e}mmulStrassen(t){var r=this.clone(),n=r.rows,o=r.columns,i=t.rows,s=t.columns;function a(t,r,n){var o=t.rows,i=t.columns;if(o===r&&i===n)return t;var s=e.zeros(r,n);return s=s.setSubMatrix(t,0,0)}o!==i&&console.warn(`Multiplying ${n} x ${o} and ${i} x ${s} matrix: dimensions do not match.`);var u=Math.max(n,i),h=Math.max(o,s);return function t(r,n,o,i){if(o<=512||i<=512)return r.mmul(n);o%2==1&&i%2==1?(r=a(r,o+1,i+1),n=a(n,o+1,i+1)):o%2==1?(r=a(r,o+1,i),n=a(n,o+1,i)):i%2==1&&(r=a(r,o,i+1),n=a(n,o,i+1));var s=parseInt(r.rows/2,10),u=parseInt(r.columns/2,10),h=r.subMatrix(0,s-1,0,u-1),l=n.subMatrix(0,s-1,0,u-1),c=r.subMatrix(0,s-1,u,r.columns-1),f=n.subMatrix(0,s-1,u,n.columns-1),m=r.subMatrix(s,r.rows-1,0,u-1),d=n.subMatrix(s,n.rows-1,0,u-1),g=r.subMatrix(s,r.rows-1,u,r.columns-1),w=n.subMatrix(s,n.rows-1,u,n.columns-1),v=t(e.add(h,g),e.add(l,w),s,u),p=t(e.add(m,g),l,s,u),x=t(h,e.sub(f,w),s,u),y=t(g,e.sub(d,l),s,u),b=t(e.add(h,c),w,s,u),M=t(e.sub(m,h),e.add(l,f),s,u),_=t(e.sub(c,g),e.add(d,w),s,u),k=e.add(v,y);k.sub(b),k.add(_);var $=e.add(x,b),E=e.add(p,y),j=e.sub(v,p);j.add(x),j.add(M);var S=e.zeros(2*k.rows,2*k.columns);return(S=(S=(S=(S=S.setSubMatrix(k,0,0)).setSubMatrix($,k.rows,0)).setSubMatrix(E,0,k.columns)).setSubMatrix(j,k.rows,k.columns)).subMatrix(0,o-1,0,i-1)}(r=a(r,u,h),t=a(t,u,h),u,h)}scaleRows(t,e){if((t=void 0===t?0:t)>=(e=void 0===e?1:e))throw new RangeError("min should be strictly smaller than max");for(var r=this.constructor.empty(this.rows,this.columns),n=0;n<this.rows;n++){var o=W(this.getRow(n),{min:t,max:e});r.setRow(n,o)}return r}scaleColumns(t,e){if((t=void 0===t?0:t)>=(e=void 0===e?1:e))throw new RangeError("min should be strictly smaller than max");for(var r=this.constructor.empty(this.rows,this.columns),n=0;n<this.columns;n++){var o=W(this.getColumn(n),{min:t,max:e});r.setColumn(n,o)}return r}kroneckerProduct(t){t=this.constructor.checkMatrix(t);for(var e=this.rows,r=this.columns,n=t.rows,o=t.columns,i=new this.constructor[Symbol.species](e*n,r*o),s=0;s<e;s++)for(var a=0;a<r;a++)for(var u=0;u<n;u++)for(var h=0;h<o;h++)i[n*s+u][o*a+h]=this.get(s,a)*t.get(u,h);return i}transpose(){for(var t=new this.constructor[Symbol.species](this.columns,this.rows),e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)t.set(r,e,this.get(e,r));return t}sortRows(t){void 0===t&&(t=r);for(var e=0;e<this.rows;e++)this.setRow(e,this.getRow(e).sort(t));return this}sortColumns(t){void 0===t&&(t=r);for(var e=0;e<this.columns;e++)this.setColumn(e,this.getColumn(e).sort(t));return this}subMatrix(t,e,r,n){it(this,t,e,r,n);for(var o=new this.constructor[Symbol.species](e-t+1,n-r+1),i=t;i<=e;i++)for(var s=r;s<=n;s++)o[i-t][s-r]=this.get(i,s);return o}subMatrixRow(t,e,r){if(void 0===e&&(e=0),void 0===r&&(r=this.columns-1),e>r||e<0||e>=this.columns||r<0||r>=this.columns)throw new RangeError("Argument out of range");for(var n=new this.constructor[Symbol.species](t.length,r-e+1),o=0;o<t.length;o++)for(var i=e;i<=r;i++){if(t[o]<0||t[o]>=this.rows)throw new RangeError(`Row index out of range: ${t[o]}`);n.set(o,i-e,this.get(t[o],i))}return n}subMatrixColumn(t,e,r){if(void 0===e&&(e=0),void 0===r&&(r=this.rows-1),e>r||e<0||e>=this.rows||r<0||r>=this.rows)throw new RangeError("Argument out of range");for(var n=new this.constructor[Symbol.species](r-e+1,t.length),o=0;o<t.length;o++)for(var i=e;i<=r;i++){if(t[o]<0||t[o]>=this.columns)throw new RangeError(`Column index out of range: ${t[o]}`);n.set(i-e,o,this.get(i,t[o]))}return n}setSubMatrix(t,e,r){it(this,e,e+(t=this.constructor.checkMatrix(t)).rows-1,r,r+t.columns-1);for(var n=0;n<t.rows;n++)for(var o=0;o<t.columns;o++)this[e+n][r+o]=t.get(n,o);return this}selection(t,e){for(var r=rt(this,t,e),n=new this.constructor[Symbol.species](t.length,e.length),o=0;o<r.row.length;o++)for(var i=r.row[o],s=0;s<r.column.length;s++){var a=r.column[s];n[o][s]=this.get(i,a)}return n}trace(){for(var t=Math.min(this.rows,this.columns),e=0,r=0;r<t;r++)e+=this.get(r,r);return e}transposeView(){return new lt(this)}rowView(t){return Z(this,t),new ct(this,t)}columnView(t){return J(this,t),new wt(this,t)}flipRowView(){return new vt(this)}flipColumnView(){return new pt(this)}subMatrixView(t,e,r,n){return new ft(this,t,e,r,n)}selectionView(t,e){return new mt(this,t,e)}rowSelectionView(t){return new dt(this,t)}columnSelectionView(t){return new gt(this,t)}det(){var t,e,r,n,o,i;if(this.isSquare())return 2===this.columns?(t=this.get(0,0),e=this.get(0,1),r=this.get(1,0),t*this.get(1,1)-e*r):3===this.columns?(n=this.selectionView([1,2],[1,2]),o=this.selectionView([1,2],[0,2]),i=this.selectionView([1,2],[0,1]),t=this.get(0,0),e=this.get(0,1),r=this.get(0,2),t*n.det()-e*o.det()+r*i.det()):new G(this).determinant;throw Error("Determinant can only be calculated for a square matrix.")}pseudoInverse(t){void 0===t&&(t=Number.EPSILON);for(var e=new Y(this,{autoTranspose:!0}),r=e.leftSingularVectors,n=e.rightSingularVectors,o=e.diagonal,i=0;i<o.length;i++)Math.abs(o[i])>t?o[i]=1/o[i]:o[i]=0;return o=this.constructor[Symbol.species].diag(o),n.mmul(o.mmul(r.transposeView()))}clone(){for(var t=new this.constructor[Symbol.species](this.rows,this.columns),e=0;e<this.rows;e++)for(var r=0;r<this.columns;r++)t.set(e,r,this.get(e,r));return t}}function r(t,e){return t-e}e.prototype.klass="Matrix",e.random=e.rand,e.diagonal=e.diag,e.prototype.diagonal=e.prototype.diag,e.identity=e.eye,e.prototype.negate=e.prototype.neg,e.prototype.tensorProduct=e.prototype.kroneckerProduct,e.prototype.determinant=e.prototype.det;var n,o="\n(function %name%(matrix, %args%) {\n    var newMatrix = new this[Symbol.species](matrix);\n    return newMatrix.%name%(%args%);\n})\n",i=eval;for(var s of[["+","add"],["-","sub","subtract"],["*","mul","multiply"],["/","div","divide"],["%","mod","modulus"],["&","and"],["|","or"],["^","xor"],["<<","leftShift"],[">>","signPropagatingRightShift"],[">>>","rightShift","zeroFillRightShift"]]){var a=i(k("\n(function %name%(value) {\n    if (typeof value === 'number') return this.%name%S(value);\n    return this.%name%M(value);\n})\n",{name:s[1],op:s[0]})),u=i(k("\n(function %name%S(value) {\n    for (var i = 0; i < this.rows; i++) {\n        for (var j = 0; j < this.columns; j++) {\n            this.set(i, j, this.get(i, j) %op% value);\n        }\n    }\n    return this;\n})\n",{name:`${s[1]}S`,op:s[0]})),h=i(k("\n(function %name%M(matrix) {\n    matrix = this.constructor.checkMatrix(matrix);\n    if (this.rows !== matrix.rows ||\n        this.columns !== matrix.columns) {\n        throw new RangeError('Matrices dimensions must be equal');\n    }\n    for (var i = 0; i < this.rows; i++) {\n        for (var j = 0; j < this.columns; j++) {\n            this.set(i, j, this.get(i, j) %op% matrix.get(i, j));\n        }\n    }\n    return this;\n})\n",{name:`${s[1]}M`,op:s[0]})),l=i(k("\n(function %name%(matrix, value) {\n    var newMatrix = new this[Symbol.species](matrix);\n    return newMatrix.%name%(value);\n})\n",{name:s[1]}));for(n=1;n<s.length;n++)e.prototype[s[n]]=a,e.prototype[`${s[n]}S`]=u,e.prototype[`${s[n]}M`]=h,e[s[n]]=l}var c=[["~","not"]];for(var f of(["abs","acos","acosh","asin","asinh","atan","atanh","cbrt","ceil","clz32","cos","cosh","exp","expm1","floor","fround","log","log1p","log10","log2","round","sign","sin","sinh","sqrt","tan","tanh","trunc"].forEach((function(t){c.push([`Math.${t}`,t])})),c)){var m=i(k("\n(function %name%() {\n    for (var i = 0; i < this.rows; i++) {\n        for (var j = 0; j < this.columns; j++) {\n            this.set(i, j, %method%(this.get(i, j)));\n        }\n    }\n    return this;\n})\n",{name:f[1],method:f[0]})),d=i(k("\n(function %name%(matrix) {\n    var newMatrix = new this[Symbol.species](matrix);\n    return newMatrix.%name%();\n})\n",{name:f[1]}));for(n=1;n<f.length;n++)e.prototype[f[n]]=m,e[f[n]]=d}for(var g of[["Math.pow",1,"pow"]]){var w="arg0";for(n=1;n<g[1];n++)w+=`, arg${n}`;if(1!==g[1]){var v=i(k("\n(function %name%(%args%) {\n    for (var i = 0; i < this.rows; i++) {\n        for (var j = 0; j < this.columns; j++) {\n            this.set(i, j, %method%(this.get(i, j), %args%));\n        }\n    }\n    return this;\n})\n",{name:g[2],method:g[0],args:w})),p=i(k(o,{name:g[2],args:w}));for(n=2;n<g.length;n++)e.prototype[g[n]]=v,e[g[n]]=p}else{var x={name:g[2],args:w,method:g[0]},y=i(k("\n(function %name%(value) {\n    if (typeof value === 'number') return this.%name%S(value);\n    return this.%name%M(value);\n})\n",x)),b=i(k("\n(function %name%S(value) {\n    for (var i = 0; i < this.rows; i++) {\n        for (var j = 0; j < this.columns; j++) {\n            this.set(i, j, %method%(this.get(i, j), value));\n        }\n    }\n    return this;\n})\n",x)),M=i(k("\n(function %name%M(matrix) {\n    matrix = this.constructor.checkMatrix(matrix);\n    if (this.rows !== matrix.rows ||\n        this.columns !== matrix.columns) {\n        throw new RangeError('Matrices dimensions must be equal');\n    }\n    for (var i = 0; i < this.rows; i++) {\n        for (var j = 0; j < this.columns; j++) {\n            this.set(i, j, %method%(this.get(i, j), matrix.get(i, j)));\n        }\n    }\n    return this;\n})\n",x)),_=i(k("\n(function %name%(matrix, %args%) {\n    var newMatrix = new this[Symbol.species](matrix);\n    return newMatrix.%name%(%args%);\n})\n",x));for(n=2;n<g.length;n++)e.prototype[g[n]]=y,e.prototype[`${g[n]}M`]=M,e.prototype[`${g[n]}S`]=b,e[g[n]]=_}}function k(t,e){for(var r in e)t=t.replace(new RegExp(`%${r}%`,"g"),e[r]);return t}return e}class yt extends(xt(Array)){constructor(t,e){var r;if(1===arguments.length&&"number"==typeof t)return new Array(t);if(yt.isMatrix(t))return t.clone();if(Number.isInteger(t)&&t>0){if(super(t),!(Number.isInteger(e)&&e>0))throw new TypeError("nColumns must be a positive integer");for(r=0;r<t;r++)this[r]=new Array(e)}else{if(!Array.isArray(t))throw new TypeError("First argument must be a positive number or an array");{const n=t;if(t=n.length,"number"!=typeof(e=n[0].length)||0===e)throw new TypeError("Data must be a 2D array with at least one element");for(super(t),r=0;r<t;r++){if(n[r].length!==e)throw new RangeError("Inconsistent array dimensions");this[r]=[].concat(n[r])}}}return this.rows=t,this.columns=e,this}set(t,e,r){return this[t][e]=r,this}get(t,e){return this[t][e]}removeRow(t){if(Z(this,t),1===this.rows)throw new RangeError("A matrix cannot have less than one row");return this.splice(t,1),this.rows-=1,this}addRow(t,e){return void 0===e&&(e=t,t=this.rows),Z(this,t,!0),e=tt(this,e),this.splice(t,0,e),this.rows+=1,this}removeColumn(t){if(J(this,t),1===this.columns)throw new RangeError("A matrix cannot have less than one column");for(var e=0;e<this.rows;e++)this[e].splice(t,1);return this.columns-=1,this}addColumn(t,e){void 0===e&&(e=t,t=this.columns),J(this,t,!0),e=et(this,e);for(var r=0;r<this.rows;r++)this[r].splice(t,0,e[r]);return this.columns+=1,this}}xt(),Symbol.species;class bt extends(xt()){constructor(t){super(),this.data=t,this.rows=t.length,this.columns=t[0].length}set(t,e,r){return this.data[t][e]=r,this}get(t,e){return this.data[t][e]}static get[Symbol.species](){return yt}}class Mt{constructor(t){var e,r,n,o,i=(t=bt.checkMatrix(t)).clone(),s=t.rows,a=t.columns,u=new Array(a);for(n=0;n<a;n++){var h=0;for(e=n;e<s;e++)h=K(h,i.get(e,n));if(0!==h){for(i.get(n,n)<0&&(h=-h),e=n;e<s;e++)i.set(e,n,i.get(e,n)/h);for(i.set(n,n,i.get(n,n)+1),r=n+1;r<a;r++){for(o=0,e=n;e<s;e++)o+=i.get(e,n)*i.get(e,r);for(o=-o/i.get(n,n),e=n;e<s;e++)i.set(e,r,i.get(e,r)+o*i.get(e,n))}}u[n]=-h}this.QR=i,this.Rdiag=u}solve(t){t=yt.checkMatrix(t);var e=this.QR,r=e.rows;if(t.rows!==r)throw new Error("Matrix row dimensions must agree");if(!this.isFullRank())throw new Error("Matrix is rank deficient");var n,o,i,s,a=t.columns,u=t.clone(),h=e.columns;for(i=0;i<h;i++)for(o=0;o<a;o++){for(s=0,n=i;n<r;n++)s+=e[n][i]*u[n][o];for(s=-s/e[i][i],n=i;n<r;n++)u[n][o]+=s*e[n][i]}for(i=h-1;i>=0;i--){for(o=0;o<a;o++)u[i][o]/=this.Rdiag[i];for(n=0;n<i;n++)for(o=0;o<a;o++)u[n][o]-=u[i][o]*e[n][i]}return u.subMatrix(0,h-1,0,a-1)}isFullRank(){for(var t=this.QR.columns,e=0;e<t;e++)if(0===this.Rdiag[e])return!1;return!0}get upperTriangularMatrix(){var t,e,r=this.QR,n=r.columns,o=new yt(n,n);for(t=0;t<n;t++)for(e=0;e<n;e++)o[t][e]=t<e?r[t][e]:t===e?this.Rdiag[t]:0;return o}get orthogonalMatrix(){var t,e,r,n,o=this.QR,i=o.rows,s=o.columns,a=new yt(i,s);for(r=s-1;r>=0;r--){for(t=0;t<i;t++)a[t][r]=0;for(a[r][r]=1,e=r;e<s;e++)if(0!==o[r][r]){for(n=0,t=r;t<i;t++)n+=o[t][r]*a[t][e];for(n=-n/o[r][r],t=r;t<i;t++)a[t][e]+=n*o[t][r]}}return a}}function _t(t,e=!1){return t=bt.checkMatrix(t),e?new Y(t).inverse():kt(t,yt.eye(t.rows))}function kt(t,e,r=!1){return t=bt.checkMatrix(t),e=bt.checkMatrix(e),r?new Y(t).solve(e):t.isSquare()?new G(t).solve(e):new Mt(t).solve(e)}class $t{constructor(t,e={}){const{assumeSymmetric:r=!1}=e;if(!(t=bt.checkMatrix(t)).isSquare())throw new Error("Matrix is not a square matrix");var n,o,i=t.columns,s=Q(i,i,0),a=new Array(i),u=new Array(i),h=t;if(!!r||t.isSymmetric()){for(n=0;n<i;n++)for(o=0;o<i;o++)s[n][o]=h.get(n,o);!function(t,e,r,n){var o,i,s,a,u,h,l,c;for(u=0;u<t;u++)r[u]=n[t-1][u];for(a=t-1;a>0;a--){for(c=0,s=0,h=0;h<a;h++)c+=Math.abs(r[h]);if(0===c)for(e[a]=r[a-1],u=0;u<a;u++)r[u]=n[a-1][u],n[a][u]=0,n[u][a]=0;else{for(h=0;h<a;h++)r[h]/=c,s+=r[h]*r[h];for(o=r[a-1],i=Math.sqrt(s),o>0&&(i=-i),e[a]=c*i,s-=o*i,r[a-1]=o-i,u=0;u<a;u++)e[u]=0;for(u=0;u<a;u++){for(o=r[u],n[u][a]=o,i=e[u]+n[u][u]*o,h=u+1;h<=a-1;h++)i+=n[h][u]*r[h],e[h]+=n[h][u]*o;e[u]=i}for(o=0,u=0;u<a;u++)e[u]/=s,o+=e[u]*r[u];for(l=o/(s+s),u=0;u<a;u++)e[u]-=l*r[u];for(u=0;u<a;u++){for(o=r[u],i=e[u],h=u;h<=a-1;h++)n[h][u]-=o*e[h]+i*r[h];r[u]=n[a-1][u],n[a][u]=0}}r[a]=s}for(a=0;a<t-1;a++){if(n[t-1][a]=n[a][a],n[a][a]=1,0!==(s=r[a+1])){for(h=0;h<=a;h++)r[h]=n[h][a+1]/s;for(u=0;u<=a;u++){for(i=0,h=0;h<=a;h++)i+=n[h][a+1]*n[h][u];for(h=0;h<=a;h++)n[h][u]-=i*r[h]}}for(h=0;h<=a;h++)n[h][a+1]=0}for(u=0;u<t;u++)r[u]=n[t-1][u],n[t-1][u]=0;n[t-1][t-1]=1,e[0]=0}(i,u,a,s),function(t,e,r,n){var o,i,s,a,u,h,l,c,f,m,d,g,w,v,p,x;for(s=1;s<t;s++)e[s-1]=e[s];e[t-1]=0;var y=0,b=0,M=Number.EPSILON;for(h=0;h<t;h++){for(b=Math.max(b,Math.abs(r[h])+Math.abs(e[h])),l=h;l<t&&!(Math.abs(e[l])<=M*b);)l++;if(l>h)do{for(o=r[h],f=K(c=(r[h+1]-o)/(2*e[h]),1),c<0&&(f=-f),r[h]=e[h]/(c+f),r[h+1]=e[h]*(c+f),m=r[h+1],i=o-r[h],s=h+2;s<t;s++)r[s]-=i;for(y+=i,c=r[l],g=d=1,w=d,v=e[h+1],p=0,x=0,s=l-1;s>=h;s--)for(w=g,g=d,x=p,o=d*e[s],i=d*c,f=K(c,e[s]),e[s+1]=p*f,p=e[s]/f,c=(d=c/f)*r[s]-p*o,r[s+1]=i+p*(d*o+p*r[s]),u=0;u<t;u++)i=n[u][s+1],n[u][s+1]=p*n[u][s]+d*i,n[u][s]=d*n[u][s]-p*i;c=-p*x*w*v*e[h]/m,e[h]=p*c,r[h]=d*c}while(Math.abs(e[h])>M*b);r[h]=r[h]+y,e[h]=0}for(s=0;s<t-1;s++){for(u=s,c=r[s],a=s+1;a<t;a++)r[a]<c&&(u=a,c=r[a]);if(u!==s)for(r[u]=r[s],r[s]=c,a=0;a<t;a++)c=n[a][s],n[a][s]=n[a][u],n[a][u]=c}}(i,u,a,s)}else{var l=Q(i,i,0),c=new Array(i);for(o=0;o<i;o++)for(n=0;n<i;n++)l[n][o]=h.get(n,o);!function(t,e,r,n){var o,i,s,a,u,h,l,c=0,f=t-1;for(h=c+1;h<=f-1;h++){for(l=0,a=h;a<=f;a++)l+=Math.abs(e[a][h-1]);if(0!==l){for(s=0,a=f;a>=h;a--)r[a]=e[a][h-1]/l,s+=r[a]*r[a];for(i=Math.sqrt(s),r[h]>0&&(i=-i),s-=r[h]*i,r[h]=r[h]-i,u=h;u<t;u++){for(o=0,a=f;a>=h;a--)o+=r[a]*e[a][u];for(o/=s,a=h;a<=f;a++)e[a][u]-=o*r[a]}for(a=0;a<=f;a++){for(o=0,u=f;u>=h;u--)o+=r[u]*e[a][u];for(o/=s,u=h;u<=f;u++)e[a][u]-=o*r[u]}r[h]=l*r[h],e[h][h-1]=l*i}}for(a=0;a<t;a++)for(u=0;u<t;u++)n[a][u]=a===u?1:0;for(h=f-1;h>=c+1;h--)if(0!==e[h][h-1]){for(a=h+1;a<=f;a++)r[a]=e[a][h-1];for(u=h;u<=f;u++){for(i=0,a=h;a<=f;a++)i+=r[a]*n[a][u];for(i=i/r[h]/e[h][h-1],a=h;a<=f;a++)n[a][u]+=i*r[a]}}}(i,l,c,s),function(t,e,r,n,o){var i,s,a,u,h,l,c,f,m,d,g,w,v,p,x,y=t-1,b=0,M=t-1,_=Number.EPSILON,k=0,$=0,E=0,j=0,S=0,N=0,R=0,A=0;for(i=0;i<t;i++)for((i<b||i>M)&&(r[i]=o[i][i],e[i]=0),s=Math.max(i-1,0);s<t;s++)$+=Math.abs(o[i][s]);for(;y>=b;){for(u=y;u>b&&(0===(N=Math.abs(o[u-1][u-1])+Math.abs(o[u][u]))&&(N=$),!(Math.abs(o[u][u-1])<_*N));)u--;if(u===y)o[y][y]=o[y][y]+k,r[y]=o[y][y],e[y]=0,y--,A=0;else if(u===y-1){if(c=o[y][y-1]*o[y-1][y],j=(E=(o[y-1][y-1]-o[y][y])/2)*E+c,R=Math.sqrt(Math.abs(j)),o[y][y]=o[y][y]+k,o[y-1][y-1]=o[y-1][y-1]+k,f=o[y][y],j>=0){for(R=E>=0?E+R:E-R,r[y-1]=f+R,r[y]=r[y-1],0!==R&&(r[y]=f-c/R),e[y-1]=0,e[y]=0,E=(f=o[y][y-1])/(N=Math.abs(f)+Math.abs(R)),j=R/N,E/=S=Math.sqrt(E*E+j*j),j/=S,s=y-1;s<t;s++)R=o[y-1][s],o[y-1][s]=j*R+E*o[y][s],o[y][s]=j*o[y][s]-E*R;for(i=0;i<=y;i++)R=o[i][y-1],o[i][y-1]=j*R+E*o[i][y],o[i][y]=j*o[i][y]-E*R;for(i=b;i<=M;i++)R=n[i][y-1],n[i][y-1]=j*R+E*n[i][y],n[i][y]=j*n[i][y]-E*R}else r[y-1]=f+E,r[y]=f+E,e[y-1]=R,e[y]=-R;y-=2,A=0}else{if(f=o[y][y],m=0,c=0,u<y&&(m=o[y-1][y-1],c=o[y][y-1]*o[y-1][y]),10===A){for(k+=f,i=b;i<=y;i++)o[i][i]-=f;f=m=.75*(N=Math.abs(o[y][y-1])+Math.abs(o[y-1][y-2])),c=-.4375*N*N}if(30===A&&(N=(N=(m-f)/2)*N+c)>0){for(N=Math.sqrt(N),m<f&&(N=-N),N=f-c/((m-f)/2+N),i=b;i<=y;i++)o[i][i]-=N;k+=N,f=m=c=.964}for(A+=1,h=y-2;h>=u&&(E=((S=f-(R=o[h][h]))*(N=m-R)-c)/o[h+1][h]+o[h][h+1],j=o[h+1][h+1]-R-S-N,S=o[h+2][h+1],E/=N=Math.abs(E)+Math.abs(j)+Math.abs(S),j/=N,S/=N,h!==u)&&!(Math.abs(o[h][h-1])*(Math.abs(j)+Math.abs(S))<_*(Math.abs(E)*(Math.abs(o[h-1][h-1])+Math.abs(R)+Math.abs(o[h+1][h+1]))));)h--;for(i=h+2;i<=y;i++)o[i][i-2]=0,i>h+2&&(o[i][i-3]=0);for(a=h;a<=y-1&&(p=a!==y-1,a!==h&&(E=o[a][a-1],j=o[a+1][a-1],S=p?o[a+2][a-1]:0,0!==(f=Math.abs(E)+Math.abs(j)+Math.abs(S))&&(E/=f,j/=f,S/=f)),0!==f);a++)if(N=Math.sqrt(E*E+j*j+S*S),E<0&&(N=-N),0!==N){for(a!==h?o[a][a-1]=-N*f:u!==h&&(o[a][a-1]=-o[a][a-1]),f=(E+=N)/N,m=j/N,R=S/N,j/=E,S/=E,s=a;s<t;s++)E=o[a][s]+j*o[a+1][s],p&&(E+=S*o[a+2][s],o[a+2][s]=o[a+2][s]-E*R),o[a][s]=o[a][s]-E*f,o[a+1][s]=o[a+1][s]-E*m;for(i=0;i<=Math.min(y,a+3);i++)E=f*o[i][a]+m*o[i][a+1],p&&(E+=R*o[i][a+2],o[i][a+2]=o[i][a+2]-E*S),o[i][a]=o[i][a]-E,o[i][a+1]=o[i][a+1]-E*j;for(i=b;i<=M;i++)E=f*n[i][a]+m*n[i][a+1],p&&(E+=R*n[i][a+2],n[i][a+2]=n[i][a+2]-E*S),n[i][a]=n[i][a]-E,n[i][a+1]=n[i][a+1]-E*j}}}if(0===$)return;for(y=t-1;y>=0;y--)if(E=r[y],0===(j=e[y]))for(u=y,o[y][y]=1,i=y-1;i>=0;i--){for(c=o[i][i]-E,S=0,s=u;s<=y;s++)S+=o[i][s]*o[s][y];if(e[i]<0)R=c,N=S;else if(u=i,0===e[i]?o[i][y]=0!==c?-S/c:-S/(_*$):(f=o[i][i+1],m=o[i+1][i],l=(f*N-R*S)/(j=(r[i]-E)*(r[i]-E)+e[i]*e[i]),o[i][y]=l,o[i+1][y]=Math.abs(f)>Math.abs(R)?(-S-c*l)/f:(-N-m*l)/R),_*(l=Math.abs(o[i][y]))*l>1)for(s=i;s<=y;s++)o[s][y]=o[s][y]/l}else if(j<0)for(u=y-1,Math.abs(o[y][y-1])>Math.abs(o[y-1][y])?(o[y-1][y-1]=j/o[y][y-1],o[y-1][y]=-(o[y][y]-E)/o[y][y-1]):(x=Et(0,-o[y-1][y],o[y-1][y-1]-E,j),o[y-1][y-1]=x[0],o[y-1][y]=x[1]),o[y][y-1]=0,o[y][y]=1,i=y-2;i>=0;i--){for(d=0,g=0,s=u;s<=y;s++)d+=o[i][s]*o[s][y-1],g+=o[i][s]*o[s][y];if(c=o[i][i]-E,e[i]<0)R=c,S=d,N=g;else if(u=i,0===e[i]?(x=Et(-d,-g,c,j),o[i][y-1]=x[0],o[i][y]=x[1]):(f=o[i][i+1],m=o[i+1][i],w=(r[i]-E)*(r[i]-E)+e[i]*e[i]-j*j,v=2*(r[i]-E)*j,0===w&&0===v&&(w=_*$*(Math.abs(c)+Math.abs(j)+Math.abs(f)+Math.abs(m)+Math.abs(R))),x=Et(f*S-R*d+j*g,f*N-R*g-j*d,w,v),o[i][y-1]=x[0],o[i][y]=x[1],Math.abs(f)>Math.abs(R)+Math.abs(j)?(o[i+1][y-1]=(-d-c*o[i][y-1]+j*o[i][y])/f,o[i+1][y]=(-g-c*o[i][y]-j*o[i][y-1])/f):(x=Et(-S-m*o[i][y-1],-N-m*o[i][y],R,j),o[i+1][y-1]=x[0],o[i+1][y]=x[1])),_*(l=Math.max(Math.abs(o[i][y-1]),Math.abs(o[i][y])))*l>1)for(s=i;s<=y;s++)o[s][y-1]=o[s][y-1]/l,o[s][y]=o[s][y]/l}for(i=0;i<t;i++)if(i<b||i>M)for(s=i;s<t;s++)n[i][s]=o[i][s];for(s=t-1;s>=b;s--)for(i=b;i<=M;i++){for(R=0,a=b;a<=Math.min(s,M);a++)R+=n[i][a]*o[a][s];n[i][s]=R}}(i,u,a,s,l)}this.n=i,this.e=u,this.d=a,this.V=s}get realEigenvalues(){return this.d}get imaginaryEigenvalues(){return this.e}get eigenvectorMatrix(){return yt.isMatrix(this.V)||(this.V=new yt(this.V)),this.V}get diagonalMatrix(){var t,e,r=this.n,n=this.e,o=this.d,i=new yt(r,r);for(t=0;t<r;t++){for(e=0;e<r;e++)i[t][e]=0;i[t][t]=o[t],n[t]>0?i[t][t+1]=n[t]:n[t]<0&&(i[t][t-1]=n[t])}return i}}function Et(t,e,r,n){var o,i;return Math.abs(r)>Math.abs(n)?[(t+(o=n/r)*e)/(i=r+o*n),(e-o*t)/i]:[((o=r/n)*t+e)/(i=n+o*r),(o*e-t)/i]}class jt{constructor(t){if(!(t=bt.checkMatrix(t)).isSymmetric())throw new Error("Matrix is not symmetric");var e,r,n,o=t,i=o.rows,s=new yt(i,i),a=!0;for(r=0;r<i;r++){var u=s[r],h=0;for(n=0;n<r;n++){var l=s[n],c=0;for(e=0;e<n;e++)c+=l[e]*u[e];u[n]=c=(o.get(r,n)-c)/s[n][n],h+=c*c}for(a&=(h=o.get(r,r)-h)>0,s[r][r]=Math.sqrt(Math.max(h,0)),n=r+1;n<i;n++)s[r][n]=0}if(!a)throw new Error("Matrix is not positive definite");this.L=s}solve(t){t=bt.checkMatrix(t);var e=this.L,r=e.rows;if(t.rows!==r)throw new Error("Matrix dimensions do not match");var n,o,i,s=t.columns,a=t.clone();for(i=0;i<r;i++)for(o=0;o<s;o++){for(n=0;n<i;n++)a[i][o]-=a[n][o]*e[i][n];a[i][o]/=e[i][i]}for(i=r-1;i>=0;i--)for(o=0;o<s;o++){for(n=i+1;n<r;n++)a[i][o]-=a[n][o]*e[n][i];a[i][o]/=e[i][i]}return a}get lowerTriangularMatrix(){return this.L}}var St="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:{};function Nt(t){if(t.__esModule)return t;var e=Object.defineProperty({},"__esModule",{value:!0});return Object.keys(t).forEach((function(r){var n=Object.getOwnPropertyDescriptor(t,r);Object.defineProperty(e,r,n.get?n:{enumerable:!0,get:function(){return t[r]}})})),e}function Rt(t){var e={exports:{}};return t(e,e.exports),e.exports}var At={func:Symbol("func"),validate:Symbol("validate")};const{func:qt}=At;var Ct={predicates:{positive:t=>t>0,negative:t=>t<0,nonNegative:t=>t>=0,integer:t=>t===(0|t),[qt]:{is:t=>t,eq:t=>e=>e===t,gt:t=>e=>e>t,gte:t=>e=>e>=t,lt:t=>e=>e<t,lte:t=>e=>e<=t}},validator:t=>"number"==typeof t};const{func:Tt}=At;var Vt={predicates:{empty:t=>""===t,nonEmpty:t=>""!==t,[Tt]:{is:t=>t,eq:t=>e=>e===t,length:t=>e=>e.length===t,minLength:t=>e=>e.length>=t,maxLength:t=>e=>e.length<=t,matches:t=>e=>t.test(e),startsWith:t=>e=>e.startsWith(t),endsWith:t=>e=>e.endsWith(t)}},validator:t=>"string"==typeof t};const{func:It}=At;const Ot={number:Ct,string:Vt,object:{predicates:{plain:t=>{if("object"!=typeof t)return!1;const e=Object.getPrototypeOf(t);return null===e||e===Object.getPrototypeOf({})},empty:t=>0===Object.keys(t).length,nonEmpty:t=>Object.keys(t).length>0,[It]:{is:t=>t,instanceOf:t=>e=>e instanceof t}},validator:t=>"object"==typeof t}},Pt=({validators:t=[],predicates:e=Ot,type:r=null}={})=>{const n=new Proxy((function(){}),{get:(o,i)=>{if(i===At.validate)return(e,n="argument")=>{if(!r)return new Error("missing required type specifier");for(let o=0;o<t.length;++o){const i=t[o];if(!i.fn(e))throw 0===o?new Error(`Expected ${n} \`${e}\` to be of type \`${r}\`, but received type \`${typeof e}\``):new Error(`Expected ${r} \`${n}\` \`${e}\` failed predicate \`${i.key}\``)}};const s=e[i];if(s)return"function"==typeof s?(t.push({key:i,fn:s}),n):Pt({type:i,validators:[{key:i,fn:s.validator}],predicates:s.predicates});{const r=e[At.func]&&e[At.func][i];return r?new Proxy((function(){}),{get:()=>{throw new Error(`invalid use of functional predicate "${i}"`)},apply:(e,o,s)=>(t.push({key:i,fn:r(...s)}),n)}):n}},apply:(t,e,r)=>{if(2!==r.length&&3!==r.length)throw new Error('invalid number of arguments to "ow"');r[1][At.validate](r[0],r[2])}});return n};var Lt=Pt(),zt=function(){function t(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(e,r,n){return r&&t(e.prototype,r),n&&t(e,n),e}}();var Dt=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t)}return zt(t,[{key:"next",value:function(){throw new Error("RNG.next must be overridden")}},{key:"seed",value:function(t,e){throw new Error("RNG.seed must be overridden")}},{key:"clone",value:function(t,e){throw new Error("RNG.clone must be overridden")}},{key:"_seed",value:function(t,e){if(t===(0|t))return t;for(var r=""+t,n=0,o=0;o<r.length;++o)n^=0|r.charCodeAt(o);return n}},{key:"name",get:function(){throw new Error("RNG.name must be overridden")}}]),t}(),Ht=Object.defineProperty({default:Dt},"__esModule",{value:!0}),Ut=Rt((function(t){!function(t,e,r){function n(t){var e,r=this,n=(e=4022871197,function(t){t=String(t);for(var r=0;r<t.length;r++){var n=.02519603282416938*(e+=t.charCodeAt(r));n-=e=n>>>0,e=(n*=e)>>>0,e+=4294967296*(n-=e)}return 2.3283064365386963e-10*(e>>>0)});r.next=function(){var t=2091639*r.s0+2.3283064365386963e-10*r.c;return r.s0=r.s1,r.s1=r.s2,r.s2=t-(r.c=0|t)},r.c=1,r.s0=n(" "),r.s1=n(" "),r.s2=n(" "),r.s0-=n(t),r.s0<0&&(r.s0+=1),r.s1-=n(t),r.s1<0&&(r.s1+=1),r.s2-=n(t),r.s2<0&&(r.s2+=1),n=null}function o(t,e){return e.c=t.c,e.s0=t.s0,e.s1=t.s1,e.s2=t.s2,e}function i(t,e){var r=new n(t),i=e&&e.state,s=r.next;return s.int32=function(){return 4294967296*r.next()|0},s.double=function(){return s()+11102230246251565e-32*(2097152*s()|0)},s.quick=s,i&&("object"==typeof i&&o(i,r),s.state=function(){return o(r,{})}),s}e&&e.exports?e.exports=i:r&&r.amd?r((function(){return i})):this.alea=i}(0,t,!1)})),Bt=Rt((function(t){!function(t,e,r){function n(t){var e=this,r="";e.x=0,e.y=0,e.z=0,e.w=0,e.next=function(){var t=e.x^e.x<<11;return e.x=e.y,e.y=e.z,e.z=e.w,e.w^=e.w>>>19^t^t>>>8},t===(0|t)?e.x=t:r+=t;for(var n=0;n<r.length+64;n++)e.x^=0|r.charCodeAt(n),e.next()}function o(t,e){return e.x=t.x,e.y=t.y,e.z=t.z,e.w=t.w,e}function i(t,e){var r=new n(t),i=e&&e.state,s=function(){return(r.next()>>>0)/4294967296};return s.double=function(){do{var t=((r.next()>>>11)+(r.next()>>>0)/4294967296)/(1<<21)}while(0===t);return t},s.int32=r.next,s.quick=s,i&&("object"==typeof i&&o(i,r),s.state=function(){return o(r,{})}),s}e&&e.exports?e.exports=i:r&&r.amd?r((function(){return i})):this.xor128=i}(0,t,!1)})),Ft=Rt((function(t){!function(t,e,r){function n(t){var e=this,r="";e.next=function(){var t=e.x^e.x>>>2;return e.x=e.y,e.y=e.z,e.z=e.w,e.w=e.v,(e.d=e.d+362437|0)+(e.v=e.v^e.v<<4^t^t<<1)|0},e.x=0,e.y=0,e.z=0,e.w=0,e.v=0,t===(0|t)?e.x=t:r+=t;for(var n=0;n<r.length+64;n++)e.x^=0|r.charCodeAt(n),n==r.length&&(e.d=e.x<<10^e.x>>>4),e.next()}function o(t,e){return e.x=t.x,e.y=t.y,e.z=t.z,e.w=t.w,e.v=t.v,e.d=t.d,e}function i(t,e){var r=new n(t),i=e&&e.state,s=function(){return(r.next()>>>0)/4294967296};return s.double=function(){do{var t=((r.next()>>>11)+(r.next()>>>0)/4294967296)/(1<<21)}while(0===t);return t},s.int32=r.next,s.quick=s,i&&("object"==typeof i&&o(i,r),s.state=function(){return o(r,{})}),s}e&&e.exports?e.exports=i:r&&r.amd?r((function(){return i})):this.xorwow=i}(0,t,!1)})),Xt=Rt((function(t){!function(t,e,r){function n(t){var e=this;e.next=function(){var t,r,n=e.x,o=e.i;return t=n[o],r=(t^=t>>>7)^t<<24,r^=(t=n[o+1&7])^t>>>10,r^=(t=n[o+3&7])^t>>>3,r^=(t=n[o+4&7])^t<<7,t=n[o+7&7],r^=(t^=t<<13)^t<<9,n[o]=r,e.i=o+1&7,r},function(t,e){var r,n=[];if(e===(0|e))n[0]=e;else for(e=""+e,r=0;r<e.length;++r)n[7&r]=n[7&r]<<15^e.charCodeAt(r)+n[r+1&7]<<13;for(;n.length<8;)n.push(0);for(r=0;r<8&&0===n[r];++r);for(8==r&&(n[7]=-1),t.x=n,t.i=0,r=256;r>0;--r)t.next()}(e,t)}function o(t,e){return e.x=t.x.slice(),e.i=t.i,e}function i(t,e){null==t&&(t=+new Date);var r=new n(t),i=e&&e.state,s=function(){return(r.next()>>>0)/4294967296};return s.double=function(){do{var t=((r.next()>>>11)+(r.next()>>>0)/4294967296)/(1<<21)}while(0===t);return t},s.int32=r.next,s.quick=s,i&&(i.x&&o(i,r),s.state=function(){return o(r,{})}),s}e&&e.exports?e.exports=i:r&&r.amd?r((function(){return i})):this.xorshift7=i}(0,t,!1)})),Wt=Rt((function(t){!function(t,e,r){function n(t){var e=this;e.next=function(){var t,r,n=e.w,o=e.X,i=e.i;return e.w=n=n+1640531527|0,r=o[i+34&127],t=o[i=i+1&127],r^=r<<13,t^=t<<17,r^=r>>>15,t^=t>>>12,r=o[i]=r^t,e.i=i,r+(n^n>>>16)|0},function(t,e){var r,n,o,i,s,a=[],u=128;for(e===(0|e)?(n=e,e=null):(e+="\0",n=0,u=Math.max(u,e.length)),o=0,i=-32;i<u;++i)e&&(n^=e.charCodeAt((i+32)%e.length)),0===i&&(s=n),n^=n<<10,n^=n>>>15,n^=n<<4,n^=n>>>13,i>=0&&(s=s+1640531527|0,o=0==(r=a[127&i]^=n+s)?o+1:0);for(o>=128&&(a[127&(e&&e.length||0)]=-1),o=127,i=512;i>0;--i)n=a[o+34&127],r=a[o=o+1&127],n^=n<<13,r^=r<<17,n^=n>>>15,r^=r>>>12,a[o]=n^r;t.w=s,t.X=a,t.i=o}(e,t)}function o(t,e){return e.i=t.i,e.w=t.w,e.X=t.X.slice(),e}function i(t,e){null==t&&(t=+new Date);var r=new n(t),i=e&&e.state,s=function(){return(r.next()>>>0)/4294967296};return s.double=function(){do{var t=((r.next()>>>11)+(r.next()>>>0)/4294967296)/(1<<21)}while(0===t);return t},s.int32=r.next,s.quick=s,i&&(i.X&&o(i,r),s.state=function(){return o(r,{})}),s}e&&e.exports?e.exports=i:r&&r.amd?r((function(){return i})):this.xor4096=i}(0,t,!1)})),Gt=Rt((function(t){!function(t,e,r){function n(t){var e=this,r="";e.next=function(){var t=e.b,r=e.c,n=e.d,o=e.a;return t=t<<25^t>>>7^r,r=r-n|0,n=n<<24^n>>>8^o,o=o-t|0,e.b=t=t<<20^t>>>12^r,e.c=r=r-n|0,e.d=n<<16^r>>>16^o,e.a=o-t|0},e.a=0,e.b=0,e.c=-1640531527,e.d=1367130551,t===Math.floor(t)?(e.a=t/4294967296|0,e.b=0|t):r+=t;for(var n=0;n<r.length+20;n++)e.b^=0|r.charCodeAt(n),e.next()}function o(t,e){return e.a=t.a,e.b=t.b,e.c=t.c,e.d=t.d,e}function i(t,e){var r=new n(t),i=e&&e.state,s=function(){return(r.next()>>>0)/4294967296};return s.double=function(){do{var t=((r.next()>>>11)+(r.next()>>>0)/4294967296)/(1<<21)}while(0===t);return t},s.int32=r.next,s.quick=s,i&&("object"==typeof i&&o(i,r),s.state=function(){return o(r,{})}),s}e&&e.exports?e.exports=i:r&&r.amd?r((function(){return i})):this.tychei=i}(0,t,!1)})),Kt=Nt(Object.freeze({__proto__:null,default:{}})),Qt=Rt((function(t){!function(e,r,n){var o,i=256,s=n.pow(i,6),a=n.pow(2,52),u=2*a,h=255;function l(t,h,l){var w=[],v=d(m((h=1==h?{entropy:!0}:h||{}).entropy?[t,g(r)]:null==t?function(){try{var t;return o&&(t=o.randomBytes)?t=t(i):(t=new Uint8Array(i),(e.crypto||e.msCrypto).getRandomValues(t)),g(t)}catch(t){var n=e.navigator,s=n&&n.plugins;return[+new Date,e,s,e.screen,g(r)]}}():t,3),w),p=new c(w),x=function(){for(var t=p.g(6),e=s,r=0;t<a;)t=(t+r)*i,e*=i,r=p.g(1);for(;t>=u;)t/=2,e/=2,r>>>=1;return(t+r)/e};return x.int32=function(){return 0|p.g(4)},x.quick=function(){return p.g(4)/4294967296},x.double=x,d(g(p.S),r),(h.pass||l||function(t,e,r,o){return o&&(o.S&&f(o,p),t.state=function(){return f(p,{})}),r?(n.random=t,e):t})(x,v,"global"in h?h.global:this==n,h.state)}function c(t){var e,r=t.length,n=this,o=0,s=n.i=n.j=0,a=n.S=[];for(r||(t=[r++]);o<i;)a[o]=o++;for(o=0;o<i;o++)a[o]=a[s=h&s+t[o%r]+(e=a[o])],a[s]=e;(n.g=function(t){for(var e,r=0,o=n.i,s=n.j,a=n.S;t--;)e=a[o=h&o+1],r=r*i+a[h&(a[o]=a[s=h&s+e])+(a[s]=e)];return n.i=o,n.j=s,r})(i)}function f(t,e){return e.i=t.i,e.j=t.j,e.S=t.S.slice(),e}function m(t,e){var r,n=[],o=typeof t;if(e&&"object"==o)for(r in t)try{n.push(m(t[r],e-1))}catch(t){}return n.length?n:"string"==o?t:t+"\0"}function d(t,e){for(var r,n=t+"",o=0;o<n.length;)e[h&o]=h&(r^=19*e[h&o])+n.charCodeAt(o++);return g(e)}function g(t){return String.fromCharCode.apply(0,t)}if(d(n.random(),r),t.exports){t.exports=l;try{o=Kt}catch(t){}}else n.seedrandom=l}("undefined"!=typeof self?self:St,[],Math)}));Qt.alea=Ut,Qt.xor128=Bt,Qt.xorwow=Ft,Qt.xorshift7=Xt,Qt.xor4096=Wt,Qt.tychei=Gt;var Yt=Qt,Zt=function(){function t(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(e,r,n){return r&&t(e.prototype,r),n&&t(e,n),e}}(),Jt=te(Lt);function te(t){return t&&t.__esModule?t:{default:t}}var ee=function(t){function e(t,r){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,e);var n=function(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}(this,(e.__proto__||Object.getPrototypeOf(e)).call(this));return n.seed(t,r),n}return function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}(e,t),Zt(e,[{key:"next",value:function(){return this._rng()}},{key:"seed",value:function(t){(0,Jt.default)(t,Jt.default.function),this._rng=t}},{key:"clone",value:function(){for(var t=arguments.length,r=Array(t),n=0;n<t;n++)r[n]=arguments[n];return new(Function.prototype.bind.apply(e,[null].concat([this._rng],r)))}},{key:"name",get:function(){return"function"}}]),e}(te(Ht).default),re=Object.defineProperty({default:ee},"__esModule",{value:!0}),ne="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},oe=ae(Yt),ie=ae(Ht),se=ae(re);function ae(t){return t&&t.__esModule?t:{default:t}}function ue(t){if(Array.isArray(t)){for(var e=0,r=Array(t.length);e<t.length;e++)r[e]=t[e];return r}return Array.from(t)}var he,le=Object.defineProperty({default:function(){for(var t=arguments.length,e=Array(t),r=0;r<t;r++)e[r]=arguments[r];var n=e[0],o=void 0===n?"default":n,i=e.slice(1);switch(void 0===o?"undefined":ne(o)){case"object":if(o instanceof ie.default)return o;break;case"function":return new se.default(o);case"string":case"number":return new se.default(oe.default.apply(void 0,ue(i)))}throw new Error('invalid RNG "'+o+'"')}},"__esModule",{value:!0}),ce=(he=Lt)&&he.__esModule?he:{default:he};var fe=Object.defineProperty({default:function(t,e,r){return void 0===r&&(r=void 0===e?1:e,e=0),(0,ce.default)(e,ce.default.number),(0,ce.default)(r,ce.default.number),function(){return t.next()*(r-e)+e}}},"__esModule",{value:!0}),me=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var de=Object.defineProperty({default:function(t,e,r){return void 0===r&&(r=void 0===e?1:e,e=0),(0,me.default)(e,me.default.number.integer),(0,me.default)(r,me.default.number.integer),function(){return t.next()*(r-e+1)+e|0}}},"__esModule",{value:!0}),ge=Object.defineProperty({default:function(t){return function(){return t.next()>=.5}}},"__esModule",{value:!0}),we=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var ve=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:1;return(0,we.default)(e,we.default.number),(0,we.default)(r,we.default.number),function(){var n=void 0,o=void 0,i=void 0;do{i=(n=2*t.next()-1)*n+(o=2*t.next()-1)*o}while(!i||i>1);return e+r*o*Math.sqrt(-2*Math.log(i)/i)}}},"__esModule",{value:!0}),pe=Object.defineProperty({default:function(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];var o=t.normal.apply(t,r);return function(){return Math.exp(o())}}},"__esModule",{value:!0}),xe=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var ye=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:.5;return(0,xe.default)(e,xe.default.number.gte(0).lt(1)),function(){return t.next()+e|0}}},"__esModule",{value:!0}),be=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var Me=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:.5;return(0,be.default)(e,be.default.number.positive.integer),(0,be.default)(r,be.default.number.gte(0).lte(1)),function(){for(var n=0,o=0;n++<e;)o+=t.next()<r;return o}}},"__esModule",{value:!0}),_e=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var ke=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:.5;(0,_e.default)(e,_e.default.number.gt(0).lte(1));var r=1/Math.log(1-e);return function(){return 1+Math.log(t.next())*r|0}}},"__esModule",{value:!0}),$e=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var Ee=[0,0,.6931471805599453,1.791759469228055,3.1780538303479458,4.787491742782046,6.579251212010101,8.525161361065415,10.60460290274525,12.801827480081469],je=function(t){return Ee[t]},Se=.9189385332046727,Ne=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;if((0,$e.default)(e,$e.default.number.positive),e<10){var r=Math.exp(-e);return function(){for(var n=r,o=0,i=t.next();i>n;)i-=n,n=e*n/++o;return o}}var n=Math.sqrt(e),o=.931+2.53*n,i=.02483*o-.059,s=1.1239+1.1328/(o-3.4),a=.9277-3.6224/(o-2);return function(){for(;;){var r=void 0,u=t.next();if(u<=.86*a)return r=u/a-.43,Math.floor((2*i/(.5-Math.abs(r))+o)*r+e+.445);u>=a?r=t.next()-.5:(r=((r=u/a-.93)<0?-.5:.5)-r,u=t.next()*a);var h=.5-Math.abs(r);if(!(h<.013&&u>h)){var l=0|Math.floor((2*i/h+o)*r+e+.445);if(u=u*s/(i/(h*h)+o),l>=10){var c=(l+.5)*Math.log(e/l)-e-Se+l-(1/12-(1/360-1/(1260*l*l))/(l*l))/l;if(Math.log(u*n)<=c)return l}else if(l>=0&&Math.log(u)<=l*Math.log(e)-e-je(l))return l}}}}},"__esModule",{value:!0}),Re=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var Ae=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;return(0,Re.default)(e,Re.default.number.positive),function(){return-Math.log(1-t.next())/e}}},"__esModule",{value:!0}),qe=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var Ce=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;return(0,qe.default)(e,qe.default.number.integer.gte(0)),function(){for(var r=0,n=0;n<e;++n)r+=t.next();return r}}},"__esModule",{value:!0}),Te=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var Ve=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;(0,Te.default)(e,Te.default.number.integer.positive);var r=t.irwinHall(e);return function(){return r()/e}}},"__esModule",{value:!0}),Ie=function(t){return t&&t.__esModule?t:{default:t}}(Lt);var Oe=Object.defineProperty({default:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;(0,Ie.default)(e,Ie.default.number.gte(0));var r=1/e;return function(){return 1/Math.pow(1-t.next(),r)}}},"__esModule",{value:!0}),Pe=Rt((function(t,e){Object.defineProperty(e,"__esModule",{value:!0}),e.RNGFactory=e.RNG=void 0;var r=function(){function t(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(e,r,n){return r&&t(e.prototype,r),n&&t(e,n),e}}(),n=x(Lt),o=x(Ht),i=x(le),s=x(fe),a=x(de),u=x(ge),h=x(ve),l=x(pe),c=x(ye),f=x(Me),m=x(ke),d=x(Ne),g=x(Ae),w=x(Ce),v=x(Ve),p=x(Oe);function x(t){return t&&t.__esModule?t:{default:t}}e.RNG=o.default,e.RNGFactory=i.default;var y=function(){function t(e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),e&&(0,n.default)(e,n.default.object.instanceOf(o.default)),this._cache={},this.use(e)}return r(t,[{key:"clone",value:function(){return new t(arguments.length?i.default.apply(void 0,arguments):this.rng.clone())}},{key:"use",value:function(){this._rng=i.default.apply(void 0,arguments)}},{key:"patch",value:function(){if(this._patch)throw new Error("Math.random already patched");this._patch=Math.random,Math.random=this.uniform()}},{key:"unpatch",value:function(){this._patch&&(Math.random=this._patch,delete this._patch)}},{key:"next",value:function(){return this._rng.next()}},{key:"float",value:function(t,e){return this.uniform(t,e)()}},{key:"int",value:function(t,e){return this.uniformInt(t,e)()}},{key:"integer",value:function(t,e){return this.uniformInt(t,e)()}},{key:"bool",value:function(){return this.uniformBoolean()()}},{key:"boolean",value:function(){return this.uniformBoolean()()}},{key:"uniform",value:function(t,e){return this._memoize("uniform",s.default,t,e)}},{key:"uniformInt",value:function(t,e){return this._memoize("uniformInt",a.default,t,e)}},{key:"uniformBoolean",value:function(){return this._memoize("uniformBoolean",u.default)}},{key:"normal",value:function(t,e){return(0,h.default)(this,t,e)}},{key:"logNormal",value:function(t,e){return(0,l.default)(this,t,e)}},{key:"bernoulli",value:function(t){return(0,c.default)(this,t)}},{key:"binomial",value:function(t,e){return(0,f.default)(this,t,e)}},{key:"geometric",value:function(t){return(0,m.default)(this,t)}},{key:"poisson",value:function(t){return(0,d.default)(this,t)}},{key:"exponential",value:function(t){return(0,g.default)(this,t)}},{key:"irwinHall",value:function(t){return(0,w.default)(this,t)}},{key:"bates",value:function(t){return(0,v.default)(this,t)}},{key:"pareto",value:function(t){return(0,p.default)(this,t)}},{key:"_memoize",value:function(t,e){for(var r=arguments.length,n=Array(r>2?r-2:0),o=2;o<r;o++)n[o-2]=arguments[o];var i=""+n.join(";"),s=this._cache[t];return void 0!==s&&s.key===i||(s={key:i,distribution:e.apply(void 0,[this].concat(n))},this._cache[t]=s),s.distribution}},{key:"rng",get:function(){return this._rng}}]),t}();e.default=new y})).default;class Le{constructor(t,e){t instanceof yt&&e instanceof yt?(this.mean=t,this.cov=e):(this.mean=new yt([t]).transpose(),this.cov=new yt(e))}at(t){const e=new yt([t]).transpose().sub(this.mean);return e.transpose().mmul(_t(this.cov)).mmul(e).mul(-.5).exp()*(1/Math.sqrt(Math.pow(2*Math.PI,this.mean.rows)*this.cov.det()))}marginalize(t){const e=ze(this.mean,0,0,t,1),r=ze(this.mean,t,0,this.mean.rows,1),n=ze(this.cov,0,0,t,t),o=ze(this.cov,t,t,this.mean.rows,this.mean.rows);return[new Le(e,n),new Le(r,o)]}condition(t){const e=t.length,r=new yt([t]).transpose(),n=ze(this.cov,0,0,e,e),o=ze(this.cov,0,e,e,this.mean.rows),i=o.transpose(),s=ze(this.cov,e,e,this.mean.rows,this.mean.rows),a=new jt(n).lowerTriangularMatrix,u=kt(a,r),h=kt(a,o).transpose().mmul(u),l=s.sub(i.mmul(_t(n)).mmul(o));return new Le(h,l)}transformationMatrix(){const t=new $t(this.cov),e=t.eigenvectorMatrix,r=yt.zeros(e.rows,e.columns);for(let e=0;e<r.rows;++e)r.set(e,e,Math.sqrt(t.realEigenvalues[e]));return e.mmul(r)}sample(){const t=yt.zeros(this.mean.rows,1),e=Pe.normal();for(let r=0;r<this.mean.rows;++r)t.set(r,0,e());return yt.add(this.mean,this.transformationMatrix().mmul(t))}getMean(){return this.mean.transpose()[0]}getSd(){return this.cov.diag().map((t=>Math.sqrt(t)))}}function ze(t,e,r,n,o){const i=new yt(n-e,o-r);for(let s=e;s<n;++s)for(let n=r;n<o;++n)i.set(s-e,n-r,t.get(s,n));return i}function De(t,e){return t<e?-1:t>e?1:t>=e?0:NaN}function He(t){let e=t,r=t;function n(t,e,n,o){for(null==n&&(n=0),null==o&&(o=t.length);n<o;){const i=n+o>>>1;r(t[i],e)<0?n=i+1:o=i}return n}return 1===t.length&&(e=(e,r)=>t(e)-r,r=function(t){return(e,r)=>De(t(e),r)}(t)),{left:n,center:function(t,r,o,i){null==o&&(o=0),null==i&&(i=t.length);const s=n(t,r,o,i-1);return s>o&&e(t[s-1],r)>-e(t[s],r)?s-1:s},right:function(t,e,n,o){for(null==n&&(n=0),null==o&&(o=t.length);n<o;){const i=n+o>>>1;r(t[i],e)>0?o=i:n=i+1}return n}}}const Ue=He(De).right;He((function(t){return null===t?NaN:+t})).center;var Be=Math.sqrt(50),Fe=Math.sqrt(10),Xe=Math.sqrt(2);function We(t,e,r){var n=(e-t)/Math.max(0,r),o=Math.floor(Math.log(n)/Math.LN10),i=n/Math.pow(10,o);return o>=0?(i>=Be?10:i>=Fe?5:i>=Xe?2:1)*Math.pow(10,o):-Math.pow(10,-o)/(i>=Be?10:i>=Fe?5:i>=Xe?2:1)}function Ge(t,e,r){t=+t,e=+e,r=(o=arguments.length)<2?(e=t,t=0,1):o<3?1:+r;for(var n=-1,o=0|Math.max(0,Math.ceil((e-t)/r)),i=new Array(o);++n<o;)i[n]=t+n*r;return i}function Ke(t){if(!(o=t.length))return[];for(var e=-1,r=function(t,e){let r;if(void 0===e)for(const e of t)null!=e&&(r>e||void 0===r&&e>=e)&&(r=e);else{let n=-1;for(let o of t)null!=(o=e(o,++n,t))&&(r>o||void 0===r&&o>=o)&&(r=o)}return r}(t,Qe),n=new Array(r);++e<r;)for(var o,i=-1,s=n[e]=new Array(o);++i<o;)s[i]=t[i][e];return n}function Qe(t){return t.length}function Ye(){return Ke(arguments)}var Ze={value:()=>{}};function Je(){for(var t,e=0,r=arguments.length,n={};e<r;++e){if(!(t=arguments[e]+"")||t in n||/[\s.]/.test(t))throw new Error("illegal type: "+t);n[t]=[]}return new tr(n)}function tr(t){this._=t}function er(t,e){return t.trim().split(/^|\s+/).map((function(t){var r="",n=t.indexOf(".");if(n>=0&&(r=t.slice(n+1),t=t.slice(0,n)),t&&!e.hasOwnProperty(t))throw new Error("unknown type: "+t);return{type:t,name:r}}))}function rr(t,e){for(var r,n=0,o=t.length;n<o;++n)if((r=t[n]).name===e)return r.value}function nr(t,e,r){for(var n=0,o=t.length;n<o;++n)if(t[n].name===e){t[n]=Ze,t=t.slice(0,n).concat(t.slice(n+1));break}return null!=r&&t.push({name:e,value:r}),t}function or(t,e,r){t.prototype=e.prototype=r,r.constructor=t}function ir(t,e){var r=Object.create(t.prototype);for(var n in e)r[n]=e[n];return r}function sr(){}tr.prototype=Je.prototype={constructor:tr,on:function(t,e){var r,n=this._,o=er(t+"",n),i=-1,s=o.length;if(!(arguments.length<2)){if(null!=e&&"function"!=typeof e)throw new Error("invalid callback: "+e);for(;++i<s;)if(r=(t=o[i]).type)n[r]=nr(n[r],t.name,e);else if(null==e)for(r in n)n[r]=nr(n[r],t.name,null);return this}for(;++i<s;)if((r=(t=o[i]).type)&&(r=rr(n[r],t.name)))return r},copy:function(){var t={},e=this._;for(var r in e)t[r]=e[r].slice();return new tr(t)},call:function(t,e){if((r=arguments.length-2)>0)for(var r,n,o=new Array(r),i=0;i<r;++i)o[i]=arguments[i+2];if(!this._.hasOwnProperty(t))throw new Error("unknown type: "+t);for(i=0,r=(n=this._[t]).length;i<r;++i)n[i].value.apply(e,o)},apply:function(t,e,r){if(!this._.hasOwnProperty(t))throw new Error("unknown type: "+t);for(var n=this._[t],o=0,i=n.length;o<i;++o)n[o].value.apply(e,r)}};var ar=.7,ur=1/ar,hr="\\s*([+-]?\\d+)\\s*",lr="\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",cr="\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",fr=/^#([0-9a-f]{3,8})$/,mr=new RegExp("^rgb\\("+[hr,hr,hr]+"\\)$"),dr=new RegExp("^rgb\\("+[cr,cr,cr]+"\\)$"),gr=new RegExp("^rgba\\("+[hr,hr,hr,lr]+"\\)$"),wr=new RegExp("^rgba\\("+[cr,cr,cr,lr]+"\\)$"),vr=new RegExp("^hsl\\("+[lr,cr,cr]+"\\)$"),pr=new RegExp("^hsla\\("+[lr,cr,cr,lr]+"\\)$"),xr={aliceblue:15792383,antiquewhite:16444375,aqua:65535,aquamarine:8388564,azure:15794175,beige:16119260,bisque:16770244,black:0,blanchedalmond:16772045,blue:255,blueviolet:9055202,brown:10824234,burlywood:14596231,cadetblue:6266528,chartreuse:8388352,chocolate:13789470,coral:16744272,cornflowerblue:6591981,cornsilk:16775388,crimson:14423100,cyan:65535,darkblue:139,darkcyan:35723,darkgoldenrod:12092939,darkgray:11119017,darkgreen:25600,darkgrey:11119017,darkkhaki:12433259,darkmagenta:9109643,darkolivegreen:5597999,darkorange:16747520,darkorchid:10040012,darkred:9109504,darksalmon:15308410,darkseagreen:9419919,darkslateblue:4734347,darkslategray:3100495,darkslategrey:3100495,darkturquoise:52945,darkviolet:9699539,deeppink:16716947,deepskyblue:49151,dimgray:6908265,dimgrey:6908265,dodgerblue:2003199,firebrick:11674146,floralwhite:16775920,forestgreen:2263842,fuchsia:16711935,gainsboro:14474460,ghostwhite:16316671,gold:16766720,goldenrod:14329120,gray:8421504,green:32768,greenyellow:11403055,grey:8421504,honeydew:15794160,hotpink:16738740,indianred:13458524,indigo:4915330,ivory:16777200,khaki:15787660,lavender:15132410,lavenderblush:16773365,lawngreen:8190976,lemonchiffon:16775885,lightblue:11393254,lightcoral:15761536,lightcyan:14745599,lightgoldenrodyellow:16448210,lightgray:13882323,lightgreen:9498256,lightgrey:13882323,lightpink:16758465,lightsalmon:16752762,lightseagreen:2142890,lightskyblue:8900346,lightslategray:7833753,lightslategrey:7833753,lightsteelblue:11584734,lightyellow:16777184,lime:65280,limegreen:3329330,linen:16445670,magenta:16711935,maroon:8388608,mediumaquamarine:6737322,mediumblue:205,mediumorchid:12211667,mediumpurple:9662683,mediumseagreen:3978097,mediumslateblue:8087790,mediumspringgreen:64154,mediumturquoise:4772300,mediumvioletred:13047173,midnightblue:1644912,mintcream:16121850,mistyrose:16770273,moccasin:16770229,navajowhite:16768685,navy:128,oldlace:16643558,olive:8421376,olivedrab:7048739,orange:16753920,orangered:16729344,orchid:14315734,palegoldenrod:15657130,palegreen:10025880,paleturquoise:11529966,palevioletred:14381203,papayawhip:16773077,peachpuff:16767673,peru:13468991,pink:16761035,plum:14524637,powderblue:11591910,purple:8388736,rebeccapurple:6697881,red:16711680,rosybrown:12357519,royalblue:4286945,saddlebrown:9127187,salmon:16416882,sandybrown:16032864,seagreen:3050327,seashell:16774638,sienna:10506797,silver:12632256,skyblue:8900331,slateblue:6970061,slategray:7372944,slategrey:7372944,snow:16775930,springgreen:65407,steelblue:4620980,tan:13808780,teal:32896,thistle:14204888,tomato:16737095,turquoise:4251856,violet:15631086,wheat:16113331,white:16777215,whitesmoke:16119285,yellow:16776960,yellowgreen:10145074};function yr(){return this.rgb().formatHex()}function br(){return this.rgb().formatRgb()}function Mr(t){var e,r;return t=(t+"").trim().toLowerCase(),(e=fr.exec(t))?(r=e[1].length,e=parseInt(e[1],16),6===r?_r(e):3===r?new jr(e>>8&15|e>>4&240,e>>4&15|240&e,(15&e)<<4|15&e,1):8===r?kr(e>>24&255,e>>16&255,e>>8&255,(255&e)/255):4===r?kr(e>>12&15|e>>8&240,e>>8&15|e>>4&240,e>>4&15|240&e,((15&e)<<4|15&e)/255):null):(e=mr.exec(t))?new jr(e[1],e[2],e[3],1):(e=dr.exec(t))?new jr(255*e[1]/100,255*e[2]/100,255*e[3]/100,1):(e=gr.exec(t))?kr(e[1],e[2],e[3],e[4]):(e=wr.exec(t))?kr(255*e[1]/100,255*e[2]/100,255*e[3]/100,e[4]):(e=vr.exec(t))?Ar(e[1],e[2]/100,e[3]/100,1):(e=pr.exec(t))?Ar(e[1],e[2]/100,e[3]/100,e[4]):xr.hasOwnProperty(t)?_r(xr[t]):"transparent"===t?new jr(NaN,NaN,NaN,0):null}function _r(t){return new jr(t>>16&255,t>>8&255,255&t,1)}function kr(t,e,r,n){return n<=0&&(t=e=r=NaN),new jr(t,e,r,n)}function $r(t){return t instanceof sr||(t=Mr(t)),t?new jr((t=t.rgb()).r,t.g,t.b,t.opacity):new jr}function Er(t,e,r,n){return 1===arguments.length?$r(t):new jr(t,e,r,null==n?1:n)}function jr(t,e,r,n){this.r=+t,this.g=+e,this.b=+r,this.opacity=+n}function Sr(){return"#"+Rr(this.r)+Rr(this.g)+Rr(this.b)}function Nr(){var t=this.opacity;return(1===(t=isNaN(t)?1:Math.max(0,Math.min(1,t)))?"rgb(":"rgba(")+Math.max(0,Math.min(255,Math.round(this.r)||0))+", "+Math.max(0,Math.min(255,Math.round(this.g)||0))+", "+Math.max(0,Math.min(255,Math.round(this.b)||0))+(1===t?")":", "+t+")")}function Rr(t){return((t=Math.max(0,Math.min(255,Math.round(t)||0)))<16?"0":"")+t.toString(16)}function Ar(t,e,r,n){return n<=0?t=e=r=NaN:r<=0||r>=1?t=e=NaN:e<=0&&(t=NaN),new Cr(t,e,r,n)}function qr(t){if(t instanceof Cr)return new Cr(t.h,t.s,t.l,t.opacity);if(t instanceof sr||(t=Mr(t)),!t)return new Cr;if(t instanceof Cr)return t;var e=(t=t.rgb()).r/255,r=t.g/255,n=t.b/255,o=Math.min(e,r,n),i=Math.max(e,r,n),s=NaN,a=i-o,u=(i+o)/2;return a?(s=e===i?(r-n)/a+6*(r<n):r===i?(n-e)/a+2:(e-r)/a+4,a/=u<.5?i+o:2-i-o,s*=60):a=u>0&&u<1?0:s,new Cr(s,a,u,t.opacity)}function Cr(t,e,r,n){this.h=+t,this.s=+e,this.l=+r,this.opacity=+n}function Tr(t,e,r){return 255*(t<60?e+(r-e)*t/60:t<180?r:t<240?e+(r-e)*(240-t)/60:e)}or(sr,Mr,{copy:function(t){return Object.assign(new this.constructor,this,t)},displayable:function(){return this.rgb().displayable()},hex:yr,formatHex:yr,formatHsl:function(){return qr(this).formatHsl()},formatRgb:br,toString:br}),or(jr,Er,ir(sr,{brighter:function(t){return t=null==t?ur:Math.pow(ur,t),new jr(this.r*t,this.g*t,this.b*t,this.opacity)},darker:function(t){return t=null==t?ar:Math.pow(ar,t),new jr(this.r*t,this.g*t,this.b*t,this.opacity)},rgb:function(){return this},displayable:function(){return-.5<=this.r&&this.r<255.5&&-.5<=this.g&&this.g<255.5&&-.5<=this.b&&this.b<255.5&&0<=this.opacity&&this.opacity<=1},hex:Sr,formatHex:Sr,formatRgb:Nr,toString:Nr})),or(Cr,(function(t,e,r,n){return 1===arguments.length?qr(t):new Cr(t,e,r,null==n?1:n)}),ir(sr,{brighter:function(t){return t=null==t?ur:Math.pow(ur,t),new Cr(this.h,this.s,this.l*t,this.opacity)},darker:function(t){return t=null==t?ar:Math.pow(ar,t),new Cr(this.h,this.s,this.l*t,this.opacity)},rgb:function(){var t=this.h%360+360*(this.h<0),e=isNaN(t)||isNaN(this.s)?0:this.s,r=this.l,n=r+(r<.5?r:1-r)*e,o=2*r-n;return new jr(Tr(t>=240?t-240:t+120,o,n),Tr(t,o,n),Tr(t<120?t+240:t-120,o,n),this.opacity)},displayable:function(){return(0<=this.s&&this.s<=1||isNaN(this.s))&&0<=this.l&&this.l<=1&&0<=this.opacity&&this.opacity<=1},formatHsl:function(){var t=this.opacity;return(1===(t=isNaN(t)?1:Math.max(0,Math.min(1,t)))?"hsl(":"hsla(")+(this.h||0)+", "+100*(this.s||0)+"%, "+100*(this.l||0)+"%"+(1===t?")":", "+t+")")}}));var Vr=t=>()=>t;function Ir(t){return 1==(t=+t)?Or:function(e,r){return r-e?function(t,e,r){return t=Math.pow(t,r),e=Math.pow(e,r)-t,r=1/r,function(n){return Math.pow(t+n*e,r)}}(e,r,t):Vr(isNaN(e)?r:e)}}function Or(t,e){var r=e-t;return r?function(t,e){return function(r){return t+r*e}}(t,r):Vr(isNaN(t)?e:t)}var Pr=function t(e){var r=Ir(e);function n(t,e){var n=r((t=Er(t)).r,(e=Er(e)).r),o=r(t.g,e.g),i=r(t.b,e.b),s=Or(t.opacity,e.opacity);return function(e){return t.r=n(e),t.g=o(e),t.b=i(e),t.opacity=s(e),t+""}}return n.gamma=t,n}(1);function Lr(t,e){e||(e=[]);var r,n=t?Math.min(e.length,t.length):0,o=e.slice();return function(i){for(r=0;r<n;++r)o[r]=t[r]*(1-i)+e[r]*i;return o}}function zr(t,e){var r,n=e?e.length:0,o=t?Math.min(n,t.length):0,i=new Array(o),s=new Array(n);for(r=0;r<o;++r)i[r]=Wr(t[r],e[r]);for(;r<n;++r)s[r]=e[r];return function(t){for(r=0;r<o;++r)s[r]=i[r](t);return s}}function Dr(t,e){var r=new Date;return t=+t,e=+e,function(n){return r.setTime(t*(1-n)+e*n),r}}function Hr(t,e){return t=+t,e=+e,function(r){return t*(1-r)+e*r}}function Ur(t,e){var r,n={},o={};for(r in null!==t&&"object"==typeof t||(t={}),null!==e&&"object"==typeof e||(e={}),e)r in t?n[r]=Wr(t[r],e[r]):o[r]=e[r];return function(t){for(r in n)o[r]=n[r](t);return o}}var Br=/[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,Fr=new RegExp(Br.source,"g");function Xr(t,e){var r,n,o,i=Br.lastIndex=Fr.lastIndex=0,s=-1,a=[],u=[];for(t+="",e+="";(r=Br.exec(t))&&(n=Fr.exec(e));)(o=n.index)>i&&(o=e.slice(i,o),a[s]?a[s]+=o:a[++s]=o),(r=r[0])===(n=n[0])?a[s]?a[s]+=n:a[++s]=n:(a[++s]=null,u.push({i:s,x:Hr(r,n)})),i=Fr.lastIndex;return i<e.length&&(o=e.slice(i),a[s]?a[s]+=o:a[++s]=o),a.length<2?u[0]?function(t){return function(e){return t(e)+""}}(u[0].x):function(t){return function(){return t}}(e):(e=u.length,function(t){for(var r,n=0;n<e;++n)a[(r=u[n]).i]=r.x(t);return a.join("")})}function Wr(t,e){var r,n=typeof e;return null==e||"boolean"===n?Vr(e):("number"===n?Hr:"string"===n?(r=Mr(e))?(e=r,Pr):Xr:e instanceof Mr?Pr:e instanceof Date?Dr:function(t){return ArrayBuffer.isView(t)&&!(t instanceof DataView)}(e)?Lr:Array.isArray(e)?zr:"function"!=typeof e.valueOf&&"function"!=typeof e.toString||isNaN(e)?Ur:Hr)(t,e)}function Gr(t,e){return t=+t,e=+e,function(r){return Math.round(t*(1-r)+e*r)}}Je("start","end","cancel","interrupt");const Kr=Math.PI,Qr=2*Kr,Yr=1e-6,Zr=Qr-Yr;function Jr(){this._x0=this._y0=this._x1=this._y1=null,this._=""}function tn(){return new Jr}function en(t,e){if((r=(t=e?t.toExponential(e-1):t.toExponential()).indexOf("e"))<0)return null;var r,n=t.slice(0,r);return[n.length>1?n[0]+n.slice(2):n,+t.slice(r+1)]}function rn(t){return(t=en(Math.abs(t)))?t[1]:NaN}Jr.prototype=tn.prototype={constructor:Jr,moveTo:function(t,e){this._+="M"+(this._x0=this._x1=+t)+","+(this._y0=this._y1=+e)},closePath:function(){null!==this._x1&&(this._x1=this._x0,this._y1=this._y0,this._+="Z")},lineTo:function(t,e){this._+="L"+(this._x1=+t)+","+(this._y1=+e)},quadraticCurveTo:function(t,e,r,n){this._+="Q"+ +t+","+ +e+","+(this._x1=+r)+","+(this._y1=+n)},bezierCurveTo:function(t,e,r,n,o,i){this._+="C"+ +t+","+ +e+","+ +r+","+ +n+","+(this._x1=+o)+","+(this._y1=+i)},arcTo:function(t,e,r,n,o){t=+t,e=+e,r=+r,n=+n,o=+o;var i=this._x1,s=this._y1,a=r-t,u=n-e,h=i-t,l=s-e,c=h*h+l*l;if(o<0)throw new Error("negative radius: "+o);if(null===this._x1)this._+="M"+(this._x1=t)+","+(this._y1=e);else if(c>Yr)if(Math.abs(l*a-u*h)>Yr&&o){var f=r-i,m=n-s,d=a*a+u*u,g=f*f+m*m,w=Math.sqrt(d),v=Math.sqrt(c),p=o*Math.tan((Kr-Math.acos((d+c-g)/(2*w*v)))/2),x=p/v,y=p/w;Math.abs(x-1)>Yr&&(this._+="L"+(t+x*h)+","+(e+x*l)),this._+="A"+o+","+o+",0,0,"+ +(l*f>h*m)+","+(this._x1=t+y*a)+","+(this._y1=e+y*u)}else this._+="L"+(this._x1=t)+","+(this._y1=e);else;},arc:function(t,e,r,n,o,i){t=+t,e=+e,i=!!i;var s=(r=+r)*Math.cos(n),a=r*Math.sin(n),u=t+s,h=e+a,l=1^i,c=i?n-o:o-n;if(r<0)throw new Error("negative radius: "+r);null===this._x1?this._+="M"+u+","+h:(Math.abs(this._x1-u)>Yr||Math.abs(this._y1-h)>Yr)&&(this._+="L"+u+","+h),r&&(c<0&&(c=c%Qr+Qr),c>Zr?this._+="A"+r+","+r+",0,1,"+l+","+(t-s)+","+(e-a)+"A"+r+","+r+",0,1,"+l+","+(this._x1=u)+","+(this._y1=h):c>Yr&&(this._+="A"+r+","+r+",0,"+ +(c>=Kr)+","+l+","+(this._x1=t+r*Math.cos(o))+","+(this._y1=e+r*Math.sin(o))))},rect:function(t,e,r,n){this._+="M"+(this._x0=this._x1=+t)+","+(this._y0=this._y1=+e)+"h"+ +r+"v"+ +n+"h"+-r+"Z"},toString:function(){return this._}};var nn,on=/^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;function sn(t){if(!(e=on.exec(t)))throw new Error("invalid format: "+t);var e;return new an({fill:e[1],align:e[2],sign:e[3],symbol:e[4],zero:e[5],width:e[6],comma:e[7],precision:e[8]&&e[8].slice(1),trim:e[9],type:e[10]})}function an(t){this.fill=void 0===t.fill?" ":t.fill+"",this.align=void 0===t.align?">":t.align+"",this.sign=void 0===t.sign?"-":t.sign+"",this.symbol=void 0===t.symbol?"":t.symbol+"",this.zero=!!t.zero,this.width=void 0===t.width?void 0:+t.width,this.comma=!!t.comma,this.precision=void 0===t.precision?void 0:+t.precision,this.trim=!!t.trim,this.type=void 0===t.type?"":t.type+""}function un(t,e){var r=en(t,e);if(!r)return t+"";var n=r[0],o=r[1];return o<0?"0."+new Array(-o).join("0")+n:n.length>o+1?n.slice(0,o+1)+"."+n.slice(o+1):n+new Array(o-n.length+2).join("0")}sn.prototype=an.prototype,an.prototype.toString=function(){return this.fill+this.align+this.sign+this.symbol+(this.zero?"0":"")+(void 0===this.width?"":Math.max(1,0|this.width))+(this.comma?",":"")+(void 0===this.precision?"":"."+Math.max(0,0|this.precision))+(this.trim?"~":"")+this.type};var hn={"%":(t,e)=>(100*t).toFixed(e),b:t=>Math.round(t).toString(2),c:t=>t+"",d:function(t){return Math.abs(t=Math.round(t))>=1e21?t.toLocaleString("en").replace(/,/g,""):t.toString(10)},e:(t,e)=>t.toExponential(e),f:(t,e)=>t.toFixed(e),g:(t,e)=>t.toPrecision(e),o:t=>Math.round(t).toString(8),p:(t,e)=>un(100*t,e),r:un,s:function(t,e){var r=en(t,e);if(!r)return t+"";var n=r[0],o=r[1],i=o-(nn=3*Math.max(-8,Math.min(8,Math.floor(o/3))))+1,s=n.length;return i===s?n:i>s?n+new Array(i-s+1).join("0"):i>0?n.slice(0,i)+"."+n.slice(i):"0."+new Array(1-i).join("0")+en(t,Math.max(0,e+i-1))[0]},X:t=>Math.round(t).toString(16).toUpperCase(),x:t=>Math.round(t).toString(16)};function ln(t){return t}var cn,fn,mn,dn=Array.prototype.map,gn=["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];function wn(t){var e,r,n=void 0===t.grouping||void 0===t.thousands?ln:(e=dn.call(t.grouping,Number),r=t.thousands+"",function(t,n){for(var o=t.length,i=[],s=0,a=e[0],u=0;o>0&&a>0&&(u+a+1>n&&(a=Math.max(1,n-u)),i.push(t.substring(o-=a,o+a)),!((u+=a+1)>n));)a=e[s=(s+1)%e.length];return i.reverse().join(r)}),o=void 0===t.currency?"":t.currency[0]+"",i=void 0===t.currency?"":t.currency[1]+"",s=void 0===t.decimal?".":t.decimal+"",a=void 0===t.numerals?ln:function(t){return function(e){return e.replace(/[0-9]/g,(function(e){return t[+e]}))}}(dn.call(t.numerals,String)),u=void 0===t.percent?"%":t.percent+"",h=void 0===t.minus?"−":t.minus+"",l=void 0===t.nan?"NaN":t.nan+"";function c(t){var e=(t=sn(t)).fill,r=t.align,c=t.sign,f=t.symbol,m=t.zero,d=t.width,g=t.comma,w=t.precision,v=t.trim,p=t.type;"n"===p?(g=!0,p="g"):hn[p]||(void 0===w&&(w=12),v=!0,p="g"),(m||"0"===e&&"="===r)&&(m=!0,e="0",r="=");var x="$"===f?o:"#"===f&&/[boxX]/.test(p)?"0"+p.toLowerCase():"",y="$"===f?i:/[%p]/.test(p)?u:"",b=hn[p],M=/[defgprs%]/.test(p);function _(t){var o,i,u,f=x,_=y;if("c"===p)_=b(t)+_,t="";else{var k=(t=+t)<0||1/t<0;if(t=isNaN(t)?l:b(Math.abs(t),w),v&&(t=function(t){t:for(var e,r=t.length,n=1,o=-1;n<r;++n)switch(t[n]){case".":o=e=n;break;case"0":0===o&&(o=n),e=n;break;default:if(!+t[n])break t;o>0&&(o=0)}return o>0?t.slice(0,o)+t.slice(e+1):t}(t)),k&&0==+t&&"+"!==c&&(k=!1),f=(k?"("===c?c:h:"-"===c||"("===c?"":c)+f,_=("s"===p?gn[8+nn/3]:"")+_+(k&&"("===c?")":""),M)for(o=-1,i=t.length;++o<i;)if(48>(u=t.charCodeAt(o))||u>57){_=(46===u?s+t.slice(o+1):t.slice(o))+_,t=t.slice(0,o);break}}g&&!m&&(t=n(t,1/0));var $=f.length+t.length+_.length,E=$<d?new Array(d-$+1).join(e):"";switch(g&&m&&(t=n(E+t,E.length?d-_.length:1/0),E=""),r){case"<":t=f+t+_+E;break;case"=":t=f+E+t+_;break;case"^":t=E.slice(0,$=E.length>>1)+f+t+_+E.slice($);break;default:t=E+f+t+_}return a(t)}return w=void 0===w?6:/[gprs]/.test(p)?Math.max(1,Math.min(21,w)):Math.max(0,Math.min(20,w)),_.toString=function(){return t+""},_}return{format:c,formatPrefix:function(t,e){var r=c(((t=sn(t)).type="f",t)),n=3*Math.max(-8,Math.min(8,Math.floor(rn(e)/3))),o=Math.pow(10,-n),i=gn[8+n/3];return function(t){return r(o*t)+i}}}}function vn(t,e){switch(arguments.length){case 0:break;case 1:this.range(t);break;default:this.range(e).domain(t)}return this}function pn(t){return+t}cn=wn({thousands:",",grouping:[3],currency:["$",""]}),fn=cn.format,mn=cn.formatPrefix;var xn=[0,1];function yn(t){return t}function bn(t,e){return(e-=t=+t)?function(r){return(r-t)/e}:function(t){return function(){return t}}(isNaN(e)?NaN:.5)}function Mn(t,e,r){var n=t[0],o=t[1],i=e[0],s=e[1];return o<n?(n=bn(o,n),i=r(s,i)):(n=bn(n,o),i=r(i,s)),function(t){return i(n(t))}}function _n(t,e,r){var n=Math.min(t.length,e.length)-1,o=new Array(n),i=new Array(n),s=-1;for(t[n]<t[0]&&(t=t.slice().reverse(),e=e.slice().reverse());++s<n;)o[s]=bn(t[s],t[s+1]),i[s]=r(e[s],e[s+1]);return function(e){var r=Ue(t,e,1,n)-1;return i[r](o[r](e))}}function kn(t,e){return e.domain(t.domain()).range(t.range()).interpolate(t.interpolate()).clamp(t.clamp()).unknown(t.unknown())}function $n(){var t,e,r,n,o,i,s=xn,a=xn,u=Wr,h=yn;function l(){var t,e,r,u=Math.min(s.length,a.length);return h!==yn&&(t=s[0],e=s[u-1],t>e&&(r=t,t=e,e=r),h=function(r){return Math.max(t,Math.min(e,r))}),n=u>2?_n:Mn,o=i=null,c}function c(e){return null==e||isNaN(e=+e)?r:(o||(o=n(s.map(t),a,u)))(t(h(e)))}return c.invert=function(r){return h(e((i||(i=n(a,s.map(t),Hr)))(r)))},c.domain=function(t){return arguments.length?(s=Array.from(t,pn),l()):s.slice()},c.range=function(t){return arguments.length?(a=Array.from(t),l()):a.slice()},c.rangeRound=function(t){return a=Array.from(t),u=Gr,l()},c.clamp=function(t){return arguments.length?(h=!!t||yn,l()):h!==yn},c.interpolate=function(t){return arguments.length?(u=t,l()):u},c.unknown=function(t){return arguments.length?(r=t,c):r},function(r,n){return t=r,e=n,l()}}function En(){return $n()(yn,yn)}function jn(t,e,r,n){var o,i=function(t,e,r){var n=Math.abs(e-t)/Math.max(0,r),o=Math.pow(10,Math.floor(Math.log(n)/Math.LN10)),i=n/o;return i>=Be?o*=10:i>=Fe?o*=5:i>=Xe&&(o*=2),e<t?-o:o}(t,e,r);switch((n=sn(null==n?",f":n)).type){case"s":var s=Math.max(Math.abs(t),Math.abs(e));return null!=n.precision||isNaN(o=function(t,e){return Math.max(0,3*Math.max(-8,Math.min(8,Math.floor(rn(e)/3)))-rn(Math.abs(t)))}(i,s))||(n.precision=o),mn(n,s);case"":case"e":case"g":case"p":case"r":null!=n.precision||isNaN(o=function(t,e){return t=Math.abs(t),e=Math.abs(e)-t,Math.max(0,rn(e)-rn(t))+1}(i,Math.max(Math.abs(t),Math.abs(e))))||(n.precision=o-("e"===n.type));break;case"f":case"%":null!=n.precision||isNaN(o=function(t){return Math.max(0,-rn(Math.abs(t)))}(i))||(n.precision=o-2*("%"===n.type))}return fn(n)}function Sn(t){var e=t.domain;return t.ticks=function(t){var r=e();return function(t,e,r){var n,o,i,s,a=-1;if(r=+r,(t=+t)==(e=+e)&&r>0)return[t];if((n=e<t)&&(o=t,t=e,e=o),0===(s=We(t,e,r))||!isFinite(s))return[];if(s>0){let r=Math.round(t/s),n=Math.round(e/s);for(r*s<t&&++r,n*s>e&&--n,i=new Array(o=n-r+1);++a<o;)i[a]=(r+a)*s}else{s=-s;let r=Math.round(t*s),n=Math.round(e*s);for(r/s<t&&++r,n/s>e&&--n,i=new Array(o=n-r+1);++a<o;)i[a]=(r+a)/s}return n&&i.reverse(),i}(r[0],r[r.length-1],null==t?10:t)},t.tickFormat=function(t,r){var n=e();return jn(n[0],n[n.length-1],null==t?10:t,r)},t.nice=function(r){null==r&&(r=10);var n,o,i=e(),s=0,a=i.length-1,u=i[s],h=i[a],l=10;for(h<u&&(o=u,u=h,h=o,o=s,s=a,a=o);l-- >0;){if((o=We(u,h,r))===n)return i[s]=u,i[a]=h,e(i);if(o>0)u=Math.floor(u/o)*o,h=Math.ceil(h/o)*o;else{if(!(o<0))break;u=Math.ceil(u*o)/o,h=Math.floor(h*o)/o}n=o}return t},t}function Nn(){var t=En();return t.copy=function(){return kn(t,Nn())},vn.apply(t,arguments),Sn(t)}function Rn(t){return function(){return t}}function An(t){this._context=t}function qn(t){return new An(t)}function Cn(t){return t[0]}function Tn(t){return t[1]}function Vn(t,e){var r=Rn(!0),n=null,o=qn,i=null;function s(s){var a,u,h,l=(s=function(t){return"object"==typeof t&&"length"in t?t:Array.from(t)}(s)).length,c=!1;for(null==n&&(i=o(h=tn())),a=0;a<=l;++a)!(a<l&&r(u=s[a],a,s))===c&&((c=!c)?i.lineStart():i.lineEnd()),c&&i.point(+t(u,a,s),+e(u,a,s));if(h)return i=null,h+""||null}return t="function"==typeof t?t:void 0===t?Cn:Rn(t),e="function"==typeof e?e:void 0===e?Tn:Rn(e),s.x=function(e){return arguments.length?(t="function"==typeof e?e:Rn(+e),s):t},s.y=function(t){return arguments.length?(e="function"==typeof t?t:Rn(+t),s):e},s.defined=function(t){return arguments.length?(r="function"==typeof t?t:Rn(!!t),s):r},s.curve=function(t){return arguments.length?(o=t,null!=n&&(i=o(n)),s):o},s.context=function(t){return arguments.length?(null==t?n=i=null:i=o(n=t),s):n},s}An.prototype={areaStart:function(){this._line=0},areaEnd:function(){this._line=NaN},lineStart:function(){this._point=0},lineEnd:function(){(this._line||0!==this._line&&1===this._point)&&this._context.closePath(),this._line=1-this._line},point:function(t,e){switch(t=+t,e=+e,this._point){case 0:this._point=1,this._line?this._context.lineTo(t,e):this._context.moveTo(t,e);break;case 1:this._point=2;default:this._context.lineTo(t,e)}}};const In=.1;class On{constructor(t){this.ctx=t,this.x=[1,6.5,7.5],this.y=[-.4,.3,.05],this.beta=[-.95,1.15,-.4],this.dataset=Ye(this.x,this.y,this.beta),this.height=this.ctx.height,this.width=this.ctx.width}makeLine(t){return Vn().x((t=>this.ctx.u(t[0]))).y((t=>this.ctx.v(t[1])))(t)}curve(t,e){const r=new Le([t],[[1]]),n=Ge(this.ctx.xmin,this.ctx.xmax+In,In),o=n.map((t=>e*r.at([t]))),i=Ye(n,o);return this.makeLine(i)}curvePoint(t,e,r){const n=new Le([t],[[1]]);return this.ctx.v(e*n.at([r]))}solutionCurve(){const t=new Le([0],[[1]]),e=Ge(this.ctx.xmin,this.ctx.xmax+In,In),r=e.map((e=>this.dataset.map((([r,n,o])=>o*t.at([r-e]))).reduce(((t,e)=>t+e),0))),n=Ye(e,r);return this.makeLine(n)}solutionPoint(t){const e=new Le([0],[[1]]),r=this.dataset.map((([r,n,o])=>o*e.at([r-t]))).reduce(((t,e)=>t+e),0);return this.ctx.v(r)}u(t){return this.ctx.u(t)}v(t){return this.ctx.v(t)}}class Pn{constructor(t,e,[r,n],[o,i]){this.width=t,this.height=e,this.xmin=r,this.xmax=n,this.xToViewport=Nn().domain([r,n]).range([0,t]),this.yToViewport=Nn().domain([o,i]).range([e,0])}x(t){return this.xToViewport.invert(t)}y(t){return this.yToViewport.invert(t)}u(t){return this.xToViewport(t)}v(t){return this.yToViewport(t)}xDomain(){return this.xToViewport.domain()}yDomain(){return this.yToViewport.domain()}}function Ln(t,e,r){const n=t.slice();return n[8]=e[r],n[10]=r,n}function zn(t,e,r){const n=t.slice();return n[8]=e[r],n}function Dn(t,e,r){const n=t.slice();return n[8]=e[r][0],n[13]=e[r][1],n[14]=e[r][2],n[10]=r,n}function Hn(t,e,r){const n=t.slice();return n[16]=e[r],n}function Un(t,e,r){const n=t.slice();return n[8]=e[r][0],n[13]=e[r][1],n[14]=e[r][2],n[10]=r,n}function Bn(t,e,r){const n=t.slice();return n[16]=e[r],n}function Fn(t,e,r){const n=t.slice();return n[8]=e[r][0],n[13]=e[r][1],n[14]=e[r][2],n}function Xn(e){let r;return{c(){r=l("div"),w(r,"class","gauss-grid svelte-1jitcyb")},m(t,e){a(t,r,e)},p:t,d(t){t&&u(r)}}}function Wn(t){let e,r,n,o,i,f,g,v,p,x,y,b,M,_=t[0]&&Gn(t),k=t[1]&&Qn(t),$=t[2]&&Jn(t),E=t[3]&&ro(t),j=t[5].x,S=[];for(let e=0;e<j.length;e+=1)S[e]=oo(Ln(t,j,e));return{c(){e=l("div"),r=l("div"),n=c("svg"),_&&_.c(),o=d(),k&&k.c(),i=d(),$&&$.c(),f=d(),E&&E.c(),x=m(),y=c("svg");for(let t=0;t<S.length;t+=1)S[t].c();w(n,"width",g=t[5].width),w(n,"height",v=t[5].height),w(n,"viewBox",p="0 0\n                  "+t[5].width+" "+t[5].height),w(n,"class","plot"),w(y,"width",b=t[5].width),w(y,"height","40"),w(y,"viewBox",M="0 0\n                  "+t[5].width+" 40"),w(r,"class","grid-item svelte-1jitcyb"),w(e,"class","gauss-grid svelte-1jitcyb")},m(t,u){a(t,e,u),s(e,r),s(r,n),_&&_.m(n,null),s(n,o),k&&k.m(n,null),s(n,i),$&&$.m(n,null),s(n,f),E&&E.m(n,null),s(r,x),s(r,y);for(let t=0;t<S.length;t+=1)S[t].m(y,null)},p(t,e){if(t[0]?_?_.p(t,e):(_=Gn(t),_.c(),_.m(n,o)):_&&(_.d(1),_=null),t[1]?k?k.p(t,e):(k=Qn(t),k.c(),k.m(n,i)):k&&(k.d(1),k=null),t[2]?$?$.p(t,e):($=Jn(t),$.c(),$.m(n,f)):$&&($.d(1),$=null),t[3]?E?E.p(t,e):(E=ro(t),E.c(),E.m(n,null)):E&&(E.d(1),E=null),32&e&&g!==(g=t[5].width)&&w(n,"width",g),32&e&&v!==(v=t[5].height)&&w(n,"height",v),32&e&&p!==(p="0 0\n                  "+t[5].width+" "+t[5].height)&&w(n,"viewBox",p),32&e){let r;for(j=t[5].x,r=0;r<j.length;r+=1){const n=Ln(t,j,r);S[r]?S[r].p(n,e):(S[r]=oo(n),S[r].c(),S[r].m(y,null))}for(;r<S.length;r+=1)S[r].d(1);S.length=j.length}32&e&&b!==(b=t[5].width)&&w(y,"width",b),32&e&&M!==(M="0 0\n                  "+t[5].width+" 40")&&w(y,"viewBox",M)},d(t){t&&u(e),_&&_.d(),k&&k.d(),$&&$.d(),E&&E.d(),h(S,t)}}}function Gn(t){let e,r=t[5].dataset,n=[];for(let e=0;e<r.length;e+=1)n[e]=Kn(Fn(t,r,e));return{c(){for(let t=0;t<n.length;t+=1)n[t].c();e=d()},m(t,r){for(let e=0;e<n.length;e+=1)n[e].m(t,r);a(t,e,r)},p(t,o){if(32&o){let i;for(r=t[5].dataset,i=0;i<r.length;i+=1){const s=Fn(t,r,i);n[i]?n[i].p(s,o):(n[i]=Kn(s),n[i].c(),n[i].m(e.parentNode,e))}for(;i<n.length;i+=1)n[i].d(1);n.length=r.length}},d(t){h(n,t),t&&u(e)}}}function Kn(t){let e,r,n;return{c(){e=c("circle"),w(e,"class","data svelte-1jitcyb"),p(e,"stroke","#000000"),w(e,"cx",r=t[5].u(t[8])),w(e,"cy",n=t[5].v(t[13])),w(e,"r","5")},m(t,r){a(t,e,r)},p(t,o){32&o&&r!==(r=t[5].u(t[8]))&&w(e,"cx",r),32&o&&n!==(n=t[5].v(t[13]))&&w(e,"cy",n)},d(t){t&&u(e)}}}function Qn(t){let e,r=t[5].dataset,n=[];for(let e=0;e<r.length;e+=1)n[e]=Zn(Un(t,r,e));return{c(){for(let t=0;t<n.length;t+=1)n[t].c();e=d()},m(t,r){for(let e=0;e<n.length;e+=1)n[e].m(t,r);a(t,e,r)},p(t,o){if(96&o){let i;for(r=t[5].dataset,i=0;i<r.length;i+=1){const s=Un(t,r,i);n[i]?n[i].p(s,o):(n[i]=Zn(s),n[i].c(),n[i].m(e.parentNode,e))}for(;i<n.length;i+=1)n[i].d(1);n.length=r.length}},d(t){h(n,t),t&&u(e)}}}function Yn(t){let e,r,n;return{c(){e=c("circle"),w(e,"class","point svelte-1jitcyb"),w(e,"cx",r=t[5].u(t[16])),w(e,"cy",n=t[5].curvePoint(t[8],1,t[16])),w(e,"r","3"),p(e,"stroke",t[6][t[10]])},m(t,r){a(t,e,r)},p(t,o){32&o&&r!==(r=t[5].u(t[16]))&&w(e,"cx",r),32&o&&n!==(n=t[5].curvePoint(t[8],1,t[16]))&&w(e,"cy",n)},d(t){t&&u(e)}}}function Zn(t){let e,r,n,o=t[5].x,i=[];for(let e=0;e<o.length;e+=1)i[e]=Yn(Bn(t,o,e));return{c(){e=c("path");for(let t=0;t<i.length;t+=1)i[t].c();n=d(),w(e,"class","curve svelte-1jitcyb"),w(e,"d",r=t[5].curve(t[8],1)),p(e,"stroke",t[6][t[10]])},m(t,r){a(t,e,r);for(let e=0;e<i.length;e+=1)i[e].m(t,r);a(t,n,r)},p(t,s){if(32&s&&r!==(r=t[5].curve(t[8],1))&&w(e,"d",r),96&s){let e;for(o=t[5].x,e=0;e<o.length;e+=1){const r=Bn(t,o,e);i[e]?i[e].p(r,s):(i[e]=Yn(r),i[e].c(),i[e].m(n.parentNode,n))}for(;e<i.length;e+=1)i[e].d(1);i.length=o.length}},d(t){t&&u(e),h(i,t),t&&u(n)}}}function Jn(t){let e,r=t[5].dataset,n=[];for(let e=0;e<r.length;e+=1)n[e]=eo(Dn(t,r,e));return{c(){for(let t=0;t<n.length;t+=1)n[t].c();e=d()},m(t,r){for(let e=0;e<n.length;e+=1)n[e].m(t,r);a(t,e,r)},p(t,o){if(96&o){let i;for(r=t[5].dataset,i=0;i<r.length;i+=1){const s=Dn(t,r,i);n[i]?n[i].p(s,o):(n[i]=eo(s),n[i].c(),n[i].m(e.parentNode,e))}for(;i<n.length;i+=1)n[i].d(1);n.length=r.length}},d(t){h(n,t),t&&u(e)}}}function to(t){let e,r,n;return{c(){e=c("circle"),w(e,"class","point svelte-1jitcyb"),w(e,"cx",r=t[5].u(t[16])),w(e,"cy",n=t[5].curvePoint(t[8],t[14],t[16])),w(e,"r","3"),p(e,"stroke",t[6][t[10]])},m(t,r){a(t,e,r)},p(t,o){32&o&&r!==(r=t[5].u(t[16]))&&w(e,"cx",r),32&o&&n!==(n=t[5].curvePoint(t[8],t[14],t[16]))&&w(e,"cy",n)},d(t){t&&u(e)}}}function eo(t){let e,r,n,o=t[5].x,i=[];for(let e=0;e<o.length;e+=1)i[e]=to(Hn(t,o,e));return{c(){e=c("path");for(let t=0;t<i.length;t+=1)i[t].c();n=d(),w(e,"class","curve svelte-1jitcyb"),p(e,"stroke",t[6][t[10]]),w(e,"d",r=t[5].curve(t[8],t[14]))},m(t,r){a(t,e,r);for(let e=0;e<i.length;e+=1)i[e].m(t,r);a(t,n,r)},p(t,s){if(32&s&&r!==(r=t[5].curve(t[8],t[14]))&&w(e,"d",r),96&s){let e;for(o=t[5].x,e=0;e<o.length;e+=1){const r=Hn(t,o,e);i[e]?i[e].p(r,s):(i[e]=to(r),i[e].c(),i[e].m(n.parentNode,n))}for(;e<i.length;e+=1)i[e].d(1);i.length=o.length}},d(t){t&&u(e),h(i,t),t&&u(n)}}}function ro(t){let e,r,n,o=t[5].x,i=[];for(let e=0;e<o.length;e+=1)i[e]=no(zn(t,o,e));return{c(){e=c("path");for(let t=0;t<i.length;t+=1)i[t].c();n=d(),w(e,"class","solution-curve svelte-1jitcyb"),w(e,"d",r=t[5].solutionCurve())},m(t,r){a(t,e,r);for(let e=0;e<i.length;e+=1)i[e].m(t,r);a(t,n,r)},p(t,s){if(32&s&&r!==(r=t[5].solutionCurve())&&w(e,"d",r),32&s){let e;for(o=t[5].x,e=0;e<o.length;e+=1){const r=zn(t,o,e);i[e]?i[e].p(r,s):(i[e]=no(r),i[e].c(),i[e].m(n.parentNode,n))}for(;e<i.length;e+=1)i[e].d(1);i.length=o.length}},d(t){t&&u(e),h(i,t),t&&u(n)}}}function no(t){let e,r,n;return{c(){e=c("circle"),w(e,"class","solution-pt svelte-1jitcyb"),w(e,"cx",r=t[5].u(t[8])),w(e,"cy",n=t[5].solutionPoint(t[8])),w(e,"r","3")},m(t,r){a(t,e,r)},p(t,o){32&o&&r!==(r=t[5].u(t[8]))&&w(e,"cx",r),32&o&&n!==(n=t[5].solutionPoint(t[8]))&&w(e,"cy",n)},d(t){t&&u(e)}}}function oo(t){let e,r,n,o,i;return{c(){e=c("text"),r=f("x"),n=c("tspan"),o=f(t[10]),w(n,"class","ss svelte-1jitcyb"),w(e,"x",i=t[5].u(t[8])),w(e,"y","25")},m(t,i){a(t,e,i),s(e,r),s(e,n),s(n,o)},p(t,r){32&r&&i!==(i=t[5].u(t[8]))&&w(e,"x",i)},d(t){t&&u(e)}}}function io(e){let r;function n(t,e){return t[4]?Wn:Xn}let o=n(e),i=o(e);return{c(){i.c(),r=d()},m(t,e){i.m(t,e),a(t,r,e)},p(t,[e]){o===(o=n(t))&&i?i.p(t,e):(i.d(1),i=o(t),i&&(i.c(),i.m(r.parentNode,r)))},i:t,o:t,d(t){i.d(t),t&&u(r)}}}function so(t,e,r){let n,o,{showdata:i=!1}=e,{showbasis:s=!1}=e,{showscaled:a=!1}=e,{showsolution:u=!1}=e,{contextwidth:h}=e;return t.$$set=t=>{"showdata"in t&&r(0,i=t.showdata),"showbasis"in t&&r(1,s=t.showbasis),"showscaled"in t&&r(2,a=t.showscaled),"showsolution"in t&&r(3,u=t.showsolution),"contextwidth"in t&&r(4,h=t.contextwidth)},t.$$.update=()=>{16&t.$$.dirty&&r(7,n=new Pn(h||0,350,[0,10],[-.5,.5])),128&t.$$.dirty&&r(5,o=new On(n))},[i,s,a,u,h,o,["#33cc33","#cccc00","#cc0000"],n]}class ao extends H{constructor(t){super(),D(this,t,so,io,i,{showdata:0,showbasis:1,showscaled:2,showsolution:3,contextwidth:4})}}function uo(t){let e,r,n,o,i,h,c,f,d,w,x,y,M,_,k,$,E,j,S,R,A,q,C,T,z,D,H,U,B,F,X,W,G,K,Q,Y,Z,J,tt,et,rt,nt,ot,it,st,at,ut,ht,lt,ct,ft,mt,dt,gt,wt,vt,pt,xt,yt,bt,Mt,_t,kt,$t,Et,jt,St,Nt,Rt,At,qt,Ct,Tt,Vt,It;return k=new ao({props:{showdata:"true",contextwidth:t[0]}}),q=new ao({props:{showdata:"true",showbasis:"true",contextwidth:t[0]}}),W=new ao({props:{showdata:"true",showbasis:"true",contextwidth:t[0]}}),at=new ao({props:{showdata:"true",showscaled:"true",contextwidth:t[0]}}),bt=new ao({props:{showdata:"true",showscaled:"true",showsolution:"true",contextwidth:t[0]}}),{c(){e=l("main"),r=l("d-front-matter"),r.innerHTML='<script type="text/json">{\n        "title": "Introduction to Kernel Regression",\n      "description": "A gentle introduction to Kernel Regression",\n      "authors": [\n      {\n          "author": "Henry Bigelow"\n      }\n      ]\n      }<\/script>',n=m(),o=l("d-title"),o.innerHTML="<h1>Introduction to Kernel Regression</h1>",i=m(),h=l("d-byline"),c=m(),f=l("d-article"),d=l("h3"),d.textContent="A problem for Kernel Regression to solve",w=m(),x=l("p"),x.innerHTML="Consider the following:  you are given a dataset <d-math>\\textbf{D} =\n            \\{(x_i, y_i)\\}_{i \\in (1, \\cdots, n)}</d-math>, with\n        <d-math>\\mathcal{X} \\times \\mathcal{Y} \\in \\mathbb{R} \\times\n            \\mathbb{R}</d-math>.  There is nothing known about the true\n        relationship between <d-math>X</d-math> and <d-math>Y</d-math> except that\n        it is deterministic, continuous, and with some bounded first derivative.\n        In other words, &quot;smooth&quot;.  So you would like to find a smooth function to\n        fit the data.",y=m(),M=l("figure"),_=l("d-figure"),O(k.$$.fragment),E=m(),j=l("p"),j.innerHTML="With this smoothness goal in mind, you have decided to create a function\n        which is a linear combination of <d-math>n</d-math> gaussians, each one\n        centered at one of the <d-math>x_i</d-math>.  Since the gaussians themselves\n        are smooth, the resulting linear combination will also be smooth.  The goal\n        will be to adjust the weight of each gaussian and hopfully fit the\n        <d-math>y_i</d-math> at each point <d-math>x_i</d-math>.",S=m(),R=l("figure"),A=l("d-figure"),O(q.$$.fragment),C=m(),T=l("p"),T.innerHTML="Here are the functions we have chosen to use, now shown with the data.\n        Notice that there is one function per data point, centered at the\n        <d-math>x_i</d-math> coordinate.  The goal will be to find some weight vector\n        <d-math>\\beta</d-math> that combines these together to form a curve that goes through all of\n        the <d-math>y_i</d-math> values.",z=m(),D=l("p"),D.innerHTML="How do we find <d-math>\\beta</d-math>?  At first it seems like a hard problem.  We could\n        easily weight the <d-math>i^{th}</d-math> function so that its peak equals\n        <d-math>y_i</d-math>.  But, the resulting function would miss the\n        <d-math>y_i</d-math> due to the additional contribution of the other functions\n        at that point, since these functions are non-zero everywhere.  Every time you\n        adjust one of the <d-math>\\beta_i</d-math>, the values of the solution function changes\n        everywhere, so it isn&#39;t obvious how to find a solution, or if one exists at\n        all.",H=m(),U=l("h3"),U.textContent="The approach",B=m(),F=l("figure"),X=l("d-figure"),O(W.$$.fragment),G=m(),K=l("p"),K.innerHTML="For the moment, we are only concerned with the values of the solution\n        function at positions <d-math>x_i</d-math>.  Each value of the solution\n        function at <d-math>x_i</d-math> will be the same linear combination of the\n        curve heights at <d-math>x_i</d-math>, so we have highlighted them here.",Q=m(),Y=l("p"),Y.innerHTML="Recall from linear algebra, that if you have a set of <d-math>n</d-math>\n        linearly independent vectors in <d-math>\\mathbb{R}^n</d-math>, those vectors\n        are said to <i>span</i>  <d-math>\\mathbb{R}^n</d-math>. This means every other\n        vector in <d-math>\\mathbb{R}^n</d-math> may be formed as a unique linear\n        combination of these spanning vectors.",Z=m(),J=l("p"),J.innerHTML="Looking at the graph again, you can now see that each curve, evaluated at\n        the <d-math>x_i</d-math> in order, provides one of these spanning vectors (this\n        isn&#39;t proven but let&#39;s for the moment accept it).  And, the set of\n        <d-math>y_i</d-math> values is just our target vector.  So, all we need is to\n        express it as the unique linear combination <d-math>\\beta</d-math> which must\n        exist.",tt=m(),et=l("p"),et.textContent="To make this explicit, let:",rt=m(),nt=l("d-math"),nt.textContent="\\begin{aligned}\n            k_i(x) & \\equiv \\text{curves centered at $x_i$} \\\\\n            f(x) & \\equiv \\beta_1 k_1(x) + \\cdots + \\beta_n k_n(x) & \\text{the solution function} \\\\[1em]\n            D_x & \\equiv (x_1, \\cdots, x_n) & \\text{vector of $x_i$ values in the dataset} \\\\\n            (k_i)_{D_x} & \\equiv (k_i(x_1), \\cdots, k_i(x_n)) & \\text{values of $k_i$ along $D_x$ (the spanning vectors)} \\\\\n            (f)_{D_x} & \\equiv (f(x_1), \\cdots, f(x_n)) & \\text{values of $f$ along $D_x$ (the target vector)} \\\\\n            \\end{aligned}",ot=m(),it=l("figure"),st=l("d-figure"),O(at.$$.fragment),ut=m(),ht=l("p"),ht.innerHTML="Now, shown above are the same curves, each scaled by a candidate\n        <d-math>\\beta</d-math>.  The goal is for the sum of these scaled curves to form\n        a function that goes through the <d-math>y_i</d-math>.  Using the linear\n        algebra fact that an expansion exists, we can assert that there exists such a\n        <d-math>\\beta</d-math>, formally:",lt=m(),ct=l("d-math"),ct.textContent="\\begin{aligned}\n            (f)_{D_x} = \\beta_1 (k_1)_{D_x} + \\cdots + \\beta_n (k_n)_{D_x} = Y & \\\\\n            \\end{aligned}",ft=m(),mt=l("p"),mt.textContent="Or, in matrix notation, let:",dt=m(),gt=l("d-math"),gt.textContent="\\begin{aligned}\n            K & \\equiv\n            \\begin{bmatrix}\n            - (k_1)_{D_x} - \\\\\n            - (k_2)_{D_x} - \\\\\n            \\cdots \\\\\n            - (k_n)_{D_x} -\n            \\end{bmatrix} \\\\[1em]\n            \\beta & \\equiv [\\beta_1, \\cdots, \\beta_n] & \\text{row vector} \\\\[1em]\n            \\end{aligned}",wt=m(),vt=l("p"),vt.innerHTML="So, the unique function that goes through all values <d-math>y_i</d-math> uses <d-math>\\beta</d-math> that\n        satisfies <d-math>\\beta K = Y</d-math>.",pt=m(),xt=l("figure"),yt=l("d-figure"),O(bt.$$.fragment),Mt=m(),_t=l("h3"),_t.textContent="Where is the Kernel?",kt=m(),$t=l("p"),$t.innerHTML="Notice that the family of functions <d-math>k_i(x)</d-math> are all related by a\n        two-argument gaussian formula (if we consider <d-math>\\sigma</d-math> to be constant) with\n        signature <d-math>\\mathcal{X} \\times \\mathcal{X} \\rightarrow \\mathbb{R}</d-math>.  One\n        argument is the mean parameter, and the other the position.   We could call\n        that function <d-math>k</d-math> (with no subscript):",Et=m(),jt=l("d-math"),jt.textContent="\\begin{aligned}\n            k(x, x') & \\equiv \\tfrac{1}{\\sigma \\sqrt{2 \\pi}} e^{-\\tfrac{(x - x')^2}{2 \\sigma^2}} & : \\mathcal{X} \\times \\mathcal{X} \\rightarrow \\mathbb{R} \\\\\n            \\end{aligned}",St=m(),Nt=l("p"),Nt.innerHTML="More generally, we designed our solution function at the very beginning to\n        be a linear combination of functions which were 1) parameterized by a point in\n        <d-math>\\mathcal{X}</d-math> and 2) defined over domain\n        <d-math>\\mathcal{X}</d-math>.  Implicitly, the two-argument function that was\n        needed to define these functions was already there.",Rt=m(),At=l("p"),At.innerHTML="This function <d-math>k(x, x&#39;)</d-math> is known as a &quot;kernel&quot;.  We can now express the\n        matrix, and our solution function in terms of the kernel:",qt=m(),Ct=l("d-math"),Ct.textContent="\\begin{aligned}\n            K & \\equiv\n            \\begin{bmatrix}\n            k(x_1, x_1), \\cdots, k(x_1, x_n) \\\\\n            k(x_2, x_1), \\cdots, k(x_2, x_n) \\\\\n            \\cdots \\\\\n            k(x_n, x_1), \\cdots, k(x_n, x_n) \n            \\end{bmatrix} \\\\[1em]\n            f(x) & \\equiv \\sum_i { \\beta_i k(x_i, x) }\\\\\n            \\end{aligned}",Tt=m(),Vt=l("d-appendix"),p(o,"padding-bottom","0"),N((()=>t[1].call(M))),v(nt,"block",""),v(ct,"block",""),v(gt,"block",""),v(jt,"block",""),v(Ct,"block","")},m(m,v){a(m,e,v),s(e,r),s(e,n),s(e,o),s(e,i),s(e,h),s(e,c),s(e,f),s(f,d),s(f,w),s(f,x),s(f,y),s(f,M),s(M,_),P(k,_,null),$=function(t,e){"static"===getComputedStyle(t).position&&(t.style.position="relative");const r=l("iframe");r.setAttribute("style","display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"),r.setAttribute("aria-hidden","true"),r.tabIndex=-1;const n=b();let o;return n?(r.src="data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}<\/script>",o=g(window,"message",(t=>{t.source===r.contentWindow&&e()}))):(r.src="about:blank",r.onload=()=>{o=g(r.contentWindow,"resize",e)}),s(t,r),()=>{(n||o&&r.contentWindow)&&o(),u(r)}}(M,t[1].bind(M)),s(f,E),s(f,j),s(f,S),s(f,R),s(R,A),P(q,A,null),s(f,C),s(f,T),s(f,z),s(f,D),s(f,H),s(f,U),s(f,B),s(f,F),s(F,X),P(W,X,null),s(f,G),s(f,K),s(f,Q),s(f,Y),s(f,Z),s(f,J),s(f,tt),s(f,et),s(f,rt),s(f,nt),s(f,ot),s(f,it),s(it,st),P(at,st,null),s(f,ut),s(f,ht),s(f,lt),s(f,ct),s(f,ft),s(f,mt),s(f,dt),s(f,gt),s(f,wt),s(f,vt),s(f,pt),s(f,xt),s(xt,yt),P(bt,yt,null),s(f,Mt),s(f,_t),s(f,kt),s(f,$t),s(f,Et),s(f,jt),s(f,St),s(f,Nt),s(f,Rt),s(f,At),s(f,qt),s(f,Ct),s(e,Tt),s(e,Vt),It=!0},p(t,[e]){const r={};1&e&&(r.contextwidth=t[0]),k.$set(r);const n={};1&e&&(n.contextwidth=t[0]),q.$set(n);const o={};1&e&&(o.contextwidth=t[0]),W.$set(o);const i={};1&e&&(i.contextwidth=t[0]),at.$set(i);const s={};1&e&&(s.contextwidth=t[0]),bt.$set(s)},i(t){It||(V(k.$$.fragment,t),V(q.$$.fragment,t),V(W.$$.fragment,t),V(at.$$.fragment,t),V(bt.$$.fragment,t),It=!0)},o(t){I(k.$$.fragment,t),I(q.$$.fragment,t),I(W.$$.fragment,t),I(at.$$.fragment,t),I(bt.$$.fragment,t),It=!1},d(t){t&&u(e),L(k),$(),L(q),L(W),L(at),L(bt)}}}function ho(t,e,r){let n;return[n,function(){n=this.clientWidth,r(0,n)}]}return new class extends H{constructor(t){super(),D(this,t,ho,uo,i,{})}}({target:document.body})}();
+
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+var app = (function () {
+    'use strict';
+
+    function noop$1() { }
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function is_empty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function destroy_each(iterations, detaching) {
+        for (let i = 0; i < iterations.length; i += 1) {
+            if (iterations[i])
+                iterations[i].d(detaching);
+        }
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
+    }
+    function empty() {
+        return text('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else if (node.getAttribute(attribute) !== value)
+            node.setAttribute(attribute, value);
+    }
+    function set_custom_element_data(node, prop, value) {
+        if (prop in node) {
+            node[prop] = typeof node[prop] === 'boolean' && value === '' ? true : value;
+        }
+        else {
+            attr(node, prop, value);
+        }
+    }
+    function to_number(value) {
+        return value === '' ? null : +value;
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_input_value(input, value) {
+        input.value = value == null ? '' : value;
+    }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? 'important' : '');
+    }
+    // unfortunately this can't be a constant as that wouldn't be tree-shakeable
+    // so we cache the result instead
+    let crossorigin;
+    function is_crossorigin() {
+        if (crossorigin === undefined) {
+            crossorigin = false;
+            try {
+                if (typeof window !== 'undefined' && window.parent) {
+                    void window.parent.document;
+                }
+            }
+            catch (error) {
+                crossorigin = true;
+            }
+        }
+        return crossorigin;
+    }
+    function add_resize_listener(node, fn) {
+        const computed_style = getComputedStyle(node);
+        if (computed_style.position === 'static') {
+            node.style.position = 'relative';
+        }
+        const iframe = element('iframe');
+        iframe.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ' +
+            'overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;');
+        iframe.setAttribute('aria-hidden', 'true');
+        iframe.tabIndex = -1;
+        const crossorigin = is_crossorigin();
+        let unsubscribe;
+        if (crossorigin) {
+            iframe.src = "data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>";
+            unsubscribe = listen(window, 'message', (event) => {
+                if (event.source === iframe.contentWindow)
+                    fn();
+            });
+        }
+        else {
+            iframe.src = 'about:blank';
+            iframe.onload = () => {
+                unsubscribe = listen(iframe.contentWindow, 'resize', fn);
+            };
+        }
+        append(node, iframe);
+        return () => {
+            if (crossorigin) {
+                unsubscribe();
+            }
+            else if (unsubscribe && iframe.contentWindow) {
+                unsubscribe();
+            }
+            detach(iframe);
+        };
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, false, false, detail);
+        return e;
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    let flushing = false;
+    const seen_callbacks = new Set();
+    function flush() {
+        if (flushing)
+            return;
+        flushing = true;
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            for (let i = 0; i < dirty_components.length; i += 1) {
+                const component = dirty_components[i];
+                set_current_component(component);
+                update(component.$$);
+            }
+            set_current_component(null);
+            dirty_components.length = 0;
+            while (binding_callbacks.length)
+                binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                    callback();
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+        flushing = false;
+        seen_callbacks.clear();
+    }
+    function update($$) {
+        if ($$.fragment !== null) {
+            $$.update();
+            run_all($$.before_update);
+            const dirty = $$.dirty;
+            $$.dirty = [-1];
+            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+    const outroing = new Set();
+    let outros;
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+
+    const globals = (typeof window !== 'undefined'
+        ? window
+        : typeof globalThis !== 'undefined'
+            ? globalThis
+            : global);
+    function create_component(block) {
+        block && block.c();
+    }
+    function mount_component(component, target, anchor, customElement) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment && fragment.m(target, anchor);
+        if (!customElement) {
+            // onMount happens before the initial afterUpdate
+            add_render_callback(() => {
+                const new_on_destroy = on_mount.map(run).filter(is_function);
+                if (on_destroy) {
+                    on_destroy.push(...new_on_destroy);
+                }
+                else {
+                    // Edge case - component was destroyed immediately,
+                    // most likely as a result of a binding initialising
+                    run_all(new_on_destroy);
+                }
+                component.$$.on_mount = [];
+            });
+        }
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        const $$ = component.$$;
+        if ($$.fragment !== null) {
+            run_all($$.on_destroy);
+            $$.fragment && $$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            $$.on_destroy = $$.fragment = null;
+            $$.ctx = [];
+        }
+    }
+    function make_dirty(component, i) {
+        if (component.$$.dirty[0] === -1) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty.fill(0);
+        }
+        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+    }
+    function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props,
+            update: noop$1,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            on_disconnect: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(parent_component ? parent_component.$$.context : options.context || []),
+            // everything else
+            callbacks: blank_object(),
+            dirty,
+            skip_bound: false
+        };
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, options.props || {}, (i, ret, ...rest) => {
+                const value = rest.length ? rest[0] : ret;
+                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+                    if (!$$.skip_bound && $$.bound[i])
+                        $$.bound[i](value);
+                    if (ready)
+                        make_dirty(component, i);
+                }
+                return ret;
+            })
+            : [];
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        // `false` as a special case of no DOM component
+        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        if (options.target) {
+            if (options.hydrate) {
+                const nodes = children(options.target);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.l(nodes);
+                nodes.forEach(detach);
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.c();
+            }
+            if (options.intro)
+                transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor, options.customElement);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    /**
+     * Base class for Svelte components. Used when dev=false.
+     */
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop$1;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set($$props) {
+            if (this.$$set && !is_empty($$props)) {
+                this.$$.skip_bound = true;
+                this.$$set($$props);
+                this.$$.skip_bound = false;
+            }
+        }
+    }
+
+    function dispatch_dev(type, detail) {
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.38.2' }, detail)));
+    }
+    function append_dev(target, node) {
+        dispatch_dev('SvelteDOMInsert', { target, node });
+        append(target, node);
+    }
+    function insert_dev(target, node, anchor) {
+        dispatch_dev('SvelteDOMInsert', { target, node, anchor });
+        insert(target, node, anchor);
+    }
+    function detach_dev(node) {
+        dispatch_dev('SvelteDOMRemove', { node });
+        detach(node);
+    }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ['capture'] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev('SvelteDOMAddEventListener', { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev('SvelteDOMRemoveEventListener', { node, event, handler, modifiers });
+            dispose();
+        };
+    }
+    function attr_dev(node, attribute, value) {
+        attr(node, attribute, value);
+        if (value == null)
+            dispatch_dev('SvelteDOMRemoveAttribute', { node, attribute });
+        else
+            dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.wholeText === data)
+            return;
+        dispatch_dev('SvelteDOMSetData', { node: text, data });
+        text.data = data;
+    }
+    function validate_each_argument(arg) {
+        if (typeof arg !== 'string' && !(arg && typeof arg === 'object' && 'length' in arg)) {
+            let msg = '{#each} only iterates over array-like objects.';
+            if (typeof Symbol === 'function' && arg && Symbol.iterator in arg) {
+                msg += ' You can use a spread to convert this iterable into an array.';
+            }
+            throw new Error(msg);
+        }
+    }
+    function validate_slots(name, slot, keys) {
+        for (const slot_key of Object.keys(slot)) {
+            if (!~keys.indexOf(slot_key)) {
+                console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
+            }
+        }
+    }
+    /**
+     * Base class for Svelte components with some minor dev-enhancements. Used when dev=true.
+     */
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error("'target' is a required option");
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn('Component was already destroyed'); // eslint-disable-line no-console
+            };
+        }
+        $capture_state() { }
+        $inject_state() { }
+    }
+
+    const toString = Object.prototype.toString;
+
+    function isAnyArray(object) {
+      return toString.call(object).endsWith('Array]');
+    }
+
+    function max(input) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      if (!isAnyArray(input)) {
+        throw new TypeError('input must be an array');
+      }
+
+      if (input.length === 0) {
+        throw new TypeError('input must not be empty');
+      }
+
+      var _options$fromIndex = options.fromIndex,
+          fromIndex = _options$fromIndex === void 0 ? 0 : _options$fromIndex,
+          _options$toIndex = options.toIndex,
+          toIndex = _options$toIndex === void 0 ? input.length : _options$toIndex;
+
+      if (fromIndex < 0 || fromIndex >= input.length || !Number.isInteger(fromIndex)) {
+        throw new Error('fromIndex must be a positive integer smaller than length');
+      }
+
+      if (toIndex <= fromIndex || toIndex > input.length || !Number.isInteger(toIndex)) {
+        throw new Error('toIndex must be an integer greater than fromIndex and at most equal to length');
+      }
+
+      var maxValue = input[fromIndex];
+
+      for (var i = fromIndex + 1; i < toIndex; i++) {
+        if (input[i] > maxValue) maxValue = input[i];
+      }
+
+      return maxValue;
+    }
+
+    function min$1(input) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      if (!isAnyArray(input)) {
+        throw new TypeError('input must be an array');
+      }
+
+      if (input.length === 0) {
+        throw new TypeError('input must not be empty');
+      }
+
+      var _options$fromIndex = options.fromIndex,
+          fromIndex = _options$fromIndex === void 0 ? 0 : _options$fromIndex,
+          _options$toIndex = options.toIndex,
+          toIndex = _options$toIndex === void 0 ? input.length : _options$toIndex;
+
+      if (fromIndex < 0 || fromIndex >= input.length || !Number.isInteger(fromIndex)) {
+        throw new Error('fromIndex must be a positive integer smaller than length');
+      }
+
+      if (toIndex <= fromIndex || toIndex > input.length || !Number.isInteger(toIndex)) {
+        throw new Error('toIndex must be an integer greater than fromIndex and at most equal to length');
+      }
+
+      var minValue = input[fromIndex];
+
+      for (var i = fromIndex + 1; i < toIndex; i++) {
+        if (input[i] < minValue) minValue = input[i];
+      }
+
+      return minValue;
+    }
+
+    function rescale(input) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      if (!isAnyArray(input)) {
+        throw new TypeError('input must be an array');
+      } else if (input.length === 0) {
+        throw new TypeError('input must not be empty');
+      }
+
+      var output;
+
+      if (options.output !== undefined) {
+        if (!isAnyArray(options.output)) {
+          throw new TypeError('output option must be an array if specified');
+        }
+
+        output = options.output;
+      } else {
+        output = new Array(input.length);
+      }
+
+      var currentMin = min$1(input);
+      var currentMax = max(input);
+
+      if (currentMin === currentMax) {
+        throw new RangeError('minimum and maximum input values are equal. Cannot rescale a constant array');
+      }
+
+      var _options$min = options.min,
+          minValue = _options$min === void 0 ? options.autoMinMax ? currentMin : 0 : _options$min,
+          _options$max = options.max,
+          maxValue = _options$max === void 0 ? options.autoMinMax ? currentMax : 1 : _options$max;
+
+      if (minValue >= maxValue) {
+        throw new RangeError('min option must be smaller than max option');
+      }
+
+      var factor = (maxValue - minValue) / (currentMax - currentMin);
+
+      for (var i = 0; i < input.length; i++) {
+        output[i] = (input[i] - currentMin) * factor + minValue;
+      }
+
+      return output;
+    }
+
+    /**
+     * @class LuDecomposition
+     * @link https://github.com/lutzroeder/Mapack/blob/master/Source/LuDecomposition.cs
+     * @param {Matrix} matrix
+     */
+    class LuDecomposition {
+      constructor(matrix) {
+        matrix = WrapperMatrix2D.checkMatrix(matrix);
+
+        var lu = matrix.clone();
+        var rows = lu.rows;
+        var columns = lu.columns;
+        var pivotVector = new Array(rows);
+        var pivotSign = 1;
+        var i, j, k, p, s, t, v;
+        var LUcolj, kmax;
+
+        for (i = 0; i < rows; i++) {
+          pivotVector[i] = i;
+        }
+
+        LUcolj = new Array(rows);
+
+        for (j = 0; j < columns; j++) {
+          for (i = 0; i < rows; i++) {
+            LUcolj[i] = lu.get(i, j);
+          }
+
+          for (i = 0; i < rows; i++) {
+            kmax = Math.min(i, j);
+            s = 0;
+            for (k = 0; k < kmax; k++) {
+              s += lu.get(i, k) * LUcolj[k];
+            }
+            LUcolj[i] -= s;
+            lu.set(i, j, LUcolj[i]);
+          }
+
+          p = j;
+          for (i = j + 1; i < rows; i++) {
+            if (Math.abs(LUcolj[i]) > Math.abs(LUcolj[p])) {
+              p = i;
+            }
+          }
+
+          if (p !== j) {
+            for (k = 0; k < columns; k++) {
+              t = lu.get(p, k);
+              lu.set(p, k, lu.get(j, k));
+              lu.set(j, k, t);
+            }
+
+            v = pivotVector[p];
+            pivotVector[p] = pivotVector[j];
+            pivotVector[j] = v;
+
+            pivotSign = -pivotSign;
+          }
+
+          if (j < rows && lu.get(j, j) !== 0) {
+            for (i = j + 1; i < rows; i++) {
+              lu.set(i, j, lu.get(i, j) / lu.get(j, j));
+            }
+          }
+        }
+
+        this.LU = lu;
+        this.pivotVector = pivotVector;
+        this.pivotSign = pivotSign;
+      }
+
+      /**
+       *
+       * @return {boolean}
+       */
+      isSingular() {
+        var data = this.LU;
+        var col = data.columns;
+        for (var j = 0; j < col; j++) {
+          if (data[j][j] === 0) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      /**
+       *
+       * @param {Matrix} value
+       * @return {Matrix}
+       */
+      solve(value) {
+        value = Matrix.checkMatrix(value);
+
+        var lu = this.LU;
+        var rows = lu.rows;
+
+        if (rows !== value.rows) {
+          throw new Error('Invalid matrix dimensions');
+        }
+        if (this.isSingular()) {
+          throw new Error('LU matrix is singular');
+        }
+
+        var count = value.columns;
+        var X = value.subMatrixRow(this.pivotVector, 0, count - 1);
+        var columns = lu.columns;
+        var i, j, k;
+
+        for (k = 0; k < columns; k++) {
+          for (i = k + 1; i < columns; i++) {
+            for (j = 0; j < count; j++) {
+              X[i][j] -= X[k][j] * lu[i][k];
+            }
+          }
+        }
+        for (k = columns - 1; k >= 0; k--) {
+          for (j = 0; j < count; j++) {
+            X[k][j] /= lu[k][k];
+          }
+          for (i = 0; i < k; i++) {
+            for (j = 0; j < count; j++) {
+              X[i][j] -= X[k][j] * lu[i][k];
+            }
+          }
+        }
+        return X;
+      }
+
+      /**
+       *
+       * @return {number}
+       */
+      get determinant() {
+        var data = this.LU;
+        if (!data.isSquare()) {
+          throw new Error('Matrix must be square');
+        }
+        var determinant = this.pivotSign;
+        var col = data.columns;
+        for (var j = 0; j < col; j++) {
+          determinant *= data[j][j];
+        }
+        return determinant;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get lowerTriangularMatrix() {
+        var data = this.LU;
+        var rows = data.rows;
+        var columns = data.columns;
+        var X = new Matrix(rows, columns);
+        for (var i = 0; i < rows; i++) {
+          for (var j = 0; j < columns; j++) {
+            if (i > j) {
+              X[i][j] = data[i][j];
+            } else if (i === j) {
+              X[i][j] = 1;
+            } else {
+              X[i][j] = 0;
+            }
+          }
+        }
+        return X;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get upperTriangularMatrix() {
+        var data = this.LU;
+        var rows = data.rows;
+        var columns = data.columns;
+        var X = new Matrix(rows, columns);
+        for (var i = 0; i < rows; i++) {
+          for (var j = 0; j < columns; j++) {
+            if (i <= j) {
+              X[i][j] = data[i][j];
+            } else {
+              X[i][j] = 0;
+            }
+          }
+        }
+        return X;
+      }
+
+      /**
+       *
+       * @return {Array<number>}
+       */
+      get pivotPermutationVector() {
+        return this.pivotVector.slice();
+      }
+    }
+
+    function hypotenuse(a, b) {
+      var r = 0;
+      if (Math.abs(a) > Math.abs(b)) {
+        r = b / a;
+        return Math.abs(a) * Math.sqrt(1 + r * r);
+      }
+      if (b !== 0) {
+        r = a / b;
+        return Math.abs(b) * Math.sqrt(1 + r * r);
+      }
+      return 0;
+    }
+
+    function getFilled2DArray(rows, columns, value) {
+      var array = new Array(rows);
+      for (var i = 0; i < rows; i++) {
+        array[i] = new Array(columns);
+        for (var j = 0; j < columns; j++) {
+          array[i][j] = value;
+        }
+      }
+      return array;
+    }
+
+    /**
+     * @class SingularValueDecomposition
+     * @see https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Decompositions/SingularValueDecomposition.cs
+     * @param {Matrix} value
+     * @param {object} [options]
+     * @param {boolean} [options.computeLeftSingularVectors=true]
+     * @param {boolean} [options.computeRightSingularVectors=true]
+     * @param {boolean} [options.autoTranspose=false]
+     */
+    class SingularValueDecomposition {
+      constructor(value, options = {}) {
+        value = WrapperMatrix2D.checkMatrix(value);
+
+        var m = value.rows;
+        var n = value.columns;
+
+        const {
+          computeLeftSingularVectors = true,
+          computeRightSingularVectors = true,
+          autoTranspose = false
+        } = options;
+
+        var wantu = Boolean(computeLeftSingularVectors);
+        var wantv = Boolean(computeRightSingularVectors);
+
+        var swapped = false;
+        var a;
+        if (m < n) {
+          if (!autoTranspose) {
+            a = value.clone();
+            // eslint-disable-next-line no-console
+            console.warn(
+              'Computing SVD on a matrix with more columns than rows. Consider enabling autoTranspose'
+            );
+          } else {
+            a = value.transpose();
+            m = a.rows;
+            n = a.columns;
+            swapped = true;
+            var aux = wantu;
+            wantu = wantv;
+            wantv = aux;
+          }
+        } else {
+          a = value.clone();
+        }
+
+        var nu = Math.min(m, n);
+        var ni = Math.min(m + 1, n);
+        var s = new Array(ni);
+        var U = getFilled2DArray(m, nu, 0);
+        var V = getFilled2DArray(n, n, 0);
+
+        var e = new Array(n);
+        var work = new Array(m);
+
+        var si = new Array(ni);
+        for (let i = 0; i < ni; i++) si[i] = i;
+
+        var nct = Math.min(m - 1, n);
+        var nrt = Math.max(0, Math.min(n - 2, m));
+        var mrc = Math.max(nct, nrt);
+
+        for (let k = 0; k < mrc; k++) {
+          if (k < nct) {
+            s[k] = 0;
+            for (let i = k; i < m; i++) {
+              s[k] = hypotenuse(s[k], a[i][k]);
+            }
+            if (s[k] !== 0) {
+              if (a[k][k] < 0) {
+                s[k] = -s[k];
+              }
+              for (let i = k; i < m; i++) {
+                a[i][k] /= s[k];
+              }
+              a[k][k] += 1;
+            }
+            s[k] = -s[k];
+          }
+
+          for (let j = k + 1; j < n; j++) {
+            if (k < nct && s[k] !== 0) {
+              let t = 0;
+              for (let i = k; i < m; i++) {
+                t += a[i][k] * a[i][j];
+              }
+              t = -t / a[k][k];
+              for (let i = k; i < m; i++) {
+                a[i][j] += t * a[i][k];
+              }
+            }
+            e[j] = a[k][j];
+          }
+
+          if (wantu && k < nct) {
+            for (let i = k; i < m; i++) {
+              U[i][k] = a[i][k];
+            }
+          }
+
+          if (k < nrt) {
+            e[k] = 0;
+            for (let i = k + 1; i < n; i++) {
+              e[k] = hypotenuse(e[k], e[i]);
+            }
+            if (e[k] !== 0) {
+              if (e[k + 1] < 0) {
+                e[k] = 0 - e[k];
+              }
+              for (let i = k + 1; i < n; i++) {
+                e[i] /= e[k];
+              }
+              e[k + 1] += 1;
+            }
+            e[k] = -e[k];
+            if (k + 1 < m && e[k] !== 0) {
+              for (let i = k + 1; i < m; i++) {
+                work[i] = 0;
+              }
+              for (let i = k + 1; i < m; i++) {
+                for (let j = k + 1; j < n; j++) {
+                  work[i] += e[j] * a[i][j];
+                }
+              }
+              for (let j = k + 1; j < n; j++) {
+                let t = -e[j] / e[k + 1];
+                for (let i = k + 1; i < m; i++) {
+                  a[i][j] += t * work[i];
+                }
+              }
+            }
+            if (wantv) {
+              for (let i = k + 1; i < n; i++) {
+                V[i][k] = e[i];
+              }
+            }
+          }
+        }
+
+        let p = Math.min(n, m + 1);
+        if (nct < n) {
+          s[nct] = a[nct][nct];
+        }
+        if (m < p) {
+          s[p - 1] = 0;
+        }
+        if (nrt + 1 < p) {
+          e[nrt] = a[nrt][p - 1];
+        }
+        e[p - 1] = 0;
+
+        if (wantu) {
+          for (let j = nct; j < nu; j++) {
+            for (let i = 0; i < m; i++) {
+              U[i][j] = 0;
+            }
+            U[j][j] = 1;
+          }
+          for (let k = nct - 1; k >= 0; k--) {
+            if (s[k] !== 0) {
+              for (let j = k + 1; j < nu; j++) {
+                let t = 0;
+                for (let i = k; i < m; i++) {
+                  t += U[i][k] * U[i][j];
+                }
+                t = -t / U[k][k];
+                for (let i = k; i < m; i++) {
+                  U[i][j] += t * U[i][k];
+                }
+              }
+              for (let i = k; i < m; i++) {
+                U[i][k] = -U[i][k];
+              }
+              U[k][k] = 1 + U[k][k];
+              for (let i = 0; i < k - 1; i++) {
+                U[i][k] = 0;
+              }
+            } else {
+              for (let i = 0; i < m; i++) {
+                U[i][k] = 0;
+              }
+              U[k][k] = 1;
+            }
+          }
+        }
+
+        if (wantv) {
+          for (let k = n - 1; k >= 0; k--) {
+            if (k < nrt && e[k] !== 0) {
+              for (let j = k + 1; j < n; j++) {
+                let t = 0;
+                for (let i = k + 1; i < n; i++) {
+                  t += V[i][k] * V[i][j];
+                }
+                t = -t / V[k + 1][k];
+                for (let i = k + 1; i < n; i++) {
+                  V[i][j] += t * V[i][k];
+                }
+              }
+            }
+            for (let i = 0; i < n; i++) {
+              V[i][k] = 0;
+            }
+            V[k][k] = 1;
+          }
+        }
+
+        var pp = p - 1;
+        var eps = Number.EPSILON;
+        while (p > 0) {
+          let k, kase;
+          for (k = p - 2; k >= -1; k--) {
+            if (k === -1) {
+              break;
+            }
+            const alpha =
+              Number.MIN_VALUE + eps * Math.abs(s[k] + Math.abs(s[k + 1]));
+            if (Math.abs(e[k]) <= alpha || Number.isNaN(e[k])) {
+              e[k] = 0;
+              break;
+            }
+          }
+          if (k === p - 2) {
+            kase = 4;
+          } else {
+            let ks;
+            for (ks = p - 1; ks >= k; ks--) {
+              if (ks === k) {
+                break;
+              }
+              let t =
+                (ks !== p ? Math.abs(e[ks]) : 0) +
+                (ks !== k + 1 ? Math.abs(e[ks - 1]) : 0);
+              if (Math.abs(s[ks]) <= eps * t) {
+                s[ks] = 0;
+                break;
+              }
+            }
+            if (ks === k) {
+              kase = 3;
+            } else if (ks === p - 1) {
+              kase = 1;
+            } else {
+              kase = 2;
+              k = ks;
+            }
+          }
+
+          k++;
+
+          switch (kase) {
+            case 1: {
+              let f = e[p - 2];
+              e[p - 2] = 0;
+              for (let j = p - 2; j >= k; j--) {
+                let t = hypotenuse(s[j], f);
+                let cs = s[j] / t;
+                let sn = f / t;
+                s[j] = t;
+                if (j !== k) {
+                  f = -sn * e[j - 1];
+                  e[j - 1] = cs * e[j - 1];
+                }
+                if (wantv) {
+                  for (let i = 0; i < n; i++) {
+                    t = cs * V[i][j] + sn * V[i][p - 1];
+                    V[i][p - 1] = -sn * V[i][j] + cs * V[i][p - 1];
+                    V[i][j] = t;
+                  }
+                }
+              }
+              break;
+            }
+            case 2: {
+              let f = e[k - 1];
+              e[k - 1] = 0;
+              for (let j = k; j < p; j++) {
+                let t = hypotenuse(s[j], f);
+                let cs = s[j] / t;
+                let sn = f / t;
+                s[j] = t;
+                f = -sn * e[j];
+                e[j] = cs * e[j];
+                if (wantu) {
+                  for (let i = 0; i < m; i++) {
+                    t = cs * U[i][j] + sn * U[i][k - 1];
+                    U[i][k - 1] = -sn * U[i][j] + cs * U[i][k - 1];
+                    U[i][j] = t;
+                  }
+                }
+              }
+              break;
+            }
+            case 3: {
+              const scale = Math.max(
+                Math.abs(s[p - 1]),
+                Math.abs(s[p - 2]),
+                Math.abs(e[p - 2]),
+                Math.abs(s[k]),
+                Math.abs(e[k])
+              );
+              const sp = s[p - 1] / scale;
+              const spm1 = s[p - 2] / scale;
+              const epm1 = e[p - 2] / scale;
+              const sk = s[k] / scale;
+              const ek = e[k] / scale;
+              const b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2;
+              const c = sp * epm1 * (sp * epm1);
+              let shift = 0;
+              if (b !== 0 || c !== 0) {
+                if (b < 0) {
+                  shift = 0 - Math.sqrt(b * b + c);
+                } else {
+                  shift = Math.sqrt(b * b + c);
+                }
+                shift = c / (b + shift);
+              }
+              let f = (sk + sp) * (sk - sp) + shift;
+              let g = sk * ek;
+              for (let j = k; j < p - 1; j++) {
+                let t = hypotenuse(f, g);
+                if (t === 0) t = Number.MIN_VALUE;
+                let cs = f / t;
+                let sn = g / t;
+                if (j !== k) {
+                  e[j - 1] = t;
+                }
+                f = cs * s[j] + sn * e[j];
+                e[j] = cs * e[j] - sn * s[j];
+                g = sn * s[j + 1];
+                s[j + 1] = cs * s[j + 1];
+                if (wantv) {
+                  for (let i = 0; i < n; i++) {
+                    t = cs * V[i][j] + sn * V[i][j + 1];
+                    V[i][j + 1] = -sn * V[i][j] + cs * V[i][j + 1];
+                    V[i][j] = t;
+                  }
+                }
+                t = hypotenuse(f, g);
+                if (t === 0) t = Number.MIN_VALUE;
+                cs = f / t;
+                sn = g / t;
+                s[j] = t;
+                f = cs * e[j] + sn * s[j + 1];
+                s[j + 1] = -sn * e[j] + cs * s[j + 1];
+                g = sn * e[j + 1];
+                e[j + 1] = cs * e[j + 1];
+                if (wantu && j < m - 1) {
+                  for (let i = 0; i < m; i++) {
+                    t = cs * U[i][j] + sn * U[i][j + 1];
+                    U[i][j + 1] = -sn * U[i][j] + cs * U[i][j + 1];
+                    U[i][j] = t;
+                  }
+                }
+              }
+              e[p - 2] = f;
+              break;
+            }
+            case 4: {
+              if (s[k] <= 0) {
+                s[k] = s[k] < 0 ? -s[k] : 0;
+                if (wantv) {
+                  for (let i = 0; i <= pp; i++) {
+                    V[i][k] = -V[i][k];
+                  }
+                }
+              }
+              while (k < pp) {
+                if (s[k] >= s[k + 1]) {
+                  break;
+                }
+                let t = s[k];
+                s[k] = s[k + 1];
+                s[k + 1] = t;
+                if (wantv && k < n - 1) {
+                  for (let i = 0; i < n; i++) {
+                    t = V[i][k + 1];
+                    V[i][k + 1] = V[i][k];
+                    V[i][k] = t;
+                  }
+                }
+                if (wantu && k < m - 1) {
+                  for (let i = 0; i < m; i++) {
+                    t = U[i][k + 1];
+                    U[i][k + 1] = U[i][k];
+                    U[i][k] = t;
+                  }
+                }
+                k++;
+              }
+              p--;
+              break;
+            }
+            // no default
+          }
+        }
+
+        if (swapped) {
+          var tmp = V;
+          V = U;
+          U = tmp;
+        }
+
+        this.m = m;
+        this.n = n;
+        this.s = s;
+        this.U = U;
+        this.V = V;
+      }
+
+      /**
+       * Solve a problem of least square (Ax=b) by using the SVD. Useful when A is singular. When A is not singular, it would be better to use qr.solve(value).
+       * Example : We search to approximate x, with A matrix shape m*n, x vector size n, b vector size m (m > n). We will use :
+       * var svd = SingularValueDecomposition(A);
+       * var x = svd.solve(b);
+       * @param {Matrix} value - Matrix 1D which is the vector b (in the equation Ax = b)
+       * @return {Matrix} - The vector x
+       */
+      solve(value) {
+        var Y = value;
+        var e = this.threshold;
+        var scols = this.s.length;
+        var Ls = Matrix.zeros(scols, scols);
+
+        for (let i = 0; i < scols; i++) {
+          if (Math.abs(this.s[i]) <= e) {
+            Ls[i][i] = 0;
+          } else {
+            Ls[i][i] = 1 / this.s[i];
+          }
+        }
+
+        var U = this.U;
+        var V = this.rightSingularVectors;
+
+        var VL = V.mmul(Ls);
+        var vrows = V.rows;
+        var urows = U.length;
+        var VLU = Matrix.zeros(vrows, urows);
+
+        for (let i = 0; i < vrows; i++) {
+          for (let j = 0; j < urows; j++) {
+            let sum = 0;
+            for (let k = 0; k < scols; k++) {
+              sum += VL[i][k] * U[j][k];
+            }
+            VLU[i][j] = sum;
+          }
+        }
+
+        return VLU.mmul(Y);
+      }
+
+      /**
+       *
+       * @param {Array<number>} value
+       * @return {Matrix}
+       */
+      solveForDiagonal(value) {
+        return this.solve(Matrix.diag(value));
+      }
+
+      /**
+       * Get the inverse of the matrix. We compute the inverse of a matrix using SVD when this matrix is singular or ill-conditioned. Example :
+       * var svd = SingularValueDecomposition(A);
+       * var inverseA = svd.inverse();
+       * @return {Matrix} - The approximation of the inverse of the matrix
+       */
+      inverse() {
+        var V = this.V;
+        var e = this.threshold;
+        var vrows = V.length;
+        var vcols = V[0].length;
+        var X = new Matrix(vrows, this.s.length);
+
+        for (let i = 0; i < vrows; i++) {
+          for (let j = 0; j < vcols; j++) {
+            if (Math.abs(this.s[j]) > e) {
+              X[i][j] = V[i][j] / this.s[j];
+            } else {
+              X[i][j] = 0;
+            }
+          }
+        }
+
+        var U = this.U;
+
+        var urows = U.length;
+        var ucols = U[0].length;
+        var Y = new Matrix(vrows, urows);
+
+        for (let i = 0; i < vrows; i++) {
+          for (let j = 0; j < urows; j++) {
+            let sum = 0;
+            for (let k = 0; k < ucols; k++) {
+              sum += X[i][k] * U[j][k];
+            }
+            Y[i][j] = sum;
+          }
+        }
+
+        return Y;
+      }
+
+      /**
+       *
+       * @return {number}
+       */
+      get condition() {
+        return this.s[0] / this.s[Math.min(this.m, this.n) - 1];
+      }
+
+      /**
+       *
+       * @return {number}
+       */
+      get norm2() {
+        return this.s[0];
+      }
+
+      /**
+       *
+       * @return {number}
+       */
+      get rank() {
+        var tol = Math.max(this.m, this.n) * this.s[0] * Number.EPSILON;
+        var r = 0;
+        var s = this.s;
+        for (var i = 0, ii = s.length; i < ii; i++) {
+          if (s[i] > tol) {
+            r++;
+          }
+        }
+        return r;
+      }
+
+      /**
+       *
+       * @return {Array<number>}
+       */
+      get diagonal() {
+        return this.s;
+      }
+
+      /**
+       *
+       * @return {number}
+       */
+      get threshold() {
+        return Number.EPSILON / 2 * Math.max(this.m, this.n) * this.s[0];
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get leftSingularVectors() {
+        if (!Matrix.isMatrix(this.U)) {
+          this.U = new Matrix(this.U);
+        }
+        return this.U;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get rightSingularVectors() {
+        if (!Matrix.isMatrix(this.V)) {
+          this.V = new Matrix(this.V);
+        }
+        return this.V;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get diagonalMatrix() {
+        return Matrix.diag(this.s);
+      }
+    }
+
+    /**
+     * @private
+     * Check that a row index is not out of bounds
+     * @param {Matrix} matrix
+     * @param {number} index
+     * @param {boolean} [outer]
+     */
+    function checkRowIndex(matrix, index, outer) {
+      var max = outer ? matrix.rows : matrix.rows - 1;
+      if (index < 0 || index > max) {
+        throw new RangeError('Row index out of range');
+      }
+    }
+
+    /**
+     * @private
+     * Check that a column index is not out of bounds
+     * @param {Matrix} matrix
+     * @param {number} index
+     * @param {boolean} [outer]
+     */
+    function checkColumnIndex(matrix, index, outer) {
+      var max = outer ? matrix.columns : matrix.columns - 1;
+      if (index < 0 || index > max) {
+        throw new RangeError('Column index out of range');
+      }
+    }
+
+    /**
+     * @private
+     * Check that the provided vector is an array with the right length
+     * @param {Matrix} matrix
+     * @param {Array|Matrix} vector
+     * @return {Array}
+     * @throws {RangeError}
+     */
+    function checkRowVector(matrix, vector) {
+      if (vector.to1DArray) {
+        vector = vector.to1DArray();
+      }
+      if (vector.length !== matrix.columns) {
+        throw new RangeError(
+          'vector size must be the same as the number of columns'
+        );
+      }
+      return vector;
+    }
+
+    /**
+     * @private
+     * Check that the provided vector is an array with the right length
+     * @param {Matrix} matrix
+     * @param {Array|Matrix} vector
+     * @return {Array}
+     * @throws {RangeError}
+     */
+    function checkColumnVector(matrix, vector) {
+      if (vector.to1DArray) {
+        vector = vector.to1DArray();
+      }
+      if (vector.length !== matrix.rows) {
+        throw new RangeError('vector size must be the same as the number of rows');
+      }
+      return vector;
+    }
+
+    function checkIndices(matrix, rowIndices, columnIndices) {
+      return {
+        row: checkRowIndices(matrix, rowIndices),
+        column: checkColumnIndices(matrix, columnIndices)
+      };
+    }
+
+    function checkRowIndices(matrix, rowIndices) {
+      if (typeof rowIndices !== 'object') {
+        throw new TypeError('unexpected type for row indices');
+      }
+
+      var rowOut = rowIndices.some((r) => {
+        return r < 0 || r >= matrix.rows;
+      });
+
+      if (rowOut) {
+        throw new RangeError('row indices are out of range');
+      }
+
+      if (!Array.isArray(rowIndices)) rowIndices = Array.from(rowIndices);
+
+      return rowIndices;
+    }
+
+    function checkColumnIndices(matrix, columnIndices) {
+      if (typeof columnIndices !== 'object') {
+        throw new TypeError('unexpected type for column indices');
+      }
+
+      var columnOut = columnIndices.some((c) => {
+        return c < 0 || c >= matrix.columns;
+      });
+
+      if (columnOut) {
+        throw new RangeError('column indices are out of range');
+      }
+      if (!Array.isArray(columnIndices)) columnIndices = Array.from(columnIndices);
+
+      return columnIndices;
+    }
+
+    function checkRange(matrix, startRow, endRow, startColumn, endColumn) {
+      if (arguments.length !== 5) {
+        throw new RangeError('expected 4 arguments');
+      }
+      checkNumber('startRow', startRow);
+      checkNumber('endRow', endRow);
+      checkNumber('startColumn', startColumn);
+      checkNumber('endColumn', endColumn);
+      if (
+        startRow > endRow ||
+        startColumn > endColumn ||
+        startRow < 0 ||
+        startRow >= matrix.rows ||
+        endRow < 0 ||
+        endRow >= matrix.rows ||
+        startColumn < 0 ||
+        startColumn >= matrix.columns ||
+        endColumn < 0 ||
+        endColumn >= matrix.columns
+      ) {
+        throw new RangeError('Submatrix indices are out of range');
+      }
+    }
+
+    function sumByRow(matrix) {
+      var sum = Matrix.zeros(matrix.rows, 1);
+      for (var i = 0; i < matrix.rows; ++i) {
+        for (var j = 0; j < matrix.columns; ++j) {
+          sum.set(i, 0, sum.get(i, 0) + matrix.get(i, j));
+        }
+      }
+      return sum;
+    }
+
+    function sumByColumn(matrix) {
+      var sum = Matrix.zeros(1, matrix.columns);
+      for (var i = 0; i < matrix.rows; ++i) {
+        for (var j = 0; j < matrix.columns; ++j) {
+          sum.set(0, j, sum.get(0, j) + matrix.get(i, j));
+        }
+      }
+      return sum;
+    }
+
+    function sumAll(matrix) {
+      var v = 0;
+      for (var i = 0; i < matrix.rows; i++) {
+        for (var j = 0; j < matrix.columns; j++) {
+          v += matrix.get(i, j);
+        }
+      }
+      return v;
+    }
+
+    function checkNumber(name, value) {
+      if (typeof value !== 'number') {
+        throw new TypeError(`${name} must be a number`);
+      }
+    }
+
+    class BaseView extends AbstractMatrix() {
+      constructor(matrix, rows, columns) {
+        super();
+        this.matrix = matrix;
+        this.rows = rows;
+        this.columns = columns;
+      }
+
+      static get [Symbol.species]() {
+        return Matrix;
+      }
+    }
+
+    class MatrixTransposeView extends BaseView {
+      constructor(matrix) {
+        super(matrix, matrix.columns, matrix.rows);
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(columnIndex, rowIndex, value);
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(columnIndex, rowIndex);
+      }
+    }
+
+    class MatrixRowView extends BaseView {
+      constructor(matrix, row) {
+        super(matrix, 1, matrix.columns);
+        this.row = row;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(this.row, columnIndex, value);
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(this.row, columnIndex);
+      }
+    }
+
+    class MatrixSubView extends BaseView {
+      constructor(matrix, startRow, endRow, startColumn, endColumn) {
+        checkRange(matrix, startRow, endRow, startColumn, endColumn);
+        super(matrix, endRow - startRow + 1, endColumn - startColumn + 1);
+        this.startRow = startRow;
+        this.startColumn = startColumn;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(
+          this.startRow + rowIndex,
+          this.startColumn + columnIndex,
+          value
+        );
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(
+          this.startRow + rowIndex,
+          this.startColumn + columnIndex
+        );
+      }
+    }
+
+    class MatrixSelectionView extends BaseView {
+      constructor(matrix, rowIndices, columnIndices) {
+        var indices = checkIndices(matrix, rowIndices, columnIndices);
+        super(matrix, indices.row.length, indices.column.length);
+        this.rowIndices = indices.row;
+        this.columnIndices = indices.column;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(
+          this.rowIndices[rowIndex],
+          this.columnIndices[columnIndex],
+          value
+        );
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(
+          this.rowIndices[rowIndex],
+          this.columnIndices[columnIndex]
+        );
+      }
+    }
+
+    class MatrixRowSelectionView extends BaseView {
+      constructor(matrix, rowIndices) {
+        rowIndices = checkRowIndices(matrix, rowIndices);
+        super(matrix, rowIndices.length, matrix.columns);
+        this.rowIndices = rowIndices;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(this.rowIndices[rowIndex], columnIndex, value);
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(this.rowIndices[rowIndex], columnIndex);
+      }
+    }
+
+    class MatrixColumnSelectionView extends BaseView {
+      constructor(matrix, columnIndices) {
+        columnIndices = checkColumnIndices(matrix, columnIndices);
+        super(matrix, matrix.rows, columnIndices.length);
+        this.columnIndices = columnIndices;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(rowIndex, this.columnIndices[columnIndex], value);
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(rowIndex, this.columnIndices[columnIndex]);
+      }
+    }
+
+    class MatrixColumnView extends BaseView {
+      constructor(matrix, column) {
+        super(matrix, matrix.rows, 1);
+        this.column = column;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(rowIndex, this.column, value);
+        return this;
+      }
+
+      get(rowIndex) {
+        return this.matrix.get(rowIndex, this.column);
+      }
+    }
+
+    class MatrixFlipRowView extends BaseView {
+      constructor(matrix) {
+        super(matrix, matrix.rows, matrix.columns);
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(this.rows - rowIndex - 1, columnIndex, value);
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(this.rows - rowIndex - 1, columnIndex);
+      }
+    }
+
+    class MatrixFlipColumnView extends BaseView {
+      constructor(matrix) {
+        super(matrix, matrix.rows, matrix.columns);
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.matrix.set(rowIndex, this.columns - columnIndex - 1, value);
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.matrix.get(rowIndex, this.columns - columnIndex - 1);
+      }
+    }
+
+    function AbstractMatrix(superCtor) {
+      if (superCtor === undefined) superCtor = Object;
+
+      /**
+       * Real matrix
+       * @class Matrix
+       * @param {number|Array|Matrix} nRows - Number of rows of the new matrix,
+       * 2D array containing the data or Matrix instance to clone
+       * @param {number} [nColumns] - Number of columns of the new matrix
+       */
+      class Matrix extends superCtor {
+        static get [Symbol.species]() {
+          return this;
+        }
+
+        /**
+         * Constructs a Matrix with the chosen dimensions from a 1D array
+         * @param {number} newRows - Number of rows
+         * @param {number} newColumns - Number of columns
+         * @param {Array} newData - A 1D array containing data for the matrix
+         * @return {Matrix} - The new matrix
+         */
+        static from1DArray(newRows, newColumns, newData) {
+          var length = newRows * newColumns;
+          if (length !== newData.length) {
+            throw new RangeError('Data length does not match given dimensions');
+          }
+          var newMatrix = new this(newRows, newColumns);
+          for (var row = 0; row < newRows; row++) {
+            for (var column = 0; column < newColumns; column++) {
+              newMatrix.set(row, column, newData[row * newColumns + column]);
+            }
+          }
+          return newMatrix;
+        }
+
+        /**
+             * Creates a row vector, a matrix with only one row.
+             * @param {Array} newData - A 1D array containing data for the vector
+             * @return {Matrix} - The new matrix
+             */
+        static rowVector(newData) {
+          var vector = new this(1, newData.length);
+          for (var i = 0; i < newData.length; i++) {
+            vector.set(0, i, newData[i]);
+          }
+          return vector;
+        }
+
+        /**
+             * Creates a column vector, a matrix with only one column.
+             * @param {Array} newData - A 1D array containing data for the vector
+             * @return {Matrix} - The new matrix
+             */
+        static columnVector(newData) {
+          var vector = new this(newData.length, 1);
+          for (var i = 0; i < newData.length; i++) {
+            vector.set(i, 0, newData[i]);
+          }
+          return vector;
+        }
+
+        /**
+             * Creates an empty matrix with the given dimensions. Values will be undefined. Same as using new Matrix(rows, columns).
+             * @param {number} rows - Number of rows
+             * @param {number} columns - Number of columns
+             * @return {Matrix} - The new matrix
+             */
+        static empty(rows, columns) {
+          return new this(rows, columns);
+        }
+
+        /**
+             * Creates a matrix with the given dimensions. Values will be set to zero.
+             * @param {number} rows - Number of rows
+             * @param {number} columns - Number of columns
+             * @return {Matrix} - The new matrix
+             */
+        static zeros(rows, columns) {
+          return this.empty(rows, columns).fill(0);
+        }
+
+        /**
+             * Creates a matrix with the given dimensions. Values will be set to one.
+             * @param {number} rows - Number of rows
+             * @param {number} columns - Number of columns
+             * @return {Matrix} - The new matrix
+             */
+        static ones(rows, columns) {
+          return this.empty(rows, columns).fill(1);
+        }
+
+        /**
+             * Creates a matrix with the given dimensions. Values will be randomly set.
+             * @param {number} rows - Number of rows
+             * @param {number} columns - Number of columns
+             * @param {function} [rng=Math.random] - Random number generator
+             * @return {Matrix} The new matrix
+             */
+        static rand(rows, columns, rng) {
+          if (rng === undefined) rng = Math.random;
+          var matrix = this.empty(rows, columns);
+          for (var i = 0; i < rows; i++) {
+            for (var j = 0; j < columns; j++) {
+              matrix.set(i, j, rng());
+            }
+          }
+          return matrix;
+        }
+
+        /**
+             * Creates a matrix with the given dimensions. Values will be random integers.
+             * @param {number} rows - Number of rows
+             * @param {number} columns - Number of columns
+             * @param {number} [maxValue=1000] - Maximum value
+             * @param {function} [rng=Math.random] - Random number generator
+             * @return {Matrix} The new matrix
+             */
+        static randInt(rows, columns, maxValue, rng) {
+          if (maxValue === undefined) maxValue = 1000;
+          if (rng === undefined) rng = Math.random;
+          var matrix = this.empty(rows, columns);
+          for (var i = 0; i < rows; i++) {
+            for (var j = 0; j < columns; j++) {
+              var value = Math.floor(rng() * maxValue);
+              matrix.set(i, j, value);
+            }
+          }
+          return matrix;
+        }
+
+        /**
+             * Creates an identity matrix with the given dimension. Values of the diagonal will be 1 and others will be 0.
+             * @param {number} rows - Number of rows
+             * @param {number} [columns=rows] - Number of columns
+             * @param {number} [value=1] - Value to fill the diagonal with
+             * @return {Matrix} - The new identity matrix
+             */
+        static eye(rows, columns, value) {
+          if (columns === undefined) columns = rows;
+          if (value === undefined) value = 1;
+          var min = Math.min(rows, columns);
+          var matrix = this.zeros(rows, columns);
+          for (var i = 0; i < min; i++) {
+            matrix.set(i, i, value);
+          }
+          return matrix;
+        }
+
+        /**
+             * Creates a diagonal matrix based on the given array.
+             * @param {Array} data - Array containing the data for the diagonal
+             * @param {number} [rows] - Number of rows (Default: data.length)
+             * @param {number} [columns] - Number of columns (Default: rows)
+             * @return {Matrix} - The new diagonal matrix
+             */
+        static diag(data, rows, columns) {
+          var l = data.length;
+          if (rows === undefined) rows = l;
+          if (columns === undefined) columns = rows;
+          var min = Math.min(l, rows, columns);
+          var matrix = this.zeros(rows, columns);
+          for (var i = 0; i < min; i++) {
+            matrix.set(i, i, data[i]);
+          }
+          return matrix;
+        }
+
+        /**
+             * Returns a matrix whose elements are the minimum between matrix1 and matrix2
+             * @param {Matrix} matrix1
+             * @param {Matrix} matrix2
+             * @return {Matrix}
+             */
+        static min(matrix1, matrix2) {
+          matrix1 = this.checkMatrix(matrix1);
+          matrix2 = this.checkMatrix(matrix2);
+          var rows = matrix1.rows;
+          var columns = matrix1.columns;
+          var result = new this(rows, columns);
+          for (var i = 0; i < rows; i++) {
+            for (var j = 0; j < columns; j++) {
+              result.set(i, j, Math.min(matrix1.get(i, j), matrix2.get(i, j)));
+            }
+          }
+          return result;
+        }
+
+        /**
+             * Returns a matrix whose elements are the maximum between matrix1 and matrix2
+             * @param {Matrix} matrix1
+             * @param {Matrix} matrix2
+             * @return {Matrix}
+             */
+        static max(matrix1, matrix2) {
+          matrix1 = this.checkMatrix(matrix1);
+          matrix2 = this.checkMatrix(matrix2);
+          var rows = matrix1.rows;
+          var columns = matrix1.columns;
+          var result = new this(rows, columns);
+          for (var i = 0; i < rows; i++) {
+            for (var j = 0; j < columns; j++) {
+              result.set(i, j, Math.max(matrix1.get(i, j), matrix2.get(i, j)));
+            }
+          }
+          return result;
+        }
+
+        /**
+             * Check that the provided value is a Matrix and tries to instantiate one if not
+             * @param {*} value - The value to check
+             * @return {Matrix}
+             */
+        static checkMatrix(value) {
+          return Matrix.isMatrix(value) ? value : new this(value);
+        }
+
+        /**
+             * Returns true if the argument is a Matrix, false otherwise
+             * @param {*} value - The value to check
+             * @return {boolean}
+             */
+        static isMatrix(value) {
+          return (value != null) && (value.klass === 'Matrix');
+        }
+
+        /**
+             * @prop {number} size - The number of elements in the matrix.
+             */
+        get size() {
+          return this.rows * this.columns;
+        }
+
+        /**
+             * Applies a callback for each element of the matrix. The function is called in the matrix (this) context.
+             * @param {function} callback - Function that will be called with two parameters : i (row) and j (column)
+             * @return {Matrix} this
+             */
+        apply(callback) {
+          if (typeof callback !== 'function') {
+            throw new TypeError('callback must be a function');
+          }
+          var ii = this.rows;
+          var jj = this.columns;
+          for (var i = 0; i < ii; i++) {
+            for (var j = 0; j < jj; j++) {
+              callback.call(this, i, j);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Returns a new 1D array filled row by row with the matrix values
+             * @return {Array}
+             */
+        to1DArray() {
+          var array = new Array(this.size);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              array[i * this.columns + j] = this.get(i, j);
+            }
+          }
+          return array;
+        }
+
+        /**
+             * Returns a 2D array containing a copy of the data
+             * @return {Array}
+             */
+        to2DArray() {
+          var copy = new Array(this.rows);
+          for (var i = 0; i < this.rows; i++) {
+            copy[i] = new Array(this.columns);
+            for (var j = 0; j < this.columns; j++) {
+              copy[i][j] = this.get(i, j);
+            }
+          }
+          return copy;
+        }
+
+        /**
+             * @return {boolean} true if the matrix has one row
+             */
+        isRowVector() {
+          return this.rows === 1;
+        }
+
+        /**
+             * @return {boolean} true if the matrix has one column
+             */
+        isColumnVector() {
+          return this.columns === 1;
+        }
+
+        /**
+             * @return {boolean} true if the matrix has one row or one column
+             */
+        isVector() {
+          return (this.rows === 1) || (this.columns === 1);
+        }
+
+        /**
+             * @return {boolean} true if the matrix has the same number of rows and columns
+             */
+        isSquare() {
+          return this.rows === this.columns;
+        }
+
+        /**
+             * @return {boolean} true if the matrix is square and has the same values on both sides of the diagonal
+             */
+        isSymmetric() {
+          if (this.isSquare()) {
+            for (var i = 0; i < this.rows; i++) {
+              for (var j = 0; j <= i; j++) {
+                if (this.get(i, j) !== this.get(j, i)) {
+                  return false;
+                }
+              }
+            }
+            return true;
+          }
+          return false;
+        }
+
+        /**
+              * @return true if the matrix is in echelon form
+              */
+        isEchelonForm() {
+          let i = 0;
+          let j = 0;
+          let previousColumn = -1;
+          let isEchelonForm = true;
+          let checked = false;
+          while ((i < this.rows) && (isEchelonForm)) {
+            j = 0;
+            checked = false;
+            while ((j < this.columns) && (checked === false)) {
+              if (this.get(i, j) === 0) {
+                j++;
+              } else if ((this.get(i, j) === 1) && (j > previousColumn)) {
+                checked = true;
+                previousColumn = j;
+              } else {
+                isEchelonForm = false;
+                checked = true;
+              }
+            }
+            i++;
+          }
+          return isEchelonForm;
+        }
+
+        /**
+                 * @return true if the matrix is in reduced echelon form
+                 */
+        isReducedEchelonForm() {
+          let i = 0;
+          let j = 0;
+          let previousColumn = -1;
+          let isReducedEchelonForm = true;
+          let checked = false;
+          while ((i < this.rows) && (isReducedEchelonForm)) {
+            j = 0;
+            checked = false;
+            while ((j < this.columns) && (checked === false)) {
+              if (this.get(i, j) === 0) {
+                j++;
+              } else if ((this.get(i, j) === 1) && (j > previousColumn)) {
+                checked = true;
+                previousColumn = j;
+              } else {
+                isReducedEchelonForm = false;
+                checked = true;
+              }
+            }
+            for (let k = j + 1; k < this.rows; k++) {
+              if (this.get(i, k) !== 0) {
+                isReducedEchelonForm = false;
+              }
+            }
+            i++;
+          }
+          return isReducedEchelonForm;
+        }
+
+        /**
+             * Sets a given element of the matrix. mat.set(3,4,1) is equivalent to mat[3][4]=1
+             * @abstract
+             * @param {number} rowIndex - Index of the row
+             * @param {number} columnIndex - Index of the column
+             * @param {number} value - The new value for the element
+             * @return {Matrix} this
+             */
+        set(rowIndex, columnIndex, value) { // eslint-disable-line no-unused-vars
+          throw new Error('set method is unimplemented');
+        }
+
+        /**
+             * Returns the given element of the matrix. mat.get(3,4) is equivalent to matrix[3][4]
+             * @abstract
+             * @param {number} rowIndex - Index of the row
+             * @param {number} columnIndex - Index of the column
+             * @return {number}
+             */
+        get(rowIndex, columnIndex) { // eslint-disable-line no-unused-vars
+          throw new Error('get method is unimplemented');
+        }
+
+        /**
+             * Creates a new matrix that is a repetition of the current matrix. New matrix has rowRep times the number of
+             * rows of the matrix, and colRep times the number of columns of the matrix
+             * @param {number} rowRep - Number of times the rows should be repeated
+             * @param {number} colRep - Number of times the columns should be re
+             * @return {Matrix}
+             * @example
+             * var matrix = new Matrix([[1,2]]);
+             * matrix.repeat(2); // [[1,2],[1,2]]
+             */
+        repeat(rowRep, colRep) {
+          rowRep = rowRep || 1;
+          colRep = colRep || 1;
+          var matrix = new this.constructor[Symbol.species](this.rows * rowRep, this.columns * colRep);
+          for (var i = 0; i < rowRep; i++) {
+            for (var j = 0; j < colRep; j++) {
+              matrix.setSubMatrix(this, this.rows * i, this.columns * j);
+            }
+          }
+          return matrix;
+        }
+
+        /**
+             * Fills the matrix with a given value. All elements will be set to this value.
+             * @param {number} value - New value
+             * @return {Matrix} this
+             */
+        fill(value) {
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, value);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Negates the matrix. All elements will be multiplied by (-1)
+             * @return {Matrix} this
+             */
+        neg() {
+          return this.mulS(-1);
+        }
+
+        /**
+             * Returns a new array from the given row index
+             * @param {number} index - Row index
+             * @return {Array}
+             */
+        getRow(index) {
+          checkRowIndex(this, index);
+          var row = new Array(this.columns);
+          for (var i = 0; i < this.columns; i++) {
+            row[i] = this.get(index, i);
+          }
+          return row;
+        }
+
+        /**
+             * Returns a new row vector from the given row index
+             * @param {number} index - Row index
+             * @return {Matrix}
+             */
+        getRowVector(index) {
+          return this.constructor.rowVector(this.getRow(index));
+        }
+
+        /**
+             * Sets a row at the given index
+             * @param {number} index - Row index
+             * @param {Array|Matrix} array - Array or vector
+             * @return {Matrix} this
+             */
+        setRow(index, array) {
+          checkRowIndex(this, index);
+          array = checkRowVector(this, array);
+          for (var i = 0; i < this.columns; i++) {
+            this.set(index, i, array[i]);
+          }
+          return this;
+        }
+
+        /**
+             * Swaps two rows
+             * @param {number} row1 - First row index
+             * @param {number} row2 - Second row index
+             * @return {Matrix} this
+             */
+        swapRows(row1, row2) {
+          checkRowIndex(this, row1);
+          checkRowIndex(this, row2);
+          for (var i = 0; i < this.columns; i++) {
+            var temp = this.get(row1, i);
+            this.set(row1, i, this.get(row2, i));
+            this.set(row2, i, temp);
+          }
+          return this;
+        }
+
+        /**
+             * Returns a new array from the given column index
+             * @param {number} index - Column index
+             * @return {Array}
+             */
+        getColumn(index) {
+          checkColumnIndex(this, index);
+          var column = new Array(this.rows);
+          for (var i = 0; i < this.rows; i++) {
+            column[i] = this.get(i, index);
+          }
+          return column;
+        }
+
+        /**
+             * Returns a new column vector from the given column index
+             * @param {number} index - Column index
+             * @return {Matrix}
+             */
+        getColumnVector(index) {
+          return this.constructor.columnVector(this.getColumn(index));
+        }
+
+        /**
+             * Sets a column at the given index
+             * @param {number} index - Column index
+             * @param {Array|Matrix} array - Array or vector
+             * @return {Matrix} this
+             */
+        setColumn(index, array) {
+          checkColumnIndex(this, index);
+          array = checkColumnVector(this, array);
+          for (var i = 0; i < this.rows; i++) {
+            this.set(i, index, array[i]);
+          }
+          return this;
+        }
+
+        /**
+             * Swaps two columns
+             * @param {number} column1 - First column index
+             * @param {number} column2 - Second column index
+             * @return {Matrix} this
+             */
+        swapColumns(column1, column2) {
+          checkColumnIndex(this, column1);
+          checkColumnIndex(this, column2);
+          for (var i = 0; i < this.rows; i++) {
+            var temp = this.get(i, column1);
+            this.set(i, column1, this.get(i, column2));
+            this.set(i, column2, temp);
+          }
+          return this;
+        }
+
+        /**
+             * Adds the values of a vector to each row
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        addRowVector(vector) {
+          vector = checkRowVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) + vector[j]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Subtracts the values of a vector from each row
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        subRowVector(vector) {
+          vector = checkRowVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) - vector[j]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Multiplies the values of a vector with each row
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        mulRowVector(vector) {
+          vector = checkRowVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) * vector[j]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Divides the values of each row by those of a vector
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        divRowVector(vector) {
+          vector = checkRowVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) / vector[j]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Adds the values of a vector to each column
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        addColumnVector(vector) {
+          vector = checkColumnVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) + vector[i]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Subtracts the values of a vector from each column
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        subColumnVector(vector) {
+          vector = checkColumnVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) - vector[i]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Multiplies the values of a vector with each column
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        mulColumnVector(vector) {
+          vector = checkColumnVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) * vector[i]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Divides the values of each column by those of a vector
+             * @param {Array|Matrix} vector - Array or vector
+             * @return {Matrix} this
+             */
+        divColumnVector(vector) {
+          vector = checkColumnVector(this, vector);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              this.set(i, j, this.get(i, j) / vector[i]);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Multiplies the values of a row with a scalar
+             * @param {number} index - Row index
+             * @param {number} value
+             * @return {Matrix} this
+             */
+        mulRow(index, value) {
+          checkRowIndex(this, index);
+          for (var i = 0; i < this.columns; i++) {
+            this.set(index, i, this.get(index, i) * value);
+          }
+          return this;
+        }
+
+        /**
+             * Multiplies the values of a column with a scalar
+             * @param {number} index - Column index
+             * @param {number} value
+             * @return {Matrix} this
+             */
+        mulColumn(index, value) {
+          checkColumnIndex(this, index);
+          for (var i = 0; i < this.rows; i++) {
+            this.set(i, index, this.get(i, index) * value);
+          }
+          return this;
+        }
+
+        /**
+             * Returns the maximum value of the matrix
+             * @return {number}
+             */
+        max() {
+          var v = this.get(0, 0);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              if (this.get(i, j) > v) {
+                v = this.get(i, j);
+              }
+            }
+          }
+          return v;
+        }
+
+        /**
+             * Returns the index of the maximum value
+             * @return {Array}
+             */
+        maxIndex() {
+          var v = this.get(0, 0);
+          var idx = [0, 0];
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              if (this.get(i, j) > v) {
+                v = this.get(i, j);
+                idx[0] = i;
+                idx[1] = j;
+              }
+            }
+          }
+          return idx;
+        }
+
+        /**
+             * Returns the minimum value of the matrix
+             * @return {number}
+             */
+        min() {
+          var v = this.get(0, 0);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              if (this.get(i, j) < v) {
+                v = this.get(i, j);
+              }
+            }
+          }
+          return v;
+        }
+
+        /**
+             * Returns the index of the minimum value
+             * @return {Array}
+             */
+        minIndex() {
+          var v = this.get(0, 0);
+          var idx = [0, 0];
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              if (this.get(i, j) < v) {
+                v = this.get(i, j);
+                idx[0] = i;
+                idx[1] = j;
+              }
+            }
+          }
+          return idx;
+        }
+
+        /**
+             * Returns the maximum value of one row
+             * @param {number} row - Row index
+             * @return {number}
+             */
+        maxRow(row) {
+          checkRowIndex(this, row);
+          var v = this.get(row, 0);
+          for (var i = 1; i < this.columns; i++) {
+            if (this.get(row, i) > v) {
+              v = this.get(row, i);
+            }
+          }
+          return v;
+        }
+
+        /**
+             * Returns the index of the maximum value of one row
+             * @param {number} row - Row index
+             * @return {Array}
+             */
+        maxRowIndex(row) {
+          checkRowIndex(this, row);
+          var v = this.get(row, 0);
+          var idx = [row, 0];
+          for (var i = 1; i < this.columns; i++) {
+            if (this.get(row, i) > v) {
+              v = this.get(row, i);
+              idx[1] = i;
+            }
+          }
+          return idx;
+        }
+
+        /**
+             * Returns the minimum value of one row
+             * @param {number} row - Row index
+             * @return {number}
+             */
+        minRow(row) {
+          checkRowIndex(this, row);
+          var v = this.get(row, 0);
+          for (var i = 1; i < this.columns; i++) {
+            if (this.get(row, i) < v) {
+              v = this.get(row, i);
+            }
+          }
+          return v;
+        }
+
+        /**
+             * Returns the index of the maximum value of one row
+             * @param {number} row - Row index
+             * @return {Array}
+             */
+        minRowIndex(row) {
+          checkRowIndex(this, row);
+          var v = this.get(row, 0);
+          var idx = [row, 0];
+          for (var i = 1; i < this.columns; i++) {
+            if (this.get(row, i) < v) {
+              v = this.get(row, i);
+              idx[1] = i;
+            }
+          }
+          return idx;
+        }
+
+        /**
+             * Returns the maximum value of one column
+             * @param {number} column - Column index
+             * @return {number}
+             */
+        maxColumn(column) {
+          checkColumnIndex(this, column);
+          var v = this.get(0, column);
+          for (var i = 1; i < this.rows; i++) {
+            if (this.get(i, column) > v) {
+              v = this.get(i, column);
+            }
+          }
+          return v;
+        }
+
+        /**
+             * Returns the index of the maximum value of one column
+             * @param {number} column - Column index
+             * @return {Array}
+             */
+        maxColumnIndex(column) {
+          checkColumnIndex(this, column);
+          var v = this.get(0, column);
+          var idx = [0, column];
+          for (var i = 1; i < this.rows; i++) {
+            if (this.get(i, column) > v) {
+              v = this.get(i, column);
+              idx[0] = i;
+            }
+          }
+          return idx;
+        }
+
+        /**
+             * Returns the minimum value of one column
+             * @param {number} column - Column index
+             * @return {number}
+             */
+        minColumn(column) {
+          checkColumnIndex(this, column);
+          var v = this.get(0, column);
+          for (var i = 1; i < this.rows; i++) {
+            if (this.get(i, column) < v) {
+              v = this.get(i, column);
+            }
+          }
+          return v;
+        }
+
+        /**
+             * Returns the index of the minimum value of one column
+             * @param {number} column - Column index
+             * @return {Array}
+             */
+        minColumnIndex(column) {
+          checkColumnIndex(this, column);
+          var v = this.get(0, column);
+          var idx = [0, column];
+          for (var i = 1; i < this.rows; i++) {
+            if (this.get(i, column) < v) {
+              v = this.get(i, column);
+              idx[0] = i;
+            }
+          }
+          return idx;
+        }
+
+        /**
+             * Returns an array containing the diagonal values of the matrix
+             * @return {Array}
+             */
+        diag() {
+          var min = Math.min(this.rows, this.columns);
+          var diag = new Array(min);
+          for (var i = 0; i < min; i++) {
+            diag[i] = this.get(i, i);
+          }
+          return diag;
+        }
+
+        /**
+             * Returns the sum by the argument given, if no argument given,
+             * it returns the sum of all elements of the matrix.
+             * @param {string} by - sum by 'row' or 'column'.
+             * @return {Matrix|number}
+             */
+        sum(by) {
+          switch (by) {
+            case 'row':
+              return sumByRow(this);
+            case 'column':
+              return sumByColumn(this);
+            default:
+              return sumAll(this);
+          }
+        }
+
+        /**
+             * Returns the mean of all elements of the matrix
+             * @return {number}
+             */
+        mean() {
+          return this.sum() / this.size;
+        }
+
+        /**
+             * Returns the product of all elements of the matrix
+             * @return {number}
+             */
+        prod() {
+          var prod = 1;
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              prod *= this.get(i, j);
+            }
+          }
+          return prod;
+        }
+
+        /**
+             * Returns the norm of a matrix.
+             * @param {string} type - "frobenius" (default) or "max" return resp. the Frobenius norm and the max norm.
+             * @return {number}
+             */
+        norm(type = 'frobenius') {
+          var result = 0;
+          if (type === 'max') {
+            return this.max();
+          } else if (type === 'frobenius') {
+            for (var i = 0; i < this.rows; i++) {
+              for (var j = 0; j < this.columns; j++) {
+                result = result + this.get(i, j) * this.get(i, j);
+              }
+            }
+            return Math.sqrt(result);
+          } else {
+            throw new RangeError(`unknown norm type: ${type}`);
+          }
+        }
+
+        /**
+             * Computes the cumulative sum of the matrix elements (in place, row by row)
+             * @return {Matrix} this
+             */
+        cumulativeSum() {
+          var sum = 0;
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              sum += this.get(i, j);
+              this.set(i, j, sum);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Computes the dot (scalar) product between the matrix and another
+             * @param {Matrix} vector2 vector
+             * @return {number}
+             */
+        dot(vector2) {
+          if (Matrix.isMatrix(vector2)) vector2 = vector2.to1DArray();
+          var vector1 = this.to1DArray();
+          if (vector1.length !== vector2.length) {
+            throw new RangeError('vectors do not have the same size');
+          }
+          var dot = 0;
+          for (var i = 0; i < vector1.length; i++) {
+            dot += vector1[i] * vector2[i];
+          }
+          return dot;
+        }
+
+        /**
+             * Returns the matrix product between this and other
+             * @param {Matrix} other
+             * @return {Matrix}
+             */
+        mmul(other) {
+          other = this.constructor.checkMatrix(other);
+          if (this.columns !== other.rows) {
+            // eslint-disable-next-line no-console
+            console.warn('Number of columns of left matrix are not equal to number of rows of right matrix.');
+          }
+
+          var m = this.rows;
+          var n = this.columns;
+          var p = other.columns;
+
+          var result = new this.constructor[Symbol.species](m, p);
+
+          var Bcolj = new Array(n);
+          for (var j = 0; j < p; j++) {
+            for (var k = 0; k < n; k++) {
+              Bcolj[k] = other.get(k, j);
+            }
+
+            for (var i = 0; i < m; i++) {
+              var s = 0;
+              for (k = 0; k < n; k++) {
+                s += this.get(i, k) * Bcolj[k];
+              }
+
+              result.set(i, j, s);
+            }
+          }
+          return result;
+        }
+
+        strassen2x2(other) {
+          var result = new this.constructor[Symbol.species](2, 2);
+          const a11 = this.get(0, 0);
+          const b11 = other.get(0, 0);
+          const a12 = this.get(0, 1);
+          const b12 = other.get(0, 1);
+          const a21 = this.get(1, 0);
+          const b21 = other.get(1, 0);
+          const a22 = this.get(1, 1);
+          const b22 = other.get(1, 1);
+
+          // Compute intermediate values.
+          const m1 = (a11 + a22) * (b11 + b22);
+          const m2 = (a21 + a22) * b11;
+          const m3 = a11 * (b12 - b22);
+          const m4 = a22 * (b21 - b11);
+          const m5 = (a11 + a12) * b22;
+          const m6 = (a21 - a11) * (b11 + b12);
+          const m7 = (a12 - a22) * (b21 + b22);
+
+          // Combine intermediate values into the output.
+          const c00 = m1 + m4 - m5 + m7;
+          const c01 = m3 + m5;
+          const c10 = m2 + m4;
+          const c11 = m1 - m2 + m3 + m6;
+
+          result.set(0, 0, c00);
+          result.set(0, 1, c01);
+          result.set(1, 0, c10);
+          result.set(1, 1, c11);
+          return result;
+        }
+
+        strassen3x3(other) {
+          var result = new this.constructor[Symbol.species](3, 3);
+
+          const a00 = this.get(0, 0);
+          const a01 = this.get(0, 1);
+          const a02 = this.get(0, 2);
+          const a10 = this.get(1, 0);
+          const a11 = this.get(1, 1);
+          const a12 = this.get(1, 2);
+          const a20 = this.get(2, 0);
+          const a21 = this.get(2, 1);
+          const a22 = this.get(2, 2);
+
+          const b00 = other.get(0, 0);
+          const b01 = other.get(0, 1);
+          const b02 = other.get(0, 2);
+          const b10 = other.get(1, 0);
+          const b11 = other.get(1, 1);
+          const b12 = other.get(1, 2);
+          const b20 = other.get(2, 0);
+          const b21 = other.get(2, 1);
+          const b22 = other.get(2, 2);
+
+          const m1 = (a00 + a01 + a02 - a10 - a11 - a21 - a22) * b11;
+          const m2 = (a00 - a10) * (-b01 + b11);
+          const m3 = a11 * (-b00 + b01 + b10 - b11 - b12 - b20 + b22);
+          const m4 = (-a00 + a10 + a11) * (b00 - b01 + b11);
+          const m5 = (a10 + a11) * (-b00 + b01);
+          const m6 = a00 * b00;
+          const m7 = (-a00 + a20 + a21) * (b00 - b02 + b12);
+          const m8 = (-a00 + a20) * (b02 - b12);
+          const m9 = (a20 + a21) * (-b00 + b02);
+          const m10 = (a00 + a01 + a02 - a11 - a12 - a20 - a21) * b12;
+          const m11 = a21 * (-b00 + b02 + b10 - b11 - b12 - b20 + b21);
+          const m12 = (-a02 + a21 + a22) * (b11 + b20 - b21);
+          const m13 = (a02 - a22) * (b11 - b21);
+          const m14 = a02 * b20;
+          const m15 = (a21 + a22) * (-b20 + b21);
+          const m16 = (-a02 + a11 + a12) * (b12 + b20 - b22);
+          const m17 = (a02 - a12) * (b12 - b22);
+          const m18 = (a11 + a12) * (-b20 + b22);
+          const m19 = a01 * b10;
+          const m20 = a12 * b21;
+          const m21 = a10 * b02;
+          const m22 = a20 * b01;
+          const m23 = a22 * b22;
+
+          const c00 = m6 + m14 + m19;
+          const c01 = m1 + m4 + m5 + m6 + m12 + m14 + m15;
+          const c02 = m6 + m7 + m9 + m10 + m14 + m16 + m18;
+          const c10 = m2 + m3 + m4 + m6 + m14 + m16 + m17;
+          const c11 = m2 + m4 + m5 + m6 + m20;
+          const c12 = m14 + m16 + m17 + m18 + m21;
+          const c20 = m6 + m7 + m8 + m11 + m12 + m13 + m14;
+          const c21 = m12 + m13 + m14 + m15 + m22;
+          const c22 = m6 + m7 + m8 + m9 + m23;
+
+          result.set(0, 0, c00);
+          result.set(0, 1, c01);
+          result.set(0, 2, c02);
+          result.set(1, 0, c10);
+          result.set(1, 1, c11);
+          result.set(1, 2, c12);
+          result.set(2, 0, c20);
+          result.set(2, 1, c21);
+          result.set(2, 2, c22);
+          return result;
+        }
+
+        /**
+             * Returns the matrix product between x and y. More efficient than mmul(other) only when we multiply squared matrix and when the size of the matrix is > 1000.
+             * @param {Matrix} y
+             * @return {Matrix}
+             */
+        mmulStrassen(y) {
+          var x = this.clone();
+          var r1 = x.rows;
+          var c1 = x.columns;
+          var r2 = y.rows;
+          var c2 = y.columns;
+          if (c1 !== r2) {
+            // eslint-disable-next-line no-console
+            console.warn(`Multiplying ${r1} x ${c1} and ${r2} x ${c2} matrix: dimensions do not match.`);
+          }
+
+          // Put a matrix into the top left of a matrix of zeros.
+          // `rows` and `cols` are the dimensions of the output matrix.
+          function embed(mat, rows, cols) {
+            var r = mat.rows;
+            var c = mat.columns;
+            if ((r === rows) && (c === cols)) {
+              return mat;
+            } else {
+              var resultat = Matrix.zeros(rows, cols);
+              resultat = resultat.setSubMatrix(mat, 0, 0);
+              return resultat;
+            }
+          }
+
+
+          // Make sure both matrices are the same size.
+          // This is exclusively for simplicity:
+          // this algorithm can be implemented with matrices of different sizes.
+
+          var r = Math.max(r1, r2);
+          var c = Math.max(c1, c2);
+          x = embed(x, r, c);
+          y = embed(y, r, c);
+
+          // Our recursive multiplication function.
+          function blockMult(a, b, rows, cols) {
+            // For small matrices, resort to naive multiplication.
+            if (rows <= 512 || cols <= 512) {
+              return a.mmul(b); // a is equivalent to this
+            }
+
+            // Apply dynamic padding.
+            if ((rows % 2 === 1) && (cols % 2 === 1)) {
+              a = embed(a, rows + 1, cols + 1);
+              b = embed(b, rows + 1, cols + 1);
+            } else if (rows % 2 === 1) {
+              a = embed(a, rows + 1, cols);
+              b = embed(b, rows + 1, cols);
+            } else if (cols % 2 === 1) {
+              a = embed(a, rows, cols + 1);
+              b = embed(b, rows, cols + 1);
+            }
+
+            var halfRows = parseInt(a.rows / 2, 10);
+            var halfCols = parseInt(a.columns / 2, 10);
+            // Subdivide input matrices.
+            var a11 = a.subMatrix(0, halfRows - 1, 0, halfCols - 1);
+            var b11 = b.subMatrix(0, halfRows - 1, 0, halfCols - 1);
+
+            var a12 = a.subMatrix(0, halfRows - 1, halfCols, a.columns - 1);
+            var b12 = b.subMatrix(0, halfRows - 1, halfCols, b.columns - 1);
+
+            var a21 = a.subMatrix(halfRows, a.rows - 1, 0, halfCols - 1);
+            var b21 = b.subMatrix(halfRows, b.rows - 1, 0, halfCols - 1);
+
+            var a22 = a.subMatrix(halfRows, a.rows - 1, halfCols, a.columns - 1);
+            var b22 = b.subMatrix(halfRows, b.rows - 1, halfCols, b.columns - 1);
+
+            // Compute intermediate values.
+            var m1 = blockMult(Matrix.add(a11, a22), Matrix.add(b11, b22), halfRows, halfCols);
+            var m2 = blockMult(Matrix.add(a21, a22), b11, halfRows, halfCols);
+            var m3 = blockMult(a11, Matrix.sub(b12, b22), halfRows, halfCols);
+            var m4 = blockMult(a22, Matrix.sub(b21, b11), halfRows, halfCols);
+            var m5 = blockMult(Matrix.add(a11, a12), b22, halfRows, halfCols);
+            var m6 = blockMult(Matrix.sub(a21, a11), Matrix.add(b11, b12), halfRows, halfCols);
+            var m7 = blockMult(Matrix.sub(a12, a22), Matrix.add(b21, b22), halfRows, halfCols);
+
+            // Combine intermediate values into the output.
+            var c11 = Matrix.add(m1, m4);
+            c11.sub(m5);
+            c11.add(m7);
+            var c12 = Matrix.add(m3, m5);
+            var c21 = Matrix.add(m2, m4);
+            var c22 = Matrix.sub(m1, m2);
+            c22.add(m3);
+            c22.add(m6);
+
+            // Crop output to the desired size (undo dynamic padding).
+            var resultat = Matrix.zeros(2 * c11.rows, 2 * c11.columns);
+            resultat = resultat.setSubMatrix(c11, 0, 0);
+            resultat = resultat.setSubMatrix(c12, c11.rows, 0);
+            resultat = resultat.setSubMatrix(c21, 0, c11.columns);
+            resultat = resultat.setSubMatrix(c22, c11.rows, c11.columns);
+            return resultat.subMatrix(0, rows - 1, 0, cols - 1);
+          }
+          return blockMult(x, y, r, c);
+        }
+
+        /**
+             * Returns a row-by-row scaled matrix
+             * @param {number} [min=0] - Minimum scaled value
+             * @param {number} [max=1] - Maximum scaled value
+             * @return {Matrix} - The scaled matrix
+             */
+        scaleRows(min, max) {
+          min = min === undefined ? 0 : min;
+          max = max === undefined ? 1 : max;
+          if (min >= max) {
+            throw new RangeError('min should be strictly smaller than max');
+          }
+          var newMatrix = this.constructor.empty(this.rows, this.columns);
+          for (var i = 0; i < this.rows; i++) {
+            var scaled = rescale(this.getRow(i), { min, max });
+            newMatrix.setRow(i, scaled);
+          }
+          return newMatrix;
+        }
+
+        /**
+             * Returns a new column-by-column scaled matrix
+             * @param {number} [min=0] - Minimum scaled value
+             * @param {number} [max=1] - Maximum scaled value
+             * @return {Matrix} - The new scaled matrix
+             * @example
+             * var matrix = new Matrix([[1,2],[-1,0]]);
+             * var scaledMatrix = matrix.scaleColumns(); // [[1,1],[0,0]]
+             */
+        scaleColumns(min, max) {
+          min = min === undefined ? 0 : min;
+          max = max === undefined ? 1 : max;
+          if (min >= max) {
+            throw new RangeError('min should be strictly smaller than max');
+          }
+          var newMatrix = this.constructor.empty(this.rows, this.columns);
+          for (var i = 0; i < this.columns; i++) {
+            var scaled = rescale(this.getColumn(i), {
+              min: min,
+              max: max
+            });
+            newMatrix.setColumn(i, scaled);
+          }
+          return newMatrix;
+        }
+
+
+        /**
+             * Returns the Kronecker product (also known as tensor product) between this and other
+             * See https://en.wikipedia.org/wiki/Kronecker_product
+             * @param {Matrix} other
+             * @return {Matrix}
+             */
+        kroneckerProduct(other) {
+          other = this.constructor.checkMatrix(other);
+
+          var m = this.rows;
+          var n = this.columns;
+          var p = other.rows;
+          var q = other.columns;
+
+          var result = new this.constructor[Symbol.species](m * p, n * q);
+          for (var i = 0; i < m; i++) {
+            for (var j = 0; j < n; j++) {
+              for (var k = 0; k < p; k++) {
+                for (var l = 0; l < q; l++) {
+                  result[p * i + k][q * j + l] = this.get(i, j) * other.get(k, l);
+                }
+              }
+            }
+          }
+          return result;
+        }
+
+        /**
+             * Transposes the matrix and returns a new one containing the result
+             * @return {Matrix}
+             */
+        transpose() {
+          var result = new this.constructor[Symbol.species](this.columns, this.rows);
+          for (var i = 0; i < this.rows; i++) {
+            for (var j = 0; j < this.columns; j++) {
+              result.set(j, i, this.get(i, j));
+            }
+          }
+          return result;
+        }
+
+        /**
+             * Sorts the rows (in place)
+             * @param {function} compareFunction - usual Array.prototype.sort comparison function
+             * @return {Matrix} this
+             */
+        sortRows(compareFunction) {
+          if (compareFunction === undefined) compareFunction = compareNumbers;
+          for (var i = 0; i < this.rows; i++) {
+            this.setRow(i, this.getRow(i).sort(compareFunction));
+          }
+          return this;
+        }
+
+        /**
+             * Sorts the columns (in place)
+             * @param {function} compareFunction - usual Array.prototype.sort comparison function
+             * @return {Matrix} this
+             */
+        sortColumns(compareFunction) {
+          if (compareFunction === undefined) compareFunction = compareNumbers;
+          for (var i = 0; i < this.columns; i++) {
+            this.setColumn(i, this.getColumn(i).sort(compareFunction));
+          }
+          return this;
+        }
+
+        /**
+             * Returns a subset of the matrix
+             * @param {number} startRow - First row index
+             * @param {number} endRow - Last row index
+             * @param {number} startColumn - First column index
+             * @param {number} endColumn - Last column index
+             * @return {Matrix}
+             */
+        subMatrix(startRow, endRow, startColumn, endColumn) {
+          checkRange(this, startRow, endRow, startColumn, endColumn);
+          var newMatrix = new this.constructor[Symbol.species](endRow - startRow + 1, endColumn - startColumn + 1);
+          for (var i = startRow; i <= endRow; i++) {
+            for (var j = startColumn; j <= endColumn; j++) {
+              newMatrix[i - startRow][j - startColumn] = this.get(i, j);
+            }
+          }
+          return newMatrix;
+        }
+
+        /**
+             * Returns a subset of the matrix based on an array of row indices
+             * @param {Array} indices - Array containing the row indices
+             * @param {number} [startColumn = 0] - First column index
+             * @param {number} [endColumn = this.columns-1] - Last column index
+             * @return {Matrix}
+             */
+        subMatrixRow(indices, startColumn, endColumn) {
+          if (startColumn === undefined) startColumn = 0;
+          if (endColumn === undefined) endColumn = this.columns - 1;
+          if ((startColumn > endColumn) || (startColumn < 0) || (startColumn >= this.columns) || (endColumn < 0) || (endColumn >= this.columns)) {
+            throw new RangeError('Argument out of range');
+          }
+
+          var newMatrix = new this.constructor[Symbol.species](indices.length, endColumn - startColumn + 1);
+          for (var i = 0; i < indices.length; i++) {
+            for (var j = startColumn; j <= endColumn; j++) {
+              if (indices[i] < 0 || indices[i] >= this.rows) {
+                throw new RangeError(`Row index out of range: ${indices[i]}`);
+              }
+              newMatrix.set(i, j - startColumn, this.get(indices[i], j));
+            }
+          }
+          return newMatrix;
+        }
+
+        /**
+             * Returns a subset of the matrix based on an array of column indices
+             * @param {Array} indices - Array containing the column indices
+             * @param {number} [startRow = 0] - First row index
+             * @param {number} [endRow = this.rows-1] - Last row index
+             * @return {Matrix}
+             */
+        subMatrixColumn(indices, startRow, endRow) {
+          if (startRow === undefined) startRow = 0;
+          if (endRow === undefined) endRow = this.rows - 1;
+          if ((startRow > endRow) || (startRow < 0) || (startRow >= this.rows) || (endRow < 0) || (endRow >= this.rows)) {
+            throw new RangeError('Argument out of range');
+          }
+
+          var newMatrix = new this.constructor[Symbol.species](endRow - startRow + 1, indices.length);
+          for (var i = 0; i < indices.length; i++) {
+            for (var j = startRow; j <= endRow; j++) {
+              if (indices[i] < 0 || indices[i] >= this.columns) {
+                throw new RangeError(`Column index out of range: ${indices[i]}`);
+              }
+              newMatrix.set(j - startRow, i, this.get(j, indices[i]));
+            }
+          }
+          return newMatrix;
+        }
+
+        /**
+             * Set a part of the matrix to the given sub-matrix
+             * @param {Matrix|Array< Array >} matrix - The source matrix from which to extract values.
+             * @param {number} startRow - The index of the first row to set
+             * @param {number} startColumn - The index of the first column to set
+             * @return {Matrix}
+             */
+        setSubMatrix(matrix, startRow, startColumn) {
+          matrix = this.constructor.checkMatrix(matrix);
+          var endRow = startRow + matrix.rows - 1;
+          var endColumn = startColumn + matrix.columns - 1;
+          checkRange(this, startRow, endRow, startColumn, endColumn);
+          for (var i = 0; i < matrix.rows; i++) {
+            for (var j = 0; j < matrix.columns; j++) {
+              this[startRow + i][startColumn + j] = matrix.get(i, j);
+            }
+          }
+          return this;
+        }
+
+        /**
+             * Return a new matrix based on a selection of rows and columns
+             * @param {Array<number>} rowIndices - The row indices to select. Order matters and an index can be more than once.
+             * @param {Array<number>} columnIndices - The column indices to select. Order matters and an index can be use more than once.
+             * @return {Matrix} The new matrix
+             */
+        selection(rowIndices, columnIndices) {
+          var indices = checkIndices(this, rowIndices, columnIndices);
+          var newMatrix = new this.constructor[Symbol.species](rowIndices.length, columnIndices.length);
+          for (var i = 0; i < indices.row.length; i++) {
+            var rowIndex = indices.row[i];
+            for (var j = 0; j < indices.column.length; j++) {
+              var columnIndex = indices.column[j];
+              newMatrix[i][j] = this.get(rowIndex, columnIndex);
+            }
+          }
+          return newMatrix;
+        }
+
+        /**
+             * Returns the trace of the matrix (sum of the diagonal elements)
+             * @return {number}
+             */
+        trace() {
+          var min = Math.min(this.rows, this.columns);
+          var trace = 0;
+          for (var i = 0; i < min; i++) {
+            trace += this.get(i, i);
+          }
+          return trace;
+        }
+
+        /*
+             Matrix views
+             */
+
+        /**
+             * Returns a view of the transposition of the matrix
+             * @return {MatrixTransposeView}
+             */
+        transposeView() {
+          return new MatrixTransposeView(this);
+        }
+
+        /**
+             * Returns a view of the row vector with the given index
+             * @param {number} row - row index of the vector
+             * @return {MatrixRowView}
+             */
+        rowView(row) {
+          checkRowIndex(this, row);
+          return new MatrixRowView(this, row);
+        }
+
+        /**
+             * Returns a view of the column vector with the given index
+             * @param {number} column - column index of the vector
+             * @return {MatrixColumnView}
+             */
+        columnView(column) {
+          checkColumnIndex(this, column);
+          return new MatrixColumnView(this, column);
+        }
+
+        /**
+             * Returns a view of the matrix flipped in the row axis
+             * @return {MatrixFlipRowView}
+             */
+        flipRowView() {
+          return new MatrixFlipRowView(this);
+        }
+
+        /**
+             * Returns a view of the matrix flipped in the column axis
+             * @return {MatrixFlipColumnView}
+             */
+        flipColumnView() {
+          return new MatrixFlipColumnView(this);
+        }
+
+        /**
+             * Returns a view of a submatrix giving the index boundaries
+             * @param {number} startRow - first row index of the submatrix
+             * @param {number} endRow - last row index of the submatrix
+             * @param {number} startColumn - first column index of the submatrix
+             * @param {number} endColumn - last column index of the submatrix
+             * @return {MatrixSubView}
+             */
+        subMatrixView(startRow, endRow, startColumn, endColumn) {
+          return new MatrixSubView(this, startRow, endRow, startColumn, endColumn);
+        }
+
+        /**
+             * Returns a view of the cross of the row indices and the column indices
+             * @example
+             * // resulting vector is [[2], [2]]
+             * var matrix = new Matrix([[1,2,3], [4,5,6]]).selectionView([0, 0], [1])
+             * @param {Array<number>} rowIndices
+             * @param {Array<number>} columnIndices
+             * @return {MatrixSelectionView}
+             */
+        selectionView(rowIndices, columnIndices) {
+          return new MatrixSelectionView(this, rowIndices, columnIndices);
+        }
+
+        /**
+             * Returns a view of the row indices
+             * @example
+             * // resulting vector is [[1,2,3], [1,2,3]]
+             * var matrix = new Matrix([[1,2,3], [4,5,6]]).rowSelectionView([0, 0])
+             * @param {Array<number>} rowIndices
+             * @return {MatrixRowSelectionView}
+             */
+        rowSelectionView(rowIndices) {
+          return new MatrixRowSelectionView(this, rowIndices);
+        }
+
+        /**
+             * Returns a view of the column indices
+             * @example
+             * // resulting vector is [[2, 2], [5, 5]]
+             * var matrix = new Matrix([[1,2,3], [4,5,6]]).columnSelectionView([1, 1])
+             * @param {Array<number>} columnIndices
+             * @return {MatrixColumnSelectionView}
+             */
+        columnSelectionView(columnIndices) {
+          return new MatrixColumnSelectionView(this, columnIndices);
+        }
+
+
+        /**
+            * Calculates and returns the determinant of a matrix as a Number
+            * @example
+            *   new Matrix([[1,2,3], [4,5,6]]).det()
+            * @return {number}
+            */
+        det() {
+          if (this.isSquare()) {
+            var a, b, c, d;
+            if (this.columns === 2) {
+              // 2 x 2 matrix
+              a = this.get(0, 0);
+              b = this.get(0, 1);
+              c = this.get(1, 0);
+              d = this.get(1, 1);
+
+              return a * d - (b * c);
+            } else if (this.columns === 3) {
+              // 3 x 3 matrix
+              var subMatrix0, subMatrix1, subMatrix2;
+              subMatrix0 = this.selectionView([1, 2], [1, 2]);
+              subMatrix1 = this.selectionView([1, 2], [0, 2]);
+              subMatrix2 = this.selectionView([1, 2], [0, 1]);
+              a = this.get(0, 0);
+              b = this.get(0, 1);
+              c = this.get(0, 2);
+
+              return a * subMatrix0.det() - b * subMatrix1.det() + c * subMatrix2.det();
+            } else {
+              // general purpose determinant using the LU decomposition
+              return new LuDecomposition(this).determinant;
+            }
+          } else {
+            throw Error('Determinant can only be calculated for a square matrix.');
+          }
+        }
+
+        /**
+             * Returns inverse of a matrix if it exists or the pseudoinverse
+             * @param {number} threshold - threshold for taking inverse of singular values (default = 1e-15)
+             * @return {Matrix} the (pseudo)inverted matrix.
+             */
+        pseudoInverse(threshold) {
+          if (threshold === undefined) threshold = Number.EPSILON;
+          var svdSolution = new SingularValueDecomposition(this, { autoTranspose: true });
+
+          var U = svdSolution.leftSingularVectors;
+          var V = svdSolution.rightSingularVectors;
+          var s = svdSolution.diagonal;
+
+          for (var i = 0; i < s.length; i++) {
+            if (Math.abs(s[i]) > threshold) {
+              s[i] = 1.0 / s[i];
+            } else {
+              s[i] = 0.0;
+            }
+          }
+
+          // convert list to diagonal
+          s = this.constructor[Symbol.species].diag(s);
+          return V.mmul(s.mmul(U.transposeView()));
+        }
+
+        /**
+             * Creates an exact and independent copy of the matrix
+             * @return {Matrix}
+             */
+        clone() {
+          var newMatrix = new this.constructor[Symbol.species](this.rows, this.columns);
+          for (var row = 0; row < this.rows; row++) {
+            for (var column = 0; column < this.columns; column++) {
+              newMatrix.set(row, column, this.get(row, column));
+            }
+          }
+          return newMatrix;
+        }
+      }
+
+      Matrix.prototype.klass = 'Matrix';
+
+      function compareNumbers(a, b) {
+        return a - b;
+      }
+
+      /*
+         Synonyms
+         */
+
+      Matrix.random = Matrix.rand;
+      Matrix.diagonal = Matrix.diag;
+      Matrix.prototype.diagonal = Matrix.prototype.diag;
+      Matrix.identity = Matrix.eye;
+      Matrix.prototype.negate = Matrix.prototype.neg;
+      Matrix.prototype.tensorProduct = Matrix.prototype.kroneckerProduct;
+      Matrix.prototype.determinant = Matrix.prototype.det;
+
+      /*
+         Add dynamically instance and static methods for mathematical operations
+         */
+
+      var inplaceOperator = `
+(function %name%(value) {
+    if (typeof value === 'number') return this.%name%S(value);
+    return this.%name%M(value);
+})
+`;
+
+      var inplaceOperatorScalar = `
+(function %name%S(value) {
+    for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.columns; j++) {
+            this.set(i, j, this.get(i, j) %op% value);
+        }
+    }
+    return this;
+})
+`;
+
+      var inplaceOperatorMatrix = `
+(function %name%M(matrix) {
+    matrix = this.constructor.checkMatrix(matrix);
+    if (this.rows !== matrix.rows ||
+        this.columns !== matrix.columns) {
+        throw new RangeError('Matrices dimensions must be equal');
+    }
+    for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.columns; j++) {
+            this.set(i, j, this.get(i, j) %op% matrix.get(i, j));
+        }
+    }
+    return this;
+})
+`;
+
+      var staticOperator = `
+(function %name%(matrix, value) {
+    var newMatrix = new this[Symbol.species](matrix);
+    return newMatrix.%name%(value);
+})
+`;
+
+      var inplaceMethod = `
+(function %name%() {
+    for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.columns; j++) {
+            this.set(i, j, %method%(this.get(i, j)));
+        }
+    }
+    return this;
+})
+`;
+
+      var staticMethod = `
+(function %name%(matrix) {
+    var newMatrix = new this[Symbol.species](matrix);
+    return newMatrix.%name%();
+})
+`;
+
+      var inplaceMethodWithArgs = `
+(function %name%(%args%) {
+    for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.columns; j++) {
+            this.set(i, j, %method%(this.get(i, j), %args%));
+        }
+    }
+    return this;
+})
+`;
+
+      var staticMethodWithArgs = `
+(function %name%(matrix, %args%) {
+    var newMatrix = new this[Symbol.species](matrix);
+    return newMatrix.%name%(%args%);
+})
+`;
+
+
+      var inplaceMethodWithOneArgScalar = `
+(function %name%S(value) {
+    for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.columns; j++) {
+            this.set(i, j, %method%(this.get(i, j), value));
+        }
+    }
+    return this;
+})
+`;
+      var inplaceMethodWithOneArgMatrix = `
+(function %name%M(matrix) {
+    matrix = this.constructor.checkMatrix(matrix);
+    if (this.rows !== matrix.rows ||
+        this.columns !== matrix.columns) {
+        throw new RangeError('Matrices dimensions must be equal');
+    }
+    for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.columns; j++) {
+            this.set(i, j, %method%(this.get(i, j), matrix.get(i, j)));
+        }
+    }
+    return this;
+})
+`;
+
+      var inplaceMethodWithOneArg = `
+(function %name%(value) {
+    if (typeof value === 'number') return this.%name%S(value);
+    return this.%name%M(value);
+})
+`;
+
+      var staticMethodWithOneArg = staticMethodWithArgs;
+
+      var operators = [
+        // Arithmetic operators
+        ['+', 'add'],
+        ['-', 'sub', 'subtract'],
+        ['*', 'mul', 'multiply'],
+        ['/', 'div', 'divide'],
+        ['%', 'mod', 'modulus'],
+        // Bitwise operators
+        ['&', 'and'],
+        ['|', 'or'],
+        ['^', 'xor'],
+        ['<<', 'leftShift'],
+        ['>>', 'signPropagatingRightShift'],
+        ['>>>', 'rightShift', 'zeroFillRightShift']
+      ];
+
+      var i;
+      var eval2 = eval; // eslint-disable-line no-eval
+      for (var operator of operators) {
+        var inplaceOp = eval2(fillTemplateFunction(inplaceOperator, { name: operator[1], op: operator[0] }));
+        var inplaceOpS = eval2(fillTemplateFunction(inplaceOperatorScalar, { name: `${operator[1]}S`, op: operator[0] }));
+        var inplaceOpM = eval2(fillTemplateFunction(inplaceOperatorMatrix, { name: `${operator[1]}M`, op: operator[0] }));
+        var staticOp = eval2(fillTemplateFunction(staticOperator, { name: operator[1] }));
+        for (i = 1; i < operator.length; i++) {
+          Matrix.prototype[operator[i]] = inplaceOp;
+          Matrix.prototype[`${operator[i]}S`] = inplaceOpS;
+          Matrix.prototype[`${operator[i]}M`] = inplaceOpM;
+          Matrix[operator[i]] = staticOp;
+        }
+      }
+
+      var methods = [['~', 'not']];
+
+      [
+        'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'cbrt', 'ceil',
+        'clz32', 'cos', 'cosh', 'exp', 'expm1', 'floor', 'fround', 'log', 'log1p',
+        'log10', 'log2', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc'
+      ].forEach(function (mathMethod) {
+        methods.push([`Math.${mathMethod}`, mathMethod]);
+      });
+
+      for (var method of methods) {
+        var inplaceMeth = eval2(fillTemplateFunction(inplaceMethod, { name: method[1], method: method[0] }));
+        var staticMeth = eval2(fillTemplateFunction(staticMethod, { name: method[1] }));
+        for (i = 1; i < method.length; i++) {
+          Matrix.prototype[method[i]] = inplaceMeth;
+          Matrix[method[i]] = staticMeth;
+        }
+      }
+
+      var methodsWithArgs = [['Math.pow', 1, 'pow']];
+
+      for (var methodWithArg of methodsWithArgs) {
+        var args = 'arg0';
+        for (i = 1; i < methodWithArg[1]; i++) {
+          args += `, arg${i}`;
+        }
+        if (methodWithArg[1] !== 1) {
+          var inplaceMethWithArgs = eval2(fillTemplateFunction(inplaceMethodWithArgs, {
+            name: methodWithArg[2],
+            method: methodWithArg[0],
+            args: args
+          }));
+          var staticMethWithArgs = eval2(fillTemplateFunction(staticMethodWithArgs, { name: methodWithArg[2], args: args }));
+          for (i = 2; i < methodWithArg.length; i++) {
+            Matrix.prototype[methodWithArg[i]] = inplaceMethWithArgs;
+            Matrix[methodWithArg[i]] = staticMethWithArgs;
+          }
+        } else {
+          var tmplVar = {
+            name: methodWithArg[2],
+            args: args,
+            method: methodWithArg[0]
+          };
+          var inplaceMethod2 = eval2(fillTemplateFunction(inplaceMethodWithOneArg, tmplVar));
+          var inplaceMethodS = eval2(fillTemplateFunction(inplaceMethodWithOneArgScalar, tmplVar));
+          var inplaceMethodM = eval2(fillTemplateFunction(inplaceMethodWithOneArgMatrix, tmplVar));
+          var staticMethod2 = eval2(fillTemplateFunction(staticMethodWithOneArg, tmplVar));
+          for (i = 2; i < methodWithArg.length; i++) {
+            Matrix.prototype[methodWithArg[i]] = inplaceMethod2;
+            Matrix.prototype[`${methodWithArg[i]}M`] = inplaceMethodM;
+            Matrix.prototype[`${methodWithArg[i]}S`] = inplaceMethodS;
+            Matrix[methodWithArg[i]] = staticMethod2;
+          }
+        }
+      }
+
+      function fillTemplateFunction(template, values) {
+        for (var value in values) {
+          template = template.replace(new RegExp(`%${value}%`, 'g'), values[value]);
+        }
+        return template;
+      }
+
+      return Matrix;
+    }
+
+    class Matrix extends AbstractMatrix(Array) {
+      constructor(nRows, nColumns) {
+        var i;
+        if (arguments.length === 1 && typeof nRows === 'number') {
+          return new Array(nRows);
+        }
+        if (Matrix.isMatrix(nRows)) {
+          return nRows.clone();
+        } else if (Number.isInteger(nRows) && nRows > 0) {
+          // Create an empty matrix
+          super(nRows);
+          if (Number.isInteger(nColumns) && nColumns > 0) {
+            for (i = 0; i < nRows; i++) {
+              this[i] = new Array(nColumns);
+            }
+          } else {
+            throw new TypeError('nColumns must be a positive integer');
+          }
+        } else if (Array.isArray(nRows)) {
+          // Copy the values from the 2D array
+          const matrix = nRows;
+          nRows = matrix.length;
+          nColumns = matrix[0].length;
+          if (typeof nColumns !== 'number' || nColumns === 0) {
+            throw new TypeError(
+              'Data must be a 2D array with at least one element'
+            );
+          }
+          super(nRows);
+          for (i = 0; i < nRows; i++) {
+            if (matrix[i].length !== nColumns) {
+              throw new RangeError('Inconsistent array dimensions');
+            }
+            this[i] = [].concat(matrix[i]);
+          }
+        } else {
+          throw new TypeError(
+            'First argument must be a positive number or an array'
+          );
+        }
+        this.rows = nRows;
+        this.columns = nColumns;
+        return this;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this[rowIndex][columnIndex] = value;
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this[rowIndex][columnIndex];
+      }
+
+      /**
+       * Removes a row from the given index
+       * @param {number} index - Row index
+       * @return {Matrix} this
+       */
+      removeRow(index) {
+        checkRowIndex(this, index);
+        if (this.rows === 1) {
+          throw new RangeError('A matrix cannot have less than one row');
+        }
+        this.splice(index, 1);
+        this.rows -= 1;
+        return this;
+      }
+
+      /**
+       * Adds a row at the given index
+       * @param {number} [index = this.rows] - Row index
+       * @param {Array|Matrix} array - Array or vector
+       * @return {Matrix} this
+       */
+      addRow(index, array) {
+        if (array === undefined) {
+          array = index;
+          index = this.rows;
+        }
+        checkRowIndex(this, index, true);
+        array = checkRowVector(this, array);
+        this.splice(index, 0, array);
+        this.rows += 1;
+        return this;
+      }
+
+      /**
+       * Removes a column from the given index
+       * @param {number} index - Column index
+       * @return {Matrix} this
+       */
+      removeColumn(index) {
+        checkColumnIndex(this, index);
+        if (this.columns === 1) {
+          throw new RangeError('A matrix cannot have less than one column');
+        }
+        for (var i = 0; i < this.rows; i++) {
+          this[i].splice(index, 1);
+        }
+        this.columns -= 1;
+        return this;
+      }
+
+      /**
+       * Adds a column at the given index
+       * @param {number} [index = this.columns] - Column index
+       * @param {Array|Matrix} array - Array or vector
+       * @return {Matrix} this
+       */
+      addColumn(index, array) {
+        if (typeof array === 'undefined') {
+          array = index;
+          index = this.columns;
+        }
+        checkColumnIndex(this, index, true);
+        array = checkColumnVector(this, array);
+        for (var i = 0; i < this.rows; i++) {
+          this[i].splice(index, 0, array[i]);
+        }
+        this.columns += 1;
+        return this;
+      }
+    }
+
+    class WrapperMatrix1D extends AbstractMatrix() {
+      /**
+       * @class WrapperMatrix1D
+       * @param {Array<number>} data
+       * @param {object} [options]
+       * @param {object} [options.rows = 1]
+       */
+      constructor(data, options = {}) {
+        const { rows = 1 } = options;
+
+        if (data.length % rows !== 0) {
+          throw new Error('the data length is not divisible by the number of rows');
+        }
+        super();
+        this.rows = rows;
+        this.columns = data.length / rows;
+        this.data = data;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        var index = this._calculateIndex(rowIndex, columnIndex);
+        this.data[index] = value;
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        var index = this._calculateIndex(rowIndex, columnIndex);
+        return this.data[index];
+      }
+
+      _calculateIndex(row, column) {
+        return row * this.columns + column;
+      }
+
+      static get [Symbol.species]() {
+        return Matrix;
+      }
+    }
+
+    class WrapperMatrix2D extends AbstractMatrix() {
+      /**
+       * @class WrapperMatrix2D
+       * @param {Array<Array<number>>} data
+       */
+      constructor(data) {
+        super();
+        this.data = data;
+        this.rows = data.length;
+        this.columns = data[0].length;
+      }
+
+      set(rowIndex, columnIndex, value) {
+        this.data[rowIndex][columnIndex] = value;
+        return this;
+      }
+
+      get(rowIndex, columnIndex) {
+        return this.data[rowIndex][columnIndex];
+      }
+
+      static get [Symbol.species]() {
+        return Matrix;
+      }
+    }
+
+    /**
+     * @class QrDecomposition
+     * @link https://github.com/lutzroeder/Mapack/blob/master/Source/QrDecomposition.cs
+     * @param {Matrix} value
+     */
+    class QrDecomposition {
+      constructor(value) {
+        value = WrapperMatrix2D.checkMatrix(value);
+
+        var qr = value.clone();
+        var m = value.rows;
+        var n = value.columns;
+        var rdiag = new Array(n);
+        var i, j, k, s;
+
+        for (k = 0; k < n; k++) {
+          var nrm = 0;
+          for (i = k; i < m; i++) {
+            nrm = hypotenuse(nrm, qr.get(i, k));
+          }
+          if (nrm !== 0) {
+            if (qr.get(k, k) < 0) {
+              nrm = -nrm;
+            }
+            for (i = k; i < m; i++) {
+              qr.set(i, k, qr.get(i, k) / nrm);
+            }
+            qr.set(k, k, qr.get(k, k) + 1);
+            for (j = k + 1; j < n; j++) {
+              s = 0;
+              for (i = k; i < m; i++) {
+                s += qr.get(i, k) * qr.get(i, j);
+              }
+              s = -s / qr.get(k, k);
+              for (i = k; i < m; i++) {
+                qr.set(i, j, qr.get(i, j) + s * qr.get(i, k));
+              }
+            }
+          }
+          rdiag[k] = -nrm;
+        }
+
+        this.QR = qr;
+        this.Rdiag = rdiag;
+      }
+
+      /**
+       * Solve a problem of least square (Ax=b) by using the QR decomposition. Useful when A is rectangular, but not working when A is singular.
+       * Example : We search to approximate x, with A matrix shape m*n, x vector size n, b vector size m (m > n). We will use :
+       * var qr = QrDecomposition(A);
+       * var x = qr.solve(b);
+       * @param {Matrix} value - Matrix 1D which is the vector b (in the equation Ax = b)
+       * @return {Matrix} - The vector x
+       */
+      solve(value) {
+        value = Matrix.checkMatrix(value);
+
+        var qr = this.QR;
+        var m = qr.rows;
+
+        if (value.rows !== m) {
+          throw new Error('Matrix row dimensions must agree');
+        }
+        if (!this.isFullRank()) {
+          throw new Error('Matrix is rank deficient');
+        }
+
+        var count = value.columns;
+        var X = value.clone();
+        var n = qr.columns;
+        var i, j, k, s;
+
+        for (k = 0; k < n; k++) {
+          for (j = 0; j < count; j++) {
+            s = 0;
+            for (i = k; i < m; i++) {
+              s += qr[i][k] * X[i][j];
+            }
+            s = -s / qr[k][k];
+            for (i = k; i < m; i++) {
+              X[i][j] += s * qr[i][k];
+            }
+          }
+        }
+        for (k = n - 1; k >= 0; k--) {
+          for (j = 0; j < count; j++) {
+            X[k][j] /= this.Rdiag[k];
+          }
+          for (i = 0; i < k; i++) {
+            for (j = 0; j < count; j++) {
+              X[i][j] -= X[k][j] * qr[i][k];
+            }
+          }
+        }
+
+        return X.subMatrix(0, n - 1, 0, count - 1);
+      }
+
+      /**
+       *
+       * @return {boolean}
+       */
+      isFullRank() {
+        var columns = this.QR.columns;
+        for (var i = 0; i < columns; i++) {
+          if (this.Rdiag[i] === 0) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get upperTriangularMatrix() {
+        var qr = this.QR;
+        var n = qr.columns;
+        var X = new Matrix(n, n);
+        var i, j;
+        for (i = 0; i < n; i++) {
+          for (j = 0; j < n; j++) {
+            if (i < j) {
+              X[i][j] = qr[i][j];
+            } else if (i === j) {
+              X[i][j] = this.Rdiag[i];
+            } else {
+              X[i][j] = 0;
+            }
+          }
+        }
+        return X;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get orthogonalMatrix() {
+        var qr = this.QR;
+        var rows = qr.rows;
+        var columns = qr.columns;
+        var X = new Matrix(rows, columns);
+        var i, j, k, s;
+
+        for (k = columns - 1; k >= 0; k--) {
+          for (i = 0; i < rows; i++) {
+            X[i][k] = 0;
+          }
+          X[k][k] = 1;
+          for (j = k; j < columns; j++) {
+            if (qr[k][k] !== 0) {
+              s = 0;
+              for (i = k; i < rows; i++) {
+                s += qr[i][k] * X[i][j];
+              }
+
+              s = -s / qr[k][k];
+
+              for (i = k; i < rows; i++) {
+                X[i][j] += s * qr[i][k];
+              }
+            }
+          }
+        }
+        return X;
+      }
+    }
+
+    /**
+     * Computes the inverse of a Matrix
+     * @param {Matrix} matrix
+     * @param {boolean} [useSVD=false]
+     * @return {Matrix}
+     */
+    function inverse(matrix, useSVD = false) {
+      matrix = WrapperMatrix2D.checkMatrix(matrix);
+      if (useSVD) {
+        return new SingularValueDecomposition(matrix).inverse();
+      } else {
+        return solve(matrix, Matrix.eye(matrix.rows));
+      }
+    }
+
+    /**
+     *
+     * @param {Matrix} leftHandSide
+     * @param {Matrix} rightHandSide
+     * @param {boolean} [useSVD = false]
+     * @return {Matrix}
+     */
+    function solve(leftHandSide, rightHandSide, useSVD = false) {
+      leftHandSide = WrapperMatrix2D.checkMatrix(leftHandSide);
+      rightHandSide = WrapperMatrix2D.checkMatrix(rightHandSide);
+      if (useSVD) {
+        return new SingularValueDecomposition(leftHandSide).solve(rightHandSide);
+      } else {
+        return leftHandSide.isSquare()
+          ? new LuDecomposition(leftHandSide).solve(rightHandSide)
+          : new QrDecomposition(leftHandSide).solve(rightHandSide);
+      }
+    }
+
+    /**
+     * @class EigenvalueDecomposition
+     * @link https://github.com/lutzroeder/Mapack/blob/master/Source/EigenvalueDecomposition.cs
+     * @param {Matrix} matrix
+     * @param {object} [options]
+     * @param {boolean} [options.assumeSymmetric=false]
+     */
+    class EigenvalueDecomposition {
+      constructor(matrix, options = {}) {
+        const { assumeSymmetric = false } = options;
+
+        matrix = WrapperMatrix2D.checkMatrix(matrix);
+        if (!matrix.isSquare()) {
+          throw new Error('Matrix is not a square matrix');
+        }
+
+        var n = matrix.columns;
+        var V = getFilled2DArray(n, n, 0);
+        var d = new Array(n);
+        var e = new Array(n);
+        var value = matrix;
+        var i, j;
+
+        var isSymmetric = false;
+        if (assumeSymmetric) {
+          isSymmetric = true;
+        } else {
+          isSymmetric = matrix.isSymmetric();
+        }
+
+        if (isSymmetric) {
+          for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+              V[i][j] = value.get(i, j);
+            }
+          }
+          tred2(n, e, d, V);
+          tql2(n, e, d, V);
+        } else {
+          var H = getFilled2DArray(n, n, 0);
+          var ort = new Array(n);
+          for (j = 0; j < n; j++) {
+            for (i = 0; i < n; i++) {
+              H[i][j] = value.get(i, j);
+            }
+          }
+          orthes(n, H, ort, V);
+          hqr2(n, e, d, V, H);
+        }
+
+        this.n = n;
+        this.e = e;
+        this.d = d;
+        this.V = V;
+      }
+
+      /**
+       *
+       * @return {Array<number>}
+       */
+      get realEigenvalues() {
+        return this.d;
+      }
+
+      /**
+       *
+       * @return {Array<number>}
+       */
+      get imaginaryEigenvalues() {
+        return this.e;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get eigenvectorMatrix() {
+        if (!Matrix.isMatrix(this.V)) {
+          this.V = new Matrix(this.V);
+        }
+        return this.V;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get diagonalMatrix() {
+        var n = this.n;
+        var e = this.e;
+        var d = this.d;
+        var X = new Matrix(n, n);
+        var i, j;
+        for (i = 0; i < n; i++) {
+          for (j = 0; j < n; j++) {
+            X[i][j] = 0;
+          }
+          X[i][i] = d[i];
+          if (e[i] > 0) {
+            X[i][i + 1] = e[i];
+          } else if (e[i] < 0) {
+            X[i][i - 1] = e[i];
+          }
+        }
+        return X;
+      }
+    }
+
+    function tred2(n, e, d, V) {
+      var f, g, h, i, j, k, hh, scale;
+
+      for (j = 0; j < n; j++) {
+        d[j] = V[n - 1][j];
+      }
+
+      for (i = n - 1; i > 0; i--) {
+        scale = 0;
+        h = 0;
+        for (k = 0; k < i; k++) {
+          scale = scale + Math.abs(d[k]);
+        }
+
+        if (scale === 0) {
+          e[i] = d[i - 1];
+          for (j = 0; j < i; j++) {
+            d[j] = V[i - 1][j];
+            V[i][j] = 0;
+            V[j][i] = 0;
+          }
+        } else {
+          for (k = 0; k < i; k++) {
+            d[k] /= scale;
+            h += d[k] * d[k];
+          }
+
+          f = d[i - 1];
+          g = Math.sqrt(h);
+          if (f > 0) {
+            g = -g;
+          }
+
+          e[i] = scale * g;
+          h = h - f * g;
+          d[i - 1] = f - g;
+          for (j = 0; j < i; j++) {
+            e[j] = 0;
+          }
+
+          for (j = 0; j < i; j++) {
+            f = d[j];
+            V[j][i] = f;
+            g = e[j] + V[j][j] * f;
+            for (k = j + 1; k <= i - 1; k++) {
+              g += V[k][j] * d[k];
+              e[k] += V[k][j] * f;
+            }
+            e[j] = g;
+          }
+
+          f = 0;
+          for (j = 0; j < i; j++) {
+            e[j] /= h;
+            f += e[j] * d[j];
+          }
+
+          hh = f / (h + h);
+          for (j = 0; j < i; j++) {
+            e[j] -= hh * d[j];
+          }
+
+          for (j = 0; j < i; j++) {
+            f = d[j];
+            g = e[j];
+            for (k = j; k <= i - 1; k++) {
+              V[k][j] -= f * e[k] + g * d[k];
+            }
+            d[j] = V[i - 1][j];
+            V[i][j] = 0;
+          }
+        }
+        d[i] = h;
+      }
+
+      for (i = 0; i < n - 1; i++) {
+        V[n - 1][i] = V[i][i];
+        V[i][i] = 1;
+        h = d[i + 1];
+        if (h !== 0) {
+          for (k = 0; k <= i; k++) {
+            d[k] = V[k][i + 1] / h;
+          }
+
+          for (j = 0; j <= i; j++) {
+            g = 0;
+            for (k = 0; k <= i; k++) {
+              g += V[k][i + 1] * V[k][j];
+            }
+            for (k = 0; k <= i; k++) {
+              V[k][j] -= g * d[k];
+            }
+          }
+        }
+
+        for (k = 0; k <= i; k++) {
+          V[k][i + 1] = 0;
+        }
+      }
+
+      for (j = 0; j < n; j++) {
+        d[j] = V[n - 1][j];
+        V[n - 1][j] = 0;
+      }
+
+      V[n - 1][n - 1] = 1;
+      e[0] = 0;
+    }
+
+    function tql2(n, e, d, V) {
+      var g, h, i, j, k, l, m, p, r, dl1, c, c2, c3, el1, s, s2;
+
+      for (i = 1; i < n; i++) {
+        e[i - 1] = e[i];
+      }
+
+      e[n - 1] = 0;
+
+      var f = 0;
+      var tst1 = 0;
+      var eps = Number.EPSILON;
+
+      for (l = 0; l < n; l++) {
+        tst1 = Math.max(tst1, Math.abs(d[l]) + Math.abs(e[l]));
+        m = l;
+        while (m < n) {
+          if (Math.abs(e[m]) <= eps * tst1) {
+            break;
+          }
+          m++;
+        }
+
+        if (m > l) {
+          do {
+
+            g = d[l];
+            p = (d[l + 1] - g) / (2 * e[l]);
+            r = hypotenuse(p, 1);
+            if (p < 0) {
+              r = -r;
+            }
+
+            d[l] = e[l] / (p + r);
+            d[l + 1] = e[l] * (p + r);
+            dl1 = d[l + 1];
+            h = g - d[l];
+            for (i = l + 2; i < n; i++) {
+              d[i] -= h;
+            }
+
+            f = f + h;
+
+            p = d[m];
+            c = 1;
+            c2 = c;
+            c3 = c;
+            el1 = e[l + 1];
+            s = 0;
+            s2 = 0;
+            for (i = m - 1; i >= l; i--) {
+              c3 = c2;
+              c2 = c;
+              s2 = s;
+              g = c * e[i];
+              h = c * p;
+              r = hypotenuse(p, e[i]);
+              e[i + 1] = s * r;
+              s = e[i] / r;
+              c = p / r;
+              p = c * d[i] - s * g;
+              d[i + 1] = h + s * (c * g + s * d[i]);
+
+              for (k = 0; k < n; k++) {
+                h = V[k][i + 1];
+                V[k][i + 1] = s * V[k][i] + c * h;
+                V[k][i] = c * V[k][i] - s * h;
+              }
+            }
+
+            p = -s * s2 * c3 * el1 * e[l] / dl1;
+            e[l] = s * p;
+            d[l] = c * p;
+          } while (Math.abs(e[l]) > eps * tst1);
+        }
+        d[l] = d[l] + f;
+        e[l] = 0;
+      }
+
+      for (i = 0; i < n - 1; i++) {
+        k = i;
+        p = d[i];
+        for (j = i + 1; j < n; j++) {
+          if (d[j] < p) {
+            k = j;
+            p = d[j];
+          }
+        }
+
+        if (k !== i) {
+          d[k] = d[i];
+          d[i] = p;
+          for (j = 0; j < n; j++) {
+            p = V[j][i];
+            V[j][i] = V[j][k];
+            V[j][k] = p;
+          }
+        }
+      }
+    }
+
+    function orthes(n, H, ort, V) {
+      var low = 0;
+      var high = n - 1;
+      var f, g, h, i, j, m;
+      var scale;
+
+      for (m = low + 1; m <= high - 1; m++) {
+        scale = 0;
+        for (i = m; i <= high; i++) {
+          scale = scale + Math.abs(H[i][m - 1]);
+        }
+
+        if (scale !== 0) {
+          h = 0;
+          for (i = high; i >= m; i--) {
+            ort[i] = H[i][m - 1] / scale;
+            h += ort[i] * ort[i];
+          }
+
+          g = Math.sqrt(h);
+          if (ort[m] > 0) {
+            g = -g;
+          }
+
+          h = h - ort[m] * g;
+          ort[m] = ort[m] - g;
+
+          for (j = m; j < n; j++) {
+            f = 0;
+            for (i = high; i >= m; i--) {
+              f += ort[i] * H[i][j];
+            }
+
+            f = f / h;
+            for (i = m; i <= high; i++) {
+              H[i][j] -= f * ort[i];
+            }
+          }
+
+          for (i = 0; i <= high; i++) {
+            f = 0;
+            for (j = high; j >= m; j--) {
+              f += ort[j] * H[i][j];
+            }
+
+            f = f / h;
+            for (j = m; j <= high; j++) {
+              H[i][j] -= f * ort[j];
+            }
+          }
+
+          ort[m] = scale * ort[m];
+          H[m][m - 1] = scale * g;
+        }
+      }
+
+      for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+          V[i][j] = i === j ? 1 : 0;
+        }
+      }
+
+      for (m = high - 1; m >= low + 1; m--) {
+        if (H[m][m - 1] !== 0) {
+          for (i = m + 1; i <= high; i++) {
+            ort[i] = H[i][m - 1];
+          }
+
+          for (j = m; j <= high; j++) {
+            g = 0;
+            for (i = m; i <= high; i++) {
+              g += ort[i] * V[i][j];
+            }
+
+            g = g / ort[m] / H[m][m - 1];
+            for (i = m; i <= high; i++) {
+              V[i][j] += g * ort[i];
+            }
+          }
+        }
+      }
+    }
+
+    function hqr2(nn, e, d, V, H) {
+      var n = nn - 1;
+      var low = 0;
+      var high = nn - 1;
+      var eps = Number.EPSILON;
+      var exshift = 0;
+      var norm = 0;
+      var p = 0;
+      var q = 0;
+      var r = 0;
+      var s = 0;
+      var z = 0;
+      var iter = 0;
+      var i, j, k, l, m, t, w, x, y;
+      var ra, sa, vr, vi;
+      var notlast, cdivres;
+
+      for (i = 0; i < nn; i++) {
+        if (i < low || i > high) {
+          d[i] = H[i][i];
+          e[i] = 0;
+        }
+
+        for (j = Math.max(i - 1, 0); j < nn; j++) {
+          norm = norm + Math.abs(H[i][j]);
+        }
+      }
+
+      while (n >= low) {
+        l = n;
+        while (l > low) {
+          s = Math.abs(H[l - 1][l - 1]) + Math.abs(H[l][l]);
+          if (s === 0) {
+            s = norm;
+          }
+          if (Math.abs(H[l][l - 1]) < eps * s) {
+            break;
+          }
+          l--;
+        }
+
+        if (l === n) {
+          H[n][n] = H[n][n] + exshift;
+          d[n] = H[n][n];
+          e[n] = 0;
+          n--;
+          iter = 0;
+        } else if (l === n - 1) {
+          w = H[n][n - 1] * H[n - 1][n];
+          p = (H[n - 1][n - 1] - H[n][n]) / 2;
+          q = p * p + w;
+          z = Math.sqrt(Math.abs(q));
+          H[n][n] = H[n][n] + exshift;
+          H[n - 1][n - 1] = H[n - 1][n - 1] + exshift;
+          x = H[n][n];
+
+          if (q >= 0) {
+            z = p >= 0 ? p + z : p - z;
+            d[n - 1] = x + z;
+            d[n] = d[n - 1];
+            if (z !== 0) {
+              d[n] = x - w / z;
+            }
+            e[n - 1] = 0;
+            e[n] = 0;
+            x = H[n][n - 1];
+            s = Math.abs(x) + Math.abs(z);
+            p = x / s;
+            q = z / s;
+            r = Math.sqrt(p * p + q * q);
+            p = p / r;
+            q = q / r;
+
+            for (j = n - 1; j < nn; j++) {
+              z = H[n - 1][j];
+              H[n - 1][j] = q * z + p * H[n][j];
+              H[n][j] = q * H[n][j] - p * z;
+            }
+
+            for (i = 0; i <= n; i++) {
+              z = H[i][n - 1];
+              H[i][n - 1] = q * z + p * H[i][n];
+              H[i][n] = q * H[i][n] - p * z;
+            }
+
+            for (i = low; i <= high; i++) {
+              z = V[i][n - 1];
+              V[i][n - 1] = q * z + p * V[i][n];
+              V[i][n] = q * V[i][n] - p * z;
+            }
+          } else {
+            d[n - 1] = x + p;
+            d[n] = x + p;
+            e[n - 1] = z;
+            e[n] = -z;
+          }
+
+          n = n - 2;
+          iter = 0;
+        } else {
+          x = H[n][n];
+          y = 0;
+          w = 0;
+          if (l < n) {
+            y = H[n - 1][n - 1];
+            w = H[n][n - 1] * H[n - 1][n];
+          }
+
+          if (iter === 10) {
+            exshift += x;
+            for (i = low; i <= n; i++) {
+              H[i][i] -= x;
+            }
+            s = Math.abs(H[n][n - 1]) + Math.abs(H[n - 1][n - 2]);
+            x = y = 0.75 * s;
+            w = -0.4375 * s * s;
+          }
+
+          if (iter === 30) {
+            s = (y - x) / 2;
+            s = s * s + w;
+            if (s > 0) {
+              s = Math.sqrt(s);
+              if (y < x) {
+                s = -s;
+              }
+              s = x - w / ((y - x) / 2 + s);
+              for (i = low; i <= n; i++) {
+                H[i][i] -= s;
+              }
+              exshift += s;
+              x = y = w = 0.964;
+            }
+          }
+
+          iter = iter + 1;
+
+          m = n - 2;
+          while (m >= l) {
+            z = H[m][m];
+            r = x - z;
+            s = y - z;
+            p = (r * s - w) / H[m + 1][m] + H[m][m + 1];
+            q = H[m + 1][m + 1] - z - r - s;
+            r = H[m + 2][m + 1];
+            s = Math.abs(p) + Math.abs(q) + Math.abs(r);
+            p = p / s;
+            q = q / s;
+            r = r / s;
+            if (m === l) {
+              break;
+            }
+            if (
+              Math.abs(H[m][m - 1]) * (Math.abs(q) + Math.abs(r)) <
+              eps *
+                (Math.abs(p) *
+                  (Math.abs(H[m - 1][m - 1]) +
+                    Math.abs(z) +
+                    Math.abs(H[m + 1][m + 1])))
+            ) {
+              break;
+            }
+            m--;
+          }
+
+          for (i = m + 2; i <= n; i++) {
+            H[i][i - 2] = 0;
+            if (i > m + 2) {
+              H[i][i - 3] = 0;
+            }
+          }
+
+          for (k = m; k <= n - 1; k++) {
+            notlast = k !== n - 1;
+            if (k !== m) {
+              p = H[k][k - 1];
+              q = H[k + 1][k - 1];
+              r = notlast ? H[k + 2][k - 1] : 0;
+              x = Math.abs(p) + Math.abs(q) + Math.abs(r);
+              if (x !== 0) {
+                p = p / x;
+                q = q / x;
+                r = r / x;
+              }
+            }
+
+            if (x === 0) {
+              break;
+            }
+
+            s = Math.sqrt(p * p + q * q + r * r);
+            if (p < 0) {
+              s = -s;
+            }
+
+            if (s !== 0) {
+              if (k !== m) {
+                H[k][k - 1] = -s * x;
+              } else if (l !== m) {
+                H[k][k - 1] = -H[k][k - 1];
+              }
+
+              p = p + s;
+              x = p / s;
+              y = q / s;
+              z = r / s;
+              q = q / p;
+              r = r / p;
+
+              for (j = k; j < nn; j++) {
+                p = H[k][j] + q * H[k + 1][j];
+                if (notlast) {
+                  p = p + r * H[k + 2][j];
+                  H[k + 2][j] = H[k + 2][j] - p * z;
+                }
+
+                H[k][j] = H[k][j] - p * x;
+                H[k + 1][j] = H[k + 1][j] - p * y;
+              }
+
+              for (i = 0; i <= Math.min(n, k + 3); i++) {
+                p = x * H[i][k] + y * H[i][k + 1];
+                if (notlast) {
+                  p = p + z * H[i][k + 2];
+                  H[i][k + 2] = H[i][k + 2] - p * r;
+                }
+
+                H[i][k] = H[i][k] - p;
+                H[i][k + 1] = H[i][k + 1] - p * q;
+              }
+
+              for (i = low; i <= high; i++) {
+                p = x * V[i][k] + y * V[i][k + 1];
+                if (notlast) {
+                  p = p + z * V[i][k + 2];
+                  V[i][k + 2] = V[i][k + 2] - p * r;
+                }
+
+                V[i][k] = V[i][k] - p;
+                V[i][k + 1] = V[i][k + 1] - p * q;
+              }
+            }
+          }
+        }
+      }
+
+      if (norm === 0) {
+        return;
+      }
+
+      for (n = nn - 1; n >= 0; n--) {
+        p = d[n];
+        q = e[n];
+
+        if (q === 0) {
+          l = n;
+          H[n][n] = 1;
+          for (i = n - 1; i >= 0; i--) {
+            w = H[i][i] - p;
+            r = 0;
+            for (j = l; j <= n; j++) {
+              r = r + H[i][j] * H[j][n];
+            }
+
+            if (e[i] < 0) {
+              z = w;
+              s = r;
+            } else {
+              l = i;
+              if (e[i] === 0) {
+                H[i][n] = w !== 0 ? -r / w : -r / (eps * norm);
+              } else {
+                x = H[i][i + 1];
+                y = H[i + 1][i];
+                q = (d[i] - p) * (d[i] - p) + e[i] * e[i];
+                t = (x * s - z * r) / q;
+                H[i][n] = t;
+                H[i + 1][n] =
+                  Math.abs(x) > Math.abs(z) ? (-r - w * t) / x : (-s - y * t) / z;
+              }
+
+              t = Math.abs(H[i][n]);
+              if (eps * t * t > 1) {
+                for (j = i; j <= n; j++) {
+                  H[j][n] = H[j][n] / t;
+                }
+              }
+            }
+          }
+        } else if (q < 0) {
+          l = n - 1;
+
+          if (Math.abs(H[n][n - 1]) > Math.abs(H[n - 1][n])) {
+            H[n - 1][n - 1] = q / H[n][n - 1];
+            H[n - 1][n] = -(H[n][n] - p) / H[n][n - 1];
+          } else {
+            cdivres = cdiv(0, -H[n - 1][n], H[n - 1][n - 1] - p, q);
+            H[n - 1][n - 1] = cdivres[0];
+            H[n - 1][n] = cdivres[1];
+          }
+
+          H[n][n - 1] = 0;
+          H[n][n] = 1;
+          for (i = n - 2; i >= 0; i--) {
+            ra = 0;
+            sa = 0;
+            for (j = l; j <= n; j++) {
+              ra = ra + H[i][j] * H[j][n - 1];
+              sa = sa + H[i][j] * H[j][n];
+            }
+
+            w = H[i][i] - p;
+
+            if (e[i] < 0) {
+              z = w;
+              r = ra;
+              s = sa;
+            } else {
+              l = i;
+              if (e[i] === 0) {
+                cdivres = cdiv(-ra, -sa, w, q);
+                H[i][n - 1] = cdivres[0];
+                H[i][n] = cdivres[1];
+              } else {
+                x = H[i][i + 1];
+                y = H[i + 1][i];
+                vr = (d[i] - p) * (d[i] - p) + e[i] * e[i] - q * q;
+                vi = (d[i] - p) * 2 * q;
+                if (vr === 0 && vi === 0) {
+                  vr =
+                    eps *
+                    norm *
+                    (Math.abs(w) +
+                      Math.abs(q) +
+                      Math.abs(x) +
+                      Math.abs(y) +
+                      Math.abs(z));
+                }
+                cdivres = cdiv(
+                  x * r - z * ra + q * sa,
+                  x * s - z * sa - q * ra,
+                  vr,
+                  vi
+                );
+                H[i][n - 1] = cdivres[0];
+                H[i][n] = cdivres[1];
+                if (Math.abs(x) > Math.abs(z) + Math.abs(q)) {
+                  H[i + 1][n - 1] = (-ra - w * H[i][n - 1] + q * H[i][n]) / x;
+                  H[i + 1][n] = (-sa - w * H[i][n] - q * H[i][n - 1]) / x;
+                } else {
+                  cdivres = cdiv(-r - y * H[i][n - 1], -s - y * H[i][n], z, q);
+                  H[i + 1][n - 1] = cdivres[0];
+                  H[i + 1][n] = cdivres[1];
+                }
+              }
+
+              t = Math.max(Math.abs(H[i][n - 1]), Math.abs(H[i][n]));
+              if (eps * t * t > 1) {
+                for (j = i; j <= n; j++) {
+                  H[j][n - 1] = H[j][n - 1] / t;
+                  H[j][n] = H[j][n] / t;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      for (i = 0; i < nn; i++) {
+        if (i < low || i > high) {
+          for (j = i; j < nn; j++) {
+            V[i][j] = H[i][j];
+          }
+        }
+      }
+
+      for (j = nn - 1; j >= low; j--) {
+        for (i = low; i <= high; i++) {
+          z = 0;
+          for (k = low; k <= Math.min(j, high); k++) {
+            z = z + V[i][k] * H[k][j];
+          }
+          V[i][j] = z;
+        }
+      }
+    }
+
+    function cdiv(xr, xi, yr, yi) {
+      var r, d;
+      if (Math.abs(yr) > Math.abs(yi)) {
+        r = yi / yr;
+        d = yr + r * yi;
+        return [(xr + r * xi) / d, (xi - r * xr) / d];
+      } else {
+        r = yr / yi;
+        d = yi + r * yr;
+        return [(r * xr + xi) / d, (r * xi - xr) / d];
+      }
+    }
+
+    /**
+     * @class CholeskyDecomposition
+     * @link https://github.com/lutzroeder/Mapack/blob/master/Source/CholeskyDecomposition.cs
+     * @param {Matrix} value
+     */
+    class CholeskyDecomposition {
+      constructor(value) {
+        value = WrapperMatrix2D.checkMatrix(value);
+        if (!value.isSymmetric()) {
+          throw new Error('Matrix is not symmetric');
+        }
+
+        var a = value;
+        var dimension = a.rows;
+        var l = new Matrix(dimension, dimension);
+        var positiveDefinite = true;
+        var i, j, k;
+
+        for (j = 0; j < dimension; j++) {
+          var Lrowj = l[j];
+          var d = 0;
+          for (k = 0; k < j; k++) {
+            var Lrowk = l[k];
+            var s = 0;
+            for (i = 0; i < k; i++) {
+              s += Lrowk[i] * Lrowj[i];
+            }
+            Lrowj[k] = s = (a.get(j, k) - s) / l[k][k];
+            d = d + s * s;
+          }
+
+          d = a.get(j, j) - d;
+
+          positiveDefinite &= d > 0;
+          l[j][j] = Math.sqrt(Math.max(d, 0));
+          for (k = j + 1; k < dimension; k++) {
+            l[j][k] = 0;
+          }
+        }
+
+        if (!positiveDefinite) {
+          throw new Error('Matrix is not positive definite');
+        }
+
+        this.L = l;
+      }
+
+      /**
+       *
+       * @param {Matrix} value
+       * @return {Matrix}
+       */
+      solve(value) {
+        value = WrapperMatrix2D.checkMatrix(value);
+
+        var l = this.L;
+        var dimension = l.rows;
+
+        if (value.rows !== dimension) {
+          throw new Error('Matrix dimensions do not match');
+        }
+
+        var count = value.columns;
+        var B = value.clone();
+        var i, j, k;
+
+        for (k = 0; k < dimension; k++) {
+          for (j = 0; j < count; j++) {
+            for (i = 0; i < k; i++) {
+              B[k][j] -= B[i][j] * l[k][i];
+            }
+            B[k][j] /= l[k][k];
+          }
+        }
+
+        for (k = dimension - 1; k >= 0; k--) {
+          for (j = 0; j < count; j++) {
+            for (i = k + 1; i < dimension; i++) {
+              B[k][j] -= B[i][j] * l[i][k];
+            }
+            B[k][j] /= l[k][k];
+          }
+        }
+
+        return B;
+      }
+
+      /**
+       *
+       * @return {Matrix}
+       */
+      get lowerTriangularMatrix() {
+        return this.L;
+      }
+    }
+
+    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+    function getAugmentedNamespace(n) {
+    	if (n.__esModule) return n;
+    	var a = Object.defineProperty({}, '__esModule', {value: true});
+    	Object.keys(n).forEach(function (k) {
+    		var d = Object.getOwnPropertyDescriptor(n, k);
+    		Object.defineProperty(a, k, d.get ? d : {
+    			enumerable: true,
+    			get: function () {
+    				return n[k];
+    			}
+    		});
+    	});
+    	return a;
+    }
+
+    function createCommonjsModule(fn) {
+      var module = { exports: {} };
+    	return fn(module, module.exports), module.exports;
+    }
+
+    var func$3 = Symbol('func');
+    var validate = Symbol('validate');
+
+    var symbols = {
+    	func: func$3,
+    	validate: validate
+    };
+
+    const { func: func$2 } = symbols;
+
+    const numberPredicates = {
+      positive: (value) => (value > 0),
+      negative: (value) => (value < 0),
+      nonNegative: (value) => (value >= 0),
+      integer: (value) => (value === (value | 0)),
+
+      [func$2]: {
+        is: (fn) => fn,
+        eq: (v) => (value) => (value === v),
+        gt: (v) => (value) => (value > v),
+        gte: (v) => (value) => (value >= v),
+        lt: (v) => (value) => (value < v),
+        lte: (v) => (value) => (value <= v)
+      }
+    };
+
+    var number$2 = {
+      predicates: numberPredicates,
+      validator: (value) => {
+        return typeof value === 'number'
+      }
+    };
+
+    const { func: func$1 } = symbols;
+
+    const stringPredicates = {
+      empty: (value) => (value === ''),
+      nonEmpty: (value) => (value !== ''),
+
+      [func$1]: {
+        is: (fn) => fn,
+        eq: (v) => (value) => (value === v),
+        length: (v) => (value) => (value.length === v),
+        minLength: (v) => (value) => (value.length >= v),
+        maxLength: (v) => (value) => (value.length <= v),
+        matches: (v) => (value) => v.test(value),
+        startsWith: (v) => (value) => value.startsWith(v),
+        endsWith: (v) => (value) => value.endsWith(v)
+      }
+    };
+
+    var string = {
+      predicates: stringPredicates,
+      validator: (value) => {
+        return typeof value === 'string'
+      }
+    };
+
+    const { func } = symbols;
+
+    const objectPredicates = {
+      plain: (value) => {
+        if (typeof value !== 'object') return false
+
+        const proto = Object.getPrototypeOf(value);
+        return proto === null || proto === Object.getPrototypeOf({})
+      },
+      empty: (value) => Object.keys(value).length === 0,
+      nonEmpty: (value) => Object.keys(value).length > 0,
+
+      [func]: {
+        is: (fn) => fn,
+        instanceOf: (v) => (value) => (value instanceof v)
+      }
+    };
+
+    var object$1 = {
+      predicates: objectPredicates,
+      validator: (value) => {
+        return typeof value === 'object'
+      }
+    };
+
+    const typePredicates = {
+      number: number$2,
+      string,
+      object: object$1
+    };
+
+    const createOw = ({
+      validators = [],
+      predicates = typePredicates,
+      type = null
+    } = { }) => {
+      const ow = new Proxy(function () { }, {
+        get: (obj, key) => {
+          if (key === symbols.validate) {
+            return (value, label = 'argument') => {
+              if (!type) {
+                return new Error('missing required type specifier')
+              }
+
+              for (let i = 0; i < validators.length; ++i) {
+                const validator = validators[i];
+                const result = validator.fn(value);
+
+                if (!result) {
+                  if (i === 0) {
+                    throw new Error(`Expected ${label} \`${value}\` to be of type \`${type}\`, but received type \`${typeof value}\``)
+                  } else {
+                    throw new Error(`Expected ${type} \`${label}\` \`${value}\` failed predicate \`${validator.key}\``)
+                  }
+                }
+              }
+            }
+          }
+
+          const predicate = predicates[key];
+
+          if (predicate) {
+            if (typeof predicate === 'function') {
+              validators.push({
+                key,
+                fn: predicate
+              });
+
+              return ow
+            } else {
+              return createOw({
+                type: key,
+                validators: [
+                  {
+                    key,
+                    fn: predicate.validator
+                  }
+                ],
+                predicates: predicate.predicates
+              })
+            }
+          } else {
+            const fn = predicates[symbols.func] && predicates[symbols.func][key];
+
+            if (fn) {
+              return new Proxy(function () { }, {
+                get: () => {
+                  throw new Error(`invalid use of functional predicate "${key}"`)
+                },
+
+                apply: (obj, thisArg, args) => {
+                  validators.push({
+                    key,
+                    fn: fn(...args)
+                  });
+
+                  return ow
+                }
+              })
+            } else {
+              if (key === 'default' || key === '__esModule') {
+                return ow
+              }
+
+              return ow
+              // throw new Error(`unrecognized predicate "${key}"`)
+            }
+          }
+        },
+
+        apply: (obj, thisArg, args) => {
+          if (args.length !== 2 && args.length !== 3) {
+            throw new Error('invalid number of arguments to "ow"')
+          } else {
+            args[1][symbols.validate](args[0], args[2]);
+          }
+        }
+      });
+
+      return ow
+    };
+
+    var owLite = createOw();
+
+    var _createClass$1 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+    function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+    var RNG = function () {
+      function RNG() {
+        _classCallCheck$1(this, RNG);
+      }
+
+      _createClass$1(RNG, [{
+        key: 'next',
+        value: function next() {
+          throw new Error('RNG.next must be overridden');
+        }
+      }, {
+        key: 'seed',
+        value: function seed(_seed, opts) {
+          throw new Error('RNG.seed must be overridden');
+        }
+      }, {
+        key: 'clone',
+        value: function clone(seed, opts) {
+          throw new Error('RNG.clone must be overridden');
+        }
+      }, {
+        key: '_seed',
+        value: function _seed(seed, opts) {
+          // TODO: add entropy and stuff
+
+          if (seed === (seed | 0)) {
+            return seed;
+          } else {
+            var strSeed = '' + seed;
+            var s = 0;
+
+            for (var k = 0; k < strSeed.length; ++k) {
+              s ^= strSeed.charCodeAt(k) | 0;
+            }
+
+            return s;
+          }
+        }
+      }, {
+        key: 'name',
+        get: function get() {
+          throw new Error('RNG.name must be overridden');
+        }
+      }]);
+
+      return RNG;
+    }();
+
+    var _default$f = RNG;
+
+
+    var rng = /*#__PURE__*/Object.defineProperty({
+    	default: _default$f
+    }, '__esModule', {value: true});
+
+    var alea = createCommonjsModule(function (module) {
+    // A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
+    // http://baagoe.com/en/RandomMusings/javascript/
+    // https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+    // Original work is under MIT license -
+
+    // Copyright (C) 2010 by Johannes Baagøe <baagoe@baagoe.org>
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a copy
+    // of this software and associated documentation files (the "Software"), to deal
+    // in the Software without restriction, including without limitation the rights
+    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    // copies of the Software, and to permit persons to whom the Software is
+    // furnished to do so, subject to the following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included in
+    // all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    // THE SOFTWARE.
+
+
+
+    (function(global, module, define) {
+
+    function Alea(seed) {
+      var me = this, mash = Mash();
+
+      me.next = function() {
+        var t = 2091639 * me.s0 + me.c * 2.3283064365386963e-10; // 2^-32
+        me.s0 = me.s1;
+        me.s1 = me.s2;
+        return me.s2 = t - (me.c = t | 0);
+      };
+
+      // Apply the seeding algorithm from Baagoe.
+      me.c = 1;
+      me.s0 = mash(' ');
+      me.s1 = mash(' ');
+      me.s2 = mash(' ');
+      me.s0 -= mash(seed);
+      if (me.s0 < 0) { me.s0 += 1; }
+      me.s1 -= mash(seed);
+      if (me.s1 < 0) { me.s1 += 1; }
+      me.s2 -= mash(seed);
+      if (me.s2 < 0) { me.s2 += 1; }
+      mash = null;
+    }
+
+    function copy(f, t) {
+      t.c = f.c;
+      t.s0 = f.s0;
+      t.s1 = f.s1;
+      t.s2 = f.s2;
+      return t;
+    }
+
+    function impl(seed, opts) {
+      var xg = new Alea(seed),
+          state = opts && opts.state,
+          prng = xg.next;
+      prng.int32 = function() { return (xg.next() * 0x100000000) | 0; };
+      prng.double = function() {
+        return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
+      };
+      prng.quick = prng;
+      if (state) {
+        if (typeof(state) == 'object') copy(state, xg);
+        prng.state = function() { return copy(xg, {}); };
+      }
+      return prng;
+    }
+
+    function Mash() {
+      var n = 0xefc8249d;
+
+      var mash = function(data) {
+        data = String(data);
+        for (var i = 0; i < data.length; i++) {
+          n += data.charCodeAt(i);
+          var h = 0.02519603282416938 * n;
+          n = h >>> 0;
+          h -= n;
+          h *= n;
+          n = h >>> 0;
+          h -= n;
+          n += h * 0x100000000; // 2^32
+        }
+        return (n >>> 0) * 2.3283064365386963e-10; // 2^-32
+      };
+
+      return mash;
+    }
+
+
+    if (module && module.exports) {
+      module.exports = impl;
+    } else if (define && define.amd) {
+      define(function() { return impl; });
+    } else {
+      this.alea = impl;
+    }
+
+    })(
+      commonjsGlobal,
+      module,    // present in node.js
+      (typeof undefined) == 'function'    // present with an AMD loader
+    );
+    });
+
+    var xor128 = createCommonjsModule(function (module) {
+    // A Javascript implementaion of the "xor128" prng algorithm by
+    // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
+
+    (function(global, module, define) {
+
+    function XorGen(seed) {
+      var me = this, strseed = '';
+
+      me.x = 0;
+      me.y = 0;
+      me.z = 0;
+      me.w = 0;
+
+      // Set up generator function.
+      me.next = function() {
+        var t = me.x ^ (me.x << 11);
+        me.x = me.y;
+        me.y = me.z;
+        me.z = me.w;
+        return me.w ^= (me.w >>> 19) ^ t ^ (t >>> 8);
+      };
+
+      if (seed === (seed | 0)) {
+        // Integer seed.
+        me.x = seed;
+      } else {
+        // String seed.
+        strseed += seed;
+      }
+
+      // Mix in string seed, then discard an initial batch of 64 values.
+      for (var k = 0; k < strseed.length + 64; k++) {
+        me.x ^= strseed.charCodeAt(k) | 0;
+        me.next();
+      }
+    }
+
+    function copy(f, t) {
+      t.x = f.x;
+      t.y = f.y;
+      t.z = f.z;
+      t.w = f.w;
+      return t;
+    }
+
+    function impl(seed, opts) {
+      var xg = new XorGen(seed),
+          state = opts && opts.state,
+          prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+      prng.double = function() {
+        do {
+          var top = xg.next() >>> 11,
+              bot = (xg.next() >>> 0) / 0x100000000,
+              result = (top + bot) / (1 << 21);
+        } while (result === 0);
+        return result;
+      };
+      prng.int32 = xg.next;
+      prng.quick = prng;
+      if (state) {
+        if (typeof(state) == 'object') copy(state, xg);
+        prng.state = function() { return copy(xg, {}); };
+      }
+      return prng;
+    }
+
+    if (module && module.exports) {
+      module.exports = impl;
+    } else if (define && define.amd) {
+      define(function() { return impl; });
+    } else {
+      this.xor128 = impl;
+    }
+
+    })(
+      commonjsGlobal,
+      module,    // present in node.js
+      (typeof undefined) == 'function'    // present with an AMD loader
+    );
+    });
+
+    var xorwow = createCommonjsModule(function (module) {
+    // A Javascript implementaion of the "xorwow" prng algorithm by
+    // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
+
+    (function(global, module, define) {
+
+    function XorGen(seed) {
+      var me = this, strseed = '';
+
+      // Set up generator function.
+      me.next = function() {
+        var t = (me.x ^ (me.x >>> 2));
+        me.x = me.y; me.y = me.z; me.z = me.w; me.w = me.v;
+        return (me.d = (me.d + 362437 | 0)) +
+           (me.v = (me.v ^ (me.v << 4)) ^ (t ^ (t << 1))) | 0;
+      };
+
+      me.x = 0;
+      me.y = 0;
+      me.z = 0;
+      me.w = 0;
+      me.v = 0;
+
+      if (seed === (seed | 0)) {
+        // Integer seed.
+        me.x = seed;
+      } else {
+        // String seed.
+        strseed += seed;
+      }
+
+      // Mix in string seed, then discard an initial batch of 64 values.
+      for (var k = 0; k < strseed.length + 64; k++) {
+        me.x ^= strseed.charCodeAt(k) | 0;
+        if (k == strseed.length) {
+          me.d = me.x << 10 ^ me.x >>> 4;
+        }
+        me.next();
+      }
+    }
+
+    function copy(f, t) {
+      t.x = f.x;
+      t.y = f.y;
+      t.z = f.z;
+      t.w = f.w;
+      t.v = f.v;
+      t.d = f.d;
+      return t;
+    }
+
+    function impl(seed, opts) {
+      var xg = new XorGen(seed),
+          state = opts && opts.state,
+          prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+      prng.double = function() {
+        do {
+          var top = xg.next() >>> 11,
+              bot = (xg.next() >>> 0) / 0x100000000,
+              result = (top + bot) / (1 << 21);
+        } while (result === 0);
+        return result;
+      };
+      prng.int32 = xg.next;
+      prng.quick = prng;
+      if (state) {
+        if (typeof(state) == 'object') copy(state, xg);
+        prng.state = function() { return copy(xg, {}); };
+      }
+      return prng;
+    }
+
+    if (module && module.exports) {
+      module.exports = impl;
+    } else if (define && define.amd) {
+      define(function() { return impl; });
+    } else {
+      this.xorwow = impl;
+    }
+
+    })(
+      commonjsGlobal,
+      module,    // present in node.js
+      (typeof undefined) == 'function'    // present with an AMD loader
+    );
+    });
+
+    var xorshift7 = createCommonjsModule(function (module) {
+    // A Javascript implementaion of the "xorshift7" algorithm by
+    // François Panneton and Pierre L'ecuyer:
+    // "On the Xorgshift Random Number Generators"
+    // http://saluc.engr.uconn.edu/refs/crypto/rng/panneton05onthexorshift.pdf
+
+    (function(global, module, define) {
+
+    function XorGen(seed) {
+      var me = this;
+
+      // Set up generator function.
+      me.next = function() {
+        // Update xor generator.
+        var X = me.x, i = me.i, t, v;
+        t = X[i]; t ^= (t >>> 7); v = t ^ (t << 24);
+        t = X[(i + 1) & 7]; v ^= t ^ (t >>> 10);
+        t = X[(i + 3) & 7]; v ^= t ^ (t >>> 3);
+        t = X[(i + 4) & 7]; v ^= t ^ (t << 7);
+        t = X[(i + 7) & 7]; t = t ^ (t << 13); v ^= t ^ (t << 9);
+        X[i] = v;
+        me.i = (i + 1) & 7;
+        return v;
+      };
+
+      function init(me, seed) {
+        var j, X = [];
+
+        if (seed === (seed | 0)) {
+          // Seed state array using a 32-bit integer.
+          X[0] = seed;
+        } else {
+          // Seed state using a string.
+          seed = '' + seed;
+          for (j = 0; j < seed.length; ++j) {
+            X[j & 7] = (X[j & 7] << 15) ^
+                (seed.charCodeAt(j) + X[(j + 1) & 7] << 13);
+          }
+        }
+        // Enforce an array length of 8, not all zeroes.
+        while (X.length < 8) X.push(0);
+        for (j = 0; j < 8 && X[j] === 0; ++j);
+        if (j == 8) X[7] = -1;
+
+        me.x = X;
+        me.i = 0;
+
+        // Discard an initial 256 values.
+        for (j = 256; j > 0; --j) {
+          me.next();
+        }
+      }
+
+      init(me, seed);
+    }
+
+    function copy(f, t) {
+      t.x = f.x.slice();
+      t.i = f.i;
+      return t;
+    }
+
+    function impl(seed, opts) {
+      if (seed == null) seed = +(new Date);
+      var xg = new XorGen(seed),
+          state = opts && opts.state,
+          prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+      prng.double = function() {
+        do {
+          var top = xg.next() >>> 11,
+              bot = (xg.next() >>> 0) / 0x100000000,
+              result = (top + bot) / (1 << 21);
+        } while (result === 0);
+        return result;
+      };
+      prng.int32 = xg.next;
+      prng.quick = prng;
+      if (state) {
+        if (state.x) copy(state, xg);
+        prng.state = function() { return copy(xg, {}); };
+      }
+      return prng;
+    }
+
+    if (module && module.exports) {
+      module.exports = impl;
+    } else if (define && define.amd) {
+      define(function() { return impl; });
+    } else {
+      this.xorshift7 = impl;
+    }
+
+    })(
+      commonjsGlobal,
+      module,    // present in node.js
+      (typeof undefined) == 'function'    // present with an AMD loader
+    );
+    });
+
+    var xor4096 = createCommonjsModule(function (module) {
+    // A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
+    //
+    // This fast non-cryptographic random number generator is designed for
+    // use in Monte-Carlo algorithms. It combines a long-period xorshift
+    // generator with a Weyl generator, and it passes all common batteries
+    // of stasticial tests for randomness while consuming only a few nanoseconds
+    // for each prng generated.  For background on the generator, see Brent's
+    // paper: "Some long-period random number generators using shifts and xors."
+    // http://arxiv.org/pdf/1004.3115v1.pdf
+    //
+    // Usage:
+    //
+    // var xor4096 = require('xor4096');
+    // random = xor4096(1);                        // Seed with int32 or string.
+    // assert.equal(random(), 0.1520436450538547); // (0, 1) range, 53 bits.
+    // assert.equal(random.int32(), 1806534897);   // signed int32, 32 bits.
+    //
+    // For nonzero numeric keys, this impelementation provides a sequence
+    // identical to that by Brent's xorgens 3 implementaion in C.  This
+    // implementation also provides for initalizing the generator with
+    // string seeds, or for saving and restoring the state of the generator.
+    //
+    // On Chrome, this prng benchmarks about 2.1 times slower than
+    // Javascript's built-in Math.random().
+
+    (function(global, module, define) {
+
+    function XorGen(seed) {
+      var me = this;
+
+      // Set up generator function.
+      me.next = function() {
+        var w = me.w,
+            X = me.X, i = me.i, t, v;
+        // Update Weyl generator.
+        me.w = w = (w + 0x61c88647) | 0;
+        // Update xor generator.
+        v = X[(i + 34) & 127];
+        t = X[i = ((i + 1) & 127)];
+        v ^= v << 13;
+        t ^= t << 17;
+        v ^= v >>> 15;
+        t ^= t >>> 12;
+        // Update Xor generator array state.
+        v = X[i] = v ^ t;
+        me.i = i;
+        // Result is the combination.
+        return (v + (w ^ (w >>> 16))) | 0;
+      };
+
+      function init(me, seed) {
+        var t, v, i, j, w, X = [], limit = 128;
+        if (seed === (seed | 0)) {
+          // Numeric seeds initialize v, which is used to generates X.
+          v = seed;
+          seed = null;
+        } else {
+          // String seeds are mixed into v and X one character at a time.
+          seed = seed + '\0';
+          v = 0;
+          limit = Math.max(limit, seed.length);
+        }
+        // Initialize circular array and weyl value.
+        for (i = 0, j = -32; j < limit; ++j) {
+          // Put the unicode characters into the array, and shuffle them.
+          if (seed) v ^= seed.charCodeAt((j + 32) % seed.length);
+          // After 32 shuffles, take v as the starting w value.
+          if (j === 0) w = v;
+          v ^= v << 10;
+          v ^= v >>> 15;
+          v ^= v << 4;
+          v ^= v >>> 13;
+          if (j >= 0) {
+            w = (w + 0x61c88647) | 0;     // Weyl.
+            t = (X[j & 127] ^= (v + w));  // Combine xor and weyl to init array.
+            i = (0 == t) ? i + 1 : 0;     // Count zeroes.
+          }
+        }
+        // We have detected all zeroes; make the key nonzero.
+        if (i >= 128) {
+          X[(seed && seed.length || 0) & 127] = -1;
+        }
+        // Run the generator 512 times to further mix the state before using it.
+        // Factoring this as a function slows the main generator, so it is just
+        // unrolled here.  The weyl generator is not advanced while warming up.
+        i = 127;
+        for (j = 4 * 128; j > 0; --j) {
+          v = X[(i + 34) & 127];
+          t = X[i = ((i + 1) & 127)];
+          v ^= v << 13;
+          t ^= t << 17;
+          v ^= v >>> 15;
+          t ^= t >>> 12;
+          X[i] = v ^ t;
+        }
+        // Storing state as object members is faster than using closure variables.
+        me.w = w;
+        me.X = X;
+        me.i = i;
+      }
+
+      init(me, seed);
+    }
+
+    function copy(f, t) {
+      t.i = f.i;
+      t.w = f.w;
+      t.X = f.X.slice();
+      return t;
+    }
+    function impl(seed, opts) {
+      if (seed == null) seed = +(new Date);
+      var xg = new XorGen(seed),
+          state = opts && opts.state,
+          prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+      prng.double = function() {
+        do {
+          var top = xg.next() >>> 11,
+              bot = (xg.next() >>> 0) / 0x100000000,
+              result = (top + bot) / (1 << 21);
+        } while (result === 0);
+        return result;
+      };
+      prng.int32 = xg.next;
+      prng.quick = prng;
+      if (state) {
+        if (state.X) copy(state, xg);
+        prng.state = function() { return copy(xg, {}); };
+      }
+      return prng;
+    }
+
+    if (module && module.exports) {
+      module.exports = impl;
+    } else if (define && define.amd) {
+      define(function() { return impl; });
+    } else {
+      this.xor4096 = impl;
+    }
+
+    })(
+      commonjsGlobal,                                     // window object or global
+      module,    // present in node.js
+      (typeof undefined) == 'function'    // present with an AMD loader
+    );
+    });
+
+    var tychei = createCommonjsModule(function (module) {
+    // A Javascript implementaion of the "Tyche-i" prng algorithm by
+    // Samuel Neves and Filipe Araujo.
+    // See https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
+
+    (function(global, module, define) {
+
+    function XorGen(seed) {
+      var me = this, strseed = '';
+
+      // Set up generator function.
+      me.next = function() {
+        var b = me.b, c = me.c, d = me.d, a = me.a;
+        b = (b << 25) ^ (b >>> 7) ^ c;
+        c = (c - d) | 0;
+        d = (d << 24) ^ (d >>> 8) ^ a;
+        a = (a - b) | 0;
+        me.b = b = (b << 20) ^ (b >>> 12) ^ c;
+        me.c = c = (c - d) | 0;
+        me.d = (d << 16) ^ (c >>> 16) ^ a;
+        return me.a = (a - b) | 0;
+      };
+
+      /* The following is non-inverted tyche, which has better internal
+       * bit diffusion, but which is about 25% slower than tyche-i in JS.
+      me.next = function() {
+        var a = me.a, b = me.b, c = me.c, d = me.d;
+        a = (me.a + me.b | 0) >>> 0;
+        d = me.d ^ a; d = d << 16 ^ d >>> 16;
+        c = me.c + d | 0;
+        b = me.b ^ c; b = b << 12 ^ d >>> 20;
+        me.a = a = a + b | 0;
+        d = d ^ a; me.d = d = d << 8 ^ d >>> 24;
+        me.c = c = c + d | 0;
+        b = b ^ c;
+        return me.b = (b << 7 ^ b >>> 25);
+      }
+      */
+
+      me.a = 0;
+      me.b = 0;
+      me.c = 2654435769 | 0;
+      me.d = 1367130551;
+
+      if (seed === Math.floor(seed)) {
+        // Integer seed.
+        me.a = (seed / 0x100000000) | 0;
+        me.b = seed | 0;
+      } else {
+        // String seed.
+        strseed += seed;
+      }
+
+      // Mix in string seed, then discard an initial batch of 64 values.
+      for (var k = 0; k < strseed.length + 20; k++) {
+        me.b ^= strseed.charCodeAt(k) | 0;
+        me.next();
+      }
+    }
+
+    function copy(f, t) {
+      t.a = f.a;
+      t.b = f.b;
+      t.c = f.c;
+      t.d = f.d;
+      return t;
+    }
+    function impl(seed, opts) {
+      var xg = new XorGen(seed),
+          state = opts && opts.state,
+          prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+      prng.double = function() {
+        do {
+          var top = xg.next() >>> 11,
+              bot = (xg.next() >>> 0) / 0x100000000,
+              result = (top + bot) / (1 << 21);
+        } while (result === 0);
+        return result;
+      };
+      prng.int32 = xg.next;
+      prng.quick = prng;
+      if (state) {
+        if (typeof(state) == 'object') copy(state, xg);
+        prng.state = function() { return copy(xg, {}); };
+      }
+      return prng;
+    }
+
+    if (module && module.exports) {
+      module.exports = impl;
+    } else if (define && define.amd) {
+      define(function() { return impl; });
+    } else {
+      this.tychei = impl;
+    }
+
+    })(
+      commonjsGlobal,
+      module,    // present in node.js
+      (typeof undefined) == 'function'    // present with an AMD loader
+    );
+    });
+
+    var _nodeResolve_empty = {};
+
+    var _nodeResolve_empty$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': _nodeResolve_empty
+    });
+
+    var require$$0 = /*@__PURE__*/getAugmentedNamespace(_nodeResolve_empty$1);
+
+    /*
+    Copyright 2019 David Bau.
+
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+    */
+
+    var seedrandom$1 = createCommonjsModule(function (module) {
+    (function (global, pool, math) {
+    //
+    // The following constants are related to IEEE 754 limits.
+    //
+
+    var width = 256,        // each RC4 output is 0 <= x < 256
+        chunks = 6,         // at least six RC4 outputs for each double
+        digits = 52,        // there are 52 significant digits in a double
+        rngname = 'random', // rngname: name for Math.random and Math.seedrandom
+        startdenom = math.pow(width, chunks),
+        significance = math.pow(2, digits),
+        overflow = significance * 2,
+        mask = width - 1,
+        nodecrypto;         // node.js crypto module, initialized at the bottom.
+
+    //
+    // seedrandom()
+    // This is the seedrandom function described above.
+    //
+    function seedrandom(seed, options, callback) {
+      var key = [];
+      options = (options == true) ? { entropy: true } : (options || {});
+
+      // Flatten the seed string or build one from local entropy if needed.
+      var shortseed = mixkey(flatten(
+        options.entropy ? [seed, tostring(pool)] :
+        (seed == null) ? autoseed() : seed, 3), key);
+
+      // Use the seed to initialize an ARC4 generator.
+      var arc4 = new ARC4(key);
+
+      // This function returns a random double in [0, 1) that contains
+      // randomness in every bit of the mantissa of the IEEE 754 value.
+      var prng = function() {
+        var n = arc4.g(chunks),             // Start with a numerator n < 2 ^ 48
+            d = startdenom,                 //   and denominator d = 2 ^ 48.
+            x = 0;                          //   and no 'extra last byte'.
+        while (n < significance) {          // Fill up all significant digits by
+          n = (n + x) * width;              //   shifting numerator and
+          d *= width;                       //   denominator and generating a
+          x = arc4.g(1);                    //   new least-significant-byte.
+        }
+        while (n >= overflow) {             // To avoid rounding up, before adding
+          n /= 2;                           //   last byte, shift everything
+          d /= 2;                           //   right using integer math until
+          x >>>= 1;                         //   we have exactly the desired bits.
+        }
+        return (n + x) / d;                 // Form the number within [0, 1).
+      };
+
+      prng.int32 = function() { return arc4.g(4) | 0; };
+      prng.quick = function() { return arc4.g(4) / 0x100000000; };
+      prng.double = prng;
+
+      // Mix the randomness into accumulated entropy.
+      mixkey(tostring(arc4.S), pool);
+
+      // Calling convention: what to return as a function of prng, seed, is_math.
+      return (options.pass || callback ||
+          function(prng, seed, is_math_call, state) {
+            if (state) {
+              // Load the arc4 state from the given state if it has an S array.
+              if (state.S) { copy(state, arc4); }
+              // Only provide the .state method if requested via options.state.
+              prng.state = function() { return copy(arc4, {}); };
+            }
+
+            // If called as a method of Math (Math.seedrandom()), mutate
+            // Math.random because that is how seedrandom.js has worked since v1.0.
+            if (is_math_call) { math[rngname] = prng; return seed; }
+
+            // Otherwise, it is a newer calling convention, so return the
+            // prng directly.
+            else return prng;
+          })(
+      prng,
+      shortseed,
+      'global' in options ? options.global : (this == math),
+      options.state);
+    }
+
+    //
+    // ARC4
+    //
+    // An ARC4 implementation.  The constructor takes a key in the form of
+    // an array of at most (width) integers that should be 0 <= x < (width).
+    //
+    // The g(count) method returns a pseudorandom integer that concatenates
+    // the next (count) outputs from ARC4.  Its return value is a number x
+    // that is in the range 0 <= x < (width ^ count).
+    //
+    function ARC4(key) {
+      var t, keylen = key.length,
+          me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
+
+      // The empty key [] is treated as [0].
+      if (!keylen) { key = [keylen++]; }
+
+      // Set up S using the standard key scheduling algorithm.
+      while (i < width) {
+        s[i] = i++;
+      }
+      for (i = 0; i < width; i++) {
+        s[i] = s[j = mask & (j + key[i % keylen] + (t = s[i]))];
+        s[j] = t;
+      }
+
+      // The "g" method returns the next (count) outputs as one number.
+      (me.g = function(count) {
+        // Using instance members instead of closure state nearly doubles speed.
+        var t, r = 0,
+            i = me.i, j = me.j, s = me.S;
+        while (count--) {
+          t = s[i = mask & (i + 1)];
+          r = r * width + s[mask & ((s[i] = s[j = mask & (j + t)]) + (s[j] = t))];
+        }
+        me.i = i; me.j = j;
+        return r;
+        // For robust unpredictability, the function call below automatically
+        // discards an initial batch of values.  This is called RC4-drop[256].
+        // See http://google.com/search?q=rsa+fluhrer+response&btnI
+      })(width);
+    }
+
+    //
+    // copy()
+    // Copies internal state of ARC4 to or from a plain object.
+    //
+    function copy(f, t) {
+      t.i = f.i;
+      t.j = f.j;
+      t.S = f.S.slice();
+      return t;
+    }
+    //
+    // flatten()
+    // Converts an object tree to nested arrays of strings.
+    //
+    function flatten(obj, depth) {
+      var result = [], typ = (typeof obj), prop;
+      if (depth && typ == 'object') {
+        for (prop in obj) {
+          try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+        }
+      }
+      return (result.length ? result : typ == 'string' ? obj : obj + '\0');
+    }
+
+    //
+    // mixkey()
+    // Mixes a string seed into a key that is an array of integers, and
+    // returns a shortened string seed that is equivalent to the result key.
+    //
+    function mixkey(seed, key) {
+      var stringseed = seed + '', smear, j = 0;
+      while (j < stringseed.length) {
+        key[mask & j] =
+          mask & ((smear ^= key[mask & j] * 19) + stringseed.charCodeAt(j++));
+      }
+      return tostring(key);
+    }
+
+    //
+    // autoseed()
+    // Returns an object for autoseeding, using window.crypto and Node crypto
+    // module if available.
+    //
+    function autoseed() {
+      try {
+        var out;
+        if (nodecrypto && (out = nodecrypto.randomBytes)) {
+          // The use of 'out' to remember randomBytes makes tight minified code.
+          out = out(width);
+        } else {
+          out = new Uint8Array(width);
+          (global.crypto || global.msCrypto).getRandomValues(out);
+        }
+        return tostring(out);
+      } catch (e) {
+        var browser = global.navigator,
+            plugins = browser && browser.plugins;
+        return [+new Date, global, plugins, global.screen, tostring(pool)];
+      }
+    }
+
+    //
+    // tostring()
+    // Converts an array of charcodes to a string
+    //
+    function tostring(a) {
+      return String.fromCharCode.apply(0, a);
+    }
+
+    //
+    // When seedrandom.js is loaded, we immediately mix a few bits
+    // from the built-in RNG into the entropy pool.  Because we do
+    // not want to interfere with deterministic PRNG state later,
+    // seedrandom will not call math.random on its own again after
+    // initialization.
+    //
+    mixkey(math.random(), pool);
+
+    //
+    // Nodejs and AMD support: export the implementation as a module using
+    // either convention.
+    //
+    if (module.exports) {
+      module.exports = seedrandom;
+      // When in node.js, try using crypto package for autoseeding.
+      try {
+        nodecrypto = require$$0;
+      } catch (ex) {}
+    } else {
+      // When included as a plain script, set up Math.seedrandom global.
+      math['seed' + rngname] = seedrandom;
+    }
+
+
+    // End anonymous scope, and pass initial values.
+    })(
+      // global: `self` in browsers (including strict mode and web workers),
+      // otherwise `this` in Node and other environments
+      (typeof self !== 'undefined') ? self : commonjsGlobal,
+      [],     // pool: entropy pool starts empty
+      Math    // math: package containing random, pow, and seedrandom
+    );
+    });
+
+    // A library of seedable RNGs implemented in Javascript.
+    //
+    // Usage:
+    //
+    // var seedrandom = require('seedrandom');
+    // var random = seedrandom(1); // or any seed.
+    // var x = random();       // 0 <= x < 1.  Every bit is random.
+    // var x = random.quick(); // 0 <= x < 1.  32 bits of randomness.
+
+    // alea, a 53-bit multiply-with-carry generator by Johannes Baagøe.
+    // Period: ~2^116
+    // Reported to pass all BigCrush tests.
+
+
+    // xor128, a pure xor-shift generator by George Marsaglia.
+    // Period: 2^128-1.
+    // Reported to fail: MatrixRank and LinearComp.
+
+
+    // xorwow, George Marsaglia's 160-bit xor-shift combined plus weyl.
+    // Period: 2^192-2^32
+    // Reported to fail: CollisionOver, SimpPoker, and LinearComp.
+
+
+    // xorshift7, by François Panneton and Pierre L'ecuyer, takes
+    // a different approach: it adds robustness by allowing more shifts
+    // than Marsaglia's original three.  It is a 7-shift generator
+    // with 256 bits, that passes BigCrush with no systmatic failures.
+    // Period 2^256-1.
+    // No systematic BigCrush failures reported.
+
+
+    // xor4096, by Richard Brent, is a 4096-bit xor-shift with a
+    // very long period that also adds a Weyl generator. It also passes
+    // BigCrush with no systematic failures.  Its long period may
+    // be useful if you have many generators and need to avoid
+    // collisions.
+    // Period: 2^4128-2^32.
+    // No systematic BigCrush failures reported.
+
+
+    // Tyche-i, by Samuel Neves and Filipe Araujo, is a bit-shifting random
+    // number generator derived from ChaCha, a modern stream cipher.
+    // https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
+    // Period: ~2^127
+    // No systematic BigCrush failures reported.
+
+
+    // The original ARC4-based prng included in this library.
+    // Period: ~2^1600
+
+
+    seedrandom$1.alea = alea;
+    seedrandom$1.xor128 = xor128;
+    seedrandom$1.xorwow = xorwow;
+    seedrandom$1.xorshift7 = xorshift7;
+    seedrandom$1.xor4096 = xor4096;
+    seedrandom$1.tychei = tychei;
+
+    var seedrandom = seedrandom$1;
+
+    var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+
+
+    var _owLite2$b = _interopRequireDefault$c(owLite);
+
+
+
+    var _rng2$1 = _interopRequireDefault$c(rng);
+
+    function _interopRequireDefault$c(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+    function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+    function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+    var RNGFunction = function (_RNG) {
+      _inherits(RNGFunction, _RNG);
+
+      function RNGFunction(thunk, opts) {
+        _classCallCheck(this, RNGFunction);
+
+        var _this = _possibleConstructorReturn(this, (RNGFunction.__proto__ || Object.getPrototypeOf(RNGFunction)).call(this));
+
+        _this.seed(thunk, opts);
+        return _this;
+      }
+
+      _createClass(RNGFunction, [{
+        key: 'next',
+        value: function next() {
+          return this._rng();
+        }
+      }, {
+        key: 'seed',
+        value: function seed(thunk) {
+          (0, _owLite2$b.default)(thunk, _owLite2$b.default.function);
+          this._rng = thunk;
+        }
+      }, {
+        key: 'clone',
+        value: function clone() {
+          for (var _len = arguments.length, opts = Array(_len), _key = 0; _key < _len; _key++) {
+            opts[_key] = arguments[_key];
+          }
+
+          return new (Function.prototype.bind.apply(RNGFunction, [null].concat([this._rng], opts)))();
+        }
+      }, {
+        key: 'name',
+        get: function get() {
+          return 'function';
+        }
+      }]);
+
+      return RNGFunction;
+    }(_rng2$1.default);
+
+    var _default$e = RNGFunction;
+
+
+    var _function = /*#__PURE__*/Object.defineProperty({
+    	default: _default$e
+    }, '__esModule', {value: true});
+
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+
+
+    var _seedrandom2 = _interopRequireDefault$b(seedrandom);
+
+
+
+    var _rng2 = _interopRequireDefault$b(rng);
+
+
+
+    var _function2 = _interopRequireDefault$b(_function);
+
+    function _interopRequireDefault$b(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+    var _default$d = function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var _args$ = args[0],
+          arg0 = _args$ === undefined ? 'default' : _args$,
+          rest = args.slice(1);
+
+
+      switch (typeof arg0 === 'undefined' ? 'undefined' : _typeof(arg0)) {
+        case 'object':
+          if (arg0 instanceof _rng2.default) {
+            return arg0;
+          }
+          break;
+
+        case 'function':
+          return new _function2.default(arg0);
+
+        case 'string':
+        case 'number':
+          return new _function2.default(_seedrandom2.default.apply(undefined, _toConsumableArray(rest)));
+      }
+
+      throw new Error('invalid RNG "' + arg0 + '"');
+    };
+
+
+    var rngFactory = /*#__PURE__*/Object.defineProperty({
+    	default: _default$d
+    }, '__esModule', {value: true});
+
+    var _owLite2$a = _interopRequireDefault$a(owLite);
+
+    function _interopRequireDefault$a(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$c = function (random, min, max) {
+      if (max === undefined) {
+        max = min === undefined ? 1 : min;
+        min = 0;
+      }
+
+      (0, _owLite2$a.default)(min, _owLite2$a.default.number);
+      (0, _owLite2$a.default)(max, _owLite2$a.default.number);
+
+      return function () {
+        return random.next() * (max - min) + min;
+      };
+    };
+
+
+    var uniform = /*#__PURE__*/Object.defineProperty({
+    	default: _default$c
+    }, '__esModule', {value: true});
+
+    var _owLite2$9 = _interopRequireDefault$9(owLite);
+
+    function _interopRequireDefault$9(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$b = function (random, min, max) {
+      if (max === undefined) {
+        max = min === undefined ? 1 : min;
+        min = 0;
+      }
+
+      (0, _owLite2$9.default)(min, _owLite2$9.default.number.integer);
+      (0, _owLite2$9.default)(max, _owLite2$9.default.number.integer);
+
+      return function () {
+        return random.next() * (max - min + 1) + min | 0;
+      };
+    };
+
+
+    var uniformInt = /*#__PURE__*/Object.defineProperty({
+    	default: _default$b
+    }, '__esModule', {value: true});
+
+    var _default$a = function (random) {
+      return function () {
+        return random.next() >= 0.5;
+      };
+    };
+
+
+    var uniformBoolean = /*#__PURE__*/Object.defineProperty({
+    	default: _default$a
+    }, '__esModule', {value: true});
+
+    var _owLite2$8 = _interopRequireDefault$8(owLite);
+
+    function _interopRequireDefault$8(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$9 = function (random) {
+      var mu = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var sigma = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+      (0, _owLite2$8.default)(mu, _owLite2$8.default.number);
+      (0, _owLite2$8.default)(sigma, _owLite2$8.default.number);
+
+      return function () {
+        var x = void 0,
+            y = void 0,
+            r = void 0;
+
+        do {
+          x = random.next() * 2 - 1;
+          y = random.next() * 2 - 1;
+          r = x * x + y * y;
+        } while (!r || r > 1);
+
+        return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
+      };
+    };
+
+
+    var normal = /*#__PURE__*/Object.defineProperty({
+    	default: _default$9
+    }, '__esModule', {value: true});
+
+    var _default$8 = function (random) {
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      var normal = random.normal.apply(random, args);
+
+      return function () {
+        return Math.exp(normal());
+      };
+    };
+
+
+    var logNormal = /*#__PURE__*/Object.defineProperty({
+    	default: _default$8
+    }, '__esModule', {value: true});
+
+    var _owLite2$7 = _interopRequireDefault$7(owLite);
+
+    function _interopRequireDefault$7(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$7 = function (random) {
+      var p = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+
+      (0, _owLite2$7.default)(p, _owLite2$7.default.number.gte(0).lt(1));
+
+      return function () {
+        return random.next() + p | 0;
+      };
+    };
+
+
+    var bernoulli = /*#__PURE__*/Object.defineProperty({
+    	default: _default$7
+    }, '__esModule', {value: true});
+
+    var _owLite2$6 = _interopRequireDefault$6(owLite);
+
+    function _interopRequireDefault$6(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$6 = function (random) {
+      var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var p = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.5;
+
+      (0, _owLite2$6.default)(n, _owLite2$6.default.number.positive.integer);
+      (0, _owLite2$6.default)(p, _owLite2$6.default.number.gte(0).lte(1));
+
+      return function () {
+        var i = 0;
+        var x = 0;
+
+        while (i++ < n) {
+          x += random.next() < p;
+        }
+
+        return x;
+      };
+    };
+
+
+    var binomial = /*#__PURE__*/Object.defineProperty({
+    	default: _default$6
+    }, '__esModule', {value: true});
+
+    var _owLite2$5 = _interopRequireDefault$5(owLite);
+
+    function _interopRequireDefault$5(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$5 = function (random) {
+      var p = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+
+      (0, _owLite2$5.default)(p, _owLite2$5.default.number.gt(0).lte(1));
+      var invLogP = 1.0 / Math.log(1.0 - p);
+
+      return function () {
+        return 1 + Math.log(random.next()) * invLogP | 0;
+      };
+    };
+
+
+    var geometric = /*#__PURE__*/Object.defineProperty({
+    	default: _default$5
+    }, '__esModule', {value: true});
+
+    var _owLite2$4 = _interopRequireDefault$4(owLite);
+
+    function _interopRequireDefault$4(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var logFactorialTable = [0.0, 0.0, 0.69314718055994529, 1.7917594692280550, 3.1780538303479458, 4.7874917427820458, 6.5792512120101012, 8.5251613610654147, 10.604602902745251, 12.801827480081469];
+
+    var logFactorial = function logFactorial(k) {
+      return logFactorialTable[k];
+    };
+
+    var logSqrt2PI = 0.91893853320467267;
+
+    var _default$4 = function (random) {
+      var lambda = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      (0, _owLite2$4.default)(lambda, _owLite2$4.default.number.positive);
+
+      if (lambda < 10) {
+        // inversion method
+        var expMean = Math.exp(-lambda);
+
+        return function () {
+          var p = expMean;
+          var x = 0;
+          var u = random.next();
+
+          while (u > p) {
+            u = u - p;
+            p = lambda * p / ++x;
+          }
+
+          return x;
+        };
+      } else {
+        // generative method
+        var smu = Math.sqrt(lambda);
+        var b = 0.931 + 2.53 * smu;
+        var a = -0.059 + 0.02483 * b;
+        var invAlpha = 1.1239 + 1.1328 / (b - 3.4);
+        var vR = 0.9277 - 3.6224 / (b - 2);
+
+        return function () {
+          while (true) {
+            var u = void 0;
+            var v = random.next();
+
+            if (v <= 0.86 * vR) {
+              u = v / vR - 0.43;
+              return Math.floor((2 * a / (0.5 - Math.abs(u)) + b) * u + lambda + 0.445);
+            }
+
+            if (v >= vR) {
+              u = random.next() - 0.5;
+            } else {
+              u = v / vR - 0.93;
+              u = (u < 0 ? -0.5 : 0.5) - u;
+              v = random.next() * vR;
+            }
+
+            var us = 0.5 - Math.abs(u);
+            if (us < 0.013 && v > us) {
+              continue;
+            }
+
+            var k = Math.floor((2 * a / us + b) * u + lambda + 0.445) | 0;
+            v = v * invAlpha / (a / (us * us) + b);
+
+            if (k >= 10) {
+              var t = (k + 0.5) * Math.log(lambda / k) - lambda - logSqrt2PI + k - (1 / 12.0 - (1 / 360.0 - 1 / (1260.0 * k * k)) / (k * k)) / k;
+
+              if (Math.log(v * smu) <= t) {
+                return k;
+              }
+            } else if (k >= 0) {
+              if (Math.log(v) <= k * Math.log(lambda) - lambda - logFactorial(k)) {
+                return k;
+              }
+            }
+          }
+        };
+      }
+    };
+
+
+    var poisson = /*#__PURE__*/Object.defineProperty({
+    	default: _default$4
+    }, '__esModule', {value: true});
+
+    var _owLite2$3 = _interopRequireDefault$3(owLite);
+
+    function _interopRequireDefault$3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$3 = function (random) {
+      var lambda = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      (0, _owLite2$3.default)(lambda, _owLite2$3.default.number.positive);
+
+      return function () {
+        return -Math.log(1 - random.next()) / lambda;
+      };
+    };
+
+
+    var exponential$1 = /*#__PURE__*/Object.defineProperty({
+    	default: _default$3
+    }, '__esModule', {value: true});
+
+    var _owLite2$2 = _interopRequireDefault$2(owLite);
+
+    function _interopRequireDefault$2(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$2 = function (random) {
+      var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      (0, _owLite2$2.default)(n, _owLite2$2.default.number.integer.gte(0));
+
+      return function () {
+        var sum = 0;
+        for (var i = 0; i < n; ++i) {
+          sum += random.next();
+        }
+
+        return sum;
+      };
+    };
+
+
+    var irwinHall = /*#__PURE__*/Object.defineProperty({
+    	default: _default$2
+    }, '__esModule', {value: true});
+
+    var _owLite2$1 = _interopRequireDefault$1(owLite);
+
+    function _interopRequireDefault$1(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default$1 = function (random) {
+      var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      (0, _owLite2$1.default)(n, _owLite2$1.default.number.integer.positive);
+      var irwinHall = random.irwinHall(n);
+
+      return function () {
+        return irwinHall() / n;
+      };
+    };
+
+
+    var bates = /*#__PURE__*/Object.defineProperty({
+    	default: _default$1
+    }, '__esModule', {value: true});
+
+    var _owLite2 = _interopRequireDefault(owLite);
+
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    var _default = function (random) {
+      var alpha = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      (0, _owLite2.default)(alpha, _owLite2.default.number.gte(0));
+      var invAlpha = 1.0 / alpha;
+
+      return function () {
+        return 1.0 / Math.pow(1.0 - random.next(), invAlpha);
+      };
+    };
+
+
+    var pareto = /*#__PURE__*/Object.defineProperty({
+    	default: _default
+    }, '__esModule', {value: true});
+
+    var random$1 = createCommonjsModule(function (module, exports) {
+
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.RNGFactory = exports.RNG = undefined;
+
+    var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+
+
+    var _owLite2 = _interopRequireDefault(owLite);
+
+
+
+    var _rng2 = _interopRequireDefault(rng);
+
+
+
+    var _rngFactory2 = _interopRequireDefault(rngFactory);
+
+
+
+    var _uniform3 = _interopRequireDefault(uniform);
+
+
+
+    var _uniformInt3 = _interopRequireDefault(uniformInt);
+
+
+
+    var _uniformBoolean3 = _interopRequireDefault(uniformBoolean);
+
+
+
+    var _normal3 = _interopRequireDefault(normal);
+
+
+
+    var _logNormal3 = _interopRequireDefault(logNormal);
+
+
+
+    var _bernoulli3 = _interopRequireDefault(bernoulli);
+
+
+
+    var _binomial3 = _interopRequireDefault(binomial);
+
+
+
+    var _geometric3 = _interopRequireDefault(geometric);
+
+
+
+    var _poisson3 = _interopRequireDefault(poisson);
+
+
+
+    var _exponential3 = _interopRequireDefault(exponential$1);
+
+
+
+    var _irwinHall3 = _interopRequireDefault(irwinHall);
+
+
+
+    var _bates3 = _interopRequireDefault(bates);
+
+
+
+    var _pareto3 = _interopRequireDefault(pareto);
+
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+    exports.RNG = _rng2.default;
+    exports.RNGFactory = _rngFactory2.default;
+
+    /**
+     * Seedable random number generator supporting many common distributions.
+     *
+     * Defaults to Math.random as its underlying pseudorandom number generator.
+     *
+     * @name Random
+     * @class
+     *
+     * @param {RNG|function} [rng=Math.random] - Underlying pseudorandom number generator.
+     */
+
+    var Random = function () {
+      function Random(rng) {
+        _classCallCheck(this, Random);
+
+        if (rng) (0, _owLite2.default)(rng, _owLite2.default.object.instanceOf(_rng2.default));
+
+        this._cache = {};
+        this.use(rng);
+      }
+
+      /**
+       * @member {RNG} Underlying pseudo-random number generator
+       */
+
+
+      _createClass(Random, [{
+        key: 'clone',
+
+
+        /**
+         * Creates a new `Random` instance, optionally specifying parameters to
+         * set a new seed.
+         *
+         * @see RNG.clone
+         *
+         * @param {string} [seed] - Optional seed for new RNG.
+         * @param {object} [opts] - Optional config for new RNG options.
+         * @return {Random}
+         */
+        value: function clone() {
+          if (arguments.length) {
+            return new Random(_rngFactory2.default.apply(undefined, arguments));
+          } else {
+            return new Random(this.rng.clone());
+          }
+        }
+
+        /**
+         * Sets the underlying pseudorandom number generator used via
+         * either an instance of `seedrandom`, a custom instance of RNG
+         * (for PRNG plugins), or a string specifying the PRNG to use
+         * along with an optional `seed` and `opts` to initialize the
+         * RNG.
+         *
+         * @example
+         * const random = require('random')
+         *
+         * random.use('example_seedrandom_string')
+         * // or
+         * random.use(seedrandom('kittens'))
+         * // or
+         * random.use(Math.random)
+         *
+         * @param {...*} args
+         */
+
+      }, {
+        key: 'use',
+        value: function use() {
+          this._rng = _rngFactory2.default.apply(undefined, arguments);
+        }
+
+        /**
+         * Patches `Math.random` with this Random instance's PRNG.
+         */
+
+      }, {
+        key: 'patch',
+        value: function patch() {
+          if (this._patch) {
+            throw new Error('Math.random already patched');
+          }
+
+          this._patch = Math.random;
+          Math.random = this.uniform();
+        }
+
+        /**
+         * Restores a previously patched `Math.random` to its original value.
+         */
+
+      }, {
+        key: 'unpatch',
+        value: function unpatch() {
+          if (this._patch) {
+            Math.random = this._patch;
+            delete this._patch;
+          }
+        }
+
+        // --------------------------------------------------------------------------
+        // Uniform utility functions
+        // --------------------------------------------------------------------------
+
+        /**
+         * Convenience wrapper around `this.rng.next()`
+         *
+         * Returns a floating point number in [0, 1).
+         *
+         * @return {number}
+         */
+
+      }, {
+        key: 'next',
+        value: function next() {
+          return this._rng.next();
+        }
+
+        /**
+         * Samples a uniform random floating point number, optionally specifying
+         * lower and upper bounds.
+         *
+         * Convence wrapper around `random.uniform()`
+         *
+         * @param {number} [min=0] - Lower bound (float, inclusive)
+         * @param {number} [max=1] - Upper bound (float, exclusive)
+         * @return {number}
+         */
+
+      }, {
+        key: 'float',
+        value: function float(min, max) {
+          return this.uniform(min, max)();
+        }
+
+        /**
+         * Samples a uniform random integer, optionally specifying lower and upper
+         * bounds.
+         *
+         * Convence wrapper around `random.uniformInt()`
+         *
+         * @param {number} [min=0] - Lower bound (integer, inclusive)
+         * @param {number} [max=1] - Upper bound (integer, inclusive)
+         * @return {number}
+         */
+
+      }, {
+        key: 'int',
+        value: function int(min, max) {
+          return this.uniformInt(min, max)();
+        }
+
+        /**
+         * Samples a uniform random integer, optionally specifying lower and upper
+         * bounds.
+         *
+         * Convence wrapper around `random.uniformInt()`
+         *
+         * @alias `random.int`
+         *
+         * @param {number} [min=0] - Lower bound (integer, inclusive)
+         * @param {number} [max=1] - Upper bound (integer, inclusive)
+         * @return {number}
+         */
+
+      }, {
+        key: 'integer',
+        value: function integer(min, max) {
+          return this.uniformInt(min, max)();
+        }
+
+        /**
+         * Samples a uniform random boolean value.
+         *
+         * Convence wrapper around `random.uniformBoolean()`
+         *
+         * @alias `random.boolean`
+         *
+         * @return {boolean}
+         */
+
+      }, {
+        key: 'bool',
+        value: function bool() {
+          return this.uniformBoolean()();
+        }
+
+        /**
+         * Samples a uniform random boolean value.
+         *
+         * Convence wrapper around `random.uniformBoolean()`
+         *
+         * @return {boolean}
+         */
+
+      }, {
+        key: 'boolean',
+        value: function boolean() {
+          return this.uniformBoolean()();
+        }
+
+        // --------------------------------------------------------------------------
+        // Uniform distributions
+        // --------------------------------------------------------------------------
+
+        /**
+         * Generates a [Continuous uniform distribution](https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)).
+         *
+         * @param {number} [min=0] - Lower bound (float, inclusive)
+         * @param {number} [max=1] - Upper bound (float, exclusive)
+         * @return {function}
+         */
+
+      }, {
+        key: 'uniform',
+        value: function uniform(min, max) {
+          return this._memoize('uniform', _uniform3.default, min, max);
+        }
+
+        /**
+         * Generates a [Discrete uniform distribution](https://en.wikipedia.org/wiki/Discrete_uniform_distribution).
+         *
+         * @param {number} [min=0] - Lower bound (integer, inclusive)
+         * @param {number} [max=1] - Upper bound (integer, inclusive)
+         * @return {function}
+         */
+
+      }, {
+        key: 'uniformInt',
+        value: function uniformInt(min, max) {
+          return this._memoize('uniformInt', _uniformInt3.default, min, max);
+        }
+
+        /**
+         * Generates a [Discrete uniform distribution](https://en.wikipedia.org/wiki/Discrete_uniform_distribution),
+         * with two possible outcomes, `true` or `false.
+         *
+         * This method is analogous to flipping a coin.
+         *
+         * @return {function}
+         */
+
+      }, {
+        key: 'uniformBoolean',
+        value: function uniformBoolean() {
+          return this._memoize('uniformBoolean', _uniformBoolean3.default);
+        }
+
+        // --------------------------------------------------------------------------
+        // Normal distributions
+        // --------------------------------------------------------------------------
+
+        /**
+         * Generates a [Normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
+         *
+         * @param {number} [mu=0] - Mean
+         * @param {number} [sigma=1] - Standard deviation
+         * @return {function}
+         */
+
+      }, {
+        key: 'normal',
+        value: function normal(mu, sigma) {
+          return (0, _normal3.default)(this, mu, sigma);
+        }
+
+        /**
+         * Generates a [Log-normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution).
+         *
+         * @param {number} [mu=0] - Mean of underlying normal distribution
+         * @param {number} [sigma=1] - Standard deviation of underlying normal distribution
+         * @return {function}
+         */
+
+      }, {
+        key: 'logNormal',
+        value: function logNormal(mu, sigma) {
+          return (0, _logNormal3.default)(this, mu, sigma);
+        }
+
+        // --------------------------------------------------------------------------
+        // Bernoulli distributions
+        // --------------------------------------------------------------------------
+
+        /**
+         * Generates a [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution).
+         *
+         * @param {number} [p=0.5] - Success probability of each trial.
+         * @return {function}
+         */
+
+      }, {
+        key: 'bernoulli',
+        value: function bernoulli(p) {
+          return (0, _bernoulli3.default)(this, p);
+        }
+
+        /**
+         * Generates a [Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution).
+         *
+         * @param {number} [n=1] - Number of trials.
+         * @param {number} [p=0.5] - Success probability of each trial.
+         * @return {function}
+         */
+
+      }, {
+        key: 'binomial',
+        value: function binomial(n, p) {
+          return (0, _binomial3.default)(this, n, p);
+        }
+
+        /**
+         * Generates a [Geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution).
+         *
+         * @param {number} [p=0.5] - Success probability of each trial.
+         * @return {function}
+         */
+
+      }, {
+        key: 'geometric',
+        value: function geometric(p) {
+          return (0, _geometric3.default)(this, p);
+        }
+
+        // --------------------------------------------------------------------------
+        // Poisson distributions
+        // --------------------------------------------------------------------------
+
+        /**
+         * Generates a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
+         *
+         * @param {number} [lambda=1] - Mean (lambda > 0)
+         * @return {function}
+         */
+
+      }, {
+        key: 'poisson',
+        value: function poisson(lambda) {
+          return (0, _poisson3.default)(this, lambda);
+        }
+
+        /**
+         * Generates an [Exponential distribution](https://en.wikipedia.org/wiki/Exponential_distribution).
+         *
+         * @param {number} [lambda=1] - Inverse mean (lambda > 0)
+         * @return {function}
+         */
+
+      }, {
+        key: 'exponential',
+        value: function exponential(lambda) {
+          return (0, _exponential3.default)(this, lambda);
+        }
+
+        // --------------------------------------------------------------------------
+        // Misc distributions
+        // --------------------------------------------------------------------------
+
+        /**
+         * Generates an [Irwin Hall distribution](https://en.wikipedia.org/wiki/Irwin%E2%80%93Hall_distribution).
+         *
+         * @param {number} [n=1] - Number of uniform samples to sum (n >= 0)
+         * @return {function}
+         */
+
+      }, {
+        key: 'irwinHall',
+        value: function irwinHall(n) {
+          return (0, _irwinHall3.default)(this, n);
+        }
+
+        /**
+         * Generates a [Bates distribution](https://en.wikipedia.org/wiki/Bates_distribution).
+         *
+         * @param {number} [n=1] - Number of uniform samples to average (n >= 1)
+         * @return {function}
+         */
+
+      }, {
+        key: 'bates',
+        value: function bates(n) {
+          return (0, _bates3.default)(this, n);
+        }
+
+        /**
+         * Generates a [Pareto distribution](https://en.wikipedia.org/wiki/Pareto_distribution).
+         *
+         * @param {number} [alpha=1] - Alpha
+         * @return {function}
+         */
+
+      }, {
+        key: 'pareto',
+        value: function pareto(alpha) {
+          return (0, _pareto3.default)(this, alpha);
+        }
+
+        // --------------------------------------------------------------------------
+        // Internal
+        // --------------------------------------------------------------------------
+
+        /**
+         * Memoizes distributions to ensure they're only created when necessary.
+         *
+         * Returns a thunk which that returns independent, identically distributed
+         * samples from the specified distribution.
+         *
+         * @private
+         *
+         * @param {string} label - Name of distribution
+         * @param {function} getter - Function which generates a new distribution
+         * @param {...*} args - Distribution-specific arguments
+         *
+         * @return {function}
+         */
+
+      }, {
+        key: '_memoize',
+        value: function _memoize(label, getter) {
+          for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+            args[_key - 2] = arguments[_key];
+          }
+
+          var key = '' + args.join(';');
+          var value = this._cache[label];
+
+          if (value === undefined || value.key !== key) {
+            value = { key: key, distribution: getter.apply(undefined, [this].concat(args)) };
+            this._cache[label] = value;
+          }
+
+          return value.distribution;
+        }
+      }, {
+        key: 'rng',
+        get: function get() {
+          return this._rng;
+        }
+      }]);
+
+      return Random;
+    }();
+
+    // defaults to Math.random as its RNG
+
+
+    exports.default = new Random();
+
+    });
+
+    var random = random$1.default;
+
+    class Gaussian {
+      constructor(mean, cov) {
+        // TODO: Consider saving the dimension
+        if ((mean instanceof Matrix) && (cov instanceof Matrix)) {
+          this.mean = mean;
+          this.cov = cov;
+        } else {
+          this.mean = new Matrix([mean]).transpose();
+          this.cov = new Matrix(cov);
+        }
+      }
+
+      at(x) {
+        const diff = (new Matrix([x])).transpose().sub(this.mean);
+        const n = diff.transpose().mmul(inverse(this.cov)).mmul(diff).mul(-0.5).exp();
+        const d = Math.sqrt(Math.pow(2*Math.PI, this.mean.rows)*this.cov.det());
+        return (n * (1 / d));
+      }
+
+      // idx is the first row of b
+      marginalize(idx) {
+        // FIXME: Rewrite with Array.slice() for speed
+        const aMean = sliceMat(this.mean,0,0,idx,1);
+        const bMean = sliceMat(this.mean,idx,0,this.mean.rows,1);
+        const aCov = sliceMat(this.cov,0,0,idx,idx);
+        const bCov = sliceMat(this.cov,idx,idx,this.mean.rows,this.mean.rows);
+        return [new Gaussian(aMean, aCov), new Gaussian(bMean, bCov)];
+      }
+
+      // Also refer to: https://stats.stackexchange.com/questions/232959/simulating-the-posterior-of-a-gaussian-process
+      // FIXME: Currently only works with \mu_e = 0
+      condition(X) {
+        const idx = X.length;
+        const x0 = new Matrix([X]).transpose();
+        const Exx = sliceMat(this.cov,0,0,idx,idx);
+        const Exy = sliceMat(this.cov,0,idx,idx,this.mean.rows);
+        const Eyx = Exy.transpose();
+        const Eyy = sliceMat(this.cov,idx,idx,this.mean.rows,this.mean.rows);
+
+        // Compute new zero
+        const Lxx = new CholeskyDecomposition(Exx).lowerTriangularMatrix;
+        const mLy = solve(Lxx, x0);
+        const Lk = solve(Lxx, Exy);
+        const condMean = Lk.transpose().mmul(mLy); // Hack
+
+        // FIXME: Make this more performant (use cholesky and slove instead of inverse)
+        const condCov = Eyy.sub(Eyx.mmul(inverse(Exx)).mmul(Exy));
+        return new Gaussian(condMean, condCov);
+      }
+
+      // Uses Eigenvalue decomposition to compute t from Cov = tt^T
+      transformationMatrix() {
+        const e = new EigenvalueDecomposition(this.cov);
+        const r = e.eigenvectorMatrix;
+        const d = Matrix.zeros(r.rows, r.columns);
+        for(let i = 0; i < d.rows; ++i) {
+          d.set(i,i, Math.sqrt(e.realEigenvalues[i]));
+        }
+        return r.mmul(d);
+      }
+
+      sample() {
+        const z = Matrix.zeros(this.mean.rows, 1);
+        const normal = random.normal();
+        for(let i = 0; i < this.mean.rows; ++i)
+          z.set(i,0,normal());
+
+        const samples = Matrix.add(this.mean, this.transformationMatrix().mmul(z));
+        return samples;
+      }
+
+      getMean() {
+        return this.mean.transpose()[0];
+      }
+
+      getSd() {
+        return this.cov.diag().map(s2 => Math.sqrt(s2));
+      }
+    }
+
+    // ranges from [i1,i2) & [j1,j2)
+    function sliceMat(mat,i1,j1,i2,j2) {
+      const result = new Matrix(i2-i1,j2-j1);
+      for(let i = i1; i < i2; ++i) 
+        for(let j = j1; j < j2; ++j) {
+          result.set(i-i1, j-j1, mat.get(i,j)); 
+        }
+      return result;
+    }
+
+    function ascending(a, b) {
+      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+    }
+
+    function bisector(f) {
+      let delta = f;
+      let compare = f;
+
+      if (f.length === 1) {
+        delta = (d, x) => f(d) - x;
+        compare = ascendingComparator(f);
+      }
+
+      function left(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >>> 1;
+          if (compare(a[mid], x) < 0) lo = mid + 1;
+          else hi = mid;
+        }
+        return lo;
+      }
+
+      function right(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >>> 1;
+          if (compare(a[mid], x) > 0) hi = mid;
+          else lo = mid + 1;
+        }
+        return lo;
+      }
+
+      function center(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        const i = left(a, x, lo, hi - 1);
+        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+      }
+
+      return {left, center, right};
+    }
+
+    function ascendingComparator(f) {
+      return (d, x) => ascending(f(d), x);
+    }
+
+    function number$1(x) {
+      return x === null ? NaN : +x;
+    }
+
+    const ascendingBisect = bisector(ascending);
+    const bisectRight = ascendingBisect.right;
+    bisector(number$1).center;
+
+    var e10 = Math.sqrt(50),
+        e5 = Math.sqrt(10),
+        e2 = Math.sqrt(2);
+
+    function ticks(start, stop, count) {
+      var reverse,
+          i = -1,
+          n,
+          ticks,
+          step;
+
+      stop = +stop, start = +start, count = +count;
+      if (start === stop && count > 0) return [start];
+      if (reverse = stop < start) n = start, start = stop, stop = n;
+      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
+
+      if (step > 0) {
+        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+        if (r0 * step < start) ++r0;
+        if (r1 * step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) * step;
+      } else {
+        step = -step;
+        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
+        if (r0 / step < start) ++r0;
+        if (r1 / step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) / step;
+      }
+
+      if (reverse) ticks.reverse();
+
+      return ticks;
+    }
+
+    function tickIncrement(start, stop, count) {
+      var step = (stop - start) / Math.max(0, count),
+          power = Math.floor(Math.log(step) / Math.LN10),
+          error = step / Math.pow(10, power);
+      return power >= 0
+          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
+          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+    }
+
+    function tickStep(start, stop, count) {
+      var step0 = Math.abs(stop - start) / Math.max(0, count),
+          step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
+          error = step0 / step1;
+      if (error >= e10) step1 *= 10;
+      else if (error >= e5) step1 *= 5;
+      else if (error >= e2) step1 *= 2;
+      return stop < start ? -step1 : step1;
+    }
+
+    function min(values, valueof) {
+      let min;
+      if (valueof === undefined) {
+        for (const value of values) {
+          if (value != null
+              && (min > value || (min === undefined && value >= value))) {
+            min = value;
+          }
+        }
+      } else {
+        let index = -1;
+        for (let value of values) {
+          if ((value = valueof(value, ++index, values)) != null
+              && (min > value || (min === undefined && value >= value))) {
+            min = value;
+          }
+        }
+      }
+      return min;
+    }
+
+    function sequence(start, stop, step) {
+      start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+      var i = -1,
+          n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+          range = new Array(n);
+
+      while (++i < n) {
+        range[i] = start + i * step;
+      }
+
+      return range;
+    }
+
+    function transpose(matrix) {
+      if (!(n = matrix.length)) return [];
+      for (var i = -1, m = min(matrix, length), transpose = new Array(m); ++i < m;) {
+        for (var j = -1, n, row = transpose[i] = new Array(n); ++j < n;) {
+          row[j] = matrix[j][i];
+        }
+      }
+      return transpose;
+    }
+
+    function length(d) {
+      return d.length;
+    }
+
+    function zip() {
+      return transpose(arguments);
+    }
+
+    var noop = {value: () => {}};
+
+    function dispatch() {
+      for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+        if (!(t = arguments[i] + "") || (t in _) || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
+        _[t] = [];
+      }
+      return new Dispatch(_);
+    }
+
+    function Dispatch(_) {
+      this._ = _;
+    }
+
+    function parseTypenames(typenames, types) {
+      return typenames.trim().split(/^|\s+/).map(function(t) {
+        var name = "", i = t.indexOf(".");
+        if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+        if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+        return {type: t, name: name};
+      });
+    }
+
+    Dispatch.prototype = dispatch.prototype = {
+      constructor: Dispatch,
+      on: function(typename, callback) {
+        var _ = this._,
+            T = parseTypenames(typename + "", _),
+            t,
+            i = -1,
+            n = T.length;
+
+        // If no callback was specified, return the callback of the given type and name.
+        if (arguments.length < 2) {
+          while (++i < n) if ((t = (typename = T[i]).type) && (t = get(_[t], typename.name))) return t;
+          return;
+        }
+
+        // If a type was specified, set the callback for the given type and name.
+        // Otherwise, if a null callback was specified, remove callbacks of the given name.
+        if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
+        while (++i < n) {
+          if (t = (typename = T[i]).type) _[t] = set(_[t], typename.name, callback);
+          else if (callback == null) for (t in _) _[t] = set(_[t], typename.name, null);
+        }
+
+        return this;
+      },
+      copy: function() {
+        var copy = {}, _ = this._;
+        for (var t in _) copy[t] = _[t].slice();
+        return new Dispatch(copy);
+      },
+      call: function(type, that) {
+        if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
+        if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+        for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+      },
+      apply: function(type, that, args) {
+        if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+        for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+      }
+    };
+
+    function get(type, name) {
+      for (var i = 0, n = type.length, c; i < n; ++i) {
+        if ((c = type[i]).name === name) {
+          return c.value;
+        }
+      }
+    }
+
+    function set(type, name, callback) {
+      for (var i = 0, n = type.length; i < n; ++i) {
+        if (type[i].name === name) {
+          type[i] = noop, type = type.slice(0, i).concat(type.slice(i + 1));
+          break;
+        }
+      }
+      if (callback != null) type.push({name: name, value: callback});
+      return type;
+    }
+
+    function define(constructor, factory, prototype) {
+      constructor.prototype = factory.prototype = prototype;
+      prototype.constructor = constructor;
+    }
+
+    function extend(parent, definition) {
+      var prototype = Object.create(parent.prototype);
+      for (var key in definition) prototype[key] = definition[key];
+      return prototype;
+    }
+
+    function Color() {}
+
+    var darker = 0.7;
+    var brighter = 1 / darker;
+
+    var reI = "\\s*([+-]?\\d+)\\s*",
+        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reHex = /^#([0-9a-f]{3,8})$/,
+        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+    var named = {
+      aliceblue: 0xf0f8ff,
+      antiquewhite: 0xfaebd7,
+      aqua: 0x00ffff,
+      aquamarine: 0x7fffd4,
+      azure: 0xf0ffff,
+      beige: 0xf5f5dc,
+      bisque: 0xffe4c4,
+      black: 0x000000,
+      blanchedalmond: 0xffebcd,
+      blue: 0x0000ff,
+      blueviolet: 0x8a2be2,
+      brown: 0xa52a2a,
+      burlywood: 0xdeb887,
+      cadetblue: 0x5f9ea0,
+      chartreuse: 0x7fff00,
+      chocolate: 0xd2691e,
+      coral: 0xff7f50,
+      cornflowerblue: 0x6495ed,
+      cornsilk: 0xfff8dc,
+      crimson: 0xdc143c,
+      cyan: 0x00ffff,
+      darkblue: 0x00008b,
+      darkcyan: 0x008b8b,
+      darkgoldenrod: 0xb8860b,
+      darkgray: 0xa9a9a9,
+      darkgreen: 0x006400,
+      darkgrey: 0xa9a9a9,
+      darkkhaki: 0xbdb76b,
+      darkmagenta: 0x8b008b,
+      darkolivegreen: 0x556b2f,
+      darkorange: 0xff8c00,
+      darkorchid: 0x9932cc,
+      darkred: 0x8b0000,
+      darksalmon: 0xe9967a,
+      darkseagreen: 0x8fbc8f,
+      darkslateblue: 0x483d8b,
+      darkslategray: 0x2f4f4f,
+      darkslategrey: 0x2f4f4f,
+      darkturquoise: 0x00ced1,
+      darkviolet: 0x9400d3,
+      deeppink: 0xff1493,
+      deepskyblue: 0x00bfff,
+      dimgray: 0x696969,
+      dimgrey: 0x696969,
+      dodgerblue: 0x1e90ff,
+      firebrick: 0xb22222,
+      floralwhite: 0xfffaf0,
+      forestgreen: 0x228b22,
+      fuchsia: 0xff00ff,
+      gainsboro: 0xdcdcdc,
+      ghostwhite: 0xf8f8ff,
+      gold: 0xffd700,
+      goldenrod: 0xdaa520,
+      gray: 0x808080,
+      green: 0x008000,
+      greenyellow: 0xadff2f,
+      grey: 0x808080,
+      honeydew: 0xf0fff0,
+      hotpink: 0xff69b4,
+      indianred: 0xcd5c5c,
+      indigo: 0x4b0082,
+      ivory: 0xfffff0,
+      khaki: 0xf0e68c,
+      lavender: 0xe6e6fa,
+      lavenderblush: 0xfff0f5,
+      lawngreen: 0x7cfc00,
+      lemonchiffon: 0xfffacd,
+      lightblue: 0xadd8e6,
+      lightcoral: 0xf08080,
+      lightcyan: 0xe0ffff,
+      lightgoldenrodyellow: 0xfafad2,
+      lightgray: 0xd3d3d3,
+      lightgreen: 0x90ee90,
+      lightgrey: 0xd3d3d3,
+      lightpink: 0xffb6c1,
+      lightsalmon: 0xffa07a,
+      lightseagreen: 0x20b2aa,
+      lightskyblue: 0x87cefa,
+      lightslategray: 0x778899,
+      lightslategrey: 0x778899,
+      lightsteelblue: 0xb0c4de,
+      lightyellow: 0xffffe0,
+      lime: 0x00ff00,
+      limegreen: 0x32cd32,
+      linen: 0xfaf0e6,
+      magenta: 0xff00ff,
+      maroon: 0x800000,
+      mediumaquamarine: 0x66cdaa,
+      mediumblue: 0x0000cd,
+      mediumorchid: 0xba55d3,
+      mediumpurple: 0x9370db,
+      mediumseagreen: 0x3cb371,
+      mediumslateblue: 0x7b68ee,
+      mediumspringgreen: 0x00fa9a,
+      mediumturquoise: 0x48d1cc,
+      mediumvioletred: 0xc71585,
+      midnightblue: 0x191970,
+      mintcream: 0xf5fffa,
+      mistyrose: 0xffe4e1,
+      moccasin: 0xffe4b5,
+      navajowhite: 0xffdead,
+      navy: 0x000080,
+      oldlace: 0xfdf5e6,
+      olive: 0x808000,
+      olivedrab: 0x6b8e23,
+      orange: 0xffa500,
+      orangered: 0xff4500,
+      orchid: 0xda70d6,
+      palegoldenrod: 0xeee8aa,
+      palegreen: 0x98fb98,
+      paleturquoise: 0xafeeee,
+      palevioletred: 0xdb7093,
+      papayawhip: 0xffefd5,
+      peachpuff: 0xffdab9,
+      peru: 0xcd853f,
+      pink: 0xffc0cb,
+      plum: 0xdda0dd,
+      powderblue: 0xb0e0e6,
+      purple: 0x800080,
+      rebeccapurple: 0x663399,
+      red: 0xff0000,
+      rosybrown: 0xbc8f8f,
+      royalblue: 0x4169e1,
+      saddlebrown: 0x8b4513,
+      salmon: 0xfa8072,
+      sandybrown: 0xf4a460,
+      seagreen: 0x2e8b57,
+      seashell: 0xfff5ee,
+      sienna: 0xa0522d,
+      silver: 0xc0c0c0,
+      skyblue: 0x87ceeb,
+      slateblue: 0x6a5acd,
+      slategray: 0x708090,
+      slategrey: 0x708090,
+      snow: 0xfffafa,
+      springgreen: 0x00ff7f,
+      steelblue: 0x4682b4,
+      tan: 0xd2b48c,
+      teal: 0x008080,
+      thistle: 0xd8bfd8,
+      tomato: 0xff6347,
+      turquoise: 0x40e0d0,
+      violet: 0xee82ee,
+      wheat: 0xf5deb3,
+      white: 0xffffff,
+      whitesmoke: 0xf5f5f5,
+      yellow: 0xffff00,
+      yellowgreen: 0x9acd32
+    };
+
+    define(Color, color, {
+      copy: function(channels) {
+        return Object.assign(new this.constructor, this, channels);
+      },
+      displayable: function() {
+        return this.rgb().displayable();
+      },
+      hex: color_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: color_formatHex,
+      formatHsl: color_formatHsl,
+      formatRgb: color_formatRgb,
+      toString: color_formatRgb
+    });
+
+    function color_formatHex() {
+      return this.rgb().formatHex();
+    }
+
+    function color_formatHsl() {
+      return hslConvert(this).formatHsl();
+    }
+
+    function color_formatRgb() {
+      return this.rgb().formatRgb();
+    }
+
+    function color(format) {
+      var m, l;
+      format = (format + "").trim().toLowerCase();
+      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+          : null) // invalid hex
+          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+          : null;
+    }
+
+    function rgbn(n) {
+      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    }
+
+    function rgba(r, g, b, a) {
+      if (a <= 0) r = g = b = NaN;
+      return new Rgb(r, g, b, a);
+    }
+
+    function rgbConvert(o) {
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Rgb;
+      o = o.rgb();
+      return new Rgb(o.r, o.g, o.b, o.opacity);
+    }
+
+    function rgb(r, g, b, opacity) {
+      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+    }
+
+    function Rgb(r, g, b, opacity) {
+      this.r = +r;
+      this.g = +g;
+      this.b = +b;
+      this.opacity = +opacity;
+    }
+
+    define(Rgb, rgb, extend(Color, {
+      brighter: function(k) {
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      },
+      darker: function(k) {
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      },
+      rgb: function() {
+        return this;
+      },
+      displayable: function() {
+        return (-0.5 <= this.r && this.r < 255.5)
+            && (-0.5 <= this.g && this.g < 255.5)
+            && (-0.5 <= this.b && this.b < 255.5)
+            && (0 <= this.opacity && this.opacity <= 1);
+      },
+      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: rgb_formatHex,
+      formatRgb: rgb_formatRgb,
+      toString: rgb_formatRgb
+    }));
+
+    function rgb_formatHex() {
+      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    }
+
+    function rgb_formatRgb() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "rgb(" : "rgba(")
+          + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+          + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+          + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+
+    function hex(value) {
+      value = Math.max(0, Math.min(255, Math.round(value) || 0));
+      return (value < 16 ? "0" : "") + value.toString(16);
+    }
+
+    function hsla(h, s, l, a) {
+      if (a <= 0) h = s = l = NaN;
+      else if (l <= 0 || l >= 1) h = s = NaN;
+      else if (s <= 0) h = NaN;
+      return new Hsl(h, s, l, a);
+    }
+
+    function hslConvert(o) {
+      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Hsl;
+      if (o instanceof Hsl) return o;
+      o = o.rgb();
+      var r = o.r / 255,
+          g = o.g / 255,
+          b = o.b / 255,
+          min = Math.min(r, g, b),
+          max = Math.max(r, g, b),
+          h = NaN,
+          s = max - min,
+          l = (max + min) / 2;
+      if (s) {
+        if (r === max) h = (g - b) / s + (g < b) * 6;
+        else if (g === max) h = (b - r) / s + 2;
+        else h = (r - g) / s + 4;
+        s /= l < 0.5 ? max + min : 2 - max - min;
+        h *= 60;
+      } else {
+        s = l > 0 && l < 1 ? 0 : h;
+      }
+      return new Hsl(h, s, l, o.opacity);
+    }
+
+    function hsl(h, s, l, opacity) {
+      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+    }
+
+    function Hsl(h, s, l, opacity) {
+      this.h = +h;
+      this.s = +s;
+      this.l = +l;
+      this.opacity = +opacity;
+    }
+
+    define(Hsl, hsl, extend(Color, {
+      brighter: function(k) {
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      },
+      darker: function(k) {
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      },
+      rgb: function() {
+        var h = this.h % 360 + (this.h < 0) * 360,
+            s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+            l = this.l,
+            m2 = l + (l < 0.5 ? l : 1 - l) * s,
+            m1 = 2 * l - m2;
+        return new Rgb(
+          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+          hsl2rgb(h, m1, m2),
+          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+          this.opacity
+        );
+      },
+      displayable: function() {
+        return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+            && (0 <= this.l && this.l <= 1)
+            && (0 <= this.opacity && this.opacity <= 1);
+      },
+      formatHsl: function() {
+        var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+        return (a === 1 ? "hsl(" : "hsla(")
+            + (this.h || 0) + ", "
+            + (this.s || 0) * 100 + "%, "
+            + (this.l || 0) * 100 + "%"
+            + (a === 1 ? ")" : ", " + a + ")");
+      }
+    }));
+
+    /* From FvD 13.37, CSS Color Module Level 3 */
+    function hsl2rgb(h, m1, m2) {
+      return (h < 60 ? m1 + (m2 - m1) * h / 60
+          : h < 180 ? m2
+          : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+          : m1) * 255;
+    }
+
+    var constant$1 = x => () => x;
+
+    function linear$1(a, d) {
+      return function(t) {
+        return a + t * d;
+      };
+    }
+
+    function exponential(a, b, y) {
+      return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+        return Math.pow(a + t * b, y);
+      };
+    }
+
+    function gamma(y) {
+      return (y = +y) === 1 ? nogamma : function(a, b) {
+        return b - a ? exponential(a, b, y) : constant$1(isNaN(a) ? b : a);
+      };
+    }
+
+    function nogamma(a, b) {
+      var d = b - a;
+      return d ? linear$1(a, d) : constant$1(isNaN(a) ? b : a);
+    }
+
+    var interpolateRgb = (function rgbGamma(y) {
+      var color = gamma(y);
+
+      function rgb$1(start, end) {
+        var r = color((start = rgb(start)).r, (end = rgb(end)).r),
+            g = color(start.g, end.g),
+            b = color(start.b, end.b),
+            opacity = nogamma(start.opacity, end.opacity);
+        return function(t) {
+          start.r = r(t);
+          start.g = g(t);
+          start.b = b(t);
+          start.opacity = opacity(t);
+          return start + "";
+        };
+      }
+
+      rgb$1.gamma = rgbGamma;
+
+      return rgb$1;
+    })(1);
+
+    function numberArray(a, b) {
+      if (!b) b = [];
+      var n = a ? Math.min(b.length, a.length) : 0,
+          c = b.slice(),
+          i;
+      return function(t) {
+        for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
+        return c;
+      };
+    }
+
+    function isNumberArray(x) {
+      return ArrayBuffer.isView(x) && !(x instanceof DataView);
+    }
+
+    function genericArray(a, b) {
+      var nb = b ? b.length : 0,
+          na = a ? Math.min(nb, a.length) : 0,
+          x = new Array(na),
+          c = new Array(nb),
+          i;
+
+      for (i = 0; i < na; ++i) x[i] = interpolate(a[i], b[i]);
+      for (; i < nb; ++i) c[i] = b[i];
+
+      return function(t) {
+        for (i = 0; i < na; ++i) c[i] = x[i](t);
+        return c;
+      };
+    }
+
+    function date(a, b) {
+      var d = new Date;
+      return a = +a, b = +b, function(t) {
+        return d.setTime(a * (1 - t) + b * t), d;
+      };
+    }
+
+    function interpolateNumber(a, b) {
+      return a = +a, b = +b, function(t) {
+        return a * (1 - t) + b * t;
+      };
+    }
+
+    function object(a, b) {
+      var i = {},
+          c = {},
+          k;
+
+      if (a === null || typeof a !== "object") a = {};
+      if (b === null || typeof b !== "object") b = {};
+
+      for (k in b) {
+        if (k in a) {
+          i[k] = interpolate(a[k], b[k]);
+        } else {
+          c[k] = b[k];
+        }
+      }
+
+      return function(t) {
+        for (k in i) c[k] = i[k](t);
+        return c;
+      };
+    }
+
+    var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+        reB = new RegExp(reA.source, "g");
+
+    function zero(b) {
+      return function() {
+        return b;
+      };
+    }
+
+    function one(b) {
+      return function(t) {
+        return b(t) + "";
+      };
+    }
+
+    function interpolateString(a, b) {
+      var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
+          am, // current match in a
+          bm, // current match in b
+          bs, // string preceding current number in b, if any
+          i = -1, // index in s
+          s = [], // string constants and placeholders
+          q = []; // number interpolators
+
+      // Coerce inputs to strings.
+      a = a + "", b = b + "";
+
+      // Interpolate pairs of numbers in a & b.
+      while ((am = reA.exec(a))
+          && (bm = reB.exec(b))) {
+        if ((bs = bm.index) > bi) { // a string precedes the next number in b
+          bs = b.slice(bi, bs);
+          if (s[i]) s[i] += bs; // coalesce with previous string
+          else s[++i] = bs;
+        }
+        if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+          if (s[i]) s[i] += bm; // coalesce with previous string
+          else s[++i] = bm;
+        } else { // interpolate non-matching numbers
+          s[++i] = null;
+          q.push({i: i, x: interpolateNumber(am, bm)});
+        }
+        bi = reB.lastIndex;
+      }
+
+      // Add remains of b.
+      if (bi < b.length) {
+        bs = b.slice(bi);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+
+      // Special optimization for only a single match.
+      // Otherwise, interpolate each of the numbers and rejoin the string.
+      return s.length < 2 ? (q[0]
+          ? one(q[0].x)
+          : zero(b))
+          : (b = q.length, function(t) {
+              for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+              return s.join("");
+            });
+    }
+
+    function interpolate(a, b) {
+      var t = typeof b, c;
+      return b == null || t === "boolean" ? constant$1(b)
+          : (t === "number" ? interpolateNumber
+          : t === "string" ? ((c = color(b)) ? (b = c, interpolateRgb) : interpolateString)
+          : b instanceof color ? interpolateRgb
+          : b instanceof Date ? date
+          : isNumberArray(b) ? numberArray
+          : Array.isArray(b) ? genericArray
+          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+          : interpolateNumber)(a, b);
+    }
+
+    function interpolateRound(a, b) {
+      return a = +a, b = +b, function(t) {
+        return Math.round(a * (1 - t) + b * t);
+      };
+    }
+
+    dispatch("start", "end", "cancel", "interrupt");
+
+    const pi = Math.PI,
+        tau = 2 * pi,
+        epsilon = 1e-6,
+        tauEpsilon = tau - epsilon;
+
+    function Path() {
+      this._x0 = this._y0 = // start of current subpath
+      this._x1 = this._y1 = null; // end of current subpath
+      this._ = "";
+    }
+
+    function path() {
+      return new Path;
+    }
+
+    Path.prototype = path.prototype = {
+      constructor: Path,
+      moveTo: function(x, y) {
+        this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
+      },
+      closePath: function() {
+        if (this._x1 !== null) {
+          this._x1 = this._x0, this._y1 = this._y0;
+          this._ += "Z";
+        }
+      },
+      lineTo: function(x, y) {
+        this._ += "L" + (this._x1 = +x) + "," + (this._y1 = +y);
+      },
+      quadraticCurveTo: function(x1, y1, x, y) {
+        this._ += "Q" + (+x1) + "," + (+y1) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
+      },
+      bezierCurveTo: function(x1, y1, x2, y2, x, y) {
+        this._ += "C" + (+x1) + "," + (+y1) + "," + (+x2) + "," + (+y2) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
+      },
+      arcTo: function(x1, y1, x2, y2, r) {
+        x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
+        var x0 = this._x1,
+            y0 = this._y1,
+            x21 = x2 - x1,
+            y21 = y2 - y1,
+            x01 = x0 - x1,
+            y01 = y0 - y1,
+            l01_2 = x01 * x01 + y01 * y01;
+
+        // Is the radius negative? Error.
+        if (r < 0) throw new Error("negative radius: " + r);
+
+        // Is this path empty? Move to (x1,y1).
+        if (this._x1 === null) {
+          this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
+        }
+
+        // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
+        else if (!(l01_2 > epsilon));
+
+        // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
+        // Equivalently, is (x1,y1) coincident with (x2,y2)?
+        // Or, is the radius zero? Line to (x1,y1).
+        else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
+          this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
+        }
+
+        // Otherwise, draw an arc!
+        else {
+          var x20 = x2 - x0,
+              y20 = y2 - y0,
+              l21_2 = x21 * x21 + y21 * y21,
+              l20_2 = x20 * x20 + y20 * y20,
+              l21 = Math.sqrt(l21_2),
+              l01 = Math.sqrt(l01_2),
+              l = r * Math.tan((pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+              t01 = l / l01,
+              t21 = l / l21;
+
+          // If the start tangent is not coincident with (x0,y0), line to.
+          if (Math.abs(t01 - 1) > epsilon) {
+            this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
+          }
+
+          this._ += "A" + r + "," + r + ",0,0," + (+(y01 * x20 > x01 * y20)) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
+        }
+      },
+      arc: function(x, y, r, a0, a1, ccw) {
+        x = +x, y = +y, r = +r, ccw = !!ccw;
+        var dx = r * Math.cos(a0),
+            dy = r * Math.sin(a0),
+            x0 = x + dx,
+            y0 = y + dy,
+            cw = 1 ^ ccw,
+            da = ccw ? a0 - a1 : a1 - a0;
+
+        // Is the radius negative? Error.
+        if (r < 0) throw new Error("negative radius: " + r);
+
+        // Is this path empty? Move to (x0,y0).
+        if (this._x1 === null) {
+          this._ += "M" + x0 + "," + y0;
+        }
+
+        // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
+        else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
+          this._ += "L" + x0 + "," + y0;
+        }
+
+        // Is this arc empty? We’re done.
+        if (!r) return;
+
+        // Does the angle go the wrong way? Flip the direction.
+        if (da < 0) da = da % tau + tau;
+
+        // Is this a complete circle? Draw two arcs to complete the circle.
+        if (da > tauEpsilon) {
+          this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
+        }
+
+        // Is this arc non-empty? Draw an arc!
+        else if (da > epsilon) {
+          this._ += "A" + r + "," + r + ",0," + (+(da >= pi)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
+        }
+      },
+      rect: function(x, y, w, h) {
+        this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + (+w) + "v" + (+h) + "h" + (-w) + "Z";
+      },
+      toString: function() {
+        return this._;
+      }
+    };
+
+    function formatDecimal(x) {
+      return Math.abs(x = Math.round(x)) >= 1e21
+          ? x.toLocaleString("en").replace(/,/g, "")
+          : x.toString(10);
+    }
+
+    // Computes the decimal coefficient and exponent of the specified number x with
+    // significant digits p, where x is positive and p is in [1, 21] or undefined.
+    // For example, formatDecimalParts(1.23) returns ["123", 0].
+    function formatDecimalParts(x, p) {
+      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+      var i, coefficient = x.slice(0, i);
+
+      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+      return [
+        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+        +x.slice(i + 1)
+      ];
+    }
+
+    function exponent(x) {
+      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
+    }
+
+    function formatGroup(grouping, thousands) {
+      return function(value, width) {
+        var i = value.length,
+            t = [],
+            j = 0,
+            g = grouping[0],
+            length = 0;
+
+        while (i > 0 && g > 0) {
+          if (length + g + 1 > width) g = Math.max(1, width - length);
+          t.push(value.substring(i -= g, i + g));
+          if ((length += g + 1) > width) break;
+          g = grouping[j = (j + 1) % grouping.length];
+        }
+
+        return t.reverse().join(thousands);
+      };
+    }
+
+    function formatNumerals(numerals) {
+      return function(value) {
+        return value.replace(/[0-9]/g, function(i) {
+          return numerals[+i];
+        });
+      };
+    }
+
+    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+    function formatSpecifier(specifier) {
+      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+      var match;
+      return new FormatSpecifier({
+        fill: match[1],
+        align: match[2],
+        sign: match[3],
+        symbol: match[4],
+        zero: match[5],
+        width: match[6],
+        comma: match[7],
+        precision: match[8] && match[8].slice(1),
+        trim: match[9],
+        type: match[10]
+      });
+    }
+
+    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+    function FormatSpecifier(specifier) {
+      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+      this.align = specifier.align === undefined ? ">" : specifier.align + "";
+      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+      this.zero = !!specifier.zero;
+      this.width = specifier.width === undefined ? undefined : +specifier.width;
+      this.comma = !!specifier.comma;
+      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+      this.trim = !!specifier.trim;
+      this.type = specifier.type === undefined ? "" : specifier.type + "";
+    }
+
+    FormatSpecifier.prototype.toString = function() {
+      return this.fill
+          + this.align
+          + this.sign
+          + this.symbol
+          + (this.zero ? "0" : "")
+          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
+          + (this.comma ? "," : "")
+          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
+          + (this.trim ? "~" : "")
+          + this.type;
+    };
+
+    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+    function formatTrim(s) {
+      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+        switch (s[i]) {
+          case ".": i0 = i1 = i; break;
+          case "0": if (i0 === 0) i0 = i; i1 = i; break;
+          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
+        }
+      }
+      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+    }
+
+    var prefixExponent;
+
+    function formatPrefixAuto(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1],
+          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+          n = coefficient.length;
+      return i === n ? coefficient
+          : i > n ? coefficient + new Array(i - n + 1).join("0")
+          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+    }
+
+    function formatRounded(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1];
+      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+    }
+
+    var formatTypes = {
+      "%": (x, p) => (x * 100).toFixed(p),
+      "b": (x) => Math.round(x).toString(2),
+      "c": (x) => x + "",
+      "d": formatDecimal,
+      "e": (x, p) => x.toExponential(p),
+      "f": (x, p) => x.toFixed(p),
+      "g": (x, p) => x.toPrecision(p),
+      "o": (x) => Math.round(x).toString(8),
+      "p": (x, p) => formatRounded(x * 100, p),
+      "r": formatRounded,
+      "s": formatPrefixAuto,
+      "X": (x) => Math.round(x).toString(16).toUpperCase(),
+      "x": (x) => Math.round(x).toString(16)
+    };
+
+    function identity$1(x) {
+      return x;
+    }
+
+    var map = Array.prototype.map,
+        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+    function formatLocale(locale) {
+      var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+          numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map.call(locale.numerals, String)),
+          percent = locale.percent === undefined ? "%" : locale.percent + "",
+          minus = locale.minus === undefined ? "−" : locale.minus + "",
+          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+
+      function newFormat(specifier) {
+        specifier = formatSpecifier(specifier);
+
+        var fill = specifier.fill,
+            align = specifier.align,
+            sign = specifier.sign,
+            symbol = specifier.symbol,
+            zero = specifier.zero,
+            width = specifier.width,
+            comma = specifier.comma,
+            precision = specifier.precision,
+            trim = specifier.trim,
+            type = specifier.type;
+
+        // The "n" type is an alias for ",g".
+        if (type === "n") comma = true, type = "g";
+
+        // The "" type, and any invalid type, is an alias for ".12~g".
+        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+
+        // If zero fill is specified, padding goes after sign and before digits.
+        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+        // Compute the prefix and suffix.
+        // For SI-prefix, the suffix is lazily computed.
+        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+
+        // What format function should we use?
+        // Is this an integer type?
+        // Can this type generate exponential notation?
+        var formatType = formatTypes[type],
+            maybeSuffix = /[defgprs%]/.test(type);
+
+        // Set the default precision if not specified,
+        // or clamp the specified precision to the supported range.
+        // For significant precision, it must be in [1, 21].
+        // For fixed precision, it must be in [0, 20].
+        precision = precision === undefined ? 6
+            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+            : Math.max(0, Math.min(20, precision));
+
+        function format(value) {
+          var valuePrefix = prefix,
+              valueSuffix = suffix,
+              i, n, c;
+
+          if (type === "c") {
+            valueSuffix = formatType(value) + valueSuffix;
+            value = "";
+          } else {
+            value = +value;
+
+            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+            var valueNegative = value < 0 || 1 / value < 0;
+
+            // Perform the initial formatting.
+            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+
+            // Trim insignificant zeros.
+            if (trim) value = formatTrim(value);
+
+            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
+
+            // Compute the prefix and suffix.
+            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+            // Break the formatted value into the integer “value” part that can be
+            // grouped, and fractional or exponential “suffix” part that is not.
+            if (maybeSuffix) {
+              i = -1, n = value.length;
+              while (++i < n) {
+                if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+                  value = value.slice(0, i);
+                  break;
+                }
+              }
+            }
+          }
+
+          // If the fill character is not "0", grouping is applied before padding.
+          if (comma && !zero) value = group(value, Infinity);
+
+          // Compute the padding.
+          var length = valuePrefix.length + value.length + valueSuffix.length,
+              padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+          // If the fill character is "0", grouping is applied after padding.
+          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+          // Reconstruct the final output based on the desired alignment.
+          switch (align) {
+            case "<": value = valuePrefix + value + valueSuffix + padding; break;
+            case "=": value = valuePrefix + padding + value + valueSuffix; break;
+            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+            default: value = padding + valuePrefix + value + valueSuffix; break;
+          }
+
+          return numerals(value);
+        }
+
+        format.toString = function() {
+          return specifier + "";
+        };
+
+        return format;
+      }
+
+      function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+            k = Math.pow(10, -e),
+            prefix = prefixes[8 + e / 3];
+        return function(value) {
+          return f(k * value) + prefix;
+        };
+      }
+
+      return {
+        format: newFormat,
+        formatPrefix: formatPrefix
+      };
+    }
+
+    var locale;
+    var format;
+    var formatPrefix;
+
+    defaultLocale({
+      thousands: ",",
+      grouping: [3],
+      currency: ["$", ""]
+    });
+
+    function defaultLocale(definition) {
+      locale = formatLocale(definition);
+      format = locale.format;
+      formatPrefix = locale.formatPrefix;
+      return locale;
+    }
+
+    function precisionFixed(step) {
+      return Math.max(0, -exponent(Math.abs(step)));
+    }
+
+    function precisionPrefix(step, value) {
+      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+    }
+
+    function precisionRound(step, max) {
+      step = Math.abs(step), max = Math.abs(max) - step;
+      return Math.max(0, exponent(max) - exponent(step)) + 1;
+    }
+
+    function initRange(domain, range) {
+      switch (arguments.length) {
+        case 0: break;
+        case 1: this.range(domain); break;
+        default: this.range(range).domain(domain); break;
+      }
+      return this;
+    }
+
+    function constants(x) {
+      return function() {
+        return x;
+      };
+    }
+
+    function number(x) {
+      return +x;
+    }
+
+    var unit = [0, 1];
+
+    function identity(x) {
+      return x;
+    }
+
+    function normalize(a, b) {
+      return (b -= (a = +a))
+          ? function(x) { return (x - a) / b; }
+          : constants(isNaN(b) ? NaN : 0.5);
+    }
+
+    function clamper(a, b) {
+      var t;
+      if (a > b) t = a, a = b, b = t;
+      return function(x) { return Math.max(a, Math.min(b, x)); };
+    }
+
+    // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+    // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
+    function bimap(domain, range, interpolate) {
+      var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+      if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+      else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
+      return function(x) { return r0(d0(x)); };
+    }
+
+    function polymap(domain, range, interpolate) {
+      var j = Math.min(domain.length, range.length) - 1,
+          d = new Array(j),
+          r = new Array(j),
+          i = -1;
+
+      // Reverse descending domains.
+      if (domain[j] < domain[0]) {
+        domain = domain.slice().reverse();
+        range = range.slice().reverse();
+      }
+
+      while (++i < j) {
+        d[i] = normalize(domain[i], domain[i + 1]);
+        r[i] = interpolate(range[i], range[i + 1]);
+      }
+
+      return function(x) {
+        var i = bisectRight(domain, x, 1, j) - 1;
+        return r[i](d[i](x));
+      };
+    }
+
+    function copy(source, target) {
+      return target
+          .domain(source.domain())
+          .range(source.range())
+          .interpolate(source.interpolate())
+          .clamp(source.clamp())
+          .unknown(source.unknown());
+    }
+
+    function transformer() {
+      var domain = unit,
+          range = unit,
+          interpolate$1 = interpolate,
+          transform,
+          untransform,
+          unknown,
+          clamp = identity,
+          piecewise,
+          output,
+          input;
+
+      function rescale() {
+        var n = Math.min(domain.length, range.length);
+        if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
+        piecewise = n > 2 ? polymap : bimap;
+        output = input = null;
+        return scale;
+      }
+
+      function scale(x) {
+        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+      }
+
+      scale.invert = function(y) {
+        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
+      };
+
+      scale.domain = function(_) {
+        return arguments.length ? (domain = Array.from(_, number), rescale()) : domain.slice();
+      };
+
+      scale.range = function(_) {
+        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+      };
+
+      scale.rangeRound = function(_) {
+        return range = Array.from(_), interpolate$1 = interpolateRound, rescale();
+      };
+
+      scale.clamp = function(_) {
+        return arguments.length ? (clamp = _ ? true : identity, rescale()) : clamp !== identity;
+      };
+
+      scale.interpolate = function(_) {
+        return arguments.length ? (interpolate$1 = _, rescale()) : interpolate$1;
+      };
+
+      scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+      };
+
+      return function(t, u) {
+        transform = t, untransform = u;
+        return rescale();
+      };
+    }
+
+    function continuous() {
+      return transformer()(identity, identity);
+    }
+
+    function tickFormat(start, stop, count, specifier) {
+      var step = tickStep(start, stop, count),
+          precision;
+      specifier = formatSpecifier(specifier == null ? ",f" : specifier);
+      switch (specifier.type) {
+        case "s": {
+          var value = Math.max(Math.abs(start), Math.abs(stop));
+          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
+          return formatPrefix(specifier, value);
+        }
+        case "":
+        case "e":
+        case "g":
+        case "p":
+        case "r": {
+          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+          break;
+        }
+        case "f":
+        case "%": {
+          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+          break;
+        }
+      }
+      return format(specifier);
+    }
+
+    function linearish(scale) {
+      var domain = scale.domain;
+
+      scale.ticks = function(count) {
+        var d = domain();
+        return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
+      };
+
+      scale.tickFormat = function(count, specifier) {
+        var d = domain();
+        return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+      };
+
+      scale.nice = function(count) {
+        if (count == null) count = 10;
+
+        var d = domain();
+        var i0 = 0;
+        var i1 = d.length - 1;
+        var start = d[i0];
+        var stop = d[i1];
+        var prestep;
+        var step;
+        var maxIter = 10;
+
+        if (stop < start) {
+          step = start, start = stop, stop = step;
+          step = i0, i0 = i1, i1 = step;
+        }
+        
+        while (maxIter-- > 0) {
+          step = tickIncrement(start, stop, count);
+          if (step === prestep) {
+            d[i0] = start;
+            d[i1] = stop;
+            return domain(d);
+          } else if (step > 0) {
+            start = Math.floor(start / step) * step;
+            stop = Math.ceil(stop / step) * step;
+          } else if (step < 0) {
+            start = Math.ceil(start * step) / step;
+            stop = Math.floor(stop * step) / step;
+          } else {
+            break;
+          }
+          prestep = step;
+        }
+
+        return scale;
+      };
+
+      return scale;
+    }
+
+    function linear() {
+      var scale = continuous();
+
+      scale.copy = function() {
+        return copy(scale, linear());
+      };
+
+      initRange.apply(scale, arguments);
+
+      return linearish(scale);
+    }
+
+    function constant(x) {
+      return function constant() {
+        return x;
+      };
+    }
+
+    function array(x) {
+      return typeof x === "object" && "length" in x
+        ? x // Array, TypedArray, NodeList, array-like
+        : Array.from(x); // Map, Set, iterable, string, or anything else
+    }
+
+    function Linear(context) {
+      this._context = context;
+    }
+
+    Linear.prototype = {
+      areaStart: function() {
+        this._line = 0;
+      },
+      areaEnd: function() {
+        this._line = NaN;
+      },
+      lineStart: function() {
+        this._point = 0;
+      },
+      lineEnd: function() {
+        if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+        this._line = 1 - this._line;
+      },
+      point: function(x, y) {
+        x = +x, y = +y;
+        switch (this._point) {
+          case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
+          case 1: this._point = 2; // proceed
+          default: this._context.lineTo(x, y); break;
+        }
+      }
+    };
+
+    function curveLinear(context) {
+      return new Linear(context);
+    }
+
+    function x(p) {
+      return p[0];
+    }
+
+    function y(p) {
+      return p[1];
+    }
+
+    function line(x$1, y$1) {
+      var defined = constant(true),
+          context = null,
+          curve = curveLinear,
+          output = null;
+
+      x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant(x$1);
+      y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant(y$1);
+
+      function line(data) {
+        var i,
+            n = (data = array(data)).length,
+            d,
+            defined0 = false,
+            buffer;
+
+        if (context == null) output = curve(buffer = path());
+
+        for (i = 0; i <= n; ++i) {
+          if (!(i < n && defined(d = data[i], i, data)) === defined0) {
+            if (defined0 = !defined0) output.lineStart();
+            else output.lineEnd();
+          }
+          if (defined0) output.point(+x$1(d, i, data), +y$1(d, i, data));
+        }
+
+        if (buffer) return output = null, buffer + "" || null;
+      }
+
+      line.x = function(_) {
+        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant(+_), line) : x$1;
+      };
+
+      line.y = function(_) {
+        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant(+_), line) : y$1;
+      };
+
+      line.defined = function(_) {
+        return arguments.length ? (defined = typeof _ === "function" ? _ : constant(!!_), line) : defined;
+      };
+
+      line.curve = function(_) {
+        return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
+      };
+
+      line.context = function(_) {
+        return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
+      };
+
+      return line;
+    }
+
+    const STEP = 0.1;
+    const MAX_N = 20;
+
+
+    class Plot {
+      constructor(context, n) {
+        console.log('in constructor with ', n);
+        this.ctx = context; 
+        this.height = this.ctx.height;
+        this.width = this.ctx.width;
+        this.unitToBeta = linear().domain([0, 1]).range([-3, 3]);
+        this.n = n;
+        this.g = new Gaussian([0], [[1]]);
+        this.populate();
+
+      }
+
+      kernel(x1, x2) {
+        return this.g.at([x1 - x2]);
+      }
+
+      populate() {
+        this.x = new Array(MAX_N);
+        this.y = new Array(MAX_N);
+        this.beta = new Array(MAX_N);
+
+        for (let i = 0; i != MAX_N; i++) {
+          this.x[i] = this.ctx.unitToX(Math.random());
+          this.beta[i] = this.unitToBeta(Math.random());
+        }
+        var prev_n = this.n;
+        this.n = MAX_N;
+        for (let i = 0; i != MAX_N; i++) {
+          this.y[i] = this.f(this.x[i]);
+        }
+        this.n = prev_n;
+
+        for (let i = 0; i != MAX_N; i++) {
+          this.beta[i] = 1.0;
+        }
+      }
+
+      getx() {
+        return this.x.slice(0, this.n);
+      }
+
+      gety() {
+        return this.y.slice(0, this.n);
+      }
+
+      getbeta() {
+        return this.beta.slice(0, this.n);
+      }
+
+      data() {
+        return zip(this.getx(), this.gety(), this.getbeta());
+      }
+
+      chirp() {
+        console.log('in chirp: ', this);
+      }
+
+
+      solve() {
+        var n = this.n;
+        var K = Matrix.zeros(n, n);
+        var y = new Matrix([this.gety()]);
+        var xi, xj;
+        for (let i = 0; i != n; i++) {
+          xi = this.x[i];
+          for (let j = 0; j != n; j++) {
+            xj = this.x[j];
+            K.set(i, j, this.kernel(xi, xj));
+          }
+        }
+        var invK = inverse(K);
+        var beta = y.mmul(invK);
+        for (let i = 0; i != n; i++) {
+          this.beta[i] = beta.get(0, i);
+        }
+      }
+
+
+      updateContext(context) {
+        console.log('in updateContext');
+        this.ctx = context;
+        this.height = this.ctx.height;
+        this.width = this.ctx.width;
+      }
+
+      addPoint() {
+        this.n++;
+      }
+
+      delPoint() {
+        if (this.n == 0) return;
+        this.n--;
+      }
+
+      updateBeta(delta, index) {
+        this.beta[index] += delta;
+      }
+
+      makeLine(points) {
+        const path = line()
+          .x(d => this.ctx.u(d[0]))
+          .y(d => this.ctx.v(d[1]))(points);
+        return path;
+      }
+
+      curve(mean, scale) {
+        const xs = sequence(this.ctx.xmin, this.ctx.xmax + STEP, STEP);
+        const ys = xs.map(x => scale * this.kernel(x, mean));
+        const pts = zip(xs,ys);
+        return this.makeLine(pts);
+      }
+
+      curvePoint(mean, scale, x) {
+        // returns the gaussian value with mean at point x
+        const v = this.ctx.v(scale * this.kernel(x, mean));
+        return v;
+      }
+
+      solutionCurve() {
+        const xs = sequence(this.ctx.xmin, this.ctx.xmax + STEP, STEP);
+        const ys = xs.map(x => this.data().map(
+          ([m,_,b]) => b * this.kernel(m, x))
+          .reduce((p, q) => p + q, 0)
+        );
+        const pts = zip(xs,ys);
+        return this.makeLine(pts);
+      }
+
+
+      f(x) {
+        const y = this.data().map(([m,_,b]) => b * this.kernel(m, x))
+          .reduce((p, q) => p + q, 0);
+        return y;
+      }
+
+      solutionPoint(x) {
+        var y = this.f(x);
+        return this.ctx.v(y);
+      }
+
+
+      u(x) {
+        return this.ctx.u(x);
+      }
+
+      v(y) {
+        return this.ctx.v(y);
+      }
+
+
+    }
+
+    class Context {
+      constructor(width, height, [xmin, xmax], [ymin, ymax]) {
+        this.width = width;
+        this.height = height;
+        this.xmin = xmin;
+        this.xmax = xmax;
+        this.ymin = ymin;
+        this.ymax = ymax;
+        this.xToViewport = linear().domain([xmin, xmax]).range([0,width]);
+        this.yToViewport = linear().domain([ymin, ymax]).range([height,0]);
+        this.unitToX = linear().domain([0, 1]).range([xmin, xmax]);
+        this.unitToY = linear().domain([0, 1]).range([ymin, ymax]);
+      }
+
+      setWidth(w) {
+        this.width = w;
+        this.xToViewport.range([0,w]);
+      }
+
+
+      x(u) {
+        return this.xToViewport.invert(u);
+      }
+
+      y(v) {
+        return this.yToViewport.invert(v);
+      }
+
+      u(x) {
+        return this.xToViewport(x);
+      }
+
+      v(y) {
+        return this.yToViewport(y);
+      }
+
+      xDomain() {
+        return this.xToViewport.domain();
+      }
+
+      yDomain() {
+        return this.yToViewport.domain();
+      }
+    }
+
+    /* src/MainPlot.svelte generated by Svelte v3.38.2 */
+
+    const { console: console_1 } = globals;
+    const file$1 = "src/MainPlot.svelte";
+
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[17] = list[i];
+    	child_ctx[18] = list;
+    	child_ctx[19] = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[20] = list[i];
+    	child_ctx[19] = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[20] = list[i][0];
+    	child_ctx[22] = list[i][1];
+    	child_ctx[23] = list[i][2];
+    	child_ctx[19] = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_3(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[25] = list[i];
+    	child_ctx[27] = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_4(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[20] = list[i][0];
+    	child_ctx[22] = list[i][1];
+    	child_ctx[23] = list[i][2];
+    	return child_ctx;
+    }
+
+    // (171:0) {:else}
+    function create_else_block(ctx) {
+    	let div;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", "gauss-grid svelte-1y4xlzj");
+    			add_location(div, file$1, 171, 4, 4506);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(171:0) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (99:0) {#if context_width}
+    function create_if_block(ctx) {
+    	let div3;
+    	let div2;
+    	let svg0;
+    	let if_block0_anchor;
+    	let each0_anchor;
+    	let svg0_width_value;
+    	let svg0_height_value;
+    	let svg0_viewBox_value;
+    	let t0;
+    	let svg1;
+    	let svg1_width_value;
+    	let svg1_viewBox_value;
+    	let t1;
+    	let div0;
+    	let button0;
+    	let t3;
+    	let button1;
+    	let t5;
+    	let button2;
+    	let t7;
+    	let button3;
+    	let t9;
+    	let label0;
+    	let input0;
+    	let t10;
+    	let t11;
+    	let label1;
+    	let input1;
+    	let t12;
+    	let t13;
+    	let div1;
+    	let mounted;
+    	let dispose;
+    	let if_block0 = /*show_data*/ ctx[2] && create_if_block_4(ctx);
+    	let each_value_2 = /*plot*/ ctx[5].data();
+    	validate_each_argument(each_value_2);
+    	let each_blocks_2 = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks_2[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
+
+    	let if_block1 = /*show_solution*/ ctx[3] && create_if_block_1(ctx);
+    	let each_value_1 = /*plot*/ ctx[5].getx();
+    	validate_each_argument(each_value_1);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	let each_value = /*plot*/ ctx[5].getbeta();
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div2 = element("div");
+    			svg0 = svg_element("svg");
+    			if (if_block0) if_block0.c();
+    			if_block0_anchor = empty();
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].c();
+    			}
+
+    			each0_anchor = empty();
+    			if (if_block1) if_block1.c();
+    			t0 = space();
+    			svg1 = svg_element("svg");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			t1 = space();
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "+";
+    			t3 = space();
+    			button1 = element("button");
+    			button1.textContent = "-";
+    			t5 = space();
+    			button2 = element("button");
+    			button2.textContent = "Reset";
+    			t7 = space();
+    			button3 = element("button");
+    			button3.textContent = "Solve";
+    			t9 = space();
+    			label0 = element("label");
+    			input0 = element("input");
+    			t10 = text("\n              Toggle points");
+    			t11 = space();
+    			label1 = element("label");
+    			input1 = element("input");
+    			t12 = text("\n              Toggle basis curves");
+    			t13 = space();
+    			div1 = element("div");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(svg0, "width", svg0_width_value = /*plot*/ ctx[5].width);
+    			attr_dev(svg0, "height", svg0_height_value = /*plot*/ ctx[5].height);
+    			attr_dev(svg0, "viewBox", svg0_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " " + /*plot*/ ctx[5].height);
+    			attr_dev(svg0, "class", "plot");
+    			add_location(svg0, file$1, 101, 6, 2199);
+    			attr_dev(svg1, "width", svg1_width_value = /*plot*/ ctx[5].width);
+    			attr_dev(svg1, "height", "40");
+    			attr_dev(svg1, "viewBox", svg1_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " 40");
+    			add_location(svg1, file$1, 139, 6, 3346);
+    			add_location(button0, file$1, 147, 10, 3640);
+    			add_location(button1, file$1, 148, 10, 3721);
+    			add_location(button2, file$1, 149, 10, 3802);
+    			add_location(button3, file$1, 150, 10, 3885);
+    			attr_dev(input0, "type", "checkbox");
+    			add_location(input0, file$1, 152, 14, 3987);
+    			add_location(label0, file$1, 151, 10, 3965);
+    			attr_dev(input1, "type", "checkbox");
+    			add_location(input1, file$1, 156, 14, 4119);
+    			add_location(label1, file$1, 155, 10, 4097);
+    			add_location(div0, file$1, 145, 6, 3577);
+    			add_location(div1, file$1, 160, 6, 4245);
+    			attr_dev(div2, "class", "grid-item svelte-1y4xlzj");
+    			add_location(div2, file$1, 100, 2, 2169);
+    			attr_dev(div3, "class", "gauss-grid svelte-1y4xlzj");
+    			add_location(div3, file$1, 99, 0, 2142);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div2);
+    			append_dev(div2, svg0);
+    			if (if_block0) if_block0.m(svg0, null);
+    			append_dev(svg0, if_block0_anchor);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].m(svg0, null);
+    			}
+
+    			append_dev(svg0, each0_anchor);
+    			if (if_block1) if_block1.m(svg0, null);
+    			append_dev(div2, t0);
+    			append_dev(div2, svg1);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(svg1, null);
+    			}
+
+    			append_dev(div2, t1);
+    			append_dev(div2, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t3);
+    			append_dev(div0, button1);
+    			append_dev(div0, t5);
+    			append_dev(div0, button2);
+    			append_dev(div0, t7);
+    			append_dev(div0, button3);
+    			append_dev(div0, t9);
+    			append_dev(div0, label0);
+    			append_dev(label0, input0);
+    			input0.checked = /*show_points*/ ctx[1];
+    			append_dev(label0, t10);
+    			append_dev(div0, t11);
+    			append_dev(div0, label1);
+    			append_dev(label1, input1);
+    			input1.checked = /*show_scaled*/ ctx[0];
+    			append_dev(label1, t12);
+    			append_dev(div2, t13);
+    			append_dev(div2, div1);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div1, null);
+    			}
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*click_handler*/ ctx[6], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[7], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[8], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_3*/ ctx[9], false, false, false),
+    					listen_dev(input0, "change", /*input0_change_handler*/ ctx[10]),
+    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[11])
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*show_data*/ ctx[2]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_4(ctx);
+    					if_block0.c();
+    					if_block0.m(svg0, if_block0_anchor);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (dirty & /*plot, show_points, show_scaled*/ 35) {
+    				each_value_2 = /*plot*/ ctx[5].data();
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks_2[i]) {
+    						each_blocks_2[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_2[i] = create_each_block_2(child_ctx);
+    						each_blocks_2[i].c();
+    						each_blocks_2[i].m(svg0, each0_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks_2.length; i += 1) {
+    					each_blocks_2[i].d(1);
+    				}
+
+    				each_blocks_2.length = each_value_2.length;
+    			}
+
+    			if (/*show_solution*/ ctx[3]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_1(ctx);
+    					if_block1.c();
+    					if_block1.m(svg0, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (dirty & /*plot*/ 32 && svg0_width_value !== (svg0_width_value = /*plot*/ ctx[5].width)) {
+    				attr_dev(svg0, "width", svg0_width_value);
+    			}
+
+    			if (dirty & /*plot*/ 32 && svg0_height_value !== (svg0_height_value = /*plot*/ ctx[5].height)) {
+    				attr_dev(svg0, "height", svg0_height_value);
+    			}
+
+    			if (dirty & /*plot*/ 32 && svg0_viewBox_value !== (svg0_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " " + /*plot*/ ctx[5].height)) {
+    				attr_dev(svg0, "viewBox", svg0_viewBox_value);
+    			}
+
+    			if (dirty & /*plot*/ 32) {
+    				each_value_1 = /*plot*/ ctx[5].getx();
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_1[i] = create_each_block_1(child_ctx);
+    						each_blocks_1[i].c();
+    						each_blocks_1[i].m(svg1, null);
+    					}
+    				}
+
+    				for (; i < each_blocks_1.length; i += 1) {
+    					each_blocks_1[i].d(1);
+    				}
+
+    				each_blocks_1.length = each_value_1.length;
+    			}
+
+    			if (dirty & /*plot*/ 32 && svg1_width_value !== (svg1_width_value = /*plot*/ ctx[5].width)) {
+    				attr_dev(svg1, "width", svg1_width_value);
+    			}
+
+    			if (dirty & /*plot*/ 32 && svg1_viewBox_value !== (svg1_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " 40")) {
+    				attr_dev(svg1, "viewBox", svg1_viewBox_value);
+    			}
+
+    			if (dirty & /*show_points*/ 2) {
+    				input0.checked = /*show_points*/ ctx[1];
+    			}
+
+    			if (dirty & /*show_scaled*/ 1) {
+    				input1.checked = /*show_scaled*/ ctx[0];
+    			}
+
+    			if (dirty & /*plot*/ 32) {
+    				each_value = /*plot*/ ctx[5].getbeta();
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(div1, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div3);
+    			if (if_block0) if_block0.d();
+    			destroy_each(each_blocks_2, detaching);
+    			if (if_block1) if_block1.d();
+    			destroy_each(each_blocks_1, detaching);
+    			destroy_each(each_blocks, detaching);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(99:0) {#if context_width}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (105:8) {#if show_data}
+    function create_if_block_4(ctx) {
+    	let each_1_anchor;
+    	let each_value_4 = /*plot*/ ctx[5].data();
+    	validate_each_argument(each_value_4);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_4.length; i += 1) {
+    		each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32) {
+    				each_value_4 = /*plot*/ ctx[5].data();
+    				validate_each_argument(each_value_4);
+    				let i;
+
+    				for (i = 0; i < each_value_4.length; i += 1) {
+    					const child_ctx = get_each_context_4(ctx, each_value_4, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_4(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_4.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_4.name,
+    		type: "if",
+    		source: "(105:8) {#if show_data}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (106:10) {#each plot.data() as [x, y, beta]}
+    function create_each_block_4(ctx) {
+    	let circle;
+    	let circle_cx_value;
+    	let circle_cy_value;
+
+    	const block = {
+    		c: function create() {
+    			circle = svg_element("circle");
+    			attr_dev(circle, "class", "data svelte-1y4xlzj");
+    			set_style(circle, "stroke", "#000000");
+    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]));
+    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[5].v(/*y*/ ctx[22]));
+    			attr_dev(circle, "r", "5");
+    			add_location(circle, file$1, 106, 12, 2405);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, circle, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]))) {
+    				attr_dev(circle, "cx", circle_cx_value);
+    			}
+
+    			if (dirty & /*plot*/ 32 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[5].v(/*y*/ ctx[22]))) {
+    				attr_dev(circle, "cy", circle_cy_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(circle);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_4.name,
+    		type: "each",
+    		source: "(106:10) {#each plot.data() as [x, y, beta]}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (117:12) {#if show_scaled}
+    function create_if_block_3(ctx) {
+    	let path;
+    	let path_d_value;
+
+    	const block = {
+    		c: function create() {
+    			path = svg_element("path");
+    			attr_dev(path, "class", "curve svelte-1y4xlzj");
+    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[5].curve(/*x*/ ctx[20], /*beta*/ ctx[23]));
+    			add_location(path, file$1, 117, 16, 2702);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, path, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32 && path_d_value !== (path_d_value = /*plot*/ ctx[5].curve(/*x*/ ctx[20], /*beta*/ ctx[23]))) {
+    				attr_dev(path, "d", path_d_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(path);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(117:12) {#if show_scaled}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (123:12) {#if show_points}
+    function create_if_block_2(ctx) {
+    	let each_1_anchor;
+    	let each_value_3 = /*plot*/ ctx[5].getx();
+    	validate_each_argument(each_value_3);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_3.length; i += 1) {
+    		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32) {
+    				each_value_3 = /*plot*/ ctx[5].getx();
+    				validate_each_argument(each_value_3);
+    				let i;
+
+    				for (i = 0; i < each_value_3.length; i += 1) {
+    					const child_ctx = get_each_context_3(ctx, each_value_3, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_3(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_3.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(123:12) {#if show_points}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (124:16) {#each plot.getx() as x2, j}
+    function create_each_block_3(ctx) {
+    	let circle;
+    	let circle_cx_value;
+    	let circle_cy_value;
+
+    	const block = {
+    		c: function create() {
+    			circle = svg_element("circle");
+    			attr_dev(circle, "class", "point svelte-1y4xlzj");
+    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[5].u(/*x2*/ ctx[25]));
+    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[5].curvePoint(/*x*/ ctx[20], /*beta*/ ctx[23], /*x2*/ ctx[25]));
+    			attr_dev(circle, "r", "4");
+    			add_location(circle, file$1, 124, 20, 2909);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, circle, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[5].u(/*x2*/ ctx[25]))) {
+    				attr_dev(circle, "cx", circle_cx_value);
+    			}
+
+    			if (dirty & /*plot*/ 32 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[5].curvePoint(/*x*/ ctx[20], /*beta*/ ctx[23], /*x2*/ ctx[25]))) {
+    				attr_dev(circle, "cy", circle_cy_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(circle);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_3.name,
+    		type: "each",
+    		source: "(124:16) {#each plot.getx() as x2, j}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (116:8) {#each plot.data() as [x, y, beta], i}
+    function create_each_block_2(ctx) {
+    	let if_block0_anchor;
+    	let if_block1_anchor;
+    	let if_block0 = /*show_scaled*/ ctx[0] && create_if_block_3(ctx);
+    	let if_block1 = /*show_points*/ ctx[1] && create_if_block_2(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block0) if_block0.c();
+    			if_block0_anchor = empty();
+    			if (if_block1) if_block1.c();
+    			if_block1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block0) if_block0.m(target, anchor);
+    			insert_dev(target, if_block0_anchor, anchor);
+    			if (if_block1) if_block1.m(target, anchor);
+    			insert_dev(target, if_block1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*show_scaled*/ ctx[0]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_3(ctx);
+    					if_block0.c();
+    					if_block0.m(if_block0_anchor.parentNode, if_block0_anchor);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*show_points*/ ctx[1]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_2(ctx);
+    					if_block1.c();
+    					if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block0) if_block0.d(detaching);
+    			if (detaching) detach_dev(if_block0_anchor);
+    			if (if_block1) if_block1.d(detaching);
+    			if (detaching) detach_dev(if_block1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(116:8) {#each plot.data() as [x, y, beta], i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (135:8) {#if show_solution}
+    function create_if_block_1(ctx) {
+    	let path;
+    	let path_d_value;
+
+    	const block = {
+    		c: function create() {
+    			path = svg_element("path");
+    			attr_dev(path, "class", "solution-curve svelte-1y4xlzj");
+    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[5].solutionCurve());
+    			add_location(path, file$1, 135, 10, 3242);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, path, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32 && path_d_value !== (path_d_value = /*plot*/ ctx[5].solutionCurve())) {
+    				attr_dev(path, "d", path_d_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(path);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(135:8) {#if show_solution}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (142:8) {#each plot.getx() as x, i}
+    function create_each_block_1(ctx) {
+    	let text_1;
+    	let t0;
+    	let tspan;
+    	let t1;
+    	let text_1_x_value;
+
+    	const block = {
+    		c: function create() {
+    			text_1 = svg_element("text");
+    			t0 = text("x");
+    			tspan = svg_element("tspan");
+    			t1 = text(/*i*/ ctx[19]);
+    			attr_dev(tspan, "class", "ss svelte-1y4xlzj");
+    			add_location(tspan, file$1, 142, 36, 3505);
+    			attr_dev(text_1, "x", text_1_x_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]));
+    			attr_dev(text_1, "y", "25");
+    			add_location(text_1, file$1, 142, 10, 3479);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, text_1, anchor);
+    			append_dev(text_1, t0);
+    			append_dev(text_1, tspan);
+    			append_dev(tspan, t1);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*plot*/ 32 && text_1_x_value !== (text_1_x_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]))) {
+    				attr_dev(text_1, "x", text_1_x_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(text_1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(142:8) {#each plot.getx() as x, i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (162:10) {#each plot.getbeta() as b, i}
+    function create_each_block(ctx) {
+    	let label;
+    	let input;
+    	let t0;
+    	let t1_value = /*b*/ ctx[17].toFixed(2) + "";
+    	let t1;
+    	let t2;
+    	let mounted;
+    	let dispose;
+
+    	function input_change_input_handler() {
+    		/*input_change_input_handler*/ ctx[12].call(input, /*each_value*/ ctx[18], /*i*/ ctx[19]);
+    	}
+
+    	const block = {
+    		c: function create() {
+    			label = element("label");
+    			input = element("input");
+    			t0 = space();
+    			t1 = text(t1_value);
+    			t2 = space();
+    			attr_dev(input, "type", "range");
+    			attr_dev(input, "min", "-10");
+    			attr_dev(input, "max", "10");
+    			attr_dev(input, "step", "0.01");
+    			add_location(input, file$1, 163, 18, 4332);
+    			add_location(label, file$1, 162, 14, 4306);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, label, anchor);
+    			append_dev(label, input);
+    			set_input_value(input, /*b*/ ctx[17]);
+    			append_dev(label, t0);
+    			append_dev(label, t1);
+    			append_dev(label, t2);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input, "change", input_change_input_handler),
+    					listen_dev(input, "input", input_change_input_handler)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
+    			if (dirty & /*plot*/ 32) {
+    				set_input_value(input, /*b*/ ctx[17]);
+    			}
+
+    			if (dirty & /*plot*/ 32 && t1_value !== (t1_value = /*b*/ ctx[17].toFixed(2) + "")) set_data_dev(t1, t1_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(label);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(162:10) {#each plot.getbeta() as b, i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$1(ctx) {
+    	let if_block_anchor;
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*context_width*/ ctx[4]) return create_if_block;
+    		return create_else_block;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block = current_block_type(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			}
+    		},
+    		i: noop$1,
+    		o: noop$1,
+    		d: function destroy(detaching) {
+    			if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$1.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("MainPlot", slots, []);
+    	let { show_data = true } = $$props;
+    	let { show_scaled = true } = $$props;
+    	let { show_solution = true } = $$props;
+    	let { show_points = false } = $$props;
+    	let { context_width } = $$props;
+    	let nPoints = 3;
+
+    	// $: console.log('standalone reactive statement with no dependencies.');
+    	let ctx = new Context(context_width, 400, [0, 10], [-2, 2]);
+
+    	let plot = new Plot(ctx, 3);
+
+    	// guard function.  hides mention of 'plot' so that reactive statement
+    	// won't trigger.
+    	function chirp() {
+    		console.log("in toplevel chirp");
+    		plot.chirp();
+    	}
+
+    	function resize(width) {
+    		console.log("in resize");
+    		ctx.setWidth(width);
+    		plot.updateContext(ctx);
+    	} // plot.chirp();
+
+    	const writable_props = ["show_data", "show_scaled", "show_solution", "show_points", "context_width"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<MainPlot> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => {
+    		plot.addPoint();
+    		$$invalidate(5, plot);
+    	};
+
+    	const click_handler_1 = () => {
+    		plot.delPoint();
+    		$$invalidate(5, plot);
+    	};
+
+    	const click_handler_2 = () => {
+    		plot.populate();
+    		$$invalidate(5, plot);
+    	};
+
+    	const click_handler_3 = () => {
+    		plot.solve();
+    		$$invalidate(5, plot);
+    	};
+
+    	function input0_change_handler() {
+    		show_points = this.checked;
+    		$$invalidate(1, show_points);
+    	}
+
+    	function input1_change_handler() {
+    		show_scaled = this.checked;
+    		$$invalidate(0, show_scaled);
+    	}
+
+    	function input_change_input_handler(each_value, i) {
+    		each_value[i] = to_number(this.value);
+    		$$invalidate(5, plot);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("show_data" in $$props) $$invalidate(2, show_data = $$props.show_data);
+    		if ("show_scaled" in $$props) $$invalidate(0, show_scaled = $$props.show_scaled);
+    		if ("show_solution" in $$props) $$invalidate(3, show_solution = $$props.show_solution);
+    		if ("show_points" in $$props) $$invalidate(1, show_points = $$props.show_points);
+    		if ("context_width" in $$props) $$invalidate(4, context_width = $$props.context_width);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		Plot,
+    		Context,
+    		show_data,
+    		show_scaled,
+    		show_solution,
+    		show_points,
+    		context_width,
+    		nPoints,
+    		ctx,
+    		plot,
+    		chirp,
+    		resize
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("show_data" in $$props) $$invalidate(2, show_data = $$props.show_data);
+    		if ("show_scaled" in $$props) $$invalidate(0, show_scaled = $$props.show_scaled);
+    		if ("show_solution" in $$props) $$invalidate(3, show_solution = $$props.show_solution);
+    		if ("show_points" in $$props) $$invalidate(1, show_points = $$props.show_points);
+    		if ("context_width" in $$props) $$invalidate(4, context_width = $$props.context_width);
+    		if ("nPoints" in $$props) nPoints = $$props.nPoints;
+    		if ("ctx" in $$props) ctx = $$props.ctx;
+    		if ("plot" in $$props) $$invalidate(5, plot = $$props.plot);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*context_width*/ 16) {
+    			// console.log('standalone ordinary statement');
+    			console.log(`context_width = ${context_width}`);
+    		}
+
+    		if ($$self.$$.dirty & /*show_scaled*/ 1) {
+    			console.log(`show_scaled = ${show_scaled}`);
+    		}
+
+    		if ($$self.$$.dirty & /*show_points*/ 2) {
+    			console.log(`show_points = ${show_points}`);
+    		}
+
+    		if ($$self.$$.dirty & /*context_width*/ 16) {
+    			resize(context_width);
+    		}
+    	};
+
+    	return [
+    		show_scaled,
+    		show_points,
+    		show_data,
+    		show_solution,
+    		context_width,
+    		plot,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		click_handler_3,
+    		input0_change_handler,
+    		input1_change_handler,
+    		input_change_input_handler
+    	];
+    }
+
+    class MainPlot extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+    			show_data: 2,
+    			show_scaled: 0,
+    			show_solution: 3,
+    			show_points: 1,
+    			context_width: 4
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "MainPlot",
+    			options,
+    			id: create_fragment$1.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*context_width*/ ctx[4] === undefined && !("context_width" in props)) {
+    			console_1.warn("<MainPlot> was created without expected prop 'context_width'");
+    		}
+    	}
+
+    	get show_data() {
+    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show_data(value) {
+    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show_scaled() {
+    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show_scaled(value) {
+    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show_solution() {
+    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show_solution(value) {
+    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show_points() {
+    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show_points(value) {
+    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get context_width() {
+    		throw new Error("<MainPlot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set context_width(value) {
+    		throw new Error("<MainPlot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/App.svelte generated by Svelte v3.38.2 */
+    const file = "src/App.svelte";
+
+    function create_fragment(ctx) {
+    	let main;
+    	let d_front_matter;
+    	let script;
+    	let t1;
+    	let d_title;
+    	let h1;
+    	let t3;
+    	let d_byline;
+    	let t4;
+    	let d_article;
+    	let h30;
+    	let t6;
+    	let p0;
+    	let t7;
+    	let d_math0;
+    	let t9;
+    	let d_math1;
+    	let t11;
+    	let d_math2;
+    	let t13;
+    	let d_math3;
+    	let t15;
+    	let t16;
+    	let figure;
+    	let d_figure;
+    	let mainplot;
+    	let figure_resize_listener;
+    	let t17;
+    	let p1;
+    	let t18;
+    	let d_math4;
+    	let t20;
+    	let d_math5;
+    	let t22;
+    	let d_math6;
+    	let t24;
+    	let d_math7;
+    	let t26;
+    	let t27;
+    	let p2;
+    	let t28;
+    	let d_math8;
+    	let t30;
+    	let d_math9;
+    	let t32;
+    	let d_math10;
+    	let t34;
+    	let t35;
+    	let p3;
+    	let t36;
+    	let d_math11;
+    	let t38;
+    	let d_math12;
+    	let t40;
+    	let d_math13;
+    	let t42;
+    	let d_math14;
+    	let t44;
+    	let d_math15;
+    	let t46;
+    	let t47;
+    	let h31;
+    	let t49;
+    	let p4;
+    	let t50;
+    	let d_math16;
+    	let t52;
+    	let d_math17;
+    	let t54;
+    	let d_math18;
+    	let t56;
+    	let t57;
+    	let p5;
+    	let t58;
+    	let d_math19;
+    	let t60;
+    	let d_math20;
+    	let t62;
+    	let i;
+    	let t64;
+    	let d_math21;
+    	let t66;
+    	let d_math22;
+    	let t68;
+    	let t69;
+    	let p6;
+    	let t70;
+    	let d_math23;
+    	let t72;
+    	let d_math24;
+    	let t74;
+    	let d_math25;
+    	let t76;
+    	let t77;
+    	let p7;
+    	let t79;
+    	let d_math26;
+    	let t81;
+    	let p8;
+    	let t82;
+    	let d_math27;
+    	let t84;
+    	let d_math28;
+    	let t86;
+    	let d_math29;
+    	let t88;
+    	let t89;
+    	let d_math30;
+    	let t91;
+    	let p9;
+    	let t93;
+    	let d_math31;
+    	let t95;
+    	let p10;
+    	let t96;
+    	let d_math32;
+    	let t98;
+    	let d_math33;
+    	let t100;
+    	let d_math34;
+    	let t102;
+    	let t103;
+    	let h32;
+    	let t105;
+    	let p11;
+    	let t106;
+    	let d_math35;
+    	let t108;
+    	let d_math36;
+    	let t110;
+    	let d_math37;
+    	let t112;
+    	let d_math38;
+    	let t114;
+    	let t115;
+    	let d_math39;
+    	let t117;
+    	let p12;
+    	let t118;
+    	let d_math40;
+    	let t120;
+    	let d_math41;
+    	let t122;
+    	let t123;
+    	let p13;
+    	let t124;
+    	let d_math42;
+    	let t126;
+    	let t127;
+    	let d_math43;
+    	let t129;
+    	let d_appendix;
+    	let current;
+
+    	mainplot = new MainPlot({
+    			props: { context_width: /*cw*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			main = element("main");
+    			d_front_matter = element("d-front-matter");
+    			script = element("script");
+    			script.textContent = "{\n        \"title\": \"Introduction to Kernel Regression\",\n      \"description\": \"A gentle introduction to Kernel Regression\",\n      \"authors\": [\n      {\n          \"author\": \"Henry Bigelow\"\n      }\n      ]\n      }";
+    			t1 = space();
+    			d_title = element("d-title");
+    			h1 = element("h1");
+    			h1.textContent = "Introduction to Kernel Regression";
+    			t3 = space();
+    			d_byline = element("d-byline");
+    			t4 = space();
+    			d_article = element("d-article");
+    			h30 = element("h3");
+    			h30.textContent = "A problem for Kernel Regression to solve";
+    			t6 = space();
+    			p0 = element("p");
+    			t7 = text("Consider the following:  you are given a dataset ");
+    			d_math0 = element("d-math");
+    			d_math0.textContent = "\\textbf{D} =\n            \\{(x_i, y_i)\\}_{i \\in (1, \\cdots, n)}";
+    			t9 = text(", with\n        ");
+    			d_math1 = element("d-math");
+    			d_math1.textContent = "\\mathcal{X} \\times \\mathcal{Y} \\in \\mathbb{R} \\times\n            \\mathbb{R}";
+    			t11 = text(".  There is nothing known about the true\n        relationship between ");
+    			d_math2 = element("d-math");
+    			d_math2.textContent = "X";
+    			t13 = text(" and ");
+    			d_math3 = element("d-math");
+    			d_math3.textContent = "Y";
+    			t15 = text(" except that\n        it is deterministic, continuous, and with some bounded first derivative.\n        In other words, \"smooth\".  So you would like to find a smooth function to\n        fit the data.");
+    			t16 = space();
+    			figure = element("figure");
+    			d_figure = element("d-figure");
+    			create_component(mainplot.$$.fragment);
+    			t17 = space();
+    			p1 = element("p");
+    			t18 = text("With this smoothness goal in mind, you have decided to create a function\n        which is a linear combination of ");
+    			d_math4 = element("d-math");
+    			d_math4.textContent = "n";
+    			t20 = text(" gaussians, each one\n        centered at one of the ");
+    			d_math5 = element("d-math");
+    			d_math5.textContent = "x_i";
+    			t22 = text(".  Since the gaussians themselves\n        are smooth, the resulting linear combination will also be smooth.  The goal\n        will be to adjust the weight of each gaussian and hopfully fit the\n        ");
+    			d_math6 = element("d-math");
+    			d_math6.textContent = "y_i";
+    			t24 = text(" at each point ");
+    			d_math7 = element("d-math");
+    			d_math7.textContent = "x_i";
+    			t26 = text(".");
+    			t27 = space();
+    			p2 = element("p");
+    			t28 = text("Here are the functions we have chosen to use, now shown with the data.\n        Notice that there is one function per data point, centered at the\n        ");
+    			d_math8 = element("d-math");
+    			d_math8.textContent = "x_i";
+    			t30 = text(" coordinate.  The goal will be to find some weight vector\n        ");
+    			d_math9 = element("d-math");
+    			d_math9.textContent = "\\beta";
+    			t32 = text(" that combines these together to form a curve that goes through all of\n        the ");
+    			d_math10 = element("d-math");
+    			d_math10.textContent = "y_i";
+    			t34 = text(" values.");
+    			t35 = space();
+    			p3 = element("p");
+    			t36 = text("How do we find ");
+    			d_math11 = element("d-math");
+    			d_math11.textContent = "\\beta";
+    			t38 = text("?  At first it seems like a hard problem.  We could\n        easily weight the ");
+    			d_math12 = element("d-math");
+    			d_math12.textContent = "i^{th}";
+    			t40 = text(" function so that its peak equals\n        ");
+    			d_math13 = element("d-math");
+    			d_math13.textContent = "y_i";
+    			t42 = text(".  But, the resulting function would miss the\n        ");
+    			d_math14 = element("d-math");
+    			d_math14.textContent = "y_i";
+    			t44 = text(" due to the additional contribution of the other functions\n        at that point, since these functions are non-zero everywhere.  Every time you\n        adjust one of the ");
+    			d_math15 = element("d-math");
+    			d_math15.textContent = "\\beta_i";
+    			t46 = text(", the values of the solution function changes\n        everywhere, so it isn't obvious how to find a solution, or if one exists at\n        all.");
+    			t47 = space();
+    			h31 = element("h3");
+    			h31.textContent = "The approach";
+    			t49 = space();
+    			p4 = element("p");
+    			t50 = text("For the moment, we are only concerned with the values of the solution\n        function at positions ");
+    			d_math16 = element("d-math");
+    			d_math16.textContent = "x_i";
+    			t52 = text(".  Each value of the solution\n        function at ");
+    			d_math17 = element("d-math");
+    			d_math17.textContent = "x_i";
+    			t54 = text(" will be the same linear combination of the\n        curve heights at ");
+    			d_math18 = element("d-math");
+    			d_math18.textContent = "x_i";
+    			t56 = text(", so we have highlighted them here.");
+    			t57 = space();
+    			p5 = element("p");
+    			t58 = text("Recall from linear algebra, that if you have a set of ");
+    			d_math19 = element("d-math");
+    			d_math19.textContent = "n";
+    			t60 = text("\n        linearly independent vectors in ");
+    			d_math20 = element("d-math");
+    			d_math20.textContent = "\\mathbb{R}^n";
+    			t62 = text(", those vectors\n        are said to ");
+    			i = element("i");
+    			i.textContent = "span";
+    			t64 = space();
+    			d_math21 = element("d-math");
+    			d_math21.textContent = "\\mathbb{R}^n";
+    			t66 = text(". This means every other\n        vector in ");
+    			d_math22 = element("d-math");
+    			d_math22.textContent = "\\mathbb{R}^n";
+    			t68 = text(" may be formed as a unique linear\n        combination of these spanning vectors.");
+    			t69 = space();
+    			p6 = element("p");
+    			t70 = text("Looking at the graph again, you can now see that each curve, evaluated at\n        the ");
+    			d_math23 = element("d-math");
+    			d_math23.textContent = "x_i";
+    			t72 = text(" in order, provides one of these spanning vectors (this\n        isn't proven but let's for the moment accept it).  And, the set of\n        ");
+    			d_math24 = element("d-math");
+    			d_math24.textContent = "y_i";
+    			t74 = text(" values is just our target vector.  So, all we need is to\n        express it as the unique linear combination ");
+    			d_math25 = element("d-math");
+    			d_math25.textContent = "\\beta";
+    			t76 = text(" which must\n        exist.");
+    			t77 = space();
+    			p7 = element("p");
+    			p7.textContent = "To make this explicit, let:";
+    			t79 = space();
+    			d_math26 = element("d-math");
+    			d_math26.textContent = "\\begin{aligned}\n            k_i(x) & \\equiv \\text{curves centered at $x_i$} \\\\\n            f(x) & \\equiv \\beta_1 k_1(x) + \\cdots + \\beta_n k_n(x) & \\text{the solution function} \\\\[1em]\n            D_x & \\equiv (x_1, \\cdots, x_n) & \\text{vector of $x_i$ values in the dataset} \\\\\n            (k_i)_{D_x} & \\equiv (k_i(x_1), \\cdots, k_i(x_n)) & \\text{values of $k_i$ along $D_x$ (the spanning vectors)} \\\\\n            (f)_{D_x} & \\equiv (f(x_1), \\cdots, f(x_n)) & \\text{values of $f$ along $D_x$ (the target vector)} \\\\\n            \\end{aligned}";
+    			t81 = space();
+    			p8 = element("p");
+    			t82 = text("Now, shown above are the same curves, each scaled by a candidate\n        ");
+    			d_math27 = element("d-math");
+    			d_math27.textContent = "\\beta";
+    			t84 = text(".  The goal is for the sum of these scaled curves to form\n        a function that goes through the ");
+    			d_math28 = element("d-math");
+    			d_math28.textContent = "y_i";
+    			t86 = text(".  Using the linear\n        algebra fact that an expansion exists, we can assert that there exists such a\n        ");
+    			d_math29 = element("d-math");
+    			d_math29.textContent = "\\beta";
+    			t88 = text(", formally:");
+    			t89 = space();
+    			d_math30 = element("d-math");
+    			d_math30.textContent = "\\begin{aligned}\n            (f)_{D_x} = \\beta_1 (k_1)_{D_x} + \\cdots + \\beta_n (k_n)_{D_x} = Y & \\\\\n            \\end{aligned}";
+    			t91 = space();
+    			p9 = element("p");
+    			p9.textContent = "Or, in matrix notation, let:";
+    			t93 = space();
+    			d_math31 = element("d-math");
+    			d_math31.textContent = "\\begin{aligned}\n            K & \\equiv\n            \\begin{bmatrix}\n            - (k_1)_{D_x} - \\\\\n            - (k_2)_{D_x} - \\\\\n            \\cdots \\\\\n            - (k_n)_{D_x} -\n            \\end{bmatrix} \\\\[1em]\n            \\beta & \\equiv [\\beta_1, \\cdots, \\beta_n] & \\text{row vector} \\\\[1em]\n            \\end{aligned}";
+    			t95 = space();
+    			p10 = element("p");
+    			t96 = text("So, the unique function that goes through all values ");
+    			d_math32 = element("d-math");
+    			d_math32.textContent = "y_i";
+    			t98 = text(" uses ");
+    			d_math33 = element("d-math");
+    			d_math33.textContent = "\\beta";
+    			t100 = text(" that\n        satisfies ");
+    			d_math34 = element("d-math");
+    			d_math34.textContent = "\\beta K = Y";
+    			t102 = text(".");
+    			t103 = space();
+    			h32 = element("h3");
+    			h32.textContent = "Where is the Kernel?";
+    			t105 = space();
+    			p11 = element("p");
+    			t106 = text("Notice that the family of functions ");
+    			d_math35 = element("d-math");
+    			d_math35.textContent = "k_i(x)";
+    			t108 = text(" are all related by a\n        two-argument gaussian formula (if we consider ");
+    			d_math36 = element("d-math");
+    			d_math36.textContent = "\\sigma";
+    			t110 = text(" to be constant) with\n        signature ");
+    			d_math37 = element("d-math");
+    			d_math37.textContent = "\\mathcal{X} \\times \\mathcal{X} \\rightarrow \\mathbb{R}";
+    			t112 = text(".  One\n        argument is the mean parameter, and the other the position.   We could call\n        that function ");
+    			d_math38 = element("d-math");
+    			d_math38.textContent = "k";
+    			t114 = text(" (with no subscript):");
+    			t115 = space();
+    			d_math39 = element("d-math");
+    			d_math39.textContent = "\\begin{aligned}\n            k(x, x') & \\equiv \\tfrac{1}{\\sigma \\sqrt{2 \\pi}} e^{-\\tfrac{(x - x')^2}{2 \\sigma^2}} & : \\mathcal{X} \\times \\mathcal{X} \\rightarrow \\mathbb{R} \\\\\n            \\end{aligned}";
+    			t117 = space();
+    			p12 = element("p");
+    			t118 = text("More generally, we designed our solution function at the very beginning to\n        be a linear combination of functions which were 1) parameterized by a point in\n        ");
+    			d_math40 = element("d-math");
+    			d_math40.textContent = "\\mathcal{X}";
+    			t120 = text(" and 2) defined over domain\n        ");
+    			d_math41 = element("d-math");
+    			d_math41.textContent = "\\mathcal{X}";
+    			t122 = text(".  Implicitly, the two-argument function that was\n        needed to define these functions was already there.");
+    			t123 = space();
+    			p13 = element("p");
+    			t124 = text("This function ");
+    			d_math42 = element("d-math");
+    			d_math42.textContent = "k(x, x')";
+    			t126 = text(" is known as a \"kernel\".  We can now express the\n        matrix, and our solution function in terms of the kernel:");
+    			t127 = space();
+    			d_math43 = element("d-math");
+    			d_math43.textContent = "\\begin{aligned}\n            K & \\equiv\n            \\begin{bmatrix}\n            k(x_1, x_1), \\cdots, k(x_1, x_n) \\\\\n            k(x_2, x_1), \\cdots, k(x_2, x_n) \\\\\n            \\cdots \\\\\n            k(x_n, x_1), \\cdots, k(x_n, x_n) \n            \\end{bmatrix} \\\\[1em]\n            f(x) & \\equiv \\sum_i { \\beta_i k(x_i, x) }\\\\\n            \\end{aligned}";
+    			t129 = space();
+    			d_appendix = element("d-appendix");
+    			attr_dev(script, "type", "text/json");
+    			add_location(script, file, 9, 4, 178);
+    			add_location(d_front_matter, file, 8, 4, 157);
+    			add_location(h1, file, 23, 8, 499);
+    			set_style(d_title, "padding-bottom", "0");
+    			add_location(d_title, file, 22, 4, 455);
+    			add_location(d_byline, file, 26, 4, 562);
+    			add_location(h30, file, 30, 8, 610);
+    			add_location(d_math0, file, 32, 60, 721);
+    			add_location(d_math1, file, 34, 8, 845);
+    			add_location(d_math2, file, 36, 29, 1047);
+    			add_location(d_math3, file, 36, 52, 1070);
+    			add_location(p0, file, 32, 8, 669);
+    			add_location(d_figure, file, 42, 12, 1367);
+    			attr_dev(figure, "class", "l-middle-outset");
+    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[1].call(figure));
+    			add_location(figure, file, 41, 8, 1300);
+    			add_location(d_math4, file, 48, 41, 1596);
+    			add_location(d_math5, file, 49, 31, 1666);
+    			add_location(d_math6, file, 52, 8, 1887);
+    			add_location(d_math7, file, 52, 43, 1922);
+    			add_location(p1, file, 47, 8, 1479);
+    			add_location(d_math8, file, 56, 8, 2117);
+    			add_location(d_math9, file, 57, 8, 2203);
+    			add_location(d_math10, file, 58, 12, 2308);
+    			add_location(p2, file, 54, 8, 1961);
+    			add_location(d_math11, file, 60, 26, 2369);
+    			add_location(d_math12, file, 61, 26, 2469);
+    			add_location(d_math13, file, 62, 8, 2544);
+    			add_location(d_math14, file, 63, 8, 2618);
+    			add_location(d_math15, file, 65, 26, 2809);
+    			add_location(p3, file, 60, 8, 2351);
+    			add_location(h31, file, 69, 8, 2990);
+    			add_location(d_math16, file, 72, 30, 3124);
+    			add_location(d_math17, file, 73, 20, 3194);
+    			add_location(d_math18, file, 74, 25, 3283);
+    			add_location(p4, file, 71, 8, 3021);
+    			add_location(d_math19, file, 76, 65, 3409);
+    			add_location(d_math20, file, 77, 40, 3468);
+    			add_location(i, file, 78, 20, 3543);
+    			add_location(d_math21, file, 78, 32, 3555);
+    			add_location(d_math22, file, 79, 18, 3637);
+    			add_location(p5, file, 76, 8, 3352);
+    			add_location(d_math23, file, 83, 12, 3859);
+    			add_location(d_math24, file, 85, 8, 4018);
+    			add_location(d_math25, file, 86, 52, 4148);
+    			add_location(p6, file, 82, 8, 3770);
+    			add_location(p7, file, 89, 8, 4210);
+    			set_custom_element_data(d_math26, "block", "");
+    			add_location(d_math26, file, 92, 8, 4255);
+    			add_location(d_math27, file, 103, 8, 5019);
+    			add_location(d_math28, file, 104, 41, 5140);
+    			add_location(d_math29, file, 106, 8, 5274);
+    			add_location(p8, file, 102, 8, 4943);
+    			set_custom_element_data(d_math30, "block", "");
+    			add_location(d_math30, file, 108, 8, 5322);
+    			add_location(p9, file, 114, 8, 5552);
+    			set_custom_element_data(d_math31, "block", "");
+    			add_location(d_math31, file, 116, 8, 5597);
+    			add_location(d_math32, file, 129, 64, 6108);
+    			add_location(d_math33, file, 129, 90, 6134);
+    			add_location(d_math34, file, 130, 18, 6180);
+    			add_location(p10, file, 129, 8, 6052);
+    			add_location(h32, file, 132, 8, 6223);
+    			add_location(d_math35, file, 134, 47, 6301);
+    			add_location(d_math36, file, 135, 54, 6400);
+    			add_location(d_math37, file, 136, 18, 6463);
+    			add_location(d_math38, file, 138, 22, 6676);
+    			add_location(p11, file, 134, 8, 6262);
+    			set_custom_element_data(d_math39, "block", "");
+    			add_location(d_math39, file, 140, 8, 6729);
+    			add_location(d_math40, file, 148, 8, 7266);
+    			add_location(d_math41, file, 149, 8, 7340);
+    			add_location(p12, file, 146, 8, 7093);
+    			add_location(d_math42, file, 152, 25, 7518);
+    			add_location(p13, file, 152, 8, 7501);
+    			set_custom_element_data(d_math43, "block", "");
+    			add_location(d_math43, file, 155, 8, 7671);
+    			add_location(d_article, file, 29, 4, 590);
+    			add_location(d_appendix, file, 171, 4, 8138);
+    			add_location(main, file, 6, 0, 145);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, main, anchor);
+    			append_dev(main, d_front_matter);
+    			append_dev(d_front_matter, script);
+    			append_dev(main, t1);
+    			append_dev(main, d_title);
+    			append_dev(d_title, h1);
+    			append_dev(main, t3);
+    			append_dev(main, d_byline);
+    			append_dev(main, t4);
+    			append_dev(main, d_article);
+    			append_dev(d_article, h30);
+    			append_dev(d_article, t6);
+    			append_dev(d_article, p0);
+    			append_dev(p0, t7);
+    			append_dev(p0, d_math0);
+    			append_dev(p0, t9);
+    			append_dev(p0, d_math1);
+    			append_dev(p0, t11);
+    			append_dev(p0, d_math2);
+    			append_dev(p0, t13);
+    			append_dev(p0, d_math3);
+    			append_dev(p0, t15);
+    			append_dev(d_article, t16);
+    			append_dev(d_article, figure);
+    			append_dev(figure, d_figure);
+    			mount_component(mainplot, d_figure, null);
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[1].bind(figure));
+    			append_dev(d_article, t17);
+    			append_dev(d_article, p1);
+    			append_dev(p1, t18);
+    			append_dev(p1, d_math4);
+    			append_dev(p1, t20);
+    			append_dev(p1, d_math5);
+    			append_dev(p1, t22);
+    			append_dev(p1, d_math6);
+    			append_dev(p1, t24);
+    			append_dev(p1, d_math7);
+    			append_dev(p1, t26);
+    			append_dev(d_article, t27);
+    			append_dev(d_article, p2);
+    			append_dev(p2, t28);
+    			append_dev(p2, d_math8);
+    			append_dev(p2, t30);
+    			append_dev(p2, d_math9);
+    			append_dev(p2, t32);
+    			append_dev(p2, d_math10);
+    			append_dev(p2, t34);
+    			append_dev(d_article, t35);
+    			append_dev(d_article, p3);
+    			append_dev(p3, t36);
+    			append_dev(p3, d_math11);
+    			append_dev(p3, t38);
+    			append_dev(p3, d_math12);
+    			append_dev(p3, t40);
+    			append_dev(p3, d_math13);
+    			append_dev(p3, t42);
+    			append_dev(p3, d_math14);
+    			append_dev(p3, t44);
+    			append_dev(p3, d_math15);
+    			append_dev(p3, t46);
+    			append_dev(d_article, t47);
+    			append_dev(d_article, h31);
+    			append_dev(d_article, t49);
+    			append_dev(d_article, p4);
+    			append_dev(p4, t50);
+    			append_dev(p4, d_math16);
+    			append_dev(p4, t52);
+    			append_dev(p4, d_math17);
+    			append_dev(p4, t54);
+    			append_dev(p4, d_math18);
+    			append_dev(p4, t56);
+    			append_dev(d_article, t57);
+    			append_dev(d_article, p5);
+    			append_dev(p5, t58);
+    			append_dev(p5, d_math19);
+    			append_dev(p5, t60);
+    			append_dev(p5, d_math20);
+    			append_dev(p5, t62);
+    			append_dev(p5, i);
+    			append_dev(p5, t64);
+    			append_dev(p5, d_math21);
+    			append_dev(p5, t66);
+    			append_dev(p5, d_math22);
+    			append_dev(p5, t68);
+    			append_dev(d_article, t69);
+    			append_dev(d_article, p6);
+    			append_dev(p6, t70);
+    			append_dev(p6, d_math23);
+    			append_dev(p6, t72);
+    			append_dev(p6, d_math24);
+    			append_dev(p6, t74);
+    			append_dev(p6, d_math25);
+    			append_dev(p6, t76);
+    			append_dev(d_article, t77);
+    			append_dev(d_article, p7);
+    			append_dev(d_article, t79);
+    			append_dev(d_article, d_math26);
+    			append_dev(d_article, t81);
+    			append_dev(d_article, p8);
+    			append_dev(p8, t82);
+    			append_dev(p8, d_math27);
+    			append_dev(p8, t84);
+    			append_dev(p8, d_math28);
+    			append_dev(p8, t86);
+    			append_dev(p8, d_math29);
+    			append_dev(p8, t88);
+    			append_dev(d_article, t89);
+    			append_dev(d_article, d_math30);
+    			append_dev(d_article, t91);
+    			append_dev(d_article, p9);
+    			append_dev(d_article, t93);
+    			append_dev(d_article, d_math31);
+    			append_dev(d_article, t95);
+    			append_dev(d_article, p10);
+    			append_dev(p10, t96);
+    			append_dev(p10, d_math32);
+    			append_dev(p10, t98);
+    			append_dev(p10, d_math33);
+    			append_dev(p10, t100);
+    			append_dev(p10, d_math34);
+    			append_dev(p10, t102);
+    			append_dev(d_article, t103);
+    			append_dev(d_article, h32);
+    			append_dev(d_article, t105);
+    			append_dev(d_article, p11);
+    			append_dev(p11, t106);
+    			append_dev(p11, d_math35);
+    			append_dev(p11, t108);
+    			append_dev(p11, d_math36);
+    			append_dev(p11, t110);
+    			append_dev(p11, d_math37);
+    			append_dev(p11, t112);
+    			append_dev(p11, d_math38);
+    			append_dev(p11, t114);
+    			append_dev(d_article, t115);
+    			append_dev(d_article, d_math39);
+    			append_dev(d_article, t117);
+    			append_dev(d_article, p12);
+    			append_dev(p12, t118);
+    			append_dev(p12, d_math40);
+    			append_dev(p12, t120);
+    			append_dev(p12, d_math41);
+    			append_dev(p12, t122);
+    			append_dev(d_article, t123);
+    			append_dev(d_article, p13);
+    			append_dev(p13, t124);
+    			append_dev(p13, d_math42);
+    			append_dev(p13, t126);
+    			append_dev(d_article, t127);
+    			append_dev(d_article, d_math43);
+    			append_dev(main, t129);
+    			append_dev(main, d_appendix);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const mainplot_changes = {};
+    			if (dirty & /*cw*/ 1) mainplot_changes.context_width = /*cw*/ ctx[0];
+    			mainplot.$set(mainplot_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(mainplot.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(mainplot.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(main);
+    			destroy_component(mainplot);
+    			figure_resize_listener();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("App", slots, []);
+    	let cw;
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
+    	});
+
+    	function figure_elementresize_handler() {
+    		cw = this.clientWidth;
+    		$$invalidate(0, cw);
+    	}
+
+    	$$self.$capture_state = () => ({ MainPlot, cw });
+
+    	$$self.$inject_state = $$props => {
+    		if ("cw" in $$props) $$invalidate(0, cw = $$props.cw);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [cw, figure_elementresize_handler];
+    }
+
+    class App extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance, create_fragment, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "App",
+    			options,
+    			id: create_fragment.name
+    		});
+    	}
+    }
+
+    const app = new App({
+    	target: document.body
+    });
+
+    return app;
+
+}());
 //# sourceMappingURL=bundle.js.map

@@ -1,5 +1,6 @@
 {
   "name": "svelte-app",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -21,6 +22,7 @@
     "d3": "^6.7.0",
     "ml-matrix": "^5.2.1",
     "random": "^2.0.12",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "svelte-moveable": "^0.17.3"
   }
 }

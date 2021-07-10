@@ -39,9 +39,9 @@
         In other words, "smooth".  So you would like to find a smooth function to
         fit the data.</p> 
 
-        <figure bind:clientWidth={cw}>
+        <figure class="l-middle-outset" bind:clientWidth={cw}>
             <d-figure>
-                <MainPlot showdata="true" contextwidth="{cw}" />
+                <MainPlot context_width="{cw}" />
             </d-figure>
         </figure>
 
@@ -51,12 +51,6 @@
         are smooth, the resulting linear combination will also be smooth.  The goal
         will be to adjust the weight of each gaussian and hopfully fit the
         <d-math>y_i</d-math> at each point <d-math>x_i</d-math>.</p>    
-
-        <figure>
-            <d-figure>
-                <MainPlot showdata="true" showbasis="true" contextwidth="{cw}" />
-            </d-figure>
-        </figure>
 
         <p>Here are the functions we have chosen to use, now shown with the data.
         Notice that there is one function per data point, centered at the
@@ -74,12 +68,6 @@
         all.</p> 
 
         <h3>The approach</h3>
-
-        <figure>
-            <d-figure>
-                <MainPlot showdata="true" showbasis="true" contextwidth="{cw}" /> 
-            </d-figure>
-        </figure>
 
         <p>For the moment, we are only concerned with the values of the solution
         function at positions <d-math>x_i</d-math>.  Each value of the solution
@@ -112,12 +100,6 @@
             \end{aligned}
         </d-math>
 
-        <figure>
-            <d-figure>
-                <MainPlot showdata="true" showscaled="true" contextwidth="{cw}" />
-            </d-figure>
-        </figure>
-
         <p>Now, shown above are the same curves, each scaled by a candidate
         <d-math>\beta</d-math>.  The goal is for the sum of these scaled curves to form
         a function that goes through the <d-math>y_i</d-math>.  Using the linear
@@ -147,12 +129,6 @@
 
         <p>So, the unique function that goes through all values <d-math>y_i</d-math> uses <d-math>\beta</d-math> that
         satisfies <d-math>\beta K = Y</d-math>.</p>
-
-        <figure>
-            <d-figure>
-                <MainPlot showdata="true" showscaled="true" showsolution="true" contextwidth="{cw}" />
-            </d-figure>
-        </figure>
 
         <h3>Where is the Kernel?</h3>
 
