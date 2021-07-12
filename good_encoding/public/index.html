@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What makes a good encoding?</title>
+    <script src="https://distill.pub/template.v2.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+</head>
+<body>
+
+<script type="text/bibliography">
+  @article{gregor2015draw,
+    title={DRAW: A recurrent neural network for image generation},
+    author={Gregor, Karol and Danihelka, Ivo and Graves, Alex and Rezende, Danilo Jimenez and Wierstra, Daan},
+    journal={arXivreprint arXiv:1502.04623},
+    year={2015},
+    url={https://arxiv.org/pdf/1502.04623.pdf}
+  }
+</script>
+
+<d-front-matter>
+    <script type="text/json">{
+  "title": "What makes a good encoding?",
+  "description": "A philosophical exploration of the nature of human theories",
+  "authors": [
+  {
+      "author": "Henry Bigelow"
+  }
+  ]
+  }</script>
+</d-front-matter>
+
+<d-title style="padding-bottom: 0">
+    <h1>What makes a good encoding?</h1>
+</d-title>
+
+<d-byline></d-byline>
+
+
+<d-article>
+  <h3>Here I try to apply epistemology to the machine learning question "What
+      makes a good encoding?"</h3>
+
+  <p>Two vexing problems exist in machine learning (and also human experience).
+  First is overfitting to training data.  There doesn't seem to be any
+  rigorous way to guarantee that the performance of a trained model on unseen
+  data will be within some bound of its performance on training data.  This
+  could be because it is not possible to guarantee that the new data will be
+  from the same distribution as the training data, or that it is intractable to
+  measure the overall complexity of the model space.  (I don't know how to
+  apply the theory here, or if it is applied rigorously generally)</p>
+
+  <p>The second problem is less well defined.  Even if we could guarantee
+  through some statistical logic that a given model will perform within some
+  accuracy bounds on unseen data, how do we know that the model representation
+  matches up with the "real" causal factors of the data?</p>
+
+  <p>I put the word "real" in quotes here.  This is not because I doubt that
+  "causal factors" truly exist.  It is because we don't have, and never will
+  have any way to identify them without doubt.</p>
+
+  <p>It's pretty well understood in scientific research that no theory enjoys
+  the status of Truth.  Every theory is subject to falsification with every
+  test on new data.  And, passing the test without being falsified simply
+  pushes it closer to a status "more likely to be true".  This is why
+  annoyingly, authors have to write in hedging language with phrases such as
+  "this result 'seems to suggest' ..." even if they are extremely confident.
+  It's a strange state to be in, pursuing something you admit you cannot
+  attain.</p>
+
+  <p>What I didn't understand until recently, is that the status of human
+  pursuits of scientific theoretic perfection has no special status above that
+  of machine learning representations.  Consider the following.  The scientific
+  theory is always written in terms of abstractions.  For a physical theory,
+  abstractions such as "mass", "velocity", "temperature", "energy", "volume".
+  In a psychological theory, abstractions such as "emotion", "motive",
+  "thoughts".  The process of testing a theory proceeds in three steps.</p>
+
+  <p>The first step is to interact with the physical world through our senses,
+  and encode aspects of it, according to a specific encoding process that
+  yields a representation in the domain of the theory.  Measuring an object's
+  mass, temperature or velocity involves instruments which, when combined with
+  the object in some physical way, change the appearance of a "dial" or
+  "display", and a human observer then uses perception to convert that into
+  symbols in the mind.  These symbols are the "encoding" on which the theory
+  operates.  The theory has no access whatsoever to the physical objects
+  themselves, and the domain of the theory is limited to the chosen aspects of
+  the encoding.</p>
+
+  <p>The second step involves applying the theory, which is a pure information
+  transformation process.  It transforms the encoding produced in step 1 into a
+  "predicted" encoding.  This prediction can be either for a future state, past
+  state, or present.  There is no difference in how it works.  The only thing
+  that makes it useful is if it pertains to a different part of the physical
+  reality that the person applying the theory does not know.</p>
+
+  <p>The third step is identical to the first.  Namely, the human applying the
+  theory first <i>arranges</i> physical reality (or passively lets it unfold
+  until a chosen time) to a state which the theory is intended to predict.
+  Then, the first step is repeated on this new physical state, producing
+  another encoding.  The encoding is then compared with that predicted by the
+  theory.  If they match, the theory is said to be "not falsified".  If they do
+  not, then the theory is "falsified".</p>
+
+  <p>The whole process of testing can be summarized as:</p>
+
+  <d-math block>
+      \begin{aligned}
+      e_1 &= \text{encode}(s_1) \\
+      e^{p}_2 &= \text{theory}(e_1) \\
+      e_2 &= \text{encode}(s_2)
+      \end{aligned}
+  </d-math>
+
+  <p><d-math>s_i</d-math> represent states of reality, and <d-math>e_i</d-math>
+  represent the encodings for these states, encoded specifically into the
+  domain of the theory being tested.  The experimenter compares
+  <d-math>e_1</d-math> with <d-math>e_2</d-math> and computes a loss value, and
+  deems the theory useful or not, in need of updating or not, depending on the
+  needs of the experimenter.  If the experimenter is collaborating as part of a
+  community, a further constraint is needed.  The
+  <d-math>\text{encode}(\cdot)</d-math> process, and the encoding
+  <d-math>e_i</d-math> must be in a form that is communicable between members
+  of the community.  In an engineering or scientific community, this almost
+  always means that it is symbolizable through language.</p>
+
+  <p>But, the above three-step process is extremely general.  For instance, a
+  community of composers (music) might have theories about how to achieve
+  various emotions or sensation in music.  They likely won't have any
+  explicitly quantifiable or symbolizable states.  But make no mistake, the
+  pursuit of excellence in music composition could be just as laborious as any
+  other, and involves the same trial and error process.  To map that on to the
+  above, we would have something like the following.</p>
+
+  <p>The process of music composition involves first writing new music (or
+  modifying an existing score), then having it performed, then listening to it
+  to see if it achieves the desired effect.  In this scenario,
+  <d-math>s_1</d-math> represents the sound created while performing version 1
+  of a score.  <d-math>e_1</d-math> represents the representation of this music
+  in the listener's mind.  Given this representation, the composer will apply
+  the theory.  Part of the <d-math>e_1</d-math> representation will involve a
+  sense of "heaviness".  Let's suppose it is above a level desired by the
+  composer ("it sounds too heavy in this section").  The composer then applies
+  a theory about how other parts of the encoding relate to the "heaviness", and
+  then concludes "I'll remove the lower octave of the 3rd in this chord in the
+  celli.  That should lighten it up".  At this moment, he is applying a
+  prediction, based on <d-math>e_1</d-math> about what would produce
+  <d-math>e_2</d-math> He then creates a new, modified state
+  <d-math>s_2</d-math> by changing the score, and performing it.  Upon
+  listening
+
+
+
+
+  <p>But, theories that predict with sufficient accuracy, even if not 100%, are
+  still better than nothing.  If I develop a theory about a friend's behavior,
+  it will still be useful for planning purposes even if not 100% accurate.
+  Definitely better than nothing.  And, as already pointed out, scientific
+  theories cannot be proven 100%.</p>
+
+  <p>
+  
+  So, we see that there is actually no special
+  status that a scientific theory enjoys that other theories don't.  The only
+  qualities that distinguish a theory are the encoding domain over which they
+  predict things, and the prediction accuracy.</p>
+
+  <p>
+
+</d-article>
+
+<d-appendix>
+</d-appendix>
+
+<script>
+</script>
+
+<style>
+</style>
+
+</body>
+</html>
+

@@ -3,7 +3,7 @@
 var app = (function () {
     'use strict';
 
-    function noop$1() { }
+    function noop() { }
     function add_location(element, file, line, column, char) {
         element.__svelte_meta = {
             loc: { file, line, column, char }
@@ -295,7 +295,7 @@ var app = (function () {
             ctx: null,
             // state
             props,
-            update: noop$1,
+            update: noop,
             not_equal,
             bound: blank_object(),
             // lifecycle
@@ -352,7 +352,7 @@ var app = (function () {
     class SvelteComponent {
         $destroy() {
             destroy_component(this, 1);
-            this.$destroy = noop$1;
+            this.$destroy = noop;
         }
         $on(type, callback) {
             const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
@@ -7223,8 +7223,95 @@ var app = (function () {
       return result;
     }
 
+    function shuffle(array) {
+      var currentIndex = array.length,  randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
+      }
+
+      return array;
+    }
+
+    class Scramble {
+      constructor(n_segments, beg, end) {
+        this.ns = n_segments;
+
+        this.beg = beg;
+        this.end = end;
+        var sbeg = [beg]; // segment begin position
+        this.inds = []; // segment index order
+        this.y = []; // start y position of segment
+        this.x = []; // start x position of segment
+        this.up = []; // if this segment slopes up
+        var j;
+
+        for (let s = 0; s < this.ns - 1; s++) {
+          sbeg.push(beg + (end - beg) * Math.random());
+          this.inds.push(s);
+        }
+
+        // dummy segment begin at the end
+        sbeg.push(end);
+        this.inds.push(this.ns - 1);
+
+        this.inds = shuffle(this.inds);
+        sbeg.sort((a, b) => a - b);
+        var sb = beg;
+
+        for (let s = 0; s < this.ns; s++) {
+          this.up.push(Math.random() < 0.5);
+          j = this.inds[s];
+          this.x.push(sb);
+          sb += sbeg[j+1] - sbeg[j];
+          this.y.push(this.up[s] ? sbeg[j] : sbeg[j+1]); 
+        }
+        this.x.push(end);
+
+      }
+
+      static identity(beg, end) {
+        var scr = new Scramble(1, beg, end);
+        scr.y[0] = scr.beg;
+        scr.up[0] = true;
+        return scr;
+      }
+
+      is_identity() {
+        return this.ns == 1 && this.y[0] == this.beg && this.up[0];
+      }
+
+      get(x) {
+        if (x < this.beg || x > this.end) {
+          throw `invalid input to Scramble::get (${x}).  ` +
+          `must be in [${this.beg}, ${this.end}]`;
+        }
+
+        var s;
+        for (s = 0; s != this.ns; s++) {
+          if (x < this.x[s]) break;
+        }
+        s--;
+        var del = x - this.x[s];
+        return this.up[s] ? this.y[s] + del : this.y[s] - del;
+      }
+          
+    }
+
     function ascending(a, b) {
-      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+      return a == null || b == null ? NaN
+        : a < b ? -1
+        : a > b ? 1
+        : a >= b ? 0
+        : NaN;
     }
 
     function bisector(f) {
@@ -7386,89 +7473,6 @@ var app = (function () {
 
     function zip() {
       return transpose(arguments);
-    }
-
-    var noop = {value: () => {}};
-
-    function dispatch() {
-      for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
-        if (!(t = arguments[i] + "") || (t in _) || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
-        _[t] = [];
-      }
-      return new Dispatch(_);
-    }
-
-    function Dispatch(_) {
-      this._ = _;
-    }
-
-    function parseTypenames(typenames, types) {
-      return typenames.trim().split(/^|\s+/).map(function(t) {
-        var name = "", i = t.indexOf(".");
-        if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
-        if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
-        return {type: t, name: name};
-      });
-    }
-
-    Dispatch.prototype = dispatch.prototype = {
-      constructor: Dispatch,
-      on: function(typename, callback) {
-        var _ = this._,
-            T = parseTypenames(typename + "", _),
-            t,
-            i = -1,
-            n = T.length;
-
-        // If no callback was specified, return the callback of the given type and name.
-        if (arguments.length < 2) {
-          while (++i < n) if ((t = (typename = T[i]).type) && (t = get(_[t], typename.name))) return t;
-          return;
-        }
-
-        // If a type was specified, set the callback for the given type and name.
-        // Otherwise, if a null callback was specified, remove callbacks of the given name.
-        if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
-        while (++i < n) {
-          if (t = (typename = T[i]).type) _[t] = set(_[t], typename.name, callback);
-          else if (callback == null) for (t in _) _[t] = set(_[t], typename.name, null);
-        }
-
-        return this;
-      },
-      copy: function() {
-        var copy = {}, _ = this._;
-        for (var t in _) copy[t] = _[t].slice();
-        return new Dispatch(copy);
-      },
-      call: function(type, that) {
-        if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
-        if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-        for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
-      },
-      apply: function(type, that, args) {
-        if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-        for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
-      }
-    };
-
-    function get(type, name) {
-      for (var i = 0, n = type.length, c; i < n; ++i) {
-        if ((c = type[i]).name === name) {
-          return c.value;
-        }
-      }
-    }
-
-    function set(type, name, callback) {
-      for (var i = 0, n = type.length; i < n; ++i) {
-        if (type[i].name === name) {
-          type[i] = noop, type = type.slice(0, i).concat(type.slice(i + 1));
-          break;
-        }
-      }
-      if (callback != null) type.push({name: name, value: callback});
-      return type;
     }
 
     function define(constructor, factory, prototype) {
@@ -8046,8 +8050,6 @@ var app = (function () {
         return Math.round(a * (1 - t) + b * t);
       };
     }
-
-    dispatch("start", "end", "cancel", "interrupt");
 
     const pi = Math.PI,
         tau = 2 * pi,
@@ -8772,7 +8774,7 @@ var app = (function () {
         x = +x, y = +y;
         switch (this._point) {
           case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
-          case 1: this._point = 2; // proceed
+          case 1: this._point = 2; // falls through
           default: this._context.lineTo(x, y); break;
         }
       }
@@ -8842,9 +8844,8 @@ var app = (function () {
       return line;
     }
 
-    const STEP = 0.1;
-    const MAX_N = 20;
-
+    const STEP = 0.05;
+    const N_SCRAMBLE = 10;
 
     class Plot {
       constructor(context, n) {
@@ -8855,60 +8856,66 @@ var app = (function () {
         this.unitToBeta = linear().domain([0, 1]).range([-3, 3]);
         this.n = n;
         this.g = new Gaussian([0], [[1]]);
+        this.maps = [null, null];
+        this.maps[0] = Scramble.identity(this.ctx.xmin, this.ctx.xmax);
+        this.maps[1] = new Scramble(N_SCRAMBLE, this.ctx.xmin, this.ctx.xmax);
+        this.active_map = 0;
         this.populate();
 
+      }
+
+      toggle_scramble() {
+        console.log('in toggle_scramble');
+        this.active_map = 1 - this.active_map;
+      }
+
+      scrambled() {
+        return this.active_map == 1;
+      }
+
+      map() {
+        return this.maps[this.active_map];
+      }
+
+      reset() {
+        this.active_map = 0;
+        this.maps[1] = new Scramble(N_SCRAMBLE, this.ctx.xmin, this.ctx.xmax);
+        this.populate();
+      }
+
+      populate() {
+        console.log('in populate');
+        var n = this.n;
+        this.x = new Array(n);
+        this.y = new Array(n);
+        this.beta = new Array(n);
+
+        for (let i = 0; i != n; i++) {
+          this.x[i] = this.ctx.unitToX(Math.random());
+          this.beta[i] = this.unitToBeta(Math.random());
+        }
+        for (let i = 0; i != n; i++) {
+          this.y[i] = this._point(this.x, this.beta, this.x[i]);
+        }
+
+        for (let i = 0; i != n; i++) {
+          this.beta[i] = 1.0;
+        }
       }
 
       kernel(x1, x2) {
         return this.g.at([x1 - x2]);
       }
 
-      populate() {
-        this.x = new Array(MAX_N);
-        this.y = new Array(MAX_N);
-        this.beta = new Array(MAX_N);
-
-        for (let i = 0; i != MAX_N; i++) {
-          this.x[i] = this.ctx.unitToX(Math.random());
-          this.beta[i] = this.unitToBeta(Math.random());
-        }
-        var prev_n = this.n;
-        this.n = MAX_N;
-        for (let i = 0; i != MAX_N; i++) {
-          this.y[i] = this.f(this.x[i]);
-        }
-        this.n = prev_n;
-
-        for (let i = 0; i != MAX_N; i++) {
-          this.beta[i] = 1.0;
-        }
-      }
-
-      getx() {
-        return this.x.slice(0, this.n);
-      }
-
-      gety() {
-        return this.y.slice(0, this.n);
-      }
-
-      getbeta() {
-        return this.beta.slice(0, this.n);
-      }
-
-      data() {
-        return zip(this.getx(), this.gety(), this.getbeta());
-      }
-
-      chirp() {
-        console.log('in chirp: ', this);
+      mx(x) {
+        return this.maps[this.active_map].get(x);
       }
 
 
       solve() {
         var n = this.n;
         var K = Matrix.zeros(n, n);
-        var y = new Matrix([this.gety()]);
+        var y = new Matrix([this.y]);
         var xi, xj;
         for (let i = 0; i != n; i++) {
           xi = this.x[i];
@@ -8934,62 +8941,90 @@ var app = (function () {
 
       addPoint() {
         this.n++;
+        this.populate();
       }
 
       delPoint() {
         if (this.n == 0) return;
         this.n--;
+        this.populate();
       }
 
       updateBeta(delta, index) {
         this.beta[index] += delta;
       }
 
-      makeLine(points) {
+      makeLine(xs, ys) {
         const path = line()
           .x(d => this.ctx.u(d[0]))
-          .y(d => this.ctx.v(d[1]))(points);
+          .y(d => this.ctx.v(d[1]))(zip(xs,ys));
         return path;
       }
 
-      curve(mean, scale) {
-        const xs = sequence(this.ctx.xmin, this.ctx.xmax + STEP, STEP);
-        const ys = xs.map(x => scale * this.kernel(x, mean));
-        const pts = zip(xs,ys);
-        return this.makeLine(pts);
+
+      // provide the mapped xs and ys for the provided segment 
+      _curve(args1, alphas, segment) {
+        var s = segment;
+        var xmap = this.map();
+        var xs = sequence(xmap.x[s], xmap.x[s+1], STEP);
+        var mxs = xs.map(x => xmap.get(x));
+        var ys = xs.map(
+          x => zip(args1, alphas).map(
+            ([x1, alpha]) => alpha * this.kernel(x1, x)
+          )
+          .reduce((p, q) => p + q, 0)
+        );
+        return [mxs, ys];
       }
 
-      curvePoint(mean, scale, x) {
-        // returns the gaussian value with mean at point x
-        const v = this.ctx.v(scale * this.kernel(x, mean));
-        return v;
+      // returns i'th scaled curve line
+      _curveSegment(args1, alphas, s) {
+        var mxs, ys, line = '';
+        [mxs, ys] = this._curve(args1, alphas, s);
+        var line = this.makeLine(mxs, ys);
+        return line;
+      }
+
+      _curveFull(args1, alphas) {
+        var line = '';
+        for (let s = 0; s != this.map().ns; s++) {
+          line += this._curveSegment(args1, alphas, s);
+        }
+        return line;
+      }
+
+      curve(x, alpha) {
+        return this._curveFull([x], [alpha]);
       }
 
       solutionCurve() {
-        const xs = sequence(this.ctx.xmin, this.ctx.xmax + STEP, STEP);
-        const ys = xs.map(x => this.data().map(
-          ([m,_,b]) => b * this.kernel(m, x))
-          .reduce((p, q) => p + q, 0)
-        );
-        const pts = zip(xs,ys);
-        return this.makeLine(pts);
+        return this._curveFull(this.x, this.beta);
       }
 
 
-      f(x) {
-        const y = this.data().map(([m,_,b]) => b * this.kernel(m, x))
-          .reduce((p, q) => p + q, 0);
+      // returns y value for weighted combo of curves 
+      _point(args1, alphas, x) {
+        var y = zip(args1, alphas).map(
+          ([x1, alpha]) => alpha * this.kernel(x1, x)
+        ).reduce((p, q) => p + q, 0);
         return y;
       }
 
+      // return the plot point
+      point(x1, alpha, x) {
+        const y = this._point([x1], [alpha], x);
+        return this.ctx.v(y);
+      }
+
+
       solutionPoint(x) {
-        var y = this.f(x);
+        const y = this._point(this.x, this.beta, x);
         return this.ctx.v(y);
       }
 
 
       u(x) {
-        return this.ctx.u(x);
+        return this.ctx.u(this.maps[this.active_map].get(x));
       }
 
       v(y) {
@@ -9011,6 +9046,8 @@ var app = (function () {
         this.yToViewport = linear().domain([ymin, ymax]).range([height,0]);
         this.unitToX = linear().domain([0, 1]).range([xmin, xmax]);
         this.unitToY = linear().domain([0, 1]).range([ymin, ymax]);
+        this.xToUnit = linear().domain([xmin, xmax]).range([0, 1]);
+        // console.log(d3.scaleLinear);
       }
 
       setWidth(w) {
@@ -9051,57 +9088,46 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
-    	child_ctx[18] = list;
-    	child_ctx[19] = i;
+    	child_ctx[20] = list[i];
+    	child_ctx[21] = list;
+    	child_ctx[22] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
-    	child_ctx[19] = i;
+    	child_ctx[23] = list[i][0];
+    	child_ctx[24] = list[i][1];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i][0];
-    	child_ctx[22] = list[i][1];
-    	child_ctx[23] = list[i][2];
-    	child_ctx[19] = i;
+    	child_ctx[27] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[25] = list[i];
-    	child_ctx[27] = i;
+    	child_ctx[23] = list[i][0];
+    	child_ctx[30] = list[i][1];
     	return child_ctx;
     }
 
-    function get_each_context_4(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i][0];
-    	child_ctx[22] = list[i][1];
-    	child_ctx[23] = list[i][2];
-    	return child_ctx;
-    }
-
-    // (171:0) {:else}
+    // (174:0) {:else}
     function create_else_block(ctx) {
     	let div;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "gauss-grid svelte-1y4xlzj");
-    			add_location(div, file$1, 171, 4, 4506);
+    			attr_dev(div, "class", "gauss-grid svelte-1dypxuo");
+    			add_location(div, file$1, 174, 0, 4497);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     		},
-    		p: noop$1,
+    		p: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
     		}
@@ -9111,59 +9137,61 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(171:0) {:else}",
+    		source: "(174:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (99:0) {#if context_width}
+    // (100:0) {#if context_width}
     function create_if_block(ctx) {
-    	let div3;
-    	let div2;
-    	let svg0;
+    	let div10;
+    	let div0;
+    	let svg;
     	let if_block0_anchor;
     	let each0_anchor;
-    	let svg0_width_value;
-    	let svg0_height_value;
-    	let svg0_viewBox_value;
+    	let svg_width_value;
+    	let svg_height_value;
+    	let svg_viewBox_value;
     	let t0;
-    	let svg1;
-    	let svg1_width_value;
-    	let svg1_viewBox_value;
-    	let t1;
-    	let div0;
+    	let div9;
+    	let div1;
     	let button0;
-    	let t3;
+    	let t2;
+    	let div2;
     	let button1;
-    	let t5;
+    	let t4;
+    	let div3;
     	let button2;
-    	let t7;
+    	let t6;
+    	let div4;
     	let button3;
-    	let t9;
+    	let t7_value = (/*plot*/ ctx[5].scrambled() ? "Unscramble" : "Scramble") + "";
+    	let t7;
+    	let t8;
+    	let div5;
+    	let button4;
+    	let t10;
+    	let div6;
     	let label0;
     	let input0;
-    	let t10;
     	let t11;
+    	let t12;
+    	let div7;
     	let label1;
     	let input1;
-    	let t12;
     	let t13;
-    	let div1;
+    	let t14;
+    	let div8;
+    	let label2;
+    	let input2;
+    	let t15;
+    	let t16;
     	let mounted;
     	let dispose;
-    	let if_block0 = /*show_data*/ ctx[2] && create_if_block_4(ctx);
-    	let each_value_2 = /*plot*/ ctx[5].data();
-    	validate_each_argument(each_value_2);
-    	let each_blocks_2 = [];
-
-    	for (let i = 0; i < each_value_2.length; i += 1) {
-    		each_blocks_2[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
-    	}
-
-    	let if_block1 = /*show_solution*/ ctx[3] && create_if_block_1(ctx);
-    	let each_value_1 = /*plot*/ ctx[5].getx();
+    	let if_block0 = /*show_data*/ ctx[3] && create_if_block_4(ctx);
+    	let each_value_1 = zip(/*plot*/ ctx[5].x, /*plot*/ ctx[5].beta);
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
@@ -9171,7 +9199,8 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
     	}
 
-    	let each_value = /*plot*/ ctx[5].getbeta();
+    	let if_block1 = /*show_solution*/ ctx[2] && create_if_block_1(ctx);
+    	let each_value = /*plot*/ ctx[5].beta;
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -9181,123 +9210,155 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			div3 = element("div");
-    			div2 = element("div");
-    			svg0 = svg_element("svg");
+    			div10 = element("div");
+    			div0 = element("div");
+    			svg = svg_element("svg");
     			if (if_block0) if_block0.c();
     			if_block0_anchor = empty();
-
-    			for (let i = 0; i < each_blocks_2.length; i += 1) {
-    				each_blocks_2[i].c();
-    			}
-
-    			each0_anchor = empty();
-    			if (if_block1) if_block1.c();
-    			t0 = space();
-    			svg1 = svg_element("svg");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t1 = space();
-    			div0 = element("div");
+    			each0_anchor = empty();
+    			if (if_block1) if_block1.c();
+    			t0 = space();
+    			div9 = element("div");
+    			div1 = element("div");
     			button0 = element("button");
-    			button0.textContent = "+";
-    			t3 = space();
+    			button0.textContent = "Reset";
+    			t2 = space();
+    			div2 = element("div");
     			button1 = element("button");
-    			button1.textContent = "-";
-    			t5 = space();
+    			button1.textContent = "Del Point";
+    			t4 = space();
+    			div3 = element("div");
     			button2 = element("button");
-    			button2.textContent = "Reset";
-    			t7 = space();
+    			button2.textContent = "Add Point";
+    			t6 = space();
+    			div4 = element("div");
     			button3 = element("button");
-    			button3.textContent = "Solve";
-    			t9 = space();
+    			t7 = text(t7_value);
+    			t8 = space();
+    			div5 = element("div");
+    			button4 = element("button");
+    			button4.textContent = "Solve";
+    			t10 = space();
+    			div6 = element("div");
     			label0 = element("label");
     			input0 = element("input");
-    			t10 = text("\n              Toggle points");
-    			t11 = space();
+    			t11 = text("Toggle points");
+    			t12 = space();
+    			div7 = element("div");
     			label1 = element("label");
     			input1 = element("input");
-    			t12 = text("\n              Toggle basis curves");
-    			t13 = space();
-    			div1 = element("div");
+    			t13 = text("Toggle basis curves");
+    			t14 = space();
+    			div8 = element("div");
+    			label2 = element("label");
+    			input2 = element("input");
+    			t15 = text("Toggle solution curve");
+    			t16 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(svg0, "width", svg0_width_value = /*plot*/ ctx[5].width);
-    			attr_dev(svg0, "height", svg0_height_value = /*plot*/ ctx[5].height);
-    			attr_dev(svg0, "viewBox", svg0_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " " + /*plot*/ ctx[5].height);
-    			attr_dev(svg0, "class", "plot");
-    			add_location(svg0, file$1, 101, 6, 2199);
-    			attr_dev(svg1, "width", svg1_width_value = /*plot*/ ctx[5].width);
-    			attr_dev(svg1, "height", "40");
-    			attr_dev(svg1, "viewBox", svg1_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " 40");
-    			add_location(svg1, file$1, 139, 6, 3346);
-    			add_location(button0, file$1, 147, 10, 3640);
-    			add_location(button1, file$1, 148, 10, 3721);
-    			add_location(button2, file$1, 149, 10, 3802);
-    			add_location(button3, file$1, 150, 10, 3885);
+    			attr_dev(svg, "width", svg_width_value = /*plot*/ ctx[5].width);
+    			attr_dev(svg, "height", svg_height_value = /*plot*/ ctx[5].height);
+    			attr_dev(svg, "viewBox", svg_viewBox_value = "0 0\n                             " + /*plot*/ ctx[5].width + " " + /*plot*/ ctx[5].height);
+    			attr_dev(svg, "class", "plot");
+    			add_location(svg, file$1, 102, 4, 1860);
+    			attr_dev(div0, "class", "grid-item svelte-1dypxuo");
+    			set_style(div0, "border", "1px");
+    			add_location(div0, file$1, 101, 2, 1812);
+    			add_location(button0, file$1, 152, 25, 3345);
+    			attr_dev(div1, "class", "control svelte-1dypxuo");
+    			add_location(div1, file$1, 152, 4, 3324);
+    			add_location(button1, file$1, 153, 25, 3446);
+    			attr_dev(div2, "class", "control svelte-1dypxuo");
+    			add_location(div2, file$1, 153, 4, 3425);
+    			add_location(button2, file$1, 154, 25, 3554);
+    			attr_dev(div3, "class", "control svelte-1dypxuo");
+    			add_location(div3, file$1, 154, 4, 3533);
+    			add_location(button3, file$1, 155, 25, 3662);
+    			attr_dev(div4, "class", "control svelte-1dypxuo");
+    			add_location(div4, file$1, 155, 4, 3641);
+    			add_location(button4, file$1, 159, 25, 3835);
+    			attr_dev(div5, "class", "control svelte-1dypxuo");
+    			add_location(div5, file$1, 159, 4, 3814);
     			attr_dev(input0, "type", "checkbox");
-    			add_location(input0, file$1, 152, 14, 3987);
-    			add_location(label0, file$1, 151, 10, 3965);
+    			add_location(input0, file$1, 160, 32, 3943);
+    			add_location(label0, file$1, 160, 25, 3936);
+    			attr_dev(div6, "class", "control svelte-1dypxuo");
+    			add_location(div6, file$1, 160, 4, 3915);
     			attr_dev(input1, "type", "checkbox");
-    			add_location(input1, file$1, 156, 14, 4119);
-    			add_location(label1, file$1, 155, 10, 4097);
-    			add_location(div0, file$1, 145, 6, 3577);
-    			add_location(div1, file$1, 160, 6, 4245);
-    			attr_dev(div2, "class", "grid-item svelte-1y4xlzj");
-    			add_location(div2, file$1, 100, 2, 2169);
-    			attr_dev(div3, "class", "gauss-grid svelte-1y4xlzj");
-    			add_location(div3, file$1, 99, 0, 2142);
+    			add_location(input1, file$1, 161, 32, 4055);
+    			add_location(label1, file$1, 161, 25, 4048);
+    			attr_dev(div7, "class", "control svelte-1dypxuo");
+    			add_location(div7, file$1, 161, 4, 4027);
+    			attr_dev(input2, "type", "checkbox");
+    			add_location(input2, file$1, 162, 32, 4173);
+    			add_location(label2, file$1, 162, 25, 4166);
+    			attr_dev(div8, "class", "control svelte-1dypxuo");
+    			add_location(div8, file$1, 162, 4, 4145);
+    			attr_dev(div9, "class", "grid-item svelte-1dypxuo");
+    			add_location(div9, file$1, 151, 2, 3296);
+    			attr_dev(div10, "class", "gauss-grid svelte-1dypxuo");
+    			add_location(div10, file$1, 100, 0, 1785);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div3, anchor);
-    			append_dev(div3, div2);
-    			append_dev(div2, svg0);
-    			if (if_block0) if_block0.m(svg0, null);
-    			append_dev(svg0, if_block0_anchor);
-
-    			for (let i = 0; i < each_blocks_2.length; i += 1) {
-    				each_blocks_2[i].m(svg0, null);
-    			}
-
-    			append_dev(svg0, each0_anchor);
-    			if (if_block1) if_block1.m(svg0, null);
-    			append_dev(div2, t0);
-    			append_dev(div2, svg1);
+    			insert_dev(target, div10, anchor);
+    			append_dev(div10, div0);
+    			append_dev(div0, svg);
+    			if (if_block0) if_block0.m(svg, null);
+    			append_dev(svg, if_block0_anchor);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(svg1, null);
+    				each_blocks_1[i].m(svg, null);
     			}
 
-    			append_dev(div2, t1);
-    			append_dev(div2, div0);
-    			append_dev(div0, button0);
-    			append_dev(div0, t3);
-    			append_dev(div0, button1);
-    			append_dev(div0, t5);
-    			append_dev(div0, button2);
-    			append_dev(div0, t7);
-    			append_dev(div0, button3);
-    			append_dev(div0, t9);
-    			append_dev(div0, label0);
+    			append_dev(svg, each0_anchor);
+    			if (if_block1) if_block1.m(svg, null);
+    			append_dev(div10, t0);
+    			append_dev(div10, div9);
+    			append_dev(div9, div1);
+    			append_dev(div1, button0);
+    			append_dev(div9, t2);
+    			append_dev(div9, div2);
+    			append_dev(div2, button1);
+    			append_dev(div9, t4);
+    			append_dev(div9, div3);
+    			append_dev(div3, button2);
+    			append_dev(div9, t6);
+    			append_dev(div9, div4);
+    			append_dev(div4, button3);
+    			append_dev(button3, t7);
+    			append_dev(div9, t8);
+    			append_dev(div9, div5);
+    			append_dev(div5, button4);
+    			append_dev(div9, t10);
+    			append_dev(div9, div6);
+    			append_dev(div6, label0);
     			append_dev(label0, input0);
     			input0.checked = /*show_points*/ ctx[1];
-    			append_dev(label0, t10);
-    			append_dev(div0, t11);
-    			append_dev(div0, label1);
+    			append_dev(label0, t11);
+    			append_dev(div9, t12);
+    			append_dev(div9, div7);
+    			append_dev(div7, label1);
     			append_dev(label1, input1);
     			input1.checked = /*show_scaled*/ ctx[0];
-    			append_dev(label1, t12);
-    			append_dev(div2, t13);
-    			append_dev(div2, div1);
+    			append_dev(label1, t13);
+    			append_dev(div9, t14);
+    			append_dev(div9, div8);
+    			append_dev(div8, label2);
+    			append_dev(label2, input2);
+    			input2.checked = /*show_solution*/ ctx[2];
+    			append_dev(label2, t15);
+    			append_dev(div9, t16);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div1, null);
+    				each_blocks[i].m(div9, null);
     			}
 
     			if (!mounted) {
@@ -9306,78 +9367,31 @@ var app = (function () {
     					listen_dev(button1, "click", /*click_handler_1*/ ctx[7], false, false, false),
     					listen_dev(button2, "click", /*click_handler_2*/ ctx[8], false, false, false),
     					listen_dev(button3, "click", /*click_handler_3*/ ctx[9], false, false, false),
-    					listen_dev(input0, "change", /*input0_change_handler*/ ctx[10]),
-    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[11])
+    					listen_dev(button4, "click", /*click_handler_4*/ ctx[10], false, false, false),
+    					listen_dev(input0, "change", /*input0_change_handler*/ ctx[11]),
+    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[12]),
+    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[13])
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (/*show_data*/ ctx[2]) {
+    			if (/*show_data*/ ctx[3]) {
     				if (if_block0) {
     					if_block0.p(ctx, dirty);
     				} else {
     					if_block0 = create_if_block_4(ctx);
     					if_block0.c();
-    					if_block0.m(svg0, if_block0_anchor);
+    					if_block0.m(svg, if_block0_anchor);
     				}
     			} else if (if_block0) {
     				if_block0.d(1);
     				if_block0 = null;
     			}
 
-    			if (dirty & /*plot, show_points, show_scaled*/ 35) {
-    				each_value_2 = /*plot*/ ctx[5].data();
-    				validate_each_argument(each_value_2);
-    				let i;
-
-    				for (i = 0; i < each_value_2.length; i += 1) {
-    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
-
-    					if (each_blocks_2[i]) {
-    						each_blocks_2[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks_2[i] = create_each_block_2(child_ctx);
-    						each_blocks_2[i].c();
-    						each_blocks_2[i].m(svg0, each0_anchor);
-    					}
-    				}
-
-    				for (; i < each_blocks_2.length; i += 1) {
-    					each_blocks_2[i].d(1);
-    				}
-
-    				each_blocks_2.length = each_value_2.length;
-    			}
-
-    			if (/*show_solution*/ ctx[3]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_1(ctx);
-    					if_block1.c();
-    					if_block1.m(svg0, null);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-
-    			if (dirty & /*plot*/ 32 && svg0_width_value !== (svg0_width_value = /*plot*/ ctx[5].width)) {
-    				attr_dev(svg0, "width", svg0_width_value);
-    			}
-
-    			if (dirty & /*plot*/ 32 && svg0_height_value !== (svg0_height_value = /*plot*/ ctx[5].height)) {
-    				attr_dev(svg0, "height", svg0_height_value);
-    			}
-
-    			if (dirty & /*plot*/ 32 && svg0_viewBox_value !== (svg0_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " " + /*plot*/ ctx[5].height)) {
-    				attr_dev(svg0, "viewBox", svg0_viewBox_value);
-    			}
-
-    			if (dirty & /*plot*/ 32) {
-    				each_value_1 = /*plot*/ ctx[5].getx();
+    			if (dirty[0] & /*plot, show_points, show_scaled*/ 35) {
+    				each_value_1 = zip(/*plot*/ ctx[5].x, /*plot*/ ctx[5].beta);
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -9389,7 +9403,7 @@ var app = (function () {
     					} else {
     						each_blocks_1[i] = create_each_block_1(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(svg1, null);
+    						each_blocks_1[i].m(svg, each0_anchor);
     					}
     				}
 
@@ -9400,24 +9414,47 @@ var app = (function () {
     				each_blocks_1.length = each_value_1.length;
     			}
 
-    			if (dirty & /*plot*/ 32 && svg1_width_value !== (svg1_width_value = /*plot*/ ctx[5].width)) {
-    				attr_dev(svg1, "width", svg1_width_value);
+    			if (/*show_solution*/ ctx[2]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_1(ctx);
+    					if_block1.c();
+    					if_block1.m(svg, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
     			}
 
-    			if (dirty & /*plot*/ 32 && svg1_viewBox_value !== (svg1_viewBox_value = "0 0\n                  " + /*plot*/ ctx[5].width + " 40")) {
-    				attr_dev(svg1, "viewBox", svg1_viewBox_value);
+    			if (dirty[0] & /*plot*/ 32 && svg_width_value !== (svg_width_value = /*plot*/ ctx[5].width)) {
+    				attr_dev(svg, "width", svg_width_value);
     			}
 
-    			if (dirty & /*show_points*/ 2) {
+    			if (dirty[0] & /*plot*/ 32 && svg_height_value !== (svg_height_value = /*plot*/ ctx[5].height)) {
+    				attr_dev(svg, "height", svg_height_value);
+    			}
+
+    			if (dirty[0] & /*plot*/ 32 && svg_viewBox_value !== (svg_viewBox_value = "0 0\n                             " + /*plot*/ ctx[5].width + " " + /*plot*/ ctx[5].height)) {
+    				attr_dev(svg, "viewBox", svg_viewBox_value);
+    			}
+
+    			if (dirty[0] & /*plot*/ 32 && t7_value !== (t7_value = (/*plot*/ ctx[5].scrambled() ? "Unscramble" : "Scramble") + "")) set_data_dev(t7, t7_value);
+
+    			if (dirty[0] & /*show_points*/ 2) {
     				input0.checked = /*show_points*/ ctx[1];
     			}
 
-    			if (dirty & /*show_scaled*/ 1) {
+    			if (dirty[0] & /*show_scaled*/ 1) {
     				input1.checked = /*show_scaled*/ ctx[0];
     			}
 
-    			if (dirty & /*plot*/ 32) {
-    				each_value = /*plot*/ ctx[5].getbeta();
+    			if (dirty[0] & /*show_solution*/ 4) {
+    				input2.checked = /*show_solution*/ ctx[2];
+    			}
+
+    			if (dirty[0] & /*plot*/ 32) {
+    				each_value = /*plot*/ ctx[5].beta;
     				validate_each_argument(each_value);
     				let i;
 
@@ -9429,7 +9466,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(div1, null);
+    						each_blocks[i].m(div9, null);
     					}
     				}
 
@@ -9441,11 +9478,10 @@ var app = (function () {
     			}
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div3);
+    			if (detaching) detach_dev(div10);
     			if (if_block0) if_block0.d();
-    			destroy_each(each_blocks_2, detaching);
-    			if (if_block1) if_block1.d();
     			destroy_each(each_blocks_1, detaching);
+    			if (if_block1) if_block1.d();
     			destroy_each(each_blocks, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -9456,165 +9492,17 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(99:0) {#if context_width}",
+    		source: "(100:0) {#if context_width}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (105:8) {#if show_data}
+    // (106:8) {#if show_data}
     function create_if_block_4(ctx) {
     	let each_1_anchor;
-    	let each_value_4 = /*plot*/ ctx[5].data();
-    	validate_each_argument(each_value_4);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value_4.length; i += 1) {
-    		each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			each_1_anchor = empty();
-    		},
-    		m: function mount(target, anchor) {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(target, anchor);
-    			}
-
-    			insert_dev(target, each_1_anchor, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32) {
-    				each_value_4 = /*plot*/ ctx[5].data();
-    				validate_each_argument(each_value_4);
-    				let i;
-
-    				for (i = 0; i < each_value_4.length; i += 1) {
-    					const child_ctx = get_each_context_4(ctx, each_value_4, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block_4(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value_4.length;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(each_1_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_4.name,
-    		type: "if",
-    		source: "(105:8) {#if show_data}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (106:10) {#each plot.data() as [x, y, beta]}
-    function create_each_block_4(ctx) {
-    	let circle;
-    	let circle_cx_value;
-    	let circle_cy_value;
-
-    	const block = {
-    		c: function create() {
-    			circle = svg_element("circle");
-    			attr_dev(circle, "class", "data svelte-1y4xlzj");
-    			set_style(circle, "stroke", "#000000");
-    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]));
-    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[5].v(/*y*/ ctx[22]));
-    			attr_dev(circle, "r", "5");
-    			add_location(circle, file$1, 106, 12, 2405);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, circle, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]))) {
-    				attr_dev(circle, "cx", circle_cx_value);
-    			}
-
-    			if (dirty & /*plot*/ 32 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[5].v(/*y*/ ctx[22]))) {
-    				attr_dev(circle, "cy", circle_cy_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(circle);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_4.name,
-    		type: "each",
-    		source: "(106:10) {#each plot.data() as [x, y, beta]}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (117:12) {#if show_scaled}
-    function create_if_block_3(ctx) {
-    	let path;
-    	let path_d_value;
-
-    	const block = {
-    		c: function create() {
-    			path = svg_element("path");
-    			attr_dev(path, "class", "curve svelte-1y4xlzj");
-    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[5].curve(/*x*/ ctx[20], /*beta*/ ctx[23]));
-    			add_location(path, file$1, 117, 16, 2702);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, path, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32 && path_d_value !== (path_d_value = /*plot*/ ctx[5].curve(/*x*/ ctx[20], /*beta*/ ctx[23]))) {
-    				attr_dev(path, "d", path_d_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(path);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_3.name,
-    		type: "if",
-    		source: "(117:12) {#if show_scaled}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (123:12) {#if show_points}
-    function create_if_block_2(ctx) {
-    	let each_1_anchor;
-    	let each_value_3 = /*plot*/ ctx[5].getx();
+    	let each_value_3 = zip(/*plot*/ ctx[5].x, /*plot*/ ctx[5].y);
     	validate_each_argument(each_value_3);
     	let each_blocks = [];
 
@@ -9638,8 +9526,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32) {
-    				each_value_3 = /*plot*/ ctx[5].getx();
+    			if (dirty[0] & /*plot*/ 32) {
+    				each_value_3 = zip(/*plot*/ ctx[5].x, /*plot*/ ctx[5].y);
     				validate_each_argument(each_value_3);
     				let i;
 
@@ -9670,16 +9558,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2.name,
+    		id: create_if_block_4.name,
     		type: "if",
-    		source: "(123:12) {#if show_points}",
+    		source: "(106:8) {#if show_data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (124:16) {#each plot.getx() as x2, j}
+    // (107:10) {#each zip(plot.x, plot.y) as [x, y]}
     function create_each_block_3(ctx) {
     	let circle;
     	let circle_cx_value;
@@ -9688,21 +9576,22 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
-    			attr_dev(circle, "class", "point svelte-1y4xlzj");
-    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[5].u(/*x2*/ ctx[25]));
-    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[5].curvePoint(/*x*/ ctx[20], /*beta*/ ctx[23], /*x2*/ ctx[25]));
-    			attr_dev(circle, "r", "4");
-    			add_location(circle, file$1, 124, 20, 2909);
+    			attr_dev(circle, "class", "data svelte-1dypxuo");
+    			set_style(circle, "stroke", "#000000");
+    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[5].u(/*x*/ ctx[23]));
+    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[5].v(/*y*/ ctx[30]));
+    			attr_dev(circle, "r", "5");
+    			add_location(circle, file$1, 107, 12, 2079);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[5].u(/*x2*/ ctx[25]))) {
+    			if (dirty[0] & /*plot*/ 32 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[5].u(/*x*/ ctx[23]))) {
     				attr_dev(circle, "cx", circle_cx_value);
     			}
 
-    			if (dirty & /*plot*/ 32 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[5].curvePoint(/*x*/ ctx[20], /*beta*/ ctx[23], /*x2*/ ctx[25]))) {
+    			if (dirty[0] & /*plot*/ 32 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[5].v(/*y*/ ctx[30]))) {
     				attr_dev(circle, "cy", circle_cy_value);
     			}
     		},
@@ -9715,15 +9604,162 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(124:16) {#each plot.getx() as x2, j}",
+    		source: "(107:10) {#each zip(plot.x, plot.y) as [x, y]}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (116:8) {#each plot.data() as [x, y, beta], i}
+    // (118:12) {#if show_scaled}
+    function create_if_block_3(ctx) {
+    	let path;
+    	let path_d_value;
+
+    	const block = {
+    		c: function create() {
+    			path = svg_element("path");
+    			attr_dev(path, "class", "curve svelte-1dypxuo");
+    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[5].curve(/*x*/ ctx[23], /*beta*/ ctx[24]));
+    			add_location(path, file$1, 118, 16, 2381);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, path, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*plot*/ 32 && path_d_value !== (path_d_value = /*plot*/ ctx[5].curve(/*x*/ ctx[23], /*beta*/ ctx[24]))) {
+    				attr_dev(path, "d", path_d_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(path);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(118:12) {#if show_scaled}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (124:12) {#if show_points}
+    function create_if_block_2(ctx) {
+    	let each_1_anchor;
+    	let each_value_2 = /*plot*/ ctx[5].x;
+    	validate_each_argument(each_value_2);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*plot*/ 32) {
+    				each_value_2 = /*plot*/ ctx[5].x;
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_2(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_2.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(124:12) {#if show_points}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (125:16) {#each plot.x as x2}
     function create_each_block_2(ctx) {
+    	let circle;
+    	let circle_cx_value;
+    	let circle_cy_value;
+
+    	const block = {
+    		c: function create() {
+    			circle = svg_element("circle");
+    			attr_dev(circle, "class", "point svelte-1dypxuo");
+    			attr_dev(circle, "cx", circle_cx_value = /*plot*/ ctx[5].u(/*x2*/ ctx[27]));
+    			attr_dev(circle, "cy", circle_cy_value = /*plot*/ ctx[5].point(/*x*/ ctx[23], /*beta*/ ctx[24], /*x2*/ ctx[27]));
+    			attr_dev(circle, "r", "4");
+    			add_location(circle, file$1, 125, 20, 2580);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, circle, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*plot*/ 32 && circle_cx_value !== (circle_cx_value = /*plot*/ ctx[5].u(/*x2*/ ctx[27]))) {
+    				attr_dev(circle, "cx", circle_cx_value);
+    			}
+
+    			if (dirty[0] & /*plot*/ 32 && circle_cy_value !== (circle_cy_value = /*plot*/ ctx[5].point(/*x*/ ctx[23], /*beta*/ ctx[24], /*x2*/ ctx[27]))) {
+    				attr_dev(circle, "cy", circle_cy_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(circle);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(125:16) {#each plot.x as x2}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (117:8) {#each zip(plot.x, plot.beta) as [x, beta]}
+    function create_each_block_1(ctx) {
     	let if_block0_anchor;
     	let if_block1_anchor;
     	let if_block0 = /*show_scaled*/ ctx[0] && create_if_block_3(ctx);
@@ -9779,9 +9815,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_2.name,
+    		id: create_each_block_1.name,
     		type: "each",
-    		source: "(116:8) {#each plot.data() as [x, y, beta], i}",
+    		source: "(117:8) {#each zip(plot.x, plot.beta) as [x, beta]}",
     		ctx
     	});
 
@@ -9796,15 +9832,15 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			path = svg_element("path");
-    			attr_dev(path, "class", "solution-curve svelte-1y4xlzj");
+    			attr_dev(path, "class", "solution-curve svelte-1dypxuo");
     			attr_dev(path, "d", path_d_value = /*plot*/ ctx[5].solutionCurve());
-    			add_location(path, file$1, 135, 10, 3242);
+    			add_location(path, file$1, 135, 10, 2907);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, path, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32 && path_d_value !== (path_d_value = /*plot*/ ctx[5].solutionCurve())) {
+    			if (dirty[0] & /*plot*/ 32 && path_d_value !== (path_d_value = /*plot*/ ctx[5].solutionCurve())) {
     				attr_dev(path, "d", path_d_value);
     			}
     		},
@@ -9824,70 +9860,25 @@ var app = (function () {
     	return block;
     }
 
-    // (142:8) {#each plot.getx() as x, i}
-    function create_each_block_1(ctx) {
-    	let text_1;
-    	let t0;
-    	let tspan;
-    	let t1;
-    	let text_1_x_value;
-
-    	const block = {
-    		c: function create() {
-    			text_1 = svg_element("text");
-    			t0 = text("x");
-    			tspan = svg_element("tspan");
-    			t1 = text(/*i*/ ctx[19]);
-    			attr_dev(tspan, "class", "ss svelte-1y4xlzj");
-    			add_location(tspan, file$1, 142, 36, 3505);
-    			attr_dev(text_1, "x", text_1_x_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]));
-    			attr_dev(text_1, "y", "25");
-    			add_location(text_1, file$1, 142, 10, 3479);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, text_1, anchor);
-    			append_dev(text_1, t0);
-    			append_dev(text_1, tspan);
-    			append_dev(tspan, t1);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*plot*/ 32 && text_1_x_value !== (text_1_x_value = /*plot*/ ctx[5].u(/*x*/ ctx[20]))) {
-    				attr_dev(text_1, "x", text_1_x_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(text_1);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_1.name,
-    		type: "each",
-    		source: "(142:8) {#each plot.getx() as x, i}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (162:10) {#each plot.getbeta() as b, i}
+    // (164:4) {#each plot.beta as b, i}
     function create_each_block(ctx) {
+    	let div;
     	let label;
     	let input;
     	let t0;
-    	let t1_value = /*b*/ ctx[17].toFixed(2) + "";
+    	let t1_value = /*b*/ ctx[20].toFixed(2) + "";
     	let t1;
     	let t2;
     	let mounted;
     	let dispose;
 
     	function input_change_input_handler() {
-    		/*input_change_input_handler*/ ctx[12].call(input, /*each_value*/ ctx[18], /*i*/ ctx[19]);
+    		/*input_change_input_handler*/ ctx[14].call(input, /*each_value*/ ctx[21], /*i*/ ctx[22]);
     	}
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			label = element("label");
     			input = element("input");
     			t0 = space();
@@ -9897,16 +9888,19 @@ var app = (function () {
     			attr_dev(input, "min", "-10");
     			attr_dev(input, "max", "10");
     			attr_dev(input, "step", "0.01");
-    			add_location(input, file$1, 163, 18, 4332);
-    			add_location(label, file$1, 162, 14, 4306);
+    			add_location(input, file$1, 166, 10, 4347);
+    			add_location(label, file$1, 165, 8, 4329);
+    			attr_dev(div, "class", "control svelte-1dypxuo");
+    			add_location(div, file$1, 164, 6, 4299);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, label, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, label);
     			append_dev(label, input);
-    			set_input_value(input, /*b*/ ctx[17]);
+    			set_input_value(input, /*b*/ ctx[20]);
     			append_dev(label, t0);
     			append_dev(label, t1);
-    			append_dev(label, t2);
+    			append_dev(div, t2);
 
     			if (!mounted) {
     				dispose = [
@@ -9920,14 +9914,14 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*plot*/ 32) {
-    				set_input_value(input, /*b*/ ctx[17]);
+    			if (dirty[0] & /*plot*/ 32) {
+    				set_input_value(input, /*b*/ ctx[20]);
     			}
 
-    			if (dirty & /*plot*/ 32 && t1_value !== (t1_value = /*b*/ ctx[17].toFixed(2) + "")) set_data_dev(t1, t1_value);
+    			if (dirty[0] & /*plot*/ 32 && t1_value !== (t1_value = /*b*/ ctx[20].toFixed(2) + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(label);
+    			if (detaching) detach_dev(div);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -9937,7 +9931,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(162:10) {#each plot.getbeta() as b, i}",
+    		source: "(164:4) {#each plot.beta as b, i}",
     		ctx
     	});
 
@@ -9967,7 +9961,7 @@ var app = (function () {
     			if_block.m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
     		},
-    		p: function update(ctx, [dirty]) {
+    		p: function update(ctx, dirty) {
     			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
     				if_block.p(ctx, dirty);
     			} else {
@@ -9980,8 +9974,8 @@ var app = (function () {
     				}
     			}
     		},
-    		i: noop$1,
-    		o: noop$1,
+    		i: noop,
+    		o: noop,
     		d: function destroy(detaching) {
     			if_block.d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
@@ -10007,10 +10001,10 @@ var app = (function () {
     	let { show_solution = true } = $$props;
     	let { show_points = false } = $$props;
     	let { context_width } = $$props;
-    	let nPoints = 3;
+    	let do_scramble = false;
 
     	// $: console.log('standalone reactive statement with no dependencies.');
-    	let ctx = new Context(context_width, 400, [0, 10], [-2, 2]);
+    	let ctx = new Context(context_width, 700, [0, 10], [-2, 2]);
 
     	let plot = new Plot(ctx, 3);
 
@@ -10027,6 +10021,10 @@ var app = (function () {
     		plot.updateContext(ctx);
     	} // plot.chirp();
 
+    	function set_scramble(do_scramble) {
+    		plot.set_scramble(do_scramble);
+    	}
+
     	const writable_props = ["show_data", "show_scaled", "show_solution", "show_points", "context_width"];
 
     	Object.keys($$props).forEach(key => {
@@ -10034,7 +10032,7 @@ var app = (function () {
     	});
 
     	const click_handler = () => {
-    		plot.addPoint();
+    		plot.reset();
     		$$invalidate(5, plot);
     	};
 
@@ -10044,11 +10042,16 @@ var app = (function () {
     	};
 
     	const click_handler_2 = () => {
-    		plot.populate();
+    		plot.addPoint();
     		$$invalidate(5, plot);
     	};
 
     	const click_handler_3 = () => {
+    		plot.toggle_scramble();
+    		$$invalidate(5, plot);
+    	};
+
+    	const click_handler_4 = () => {
     		plot.solve();
     		$$invalidate(5, plot);
     	};
@@ -10063,15 +10066,20 @@ var app = (function () {
     		$$invalidate(0, show_scaled);
     	}
 
+    	function input2_change_handler() {
+    		show_solution = this.checked;
+    		$$invalidate(2, show_solution);
+    	}
+
     	function input_change_input_handler(each_value, i) {
     		each_value[i] = to_number(this.value);
     		$$invalidate(5, plot);
     	}
 
     	$$self.$$set = $$props => {
-    		if ("show_data" in $$props) $$invalidate(2, show_data = $$props.show_data);
+    		if ("show_data" in $$props) $$invalidate(3, show_data = $$props.show_data);
     		if ("show_scaled" in $$props) $$invalidate(0, show_scaled = $$props.show_scaled);
-    		if ("show_solution" in $$props) $$invalidate(3, show_solution = $$props.show_solution);
+    		if ("show_solution" in $$props) $$invalidate(2, show_solution = $$props.show_solution);
     		if ("show_points" in $$props) $$invalidate(1, show_points = $$props.show_points);
     		if ("context_width" in $$props) $$invalidate(4, context_width = $$props.context_width);
     	};
@@ -10079,25 +10087,27 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		Plot,
     		Context,
+    		zip,
     		show_data,
     		show_scaled,
     		show_solution,
     		show_points,
     		context_width,
-    		nPoints,
+    		do_scramble,
     		ctx,
     		plot,
     		chirp,
-    		resize
+    		resize,
+    		set_scramble
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("show_data" in $$props) $$invalidate(2, show_data = $$props.show_data);
+    		if ("show_data" in $$props) $$invalidate(3, show_data = $$props.show_data);
     		if ("show_scaled" in $$props) $$invalidate(0, show_scaled = $$props.show_scaled);
-    		if ("show_solution" in $$props) $$invalidate(3, show_solution = $$props.show_solution);
+    		if ("show_solution" in $$props) $$invalidate(2, show_solution = $$props.show_solution);
     		if ("show_points" in $$props) $$invalidate(1, show_points = $$props.show_points);
     		if ("context_width" in $$props) $$invalidate(4, context_width = $$props.context_width);
-    		if ("nPoints" in $$props) nPoints = $$props.nPoints;
+    		if ("do_scramble" in $$props) do_scramble = $$props.do_scramble;
     		if ("ctx" in $$props) ctx = $$props.ctx;
     		if ("plot" in $$props) $$invalidate(5, plot = $$props.plot);
     	};
@@ -10107,20 +10117,20 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*context_width*/ 16) {
+    		if ($$self.$$.dirty[0] & /*context_width*/ 16) {
     			// console.log('standalone ordinary statement');
     			console.log(`context_width = ${context_width}`);
     		}
 
-    		if ($$self.$$.dirty & /*show_scaled*/ 1) {
+    		if ($$self.$$.dirty[0] & /*show_scaled*/ 1) {
     			console.log(`show_scaled = ${show_scaled}`);
     		}
 
-    		if ($$self.$$.dirty & /*show_points*/ 2) {
+    		if ($$self.$$.dirty[0] & /*show_points*/ 2) {
     			console.log(`show_points = ${show_points}`);
     		}
 
-    		if ($$self.$$.dirty & /*context_width*/ 16) {
+    		if ($$self.$$.dirty[0] & /*context_width*/ 16) {
     			resize(context_width);
     		}
     	};
@@ -10128,16 +10138,18 @@ var app = (function () {
     	return [
     		show_scaled,
     		show_points,
-    		show_data,
     		show_solution,
+    		show_data,
     		context_width,
     		plot,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
     		click_handler_3,
+    		click_handler_4,
     		input0_change_handler,
     		input1_change_handler,
+    		input2_change_handler,
     		input_change_input_handler
     	];
     }
@@ -10146,13 +10158,21 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
-    			show_data: 2,
-    			show_scaled: 0,
-    			show_solution: 3,
-    			show_points: 1,
-    			context_width: 4
-    		});
+    		init(
+    			this,
+    			options,
+    			instance$1,
+    			create_fragment$1,
+    			safe_not_equal,
+    			{
+    				show_data: 3,
+    				show_scaled: 0,
+    				show_solution: 2,
+    				show_points: 1,
+    				context_width: 4
+    			},
+    			[-1, -1]
+    		);
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -10591,73 +10611,74 @@ var app = (function () {
     			add_location(d_math2, file, 36, 29, 1047);
     			add_location(d_math3, file, 36, 52, 1070);
     			add_location(p0, file, 32, 8, 669);
-    			add_location(d_figure, file, 42, 12, 1367);
+    			add_location(d_figure, file, 42, 12, 1387);
     			attr_dev(figure, "class", "l-middle-outset");
+    			set_style(figure, "width", "100%");
     			add_render_callback(() => /*figure_elementresize_handler*/ ctx[1].call(figure));
     			add_location(figure, file, 41, 8, 1300);
-    			add_location(d_math4, file, 48, 41, 1596);
-    			add_location(d_math5, file, 49, 31, 1666);
-    			add_location(d_math6, file, 52, 8, 1887);
-    			add_location(d_math7, file, 52, 43, 1922);
-    			add_location(p1, file, 47, 8, 1479);
-    			add_location(d_math8, file, 56, 8, 2117);
-    			add_location(d_math9, file, 57, 8, 2203);
-    			add_location(d_math10, file, 58, 12, 2308);
-    			add_location(p2, file, 54, 8, 1961);
-    			add_location(d_math11, file, 60, 26, 2369);
-    			add_location(d_math12, file, 61, 26, 2469);
-    			add_location(d_math13, file, 62, 8, 2544);
-    			add_location(d_math14, file, 63, 8, 2618);
-    			add_location(d_math15, file, 65, 26, 2809);
-    			add_location(p3, file, 60, 8, 2351);
-    			add_location(h31, file, 69, 8, 2990);
-    			add_location(d_math16, file, 72, 30, 3124);
-    			add_location(d_math17, file, 73, 20, 3194);
-    			add_location(d_math18, file, 74, 25, 3283);
-    			add_location(p4, file, 71, 8, 3021);
-    			add_location(d_math19, file, 76, 65, 3409);
-    			add_location(d_math20, file, 77, 40, 3468);
-    			add_location(i, file, 78, 20, 3543);
-    			add_location(d_math21, file, 78, 32, 3555);
-    			add_location(d_math22, file, 79, 18, 3637);
-    			add_location(p5, file, 76, 8, 3352);
-    			add_location(d_math23, file, 83, 12, 3859);
-    			add_location(d_math24, file, 85, 8, 4018);
-    			add_location(d_math25, file, 86, 52, 4148);
-    			add_location(p6, file, 82, 8, 3770);
-    			add_location(p7, file, 89, 8, 4210);
+    			add_location(d_math4, file, 48, 41, 1616);
+    			add_location(d_math5, file, 49, 31, 1686);
+    			add_location(d_math6, file, 52, 8, 1907);
+    			add_location(d_math7, file, 52, 43, 1942);
+    			add_location(p1, file, 47, 8, 1499);
+    			add_location(d_math8, file, 56, 8, 2137);
+    			add_location(d_math9, file, 57, 8, 2223);
+    			add_location(d_math10, file, 58, 12, 2328);
+    			add_location(p2, file, 54, 8, 1981);
+    			add_location(d_math11, file, 60, 26, 2389);
+    			add_location(d_math12, file, 61, 26, 2489);
+    			add_location(d_math13, file, 62, 8, 2564);
+    			add_location(d_math14, file, 63, 8, 2638);
+    			add_location(d_math15, file, 65, 26, 2829);
+    			add_location(p3, file, 60, 8, 2371);
+    			add_location(h31, file, 69, 8, 3010);
+    			add_location(d_math16, file, 72, 30, 3144);
+    			add_location(d_math17, file, 73, 20, 3214);
+    			add_location(d_math18, file, 74, 25, 3303);
+    			add_location(p4, file, 71, 8, 3041);
+    			add_location(d_math19, file, 76, 65, 3429);
+    			add_location(d_math20, file, 77, 40, 3488);
+    			add_location(i, file, 78, 20, 3563);
+    			add_location(d_math21, file, 78, 32, 3575);
+    			add_location(d_math22, file, 79, 18, 3657);
+    			add_location(p5, file, 76, 8, 3372);
+    			add_location(d_math23, file, 83, 12, 3879);
+    			add_location(d_math24, file, 85, 8, 4038);
+    			add_location(d_math25, file, 86, 52, 4168);
+    			add_location(p6, file, 82, 8, 3790);
+    			add_location(p7, file, 89, 8, 4230);
     			set_custom_element_data(d_math26, "block", "");
-    			add_location(d_math26, file, 92, 8, 4255);
-    			add_location(d_math27, file, 103, 8, 5019);
-    			add_location(d_math28, file, 104, 41, 5140);
-    			add_location(d_math29, file, 106, 8, 5274);
-    			add_location(p8, file, 102, 8, 4943);
+    			add_location(d_math26, file, 92, 8, 4275);
+    			add_location(d_math27, file, 103, 8, 5039);
+    			add_location(d_math28, file, 104, 41, 5160);
+    			add_location(d_math29, file, 106, 8, 5294);
+    			add_location(p8, file, 102, 8, 4963);
     			set_custom_element_data(d_math30, "block", "");
-    			add_location(d_math30, file, 108, 8, 5322);
-    			add_location(p9, file, 114, 8, 5552);
+    			add_location(d_math30, file, 108, 8, 5342);
+    			add_location(p9, file, 114, 8, 5572);
     			set_custom_element_data(d_math31, "block", "");
-    			add_location(d_math31, file, 116, 8, 5597);
-    			add_location(d_math32, file, 129, 64, 6108);
-    			add_location(d_math33, file, 129, 90, 6134);
-    			add_location(d_math34, file, 130, 18, 6180);
-    			add_location(p10, file, 129, 8, 6052);
-    			add_location(h32, file, 132, 8, 6223);
-    			add_location(d_math35, file, 134, 47, 6301);
-    			add_location(d_math36, file, 135, 54, 6400);
-    			add_location(d_math37, file, 136, 18, 6463);
-    			add_location(d_math38, file, 138, 22, 6676);
-    			add_location(p11, file, 134, 8, 6262);
+    			add_location(d_math31, file, 116, 8, 5617);
+    			add_location(d_math32, file, 129, 64, 6128);
+    			add_location(d_math33, file, 129, 90, 6154);
+    			add_location(d_math34, file, 130, 18, 6200);
+    			add_location(p10, file, 129, 8, 6072);
+    			add_location(h32, file, 132, 8, 6243);
+    			add_location(d_math35, file, 134, 47, 6321);
+    			add_location(d_math36, file, 135, 54, 6420);
+    			add_location(d_math37, file, 136, 18, 6483);
+    			add_location(d_math38, file, 138, 22, 6696);
+    			add_location(p11, file, 134, 8, 6282);
     			set_custom_element_data(d_math39, "block", "");
-    			add_location(d_math39, file, 140, 8, 6729);
-    			add_location(d_math40, file, 148, 8, 7266);
-    			add_location(d_math41, file, 149, 8, 7340);
-    			add_location(p12, file, 146, 8, 7093);
-    			add_location(d_math42, file, 152, 25, 7518);
-    			add_location(p13, file, 152, 8, 7501);
+    			add_location(d_math39, file, 140, 8, 6749);
+    			add_location(d_math40, file, 148, 8, 7286);
+    			add_location(d_math41, file, 149, 8, 7360);
+    			add_location(p12, file, 146, 8, 7113);
+    			add_location(d_math42, file, 152, 25, 7538);
+    			add_location(p13, file, 152, 8, 7521);
     			set_custom_element_data(d_math43, "block", "");
-    			add_location(d_math43, file, 155, 8, 7671);
+    			add_location(d_math43, file, 155, 8, 7691);
     			add_location(d_article, file, 29, 4, 590);
-    			add_location(d_appendix, file, 171, 4, 8138);
+    			add_location(d_appendix, file, 171, 4, 8158);
     			add_location(main, file, 6, 0, 145);
     		},
     		l: function claim(nodes) {

@@ -12,6 +12,8 @@ export class Context {
     this.yToViewport = d3.scaleLinear().domain([ymin, ymax]).range([height,0]);
     this.unitToX = d3.scaleLinear().domain([0, 1]).range([xmin, xmax]);
     this.unitToY = d3.scaleLinear().domain([0, 1]).range([ymin, ymax]);
+    this.xToUnit = d3.scaleLinear().domain([xmin, xmax]).range([0, 1]);
+    // console.log(d3.scaleLinear);
   }
 
   setWidth(w) {

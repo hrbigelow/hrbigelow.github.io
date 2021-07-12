@@ -1,6 +1,7 @@
 <script>
 import {Plot} from './plot';
 import {Context} from './context';
+import {zip} from 'd3';
 
 export let show_data = true;
 export let show_scaled = true;
@@ -8,10 +9,10 @@ export let show_solution = true;
 export let show_points = false;
 
 export let context_width;
-let nPoints = 3;
+let do_scramble = false;
 
 // $: console.log('standalone reactive statement with no dependencies.');
-let ctx = new Context(context_width, 400, [0, 10], [-2, 2]);
+let ctx = new Context(context_width, 700, [0, 10], [-2, 2]);
 let plot = new Plot(ctx, 3);
 // console.log('standalone ordinary statement');
 $: console.log(`context_width = ${context_width}`);
@@ -31,6 +32,12 @@ function resize(width) {
     plot.updateContext(ctx);
     // plot.chirp();
 }
+
+
+function set_scramble(do_scramble) {
+  plot.set_scramble(do_scramble);
+}
+
 
 $: resize(context_width);
 
@@ -62,7 +69,15 @@ $: resize(context_width);
   }
 
   .point {
+    stroke: rgba(200, 200, 200, 1);
     stroke-width: 1px;
+  }
+
+  .control {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: left;
+    white-space: nowrap;
   }
 
   .solution-curve {
@@ -81,29 +96,15 @@ $: resize(context_width);
 
 
 </style>
-                  <!--
-                  on:mousemove={(evt) => {
-                      if (selectedElem !== null) {
-                          plot.beta[selectedElem.id] -= 0.01 * evt.movementY;
-                          plot.updateBeta();
-                      }
-                         }}
-                  on:mouseup={(evt) => {
-                         if (selectedElem !== null) {
-                             // console.log('on mouse up with ', evt);
-                             selectedElem = null;
-                         }
-                         }}
-                                              -->
 
 {#if context_width}
 <div class="gauss-grid">
-  <div class="grid-item">
-      <svg width="{plot.width}" height="{plot.height}" viewBox="0 0
-                  {plot.width} {plot.height}" class="plot" >
+  <div class="grid-item" style="border: 1px">
+    <svg width="{plot.width}" height="{plot.height}" viewBox="0 0
+                             {plot.width} {plot.height}" class="plot" >
 
         {#if show_data}
-          {#each plot.data() as [x, y, beta]}
+          {#each zip(plot.x, plot.y) as [x, y]}
             <circle class="data" 
                     style="stroke: #000000"
                     cx="{plot.u(x)}" 
@@ -113,7 +114,7 @@ $: resize(context_width);
         {/if}
 
 
-        {#each plot.data() as [x, y, beta], i}
+        {#each zip(plot.x, plot.beta) as [x, beta]}
             {#if show_scaled}
                 <path class="curve"
                       d="{plot.curve(x, beta)}">
@@ -121,55 +122,57 @@ $: resize(context_width);
             {/if}
 
             {#if show_points}
-                {#each plot.getx() as x2, j}
+                {#each plot.x as x2}
                     <circle class="point" 
                                      cx="{plot.u(x2)}"
-                                     cy="{plot.curvePoint(x, beta, x2)}" 
+                                     cy="{plot.point(x, beta, x2)}" 
                                      r="4"
                                      />
                 {/each}
             {/if}
         {/each}
 
-
         {#if show_solution}
           <path class="solution-curve" d="{plot.solutionCurve()}"></path>
         {/if}
       
-      </svg>
-      <svg width="{plot.width}" height="40" viewBox="0 0
-                  {plot.width} 40">
-        {#each plot.getx() as x, i}
+    </svg>
+  </div>
+  <!--
+  <div class="grid-item">
+    <svg width="{plot.width}" height="40" viewBox="0 0
+                             {plot.width} 40">
+        {#each plot.x as x, i}
           <text x={plot.u(x)} y=25>x<tspan class="ss">{i}</tspan></text>
         {/each}
-      </svg>
-      <div>
-          <!-- <p>numPoints: {nPoints}</p> -->
-          <button on:click={() => { plot.addPoint(); plot = plot;}}> + </button>
-          <button on:click={() => { plot.delPoint(); plot = plot;}}> - </button>
-          <button on:click={() => { plot.populate(); plot = plot;}}>Reset</button>
-          <button on:click={() => { plot.solve(); plot = plot;}}>Solve</button>
-          <label>
-              <input type="checkbox" bind:checked="{show_points}">
-              Toggle points
-          </label>
-          <label>
-              <input type="checkbox" bind:checked="{show_scaled}">
-              Toggle basis curves 
-          </label>
+
+    </svg>
+  </div>
+  -->
+  <div class="grid-item">
+    <div class="control"><button on:click={() => { plot.reset(); plot = plot;}}>Reset</button></div>
+    <div class="control"><button on:click={() => { plot.delPoint(); plot = plot;}}>Del Point</button></div>
+    <div class="control"><button on:click={() => { plot.addPoint(); plot = plot;}}>Add Point</button></div>
+    <div class="control"><button on:click={() => { plot.toggle_scramble(); plot = plot;}}>
+        {plot.scrambled() ? 'Unscramble' : 'Scramble'}
+      </button>
+    </div>
+    <div class="control"><button on:click={() => { plot.solve(); plot = plot;}}>Solve</button></div>
+    <div class="control"><label><input type="checkbox" bind:checked="{show_points}">Toggle points</label></div>
+    <div class="control"><label><input type="checkbox" bind:checked="{show_scaled}">Toggle basis curves</label></div>
+    <div class="control"><label><input type="checkbox" bind:checked="{show_solution}">Toggle solution curve</label></div>
+    {#each plot.beta as b, i}
+      <div class="control">
+        <label>
+          <input type=range bind:value={b} min=-10 max=10 step=0.01>
+          {b.toFixed(2)}
+        </label>
       </div>
-      <div>
-          {#each plot.getbeta() as b, i}
-              <label>
-                  <input type=range bind:value={b} min=-10 max=10 step=0.01>
-                  {b.toFixed(2)}
-              </label>
-          {/each}
-      </div>
+    {/each}
   </div>
 </div>
 {:else}
-    <div class="gauss-grid">
-    </div>
+<div class="gauss-grid">
+</div>
 {/if}
 
