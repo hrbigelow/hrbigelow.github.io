@@ -1,45 +1,50 @@
 import * as gauss from './gaussian.js';
-import * as scr from './scramble.js';
+import * as ker from './kernel.js';
 import * as d3 from 'd3';
 import * as mat from 'ml-matrix';
 
 const STEP = 0.05;
-const N_SCRAMBLE = 10;
+const CUT_SIZE = 1;
+const ALPHA_RANGE = 5;
 
 export class Plot {
   constructor(context, n) {
     console.log('in constructor with ', n);
+    this.nonce = 0;
     this.ctx = context; 
     this.height = this.ctx.height;
     this.width = this.ctx.width;
-    this.unitToBeta = d3.scaleLinear().domain([0, 1]).range([-3, 3]);
+    this.unitToAlpha = d3.scaleLinear().domain([0, 1]).range([-ALPHA_RANGE, ALPHA_RANGE]);
     this.n = n;
-    this.g = new gauss.Gaussian([0], [[1]]);
-    this.maps = [null, null];
-    this.maps[0] = scr.Scramble.identity(this.ctx.xmin, this.ctx.xmax);
-    this.maps[1] = new scr.Scramble(N_SCRAMBLE, this.ctx.xmin, this.ctx.xmax);
-    this.active_map = 0;
+    this.kernels = [null, null];
+    this.kernels[0] = new ker.RBFKernel();
+    this.kernels[1] = new ker.RBFShuffleKernel(CUT_SIZE);
+    this.active_ker = 0;
     this.populate();
 
   }
 
   toggle_scramble() {
     console.log('in toggle_scramble');
-    this.active_map = 1 - this.active_map;
+    this.active_ker = 1 - this.active_ker;
   }
 
   scrambled() {
-    return this.active_map == 1;
-  }
-
-  map() {
-    return this.maps[this.active_map];
+    return this.active_ker == 1;
   }
 
   reset() {
-    this.active_map = 0;
-    this.maps[1] = new scr.Scramble(N_SCRAMBLE, this.ctx.xmin, this.ctx.xmax);
+    this.active_ker = 0;
     this.populate();
+  }
+
+  resetAlpha() {
+    this.alpha.fill(1);
+  }
+
+  set_sigma(log_sigma) {
+    for (let i = 0; i != this.kernels.length; i++)
+      this.kernels[i].set_sigma(Math.pow(10, log_sigma))
   }
 
   populate() {
@@ -47,31 +52,32 @@ export class Plot {
     var n = this.n;
     this.x = new Array(n);
     this.y = new Array(n);
-    this.beta = new Array(n);
+    this.alpha = new Array(n);
 
     for (let i = 0; i != n; i++) {
       this.x[i] = this.ctx.unitToX(Math.random());
-      this.beta[i] = this.unitToBeta(Math.random());
+      this.alpha[i] = this.unitToAlpha(Math.random());
     }
     for (let i = 0; i != n; i++) {
-      this.y[i] = this._point(this.x, this.beta, this.x[i]);
+      this.y[i] = this._point(this.x, this.alpha, this.x[i]);
     }
 
     for (let i = 0; i != n; i++) {
-      this.beta[i] = 1.0;
+      this.alpha[i] = 1.0;
     }
   }
 
   kernel(x1, x2) {
-    return this.g.at([x1 - x2]);
-  }
-
-  mx(x) {
-    return this.maps[this.active_map].get(x);
+    return this.kernels[this.active_ker].call(x1, x2);
   }
 
 
-  solve() {
+  jumps(x) {
+    var k = this.kernels[this.active_ker];
+    return k.cuts(x, this.ctx.xmin, this.ctx.xmax);
+  }
+
+  solutionAlpha() {
     var n = this.n;
     var K = mat.Matrix.zeros(n, n);
     var y = new mat.Matrix([this.y]);
@@ -84,10 +90,8 @@ export class Plot {
       }
     }
     var invK = mat.inverse(K);
-    var beta = y.mmul(invK);
-    for (let i = 0; i != n; i++) {
-      this.beta[i] = beta.get(0, i);
-    }
+    var alpha = y.mmul(invK).flat();
+    return alpha;
   }
 
 
@@ -109,46 +113,39 @@ export class Plot {
     this.populate();
   }
 
-  updateBeta(delta, index) {
-    this.beta[index] += delta;
+  updateAlpha(delta, index) {
+    this.alpha[index] += delta;
   }
 
   makeLine(xs, ys) {
     const path = d3.line()
       .x(d => this.ctx.u(d[0]))
       .y(d => this.ctx.v(d[1]))(d3.zip(xs,ys));
-    return path;
+    return path || '';
   }
 
 
-  // provide the mapped xs and ys for the provided segment 
-  _curve(args1, alphas, segment) {
-    var s = segment;
-    var xmap = this.map();
-    var xs = d3.range(xmap.x[s], xmap.x[s+1], STEP);
-    var mxs = xs.map(x => xmap.get(x));
+  // provide the xs and ys for the given segment 
+  _curveSegment(args1, alphas, xbeg, xend) {
+    var xs = d3.range(xbeg, xend, STEP);
     var ys = xs.map(
       x => d3.zip(args1, alphas).map(
         ([x1, alpha]) => alpha * this.kernel(x1, x)
       )
       .reduce((p, q) => p + q, 0)
     );
-    return [mxs, ys];
-  }
-
-  // returns i'th scaled curve line
-  _curveSegment(args1, alphas, s) {
-    var mxs, ys, line = '';
-    [mxs, ys] = this._curve(args1, alphas, s);
-    var line = this.makeLine(mxs, ys);
-    return line;
+    return this.makeLine(xs, ys);
   }
 
   _curveFull(args1, alphas) {
     var line = '';
-    for (let s = 0; s != this.map().ns; s++) {
-      line += this._curveSegment(args1, alphas, s);
-    }
+    var cuts = [this.ctx.xmin, this.ctx.xmax];
+    for (let arg of args1) cuts.push(...this.jumps(arg));
+    cuts.sort((a, b) => a - b);
+
+    for (let s = 0; s != cuts.length - 1; s++) 
+      line += this._curveSegment(args1, alphas, cuts[s], cuts[s+1]);
+
     return line;
   }
 
@@ -157,7 +154,7 @@ export class Plot {
   }
 
   solutionCurve() {
-    return this._curveFull(this.x, this.beta);
+    return this._curveFull(this.x, this.alpha);
   }
 
 
@@ -177,13 +174,13 @@ export class Plot {
 
 
   solutionPoint(x) {
-    const y = this._point(this.x, this.beta, x);
+    const y = this._point(this.x, this.alpha, x);
     return this.ctx.v(y);
   }
 
 
   u(x) {
-    return this.ctx.u(this.maps[this.active_map].get(x));
+    return this.ctx.u(x);
   }
 
   v(y) {

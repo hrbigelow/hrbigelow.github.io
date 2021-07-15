@@ -1,6 +1,5 @@
 <script>
     import MainPlot from './MainPlot.svelte';
-    let cw;
     // console.log(document.getElementById('testid').clientWidth);
 </script>
 
@@ -39,10 +38,9 @@
         In other words, "smooth".  So you would like to find a smooth function to
         fit the data.</p> 
 
-        <figure class="l-middle-outset" style="width: 100%" bind:clientWidth={cw}>
-            <d-figure>
-                <MainPlot context_width="{cw}" />
-            </d-figure>
+        <figure class="l-page-outset" style="height: 500px;">
+            <MainPlot/>
+            <!-- <d-figure> <MainPlot/> </d-figure> -->
         </figure>
 
         <p>With this smoothness goal in mind, you have decided to create a function

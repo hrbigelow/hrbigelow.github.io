@@ -21,6 +21,10 @@ export class Context {
     this.xToViewport.range([0,w]);
   }
 
+  setHeight(h) {
+    this.height = h;
+    this.yToViewport.range([0,h]);
+  }
 
   x(u) {
     return this.xToViewport.invert(u);
