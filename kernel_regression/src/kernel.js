@@ -9,6 +9,7 @@ export class RBFKernel {
     return this.g.at([x1 - x2]);
   }
 
+
   set_sigma(sigma) {
     this.g = new gauss.Gaussian([0], [[sigma]]);
   }

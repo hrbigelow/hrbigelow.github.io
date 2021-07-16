@@ -1,7 +1,7 @@
 <script>
 import {Plot} from './plot';
 import {Context} from './context';
-import {zip} from 'd3';
+import {range, zip} from 'd3';
 import { onMount } from 'svelte';
 
 export let show_data = true;
@@ -43,6 +43,11 @@ function set_sigma(log_sigma) {
 }
 
 
+function numberDisplay(n) {
+  var ns = Math.abs(n) > 1000 ? n.toExponential(2) : n.toFixed(2);
+  return ns;
+}
+  
 // $: console.log(`drag_point: ${drag_point}`);
 $: set_sigma(log_sigma); 
 
@@ -125,6 +130,10 @@ $: resize(width, height);
     padding: 10px;
   }
 
+  .alphas {
+    min-width: 7em;
+  }
+
   .full {
     width: 100%;
     height: 100%;
@@ -150,13 +159,12 @@ $: resize(width, height);
     stroke-width: 3px;
   }
 
+  /*
   .ss {
     baseline-shift: sub;
     font-size: 11px;
   }
-
-  .slider {
-  }
+  */
 
 
 </style>
@@ -170,13 +178,13 @@ $: resize(width, height);
            on:mouseup={onMouseUp}
            >
 
-           {#each zip(plot.x, plot.alpha) as [x, alpha]}
+           {#each range(plot.n) as i}
              {#if show_scaled}
-               <path class="curve" d="{plot.curve(x, alpha)}"/>
+               <path class="curve" d="{plot.curve(i)}"/>
              {/if}
 
              {#if show_points}
-               {#each plot.points(x, alpha) as [u,v]}
+               {#each plot.points(i) as [u,v]}
                  <circle class="point" cx="{u}" cy="{v}" r="4"/>
                {/each}
              {/if}
@@ -214,12 +222,13 @@ $: resize(width, height);
     <div class="row control pad">
       <div style="flex-grow: 1">
         <div class="pad-small"><button on:click={() => { plot.reset(); plot.nonce++;}}>New Data</button></div>
-        <div class="row">
-          <div class="pad-small"><button on:click={() => { plot.delPoint(); plot = plot;}}>Del Point</button></div>
-          <div class="pad-small"><button on:click={() => { plot.addPoint(); plot = plot;}}>Add Point</button></div>
-        </div>
         <div class="pad-small">
           <label>Sigma: <input type="range" bind:value={log_sigma} min=-3 max=2 step=0.1>{Math.pow(10, log_sigma).toFixed(3)}</label>
+        </div>
+        <div class="pad-small">
+          <d-math>\|f\| = </d-math>{plot.validInv ? 
+          numberDisplay(plot.functionNorm())
+          : 'Error: non-singular K'}
         </div>
       </div>
       <div style="flex-grow: 1">
@@ -230,10 +239,10 @@ $: resize(width, height);
         </div>
       </div>
       <div style="flex-grow: 1: align: right;">
-        <div><input type="checkbox" bind:checked="{show_points}"><label>points</label></div>
-        <div><input type="checkbox" bind:checked="{show_scaled}"><label>curves</label></div>
-        <div><input type="checkbox" bind:checked="{show_solution}"><label>solution</label></div>
-        <div><input type="checkbox" bind:checked="{auto_solve}"><label>Auto Solve</label></div>
+        <div><label><input type="checkbox" bind:checked="{show_points}">points</label></div>
+        <div><label><input type="checkbox" bind:checked="{show_scaled}">curves</label></div>
+        <div><label><input type="checkbox" bind:checked="{show_solution}">solution</label></div>
+        <div><label><input type="checkbox" bind:checked="{auto_solve}">auto Solve</label></div>
       </div>
     </div>
   </div>
@@ -242,10 +251,14 @@ $: resize(width, height);
     <div class="pad-small">
       <button on:click={() => { plot.resetAlpha(); plot = plot;}}>Reset Alpha</button>
     </div> 
+    <div class="row">
+      <div class="pad-small"><button on:click={() => { plot.delPoint(); plot = plot;}}>Del Point</button></div>
+      <div class="pad-small"><button on:click={() => { plot.addPoint(); plot = plot;}}>Add Point</button></div>
+    </div>
     {#each plot.alpha as a, i}
       <div class="row pad-small">
         <input type=range bind:value={a} min=-10 max=10 step=0.01>
-        <label class="pad">{a.toFixed(2)}</label>
+        <code class="alphas">{numberDisplay(a)}</code>
       </div>
     {/each}
   </div>
