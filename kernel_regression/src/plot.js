@@ -9,7 +9,6 @@ const ALPHA_RANGE = 5;
 
 export class Plot {
   constructor(context, n) {
-    console.log('in constructor with ', n);
     this.nonce = 0;
     this.ctx = context; 
     this.height = this.ctx.height;
@@ -25,7 +24,6 @@ export class Plot {
   }
 
   toggle_scramble() {
-    console.log('in toggle_scramble');
     this.active_ker = 1 - this.active_ker;
   }
 
@@ -48,7 +46,6 @@ export class Plot {
   }
 
   populate() {
-    console.log('in populate');
     var n = this.n;
     this.x = new Array(n);
     this.y = new Array(n);
@@ -65,6 +62,12 @@ export class Plot {
     for (let i = 0; i != n; i++) {
       this.alpha[i] = 1.0;
     }
+  }
+
+  setDataPoint(i, u, v) {
+    // update the value of the i'th data point
+    this.x[i] = this.ctx.x(u);
+    this.y[i] = this.ctx.y(v);
   }
 
   kernel(x1, x2) {
@@ -89,14 +92,20 @@ export class Plot {
         K.set(i, j, this.kernel(xi, xj));
       }
     }
-    var invK = mat.inverse(K);
-    var alpha = y.mmul(invK).flat();
+    var alpha;
+    try {
+      var invK = mat.inverse(K);
+      alpha = y.mmul(invK).flat();
+    } catch(err) {
+      console.log('Error during solutionAlpha: ', err);
+      alpha = plot.alpha;
+    }
     return alpha;
+
   }
 
 
   updateContext(context) {
-    console.log('in updateContext');
     this.ctx = context;
     this.height = this.ctx.height;
     this.width = this.ctx.width;
@@ -169,7 +178,22 @@ export class Plot {
   // return the plot point
   point(x1, alpha, x) {
     const y = this._point([x1], [alpha], x);
-    return this.ctx.v(y);
+    return y;
+    // return this.ctx.v(y);
+  }
+
+  
+  points(x1, alpha) {
+    return this.x.map(x => [
+      this.ctx.u(x),
+      this.ctx.v(alpha * this.kernel(x1, x))
+    ]);
+  }
+
+  data() {
+    return d3.zip(this.x, this.y).map(([x,y]) => 
+      [this.ctx.u(x), this.ctx.v(y)]
+    );
   }
 
 
