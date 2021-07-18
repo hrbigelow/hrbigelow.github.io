@@ -11,7 +11,7 @@ export let show_points = false;
 export let width=10, height=10;
 let plot = null, ctx;
 let drag_point = null;
-let auto_solve = false;
+let auto_solve = true;
 let log_sigma=0;
 
 ctx = new Context(width, height, [-4, 4], [-4, 4]);
@@ -88,7 +88,7 @@ function solve() {
       setTimeout(() => transition(step+1, nsteps), 10);
     }
   }
-  transition(0, 50);
+  transition(0, 100);
 }
 
 $: resize(width, height);
@@ -221,7 +221,7 @@ $: resize(width, height);
 
     <div class="row control pad">
       <div style="flex-grow: 1">
-        <div class="pad-small"><button on:click={() => { plot.reset(); plot.nonce++;}}>New Data</button></div>
+        <div class="pad-small"><button on:click={() => { plot.populate(); plot.nonce++;}}>New Data</button></div>
         <div class="pad-small">
           <label>Sigma: <input type="range" bind:value={log_sigma} min=-3 max=2 step=0.1>{Math.pow(10, log_sigma).toFixed(3)}</label>
         </div>
@@ -242,7 +242,7 @@ $: resize(width, height);
         <div><label><input type="checkbox" bind:checked="{show_points}">points</label></div>
         <div><label><input type="checkbox" bind:checked="{show_scaled}">curves</label></div>
         <div><label><input type="checkbox" bind:checked="{show_solution}">solution</label></div>
-        <div><label><input type="checkbox" bind:checked="{auto_solve}">auto Solve</label></div>
+        <div><label><input type="checkbox" bind:checked="{auto_solve}">auto solve</label></div>
       </div>
     </div>
   </div>

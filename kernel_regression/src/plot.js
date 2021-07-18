@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import * as mat from 'ml-matrix';
 
 const STEP = 0.025;
+// const STEP = 0.5;
 const CUT_SIZE = 1;
 const ALPHA_RANGE = 5;
 
@@ -22,7 +23,7 @@ export class Plot {
     this.K = mat.Matrix.zeros(this.n, this.n);
     this.invK = mat.Matrix.zeros(this.n, this.n);
     this.validInv = true;
-    this.curveCache = null;
+    this.curveCache = null; // cc[ci][xi] = y.  (curve_idx, x_idx)
     this.xCache = null;
 
     this.populate();
@@ -34,10 +35,10 @@ export class Plot {
     var n = this.n, v;
     this.K = mat.Matrix.zeros(this.n, this.n);
     for (let i = 0; i != n; i++) {
-      for (let j = i; j != n; j++) {
+      for (let j = 0; j != n; j++) {
         v = this.kernel(this.x[i], this.x[j]);
         this.K.set(i,j,v);
-        this.K.set(j,i,v);
+        // this.K.set(j,i,v);
         // console.log(this.K.flat());
       }
     }
@@ -50,7 +51,7 @@ export class Plot {
       this.invK = inv;
       this.validInv = true;
     } catch(err) {
-      // console.log('could not invert K.  leaving as-is');
+      console.log('could not invert K.  leaving as-is');
       this.validInv = false;
     }
   }
@@ -81,34 +82,30 @@ export class Plot {
 
   initCurveCache() {
     var n = this.n;
-    this.curveCache = new Array(n);
     this.initXCache();
-    for (let i = 0; i != n; i++)
-      this.updateCurveCache(i);
+    this.curveCache = new Array(n);
+    for (let ci = 0; ci != n; ci++) 
+        this.updateCurveCache(ci);
   }
 
   // updates i'th curve Cache
-  updateCurveCache(i) {
+  updateCurveCache(ci) {
     var seg;
-    this.curveCache[i] = new Array(0);
-    for (let s = 0; s != this.xCache.length; s++) {
-      seg = this.xCache[s].map(x => this.kernel(this.x[i], x));
-      this.curveCache[i].push(seg);
+    this.curveCache[ci] = new Array();
+    for (let si = 0; si != this.xCache.length; si++) {
+      seg = this.xCache[si].map(x => this.kernel(this.x[ci], x));
+      this.curveCache[ci].push(...seg);
     }
   }
 
   toggle_scramble() {
     this.active_ker = 1 - this.active_ker;
     this.initK();
+    this.initCurveCache();
   }
 
   scrambled() {
     return this.active_ker == 1;
-  }
-
-  reset() {
-    this.active_ker = 0;
-    this.populate();
   }
 
   resetAlpha() {
@@ -119,8 +116,8 @@ export class Plot {
     for (let k = 0; k != this.kernels.length; k++) {
       this.kernels[k].set_sigma(Math.pow(10, log_sigma))
     }
-    for (let i = 0; i != this.n; i++)
-      this.updateCurveCache(i);
+    for (let ci = 0; ci != this.n; ci++)
+      this.updateCurveCache(ci);
 
     this.initK();
   }
@@ -138,9 +135,8 @@ export class Plot {
     this.initK();
     this.initCurveCache();
 
-    for (let i = 0; i != n; i++) {
-      this.y[i] = this._point(this.x, this.alpha, this.x[i]);
-    }
+    for (let i = 0; i != n; i++) 
+      this.y[i] = this.solutionPoint(i);
 
     for (let i = 0; i != n; i++) {
       this.alpha[i] = 1.0;
@@ -151,7 +147,8 @@ export class Plot {
     // update the value of the i'th data point
     this.x[i] = this.ctx.x(u);
     this.y[i] = this.ctx.y(v);
-    this.updateK(i);
+    this.initK();
+    // this.updateK(i);
     this.initInvK();
     this.updateCurveCache(i);
   }
@@ -235,38 +232,46 @@ export class Plot {
     return line;
   }
 
-
-  curve(i) {
-    var line = '', ys;
-    var a = this.alpha[i];
-    for (let s = 0; s != this.xCache.length; s++) {
-      ys = this.curveCache[i][s].map(y => a * y);
-      line += this.makeLine(this.xCache[s], ys);
+  makeLines(ys) {
+    var line = '';
+    var off = 0, rng, len;
+    for (let si = 0; si != this.xCache.length; si++) {
+      rng = this.xCache[si];
+      len = rng.length;
+      line += this.makeLine(rng, ys.slice(off, off + len));
+      off += len;
     }
     return line;
   }
 
+  curve(ci) {
+    var line = '', ys;
+    var a = this.alpha[ci];
+    var ys = this.curveCache[ci].map(y => a * y);
+    return this.makeLines(ys);
+  }
+
   solutionCurve() {
-    return this._curveFull(this.x, this.alpha);
+    if (this.n == 0) return '';
+    var ys = new Array(this.curveCache[0].length).fill(0.0);
+
+    for (let ci = 0; ci != this.n; ci++) {
+      var a = this.alpha[ci];
+      var cc = this.curveCache[ci];
+      for (let xi = 0; xi != cc.length; xi++)
+        ys[xi] += cc[xi] * a;
+    }
+    return this.makeLines(ys);
   }
-
-
-  // returns y value for weighted combo of curves 
-  _point(args1, alphas, x) {
-    var y = d3.zip(args1, alphas).map(
-      ([x1, alpha]) => alpha * this.kernel(x1, x)
-    ).reduce((p, q) => p + q, 0);
-    return y;
-  }
-
   
-  // return the weighted u,v points for the i'th curve
+  // return the u,v points for the i'th scaled curve
   points(i) {
-    var a = this.alpha[i], x1 = this.x[i];
-    return d3.range(this.n).map(i => [
-      this.ctx.u(this.x[i]),
+    var a = this.alpha[i];
+    var pts = d3.range(this.n).map(j => [
+      this.ctx.u(this.x[j]), 
       this.ctx.v(a * this.K.get(i,j))
     ]);
+    return pts;
   }
 
   data() {
@@ -276,9 +281,12 @@ export class Plot {
   }
 
 
-  solutionPoint(x) {
-    const y = this._point(this.x, this.alpha, x);
-    return this.ctx.v(y);
+  // return the y value for the solution at the i'th x location
+  // unused currently
+  solutionPoint(i) {
+    var y = d3.range(this.n).map(j => this.alpha[j] * this.K.get(i,j))
+      .reduce((y1, y2) => y1 + y2, 0);
+    return y;
   }
 
 
