@@ -23,7 +23,7 @@ export class Context {
 
   setHeight(h) {
     this.height = h;
-    this.yToViewport.range([0,h]);
+    this.yToViewport.range([h,0]);
   }
 
   x(u) {

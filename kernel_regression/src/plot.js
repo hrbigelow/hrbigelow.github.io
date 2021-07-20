@@ -3,7 +3,7 @@ import * as ker from './kernel.js';
 import * as d3 from 'd3';
 import * as mat from 'ml-matrix';
 
-const STEP = 0.025;
+const STEP = 0.0125;
 // const STEP = 0.5;
 const CUT_SIZE = 1;
 const ALPHA_RANGE = 5;
@@ -38,8 +38,6 @@ export class Plot {
       for (let j = 0; j != n; j++) {
         v = this.kernel(this.x[i], this.x[j]);
         this.K.set(i,j,v);
-        // this.K.set(j,i,v);
-        // console.log(this.K.flat());
       }
     }
     this.initInvK();
@@ -148,7 +146,6 @@ export class Plot {
     this.x[i] = this.ctx.x(u);
     this.y[i] = this.ctx.y(v);
     this.initK();
-    // this.updateK(i);
     this.initInvK();
     this.updateCurveCache(i);
   }
@@ -157,6 +154,9 @@ export class Plot {
     return this.kernels[this.active_ker].call(x1, x2);
   }
 
+  kernelInv0(y) {
+    return this.kernels[this.active_ker].inv0(y);
+  }
 
   jumps(x) {
     var k = this.kernels[this.active_ker];
@@ -205,31 +205,6 @@ export class Plot {
       .x(d => this.ctx.u(d[0]))
       .y(d => this.ctx.v(d[1]))(d3.zip(xs,ys));
     return path || '';
-  }
-
-
-  // provide the xs and ys for the given segment 
-  _curveSegment(args1, alphas, xbeg, xend) {
-    var xs = d3.range(xbeg, xend, STEP);
-    var ys = xs.map(
-      x => d3.zip(args1, alphas).map(
-        ([x1, alpha]) => alpha * this.kernel(x1, x)
-      )
-      .reduce((p, q) => p + q, 0)
-    );
-    return this.makeLine(xs, ys);
-  }
-
-  _curveFull(args1, alphas) {
-    var line = '';
-    var cuts = [this.ctx.xmin, this.ctx.xmax];
-    for (let arg of args1) cuts.push(...this.jumps(arg));
-    cuts.sort((a, b) => a - b);
-
-    for (let s = 0; s != cuts.length - 1; s++) 
-      line += this._curveSegment(args1, alphas, cuts[s], cuts[s+1]);
-
-    return line;
   }
 
   makeLines(ys) {

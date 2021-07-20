@@ -35,6 +35,12 @@ onMount(() => {
 });
 
 
+function toggle_scramble() {
+  plot.toggle_scramble();
+  if (auto_solve) solve();
+  plot.nonce++;
+}
+
 function set_sigma(log_sigma) {
   plot.set_sigma(log_sigma);
   if (auto_solve)
@@ -145,18 +151,18 @@ $: resize(width, height);
     /* background-color: #17ad37; */
   }
 
-  .svg_wrap {
+  .svg-wrap {
     flex-grow: 1;
   }
 
-  .inner_plot {
+  .inner-plot {
     border: 1px solid gray;
   }
 
   .solution-curve {
     fill: none;
     stroke: rgba(0,0,255,1);
-    stroke-width: 3px;
+    stroke-width: 2px;
   }
 
   /*
@@ -171,9 +177,9 @@ $: resize(width, height);
 
 <div class="row full">
   <div class="col full">
-    <div class="svg_wrap full"
+    <div class="svg-wrap full"
          bind:clientWidth={width} bind:clientHeight={height}>
-      <svg class="inner_plot full"
+      <svg class="inner-plot full"
            on:mousemove={onMouseMove}
            on:mouseup={onMouseUp}
            >
@@ -223,17 +229,16 @@ $: resize(width, height);
       <div style="flex-grow: 1">
         <div class="pad-small"><button on:click={() => { plot.populate(); plot.nonce++;}}>New Data</button></div>
         <div class="pad-small">
-          <label>Sigma: <input type="range" bind:value={log_sigma} min=-3 max=2 step=0.1>{Math.pow(10, log_sigma).toFixed(3)}</label>
+          <label>Sigma: <input type="range" bind:value={log_sigma} min=-5 max=2 step=0.1>{Math.pow(10, log_sigma).toFixed(3)}</label>
         </div>
         <div class="pad-small">
-          <d-math>\|f\| = </d-math>{plot.validInv ? 
-          numberDisplay(plot.functionNorm())
-          : 'Error: non-singular K'}
+          <d-math>\|f\| = </d-math>
+          {plot.validInv ?  numberDisplay(plot.functionNorm()) : 'Error: non-singular K'}
         </div>
       </div>
       <div style="flex-grow: 1">
         <div class="pad-small"><button on:click={() => { solve(); }}>Solve</button></div>
-        <div class="pad-small"><button on:click={() => { plot.toggle_scramble(); plot = plot;}}>
+        <div class="pad-small"><button on:click={() => { toggle_scramble(); }}>
             {plot.scrambled() ? 'Unscramble' : 'Scramble'}
           </button>
         </div>
