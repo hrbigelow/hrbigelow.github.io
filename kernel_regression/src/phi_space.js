@@ -1,15 +1,15 @@
 import { Plot } from './plot.js';
 import { Context } from './context.js';
 import * as d3 from 'd3';
-import * as mat from 'ml-matrix';
+import { Matrix, inverse } from 'ml-matrix';
 
 const XMIN = -4;
 const XMAX = 4;
 
 export class PhiSpace {
   constructor(max_alpha) {
-    this.basis = new mat.Matrix([[1,0], [0,0]]);
-    this.alpha = new mat.Matrix([[1, 1]]);
+    this.basis = new Matrix([[1,0], [0,0]]);
+    this.alpha = new Matrix([[1, 1]]);
     this.xp = XMAX - 2;
     this.xTou = d3.scaleLinear().domain([-max_alpha, max_alpha]);
     this.yTov = d3.scaleLinear().domain([-max_alpha, max_alpha]);
@@ -22,6 +22,16 @@ export class PhiSpace {
     this.plot.alpha = this.alpha.flat();
     this.plot.initK();
     this.plot.initCurveCache();
+  }
+
+  toUV(val, i) {
+    if (i == 0) return this.xTou(val);
+    return this.yTov(val);
+  }
+
+  toXY(val, i) {
+    if (i == 0) return this.xTou.invert(val);
+    return this.yTov.invert(val);
   }
 
   resizePhi(w, h) {
@@ -46,21 +56,26 @@ export class PhiSpace {
 
   // update the current function f
   updateF(u, v) {
-    var fx = this.xTou.invert(u);
-    var fy = this.yTov.invert(v);
-    var F = new mat.Matrix([[fx, fy]]);
-    this.alpha = F.mmul(mat.inverse(this.basis));
+    var fx = this.toXY(u, 0);
+    var fy = this.toXY(v, 1);
+    var F = new Matrix([[fx, fy]]);
+    this.alpha = F.mmul(inverse(this.basis));
     this.plot.alpha = this.alpha.flat();
   }
 
   F(i) {
-    var [x, y] = this.alpha.mmul(this.basis).flat();
-    return [this.xTou(x), this.yTov(y)][i];
+    var xy = this.alpha.mmul(this.basis).flat();
+    return this.toUV(xy[i], i);
+  }
+
+  // calculate the projection of F onto the j'th component of the i'th basis
+  Fproj(i,j) {
+    var l = this.alpha.mmul(this.plot.K)[0][i];
+    return this.toUV(this.basis[i][j] * l, j);
   }
 
   scr(i,c) {
-    if (c == 0) return this.xTou(this.basis[i][0]);
-    else return this.yTov(this.basis[i][1]);
+    return this.toUV(this.basis[i][c], c);
   }
 
 }

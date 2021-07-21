@@ -67,6 +67,11 @@ $: set_sigma(log_sigma);
     flex-direction: row;
   }
 
+  .col {
+    display: flex;
+    flex-direction: column;
+  }
+
   .basis {
     fill: none;
     stroke: rgba(200, 200, 200, 1);
@@ -93,11 +98,15 @@ $: set_sigma(log_sigma);
     fill: rgba(0,0,255,1);
   }
 
+  .proj {
+    fill: rgba(255,0,0,1);
+  }
+
   .drag {
     fill: transparent;
   }
 
-  .svg-wrap {
+  .grow {
     flex-grow: 1;
   }
 
@@ -114,11 +123,19 @@ $: set_sigma(log_sigma);
     height: 100%;
   }
 
+  .fw {
+    width: 100%;
+  }
+
+  .outer {
+    width: 100%;
+  }
+
 </style>
 
 <div class='row full'>
-  <div class='col full'>
-    <div class='svg-wrap pad full'
+  <div class='col fw'>
+    <div class='grow pad'
          bind:clientWidth={vis_width} bind:clientHeight={vis_height}>
       <svg class='inner-plot full'> 
         {#each d3.range(pp.plot.n) as i}
@@ -139,7 +156,7 @@ $: set_sigma(log_sigma);
   </div>
 
   <div class='col full'>
-    <div class='svg-wrap pad full'
+    <div class='grow pad'
          bind:clientWidth={phi_width} bind:clientHeight={phi_height}>
       <svg class='inner-plot full' 
            on:mousemove={onMouseMove}
@@ -169,6 +186,7 @@ $: set_sigma(log_sigma);
                               x2="{pp.scr(i,0)}"
                               y2="{pp.scr(i,1)}" 
                               marker-end="url(#basis-arrow)" />
+          <circle class="proj" r="6" cx="{pp.Fproj(i,0)}" cy="{pp.Fproj(i,1)}" />
         {/each}
 
         <line class='solution-curve'
@@ -182,7 +200,7 @@ $: set_sigma(log_sigma);
         on:mousedown={onMouseDown} />
       </svg>
     </div>
-    <div class='pad'>
+    <div class=''>
       <p>Plane spanned by vectors 
       <d-math>\phi</d-math>({numberDisplay(pp.plot.x[0])}; <d-math>\sigma</d-math>={numberDisplay(Math.pow(10, log_sigma))}) and
       <d-math>\phi</d-math>({numberDisplay(pp.plot.x[1])}; <d-math>\sigma</d-math>={numberDisplay(Math.pow(10, log_sigma))})

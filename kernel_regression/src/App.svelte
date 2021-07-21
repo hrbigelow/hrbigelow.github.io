@@ -1,7 +1,11 @@
 <script>
-    import MainPlot from './MainPlot.svelte';
+    import Figure1 from './Figure1.svelte';
     import PhiVectors from './PhiVectors.svelte';
 </script>
+
+<style>
+
+</style>
 
 <main>
 
@@ -30,7 +34,7 @@
         <h3>A problem for Kernel Regression to solve</h3>
 
         <figure class="l-page-outset" style="height: 500px;">
-            <MainPlot/>
+            <Figure1/>
         </figure>
 
         <figure class="l-page-outset" style="height: 500px;">
@@ -43,6 +47,3 @@
     </d-appendix>
 
 </main>
-
-<style>
-</style>

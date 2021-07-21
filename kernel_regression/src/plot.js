@@ -178,6 +178,12 @@ export class Plot {
     return norm;
   }
 
+  resize(w, h) {
+    this.ctx.setWidth(w);
+    this.ctx.setHeight(h);
+    this.width = this.ctx.width;
+    this.height = this.ctx.height;
+  }
 
   updateContext(context) {
     this.ctx = context;

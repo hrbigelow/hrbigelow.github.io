@@ -1,29 +1,27 @@
 <script>
-import {Plot} from './plot';
+import { Plot } from './plot';
 import {Context} from './context';
 import {range, zip} from 'd3';
 import { onMount } from 'svelte';
 
-export let show_data = true;
-export let show_scaled = true;
-export let show_solution = true;
-export let show_points = false;
-export let width=10, height=10;
-let plot = null, ctx;
+let cfg = {
+  show_data: true,
+  show_scaled: true,
+  show_solution: true,
+  show_points: false,
+  auto_solve: true,
+  log_sigma: 0
+};
+
+let box = { w: 10, h: 10 };
+
 let drag_point = null;
-let auto_solve = true;
-let log_sigma=0;
-
-ctx = new Context(width, height, [-4, 4], [-4, 4]);
-plot = new Plot(ctx, 3);
-
-// NOTE: Statements starting with '$:' are only interpreted as reactive
-// statements if they occur at the top-level.
-// This means you really must 
-// $: console.log(`line 17: width = ${width}, height = ${height}`);
+let cfg = new Config();
+let ctx = new Context(box.w, box.h, [-4, 4], [-4, 4]);
+let plot = new Plot(ctx, 3);
 
 function resize(width, height) {
-  // console.log(`in resize with ${width} x ${height}`);
+  console.log(`in resize with ${width} x ${height}`);
   ctx.setWidth(width);
   ctx.setHeight(height);
   plot.updateContext(ctx);
@@ -31,19 +29,19 @@ function resize(width, height) {
 }
 
 onMount(() => {
-  resize(width, height);
+  resize(box.w, box.h);
 });
 
 
 function toggle_scramble() {
   plot.toggle_scramble();
-  if (auto_solve) solve();
+  if (cfg.auto_solve) solve();
   plot.nonce++;
 }
 
 function set_sigma(log_sigma) {
   plot.set_sigma(log_sigma);
-  if (auto_solve)
+  if (cfg.auto_solve)
     plot.alpha = plot.solutionAlpha();
   plot.nonce++;
 }
@@ -54,30 +52,21 @@ function numberDisplay(n) {
   return ns;
 }
   
-// $: console.log(`drag_point: ${drag_point}`);
-$: set_sigma(log_sigma); 
-
 function onMouseDown(evt) {
-  // console.log('onMouseDown');
   drag_point = evt.target;
-  // console.log(evt);
 }
 
 function onMouseMove(evt) {
   if (drag_point == null) return;
   plot.setDataPoint(drag_point.id, evt.offsetX, evt.offsetY);
-  if (auto_solve) 
+  if (cfg.auto_solve) 
     plot.alpha = plot.solutionAlpha(); 
 
   plot.nonce++;
-  // console.log('onMouseMove');
-  // console.log(evt);
 }
 
 function onMouseUp(evt) {
   drag_point = null;
-  // console.log('onMouseUp');
-  // console.log(evt);
 }
 
 
@@ -97,7 +86,8 @@ function solve() {
   transition(0, 100);
 }
 
-$: resize(width, height);
+$: resize(box.w, box.h);
+$: set_sigma(cfg.log_sigma); 
 
 </script>
 
@@ -151,9 +141,11 @@ $: resize(width, height);
     /* background-color: #17ad37; */
   }
 
+
   .svg-wrap {
     flex-grow: 1;
   }
+
 
   .inner-plot {
     border: 1px solid gray;
@@ -165,42 +157,35 @@ $: resize(width, height);
     stroke-width: 2px;
   }
 
-  /*
-  .ss {
-    baseline-shift: sub;
-    font-size: 11px;
-  }
-  */
-
 
 </style>
 
 <div class="row full">
   <div class="col full">
-    <div class="svg-wrap full"
-         bind:clientWidth={width} bind:clientHeight={height}>
+    <div class="svg-wrap"
+         bind:clientWidth={box.w} bind:clientHeight={box.h}>
       <svg class="inner-plot full"
            on:mousemove={onMouseMove}
            on:mouseup={onMouseUp}
            >
 
            {#each range(plot.n) as i}
-             {#if show_scaled}
+             {#if cfg.show_scaled}
                <path class="curve" d="{plot.curve(i)}"/>
              {/if}
 
-             {#if show_points}
+             {#if cfg.show_points}
                {#each plot.points(i) as [u,v]}
                  <circle class="point" cx="{u}" cy="{v}" r="4"/>
                {/each}
              {/if}
            {/each}
 
-           {#if show_solution}
+           {#if cfg.show_solution}
              <path class="solution-curve" d="{plot.solutionCurve()}"/>
            {/if}
 
-           {#if show_data}
+           {#if cfg.show_data}
              {#each plot.data() as [u,v], i}
                <circle
                  id={i} 
@@ -229,7 +214,7 @@ $: resize(width, height);
       <div style="flex-grow: 1">
         <div class="pad-small"><button on:click={() => { plot.populate(); plot.nonce++;}}>New Data</button></div>
         <div class="pad-small">
-          <label>Sigma: <input type="range" bind:value={log_sigma} min=-5 max=2 step=0.1>{Math.pow(10, log_sigma).toFixed(3)}</label>
+          <label>Sigma: <input type="range" bind:value={cfg.log_sigma} min=-5 max=2 step=0.1>{Math.pow(10, cfg.log_sigma).toFixed(3)}</label>
         </div>
         <div class="pad-small">
           <d-math>\|f\| = </d-math>
@@ -244,10 +229,10 @@ $: resize(width, height);
         </div>
       </div>
       <div style="flex-grow: 1: align: right;">
-        <div><label><input type="checkbox" bind:checked="{show_points}">points</label></div>
-        <div><label><input type="checkbox" bind:checked="{show_scaled}">curves</label></div>
-        <div><label><input type="checkbox" bind:checked="{show_solution}">solution</label></div>
-        <div><label><input type="checkbox" bind:checked="{auto_solve}">auto solve</label></div>
+        <div><label><input type="checkbox" bind:checked="{cfg.show_points}">points</label></div>
+        <div><label><input type="checkbox" bind:checked="{cfg.show_scaled}">curves</label></div>
+        <div><label><input type="checkbox" bind:checked="{cfg.show_solution}">solution</label></div>
+        <div><label><input type="checkbox" bind:checked="{cfg.auto_solve}">auto solve</label></div>
       </div>
     </div>
   </div>
