@@ -173,10 +173,8 @@ $: notify(pp);
             y1="{pp.yTov(0)}"
             x2="{pp.F(0)}" 
             y2="{pp.F(1)}" 
-            marker-end="url(#solution-arrow)" />
-
-      <circle id="f" class="drag" r="6" cx="{pp.F(0)}" cy="{pp.F(1)}" 
-      on:mousedown={onMouseDown} />
+            marker-end="url(#solution-arrow)" 
+            on:mousedown={onMouseDown} />
 
     </svg>
   </div>

@@ -66,7 +66,7 @@ $: notify(plot);
   }
 
   .control {
-    min-width: 700px;
+    min-width: 500px;
     margin: auto;
     /* background-color: #17ad37; */
   }
