@@ -1,6 +1,6 @@
 <script>
     import Figure1 from './Figure1.svelte';
-    import PhiVectors from './PhiVectors.svelte';
+    import Figure2 from './Figure2.svelte';
 </script>
 
 <style>
@@ -38,7 +38,7 @@
         </figure>
 
         <figure class="l-page-outset" style="height: 500px;">
-            <PhiVectors />
+            <Figure2/>
         </figure>
 
     </d-article>

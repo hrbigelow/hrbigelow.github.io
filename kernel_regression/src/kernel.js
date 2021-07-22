@@ -12,7 +12,7 @@ export class RBFKernel {
 
   // find +x solving call(0, x) = y
   inv0(y) {
-    var sigma2 = this.g.cov.flat()[0];
+    var sigma2 = this.get_sigma2();
     var ys = y / this.scale;
     const sspi = Math.sqrt(sigma2 * 2.0 * Math.PI);
     const dssq = -2.0 * sigma2; 
@@ -21,8 +21,12 @@ export class RBFKernel {
   }
 
   set_sigma(sigma) {
-    this.g = new gauss.Gaussian([0], [[sigma]]);
+    this.g = new gauss.Gaussian([0], [[sigma * sigma]]);
     this.scale = 1.0 / this.g.at([0]);
+  }
+
+  get_sigma2() {
+    return this.g.cov[0][0];
   }
 
   cuts(x, beg, end) {
@@ -48,8 +52,12 @@ export class RBFShuffleKernel {
   }
 
   set_sigma(sigma) {
-    this.g = new gauss.Gaussian([0], [[sigma]]);
+    this.g = new gauss.Gaussian([0], [[sigma * sigma]]);
     this.scale = 1.0 / this.g.at([0]);
+  }
+
+  get_sigma2() {
+    return this.g.cov[0][0];
   }
 
   // return a list of points of discontinuity in [beg, end] for the

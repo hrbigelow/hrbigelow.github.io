@@ -5,7 +5,7 @@ import { numberDisplay } from './presentation';
 export let sig, cfg, plot;
 
 function update() {
-  plot.nonce++;
+  plot.touch++;
 }
 
 var [ respond, notify ] = make_sync(update, sig);
@@ -13,14 +13,14 @@ var [ respond, notify ] = make_sync(update, sig);
 function toggle_scramble() {
   plot.toggle_scramble();
   if (cfg.auto_solve) solve();
-  plot.nonce++;
+  plot.touch++;
 }
 
 function set_sigma(log_sigma) {
   plot.set_sigma(log_sigma);
   if (cfg.auto_solve)
     plot.alpha = plot.solutionAlpha();
-  plot.nonce++;
+  plot.touch++;
 }
 
 function solve() {
@@ -76,7 +76,7 @@ $: notify(plot);
 
 <div class="row control pad">
   <div style="flex-grow: 1">
-    <div class="pad-small"><button on:click={() => { plot.populate(); plot.nonce++;}}>New Data</button></div>
+    <div class="pad-small"><button on:click={() => { plot.populate(); plot.touch++;}}>New Data</button></div>
     <div class="pad-small">
       <label>Sigma: <input type="range" bind:value={cfg.log_sigma} min=-5 max=2 step=0.1>{Math.pow(10, cfg.log_sigma).toFixed(3)}</label>
     </div>

@@ -10,7 +10,7 @@ const ALPHA_RANGE = 5;
 
 export class Plot {
   constructor(context, n) {
-    this.nonce = 0;
+    this.touch = 0;
     this.ctx = context; 
     this.height = this.ctx.height;
     this.width = this.ctx.width;
@@ -120,11 +120,15 @@ export class Plot {
     this.initK();
   }
 
+  get_sigma2() {
+    return this.kernels[this.active_ker].get_sigma2();
+  }
+
   populate() {
     var n = this.n;
     this.x = new Array(n);
     this.y = new Array(n);
-    this.alpha = new Array(n);
+    this.alpha = new Array(n); 
 
     for (let i = 0; i != n; i++) {
       this.x[i] = this.ctx.unitToX(Math.random());
@@ -136,9 +140,7 @@ export class Plot {
     for (let i = 0; i != n; i++) 
       this.y[i] = this.solutionPoint(i);
 
-    for (let i = 0; i != n; i++) {
-      this.alpha[i] = 1.0;
-    }
+    this.alpha.fill(1.0);
   }
 
   setDataPoint(i, u, v) {

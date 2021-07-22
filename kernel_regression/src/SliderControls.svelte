@@ -5,7 +5,7 @@ import { numberDisplay } from './presentation';
 export let sig, plot;
 
 function update() {
-  plot.nonce++;
+  plot.touch++;
 }
 
 var [ respond, notify ] = make_sync(update, sig);
@@ -43,11 +43,11 @@ $: notify(plot);
 
 <div class="pad col">
   <div class="pad-small">
-    <button on:click={() => { plot.resetAlpha(); plot = plot;}}>Reset Alpha</button>
+    <button on:click={() => { plot.resetAlpha(); plot.touch++;}}>Reset Alpha</button>
   </div> 
   <div class="row">
-    <div class="pad-small"><button on:click={() => { plot.delPoint(); plot = plot;}}>Del Point</button></div>
-    <div class="pad-small"><button on:click={() => { plot.addPoint(); plot = plot;}}>Add Point</button></div>
+    <div class="pad-small"><button on:click={() => { plot.delPoint(); plot.touch++;}}>Del Point</button></div>
+    <div class="pad-small"><button on:click={() => { plot.addPoint(); plot.touch++;}}>Add Point</button></div>
   </div>
   {#each plot.alpha as a, i}
     <div class="row pad-small">

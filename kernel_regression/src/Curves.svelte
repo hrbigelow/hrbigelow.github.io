@@ -8,7 +8,7 @@ let drag_point = null;
 
 
 function update() {
-  plot.nonce++;
+  plot.touch++;
 }
 
 var [ respond, notify ] = make_sync(update, sig);
@@ -17,7 +17,7 @@ var [ respond, notify ] = make_sync(update, sig);
 function resize(width, height) {
   console.log(`in resize with ${width} x ${height}`);
   plot.resize(width, height);
-  plot.nonce++;
+  update();
 }
 
 onMount(() => {
@@ -33,8 +33,7 @@ function onMouseMove(evt) {
   plot.setDataPoint(drag_point.id, evt.offsetX, evt.offsetY);
   if (cfg.auto_solve) 
     plot.alpha = plot.solutionAlpha(); 
-
-  plot.nonce++;
+  update();
 }
 
 function onMouseUp(evt) {
