@@ -1,5 +1,5 @@
 <script>
-    import MainPlot from './MainPlot.svelte';
+  import Figure1 from './Figure1.svelte';
 </script>
 
 <style>
@@ -14,7 +14,7 @@
 
 
 <div class="view"> 
-  <MainPlot/> 
+  <Figure1/> 
 </div>
 
 

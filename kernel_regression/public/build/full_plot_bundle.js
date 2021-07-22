@@ -27,6 +27,18 @@ var full = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function validate_store(store, name) {
+        if (store != null && typeof store.subscribe !== 'function') {
+            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+        }
+    }
+    function subscribe(store, ...callbacks) {
+        if (store == null) {
+            return noop;
+        }
+        const unsub = store.subscribe(...callbacks);
+        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
 
     function append(target, node) {
         target.appendChild(node);
@@ -448,6 +460,58 @@ var full = (function () {
         }
         $capture_state() { }
         $inject_state() { }
+    }
+
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = [];
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (let i = 0; i < subscribers.length; i += 1) {
+                        const s = subscribers[i];
+                        s[1]();
+                        subscriber_queue.push(s, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.push(subscriber);
+            if (subscribers.length === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                const index = subscribers.indexOf(subscriber);
+                if (index !== -1) {
+                    subscribers.splice(index, 1);
+                }
+                if (subscribers.length === 0) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
     }
 
     const toString = Object.prototype.toString;
@@ -7235,7 +7299,7 @@ var full = (function () {
 
       // find +x solving call(0, x) = y
       inv0(y) {
-        var sigma2 = this.g.cov.flat()[0];
+        var sigma2 = this.get_sigma2();
         var ys = y / this.scale;
         const sspi = Math.sqrt(sigma2 * 2.0 * Math.PI);
         const dssq = -2.0 * sigma2; 
@@ -7244,8 +7308,12 @@ var full = (function () {
       }
 
       set_sigma(sigma) {
-        this.g = new Gaussian([0], [[sigma]]);
+        this.g = new Gaussian([0], [[sigma * sigma]]);
         this.scale = 1.0 / this.g.at([0]);
+      }
+
+      get_sigma2() {
+        return this.g.cov[0][0];
       }
 
       cuts(x, beg, end) {
@@ -7271,8 +7339,12 @@ var full = (function () {
       }
 
       set_sigma(sigma) {
-        this.g = new Gaussian([0], [[sigma]]);
+        this.g = new Gaussian([0], [[sigma * sigma]]);
         this.scale = 1.0 / this.g.at([0]);
+      }
+
+      get_sigma2() {
+        return this.g.cov[0][0];
       }
 
       // return a list of points of discontinuity in [beg, end] for the
@@ -8833,7 +8905,7 @@ var full = (function () {
 
     class Plot {
       constructor(context, n) {
-        this.nonce = 0;
+        this.touch = 0;
         this.ctx = context; 
         this.height = this.ctx.height;
         this.width = this.ctx.width;
@@ -8943,11 +9015,15 @@ var full = (function () {
         this.initK();
       }
 
+      get_sigma2() {
+        return this.kernels[this.active_ker].get_sigma2();
+      }
+
       populate() {
         var n = this.n;
         this.x = new Array(n);
         this.y = new Array(n);
-        this.alpha = new Array(n);
+        this.alpha = new Array(n); 
 
         for (let i = 0; i != n; i++) {
           this.x[i] = this.ctx.unitToX(Math.random());
@@ -8959,9 +9035,7 @@ var full = (function () {
         for (let i = 0; i != n; i++) 
           this.y[i] = this.solutionPoint(i);
 
-        for (let i = 0; i != n; i++) {
-          this.alpha[i] = 1.0;
-        }
+        this.alpha.fill(1.0);
       }
 
       setDataPoint(i, u, v) {
@@ -9001,6 +9075,12 @@ var full = (function () {
         return norm;
       }
 
+      resize(w, h) {
+        this.ctx.setWidth(w);
+        this.ctx.setHeight(h);
+        this.width = this.ctx.width;
+        this.height = this.ctx.height;
+      }
 
       updateContext(context) {
         this.ctx = context;
@@ -9150,41 +9230,59 @@ var full = (function () {
       }
     }
 
-    /* src/MainPlot.svelte generated by Svelte v3.38.2 */
+    function make_sync(updater, sig) {
+    	var flag = false;
+
+      /* Synopsis: 
+       * import { writable } from 'svelte/store';
+       * let sig = writable(0);
+       * 
+       * $: respond($sig);
+       * $: notify(obj);
+       *
+       */
+    	var respond = (val) => {
+    			updater();
+    			flag = true;
+    	};
+
+    	var notify = (val) => {
+    		 if (flag) {
+    			 flag = false;
+    			 return;
+    		 } 
+    		 sig.update(n => n + 1);
+    	};
+    	return [respond, notify];
+    }
+
+    /* src/Curves.svelte generated by Svelte v3.38.2 */
 
     const { console: console_1 } = globals;
-    const file$1 = "src/MainPlot.svelte";
+    const file$4 = "src/Curves.svelte";
 
-    function get_each_context(ctx, list, i) {
+    function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[26] = list[i];
-    	child_ctx[27] = list;
-    	child_ctx[28] = i;
+    	child_ctx[14] = list[i][0];
+    	child_ctx[15] = list[i][1];
+    	child_ctx[17] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[29] = list[i][0];
-    	child_ctx[30] = list[i][1];
-    	child_ctx[28] = i;
+    	child_ctx[17] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[28] = list[i];
+    	child_ctx[14] = list[i][0];
+    	child_ctx[15] = list[i][1];
     	return child_ctx;
     }
 
-    function get_each_context_3(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[29] = list[i][0];
-    	child_ctx[30] = list[i][1];
-    	return child_ctx;
-    }
-
-    // (175:13) {#if cfg.show_scaled}
+    // (103:9) {#if cfg.show_scaled}
     function create_if_block_3(ctx) {
     	let path;
     	let path_d_value;
@@ -9192,15 +9290,15 @@ var full = (function () {
     	const block = {
     		c: function create() {
     			path = svg_element("path");
-    			attr_dev(path, "class", "curve svelte-1fi5an1");
-    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[2].curve(/*i*/ ctx[28]));
-    			add_location(path, file$1, 175, 15, 3016);
+    			attr_dev(path, "class", "curve svelte-h2llez");
+    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[1].curve(/*i*/ ctx[17]));
+    			add_location(path, file$4, 103, 11, 1590);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, path, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot*/ 4 && path_d_value !== (path_d_value = /*plot*/ ctx[2].curve(/*i*/ ctx[28]))) {
+    			if (dirty & /*plot*/ 2 && path_d_value !== (path_d_value = /*plot*/ ctx[1].curve(/*i*/ ctx[17]))) {
     				attr_dev(path, "d", path_d_value);
     			}
     		},
@@ -9213,22 +9311,22 @@ var full = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(175:13) {#if cfg.show_scaled}",
+    		source: "(103:9) {#if cfg.show_scaled}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (179:13) {#if cfg.show_points}
+    // (107:9) {#if cfg.show_points}
     function create_if_block_2(ctx) {
     	let each_1_anchor;
-    	let each_value_3 = /*plot*/ ctx[2].points(/*i*/ ctx[28]);
-    	validate_each_argument(each_value_3);
+    	let each_value_2 = /*plot*/ ctx[1].points(/*i*/ ctx[17]);
+    	validate_each_argument(each_value_2);
     	let each_blocks = [];
 
-    	for (let i = 0; i < each_value_3.length; i += 1) {
-    		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
     	}
 
     	const block = {
@@ -9247,18 +9345,18 @@ var full = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot*/ 4) {
-    				each_value_3 = /*plot*/ ctx[2].points(/*i*/ ctx[28]);
-    				validate_each_argument(each_value_3);
+    			if (dirty & /*plot, range*/ 2) {
+    				each_value_2 = /*plot*/ ctx[1].points(/*i*/ ctx[17]);
+    				validate_each_argument(each_value_2);
     				let i;
 
-    				for (i = 0; i < each_value_3.length; i += 1) {
-    					const child_ctx = get_each_context_3(ctx, each_value_3, i);
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
 
     					if (each_blocks[i]) {
     						each_blocks[i].p(child_ctx, dirty);
     					} else {
-    						each_blocks[i] = create_each_block_3(child_ctx);
+    						each_blocks[i] = create_each_block_2(child_ctx);
     						each_blocks[i].c();
     						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
     					}
@@ -9268,7 +9366,7 @@ var full = (function () {
     					each_blocks[i].d(1);
     				}
 
-    				each_blocks.length = each_value_3.length;
+    				each_blocks.length = each_value_2.length;
     			}
     		},
     		d: function destroy(detaching) {
@@ -9281,15 +9379,15 @@ var full = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(179:13) {#if cfg.show_points}",
+    		source: "(107:9) {#if cfg.show_points}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (180:15) {#each plot.points(i) as [u,v]}
-    function create_each_block_3(ctx) {
+    // (108:11) {#each plot.points(i) as [u,v]}
+    function create_each_block_2(ctx) {
     	let circle;
     	let circle_cx_value;
     	let circle_cy_value;
@@ -9297,21 +9395,21 @@ var full = (function () {
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
-    			attr_dev(circle, "class", "point svelte-1fi5an1");
-    			attr_dev(circle, "cx", circle_cx_value = /*u*/ ctx[29]);
-    			attr_dev(circle, "cy", circle_cy_value = /*v*/ ctx[30]);
+    			attr_dev(circle, "class", "point svelte-h2llez");
+    			attr_dev(circle, "cx", circle_cx_value = /*u*/ ctx[14]);
+    			attr_dev(circle, "cy", circle_cy_value = /*v*/ ctx[15]);
     			attr_dev(circle, "r", "4");
-    			add_location(circle, file$1, 180, 17, 3177);
+    			add_location(circle, file$4, 108, 13, 1735);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot*/ 4 && circle_cx_value !== (circle_cx_value = /*u*/ ctx[29])) {
+    			if (dirty & /*plot*/ 2 && circle_cx_value !== (circle_cx_value = /*u*/ ctx[14])) {
     				attr_dev(circle, "cx", circle_cx_value);
     			}
 
-    			if (dirty[0] & /*plot*/ 4 && circle_cy_value !== (circle_cy_value = /*v*/ ctx[30])) {
+    			if (dirty & /*plot*/ 2 && circle_cy_value !== (circle_cy_value = /*v*/ ctx[15])) {
     				attr_dev(circle, "cy", circle_cy_value);
     			}
     		},
@@ -9322,21 +9420,21 @@ var full = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_3.name,
+    		id: create_each_block_2.name,
     		type: "each",
-    		source: "(180:15) {#each plot.points(i) as [u,v]}",
+    		source: "(108:11) {#each plot.points(i) as [u,v]}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (174:11) {#each range(plot.n) as i}
-    function create_each_block_2(ctx) {
+    // (102:7) {#each range(plot.n) as i}
+    function create_each_block_1(ctx) {
     	let if_block0_anchor;
     	let if_block1_anchor;
-    	let if_block0 = /*cfg*/ ctx[1].show_scaled && create_if_block_3(ctx);
-    	let if_block1 = /*cfg*/ ctx[1].show_points && create_if_block_2(ctx);
+    	let if_block0 = /*cfg*/ ctx[3].show_scaled && create_if_block_3(ctx);
+    	let if_block1 = /*cfg*/ ctx[3].show_points && create_if_block_2(ctx);
 
     	const block = {
     		c: function create() {
@@ -9352,7 +9450,7 @@ var full = (function () {
     			insert_dev(target, if_block1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*cfg*/ ctx[1].show_scaled) {
+    			if (/*cfg*/ ctx[3].show_scaled) {
     				if (if_block0) {
     					if_block0.p(ctx, dirty);
     				} else {
@@ -9365,7 +9463,7 @@ var full = (function () {
     				if_block0 = null;
     			}
 
-    			if (/*cfg*/ ctx[1].show_points) {
+    			if (/*cfg*/ ctx[3].show_points) {
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
     				} else {
@@ -9388,16 +9486,16 @@ var full = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_2.name,
+    		id: create_each_block_1.name,
     		type: "each",
-    		source: "(174:11) {#each range(plot.n) as i}",
+    		source: "(102:7) {#each range(plot.n) as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (186:11) {#if cfg.show_solution}
+    // (114:7) {#if cfg.show_solution}
     function create_if_block_1(ctx) {
     	let path;
     	let path_d_value;
@@ -9405,15 +9503,15 @@ var full = (function () {
     	const block = {
     		c: function create() {
     			path = svg_element("path");
-    			attr_dev(path, "class", "solution-curve svelte-1fi5an1");
-    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[2].solutionCurve());
-    			add_location(path, file$1, 186, 13, 3335);
+    			attr_dev(path, "class", "solution-curve svelte-h2llez");
+    			attr_dev(path, "d", path_d_value = /*plot*/ ctx[1].solutionCurve());
+    			add_location(path, file$4, 114, 9, 1873);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, path, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot*/ 4 && path_d_value !== (path_d_value = /*plot*/ ctx[2].solutionCurve())) {
+    			if (dirty & /*plot*/ 2 && path_d_value !== (path_d_value = /*plot*/ ctx[1].solutionCurve())) {
     				attr_dev(path, "d", path_d_value);
     			}
     		},
@@ -9426,22 +9524,22 @@ var full = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(186:11) {#if cfg.show_solution}",
+    		source: "(114:7) {#if cfg.show_solution}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (190:11) {#if cfg.show_data}
+    // (118:7) {#if cfg.show_data}
     function create_if_block(ctx) {
     	let each_1_anchor;
-    	let each_value_1 = /*plot*/ ctx[2].data();
-    	validate_each_argument(each_value_1);
+    	let each_value = /*plot*/ ctx[1].data();
+    	validate_each_argument(each_value);
     	let each_blocks = [];
 
-    	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
     	}
 
     	const block = {
@@ -9460,18 +9558,18 @@ var full = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot, onMouseDown*/ 20) {
-    				each_value_1 = /*plot*/ ctx[2].data();
-    				validate_each_argument(each_value_1);
+    			if (dirty & /*plot, onMouseDown*/ 18) {
+    				each_value = /*plot*/ ctx[1].data();
+    				validate_each_argument(each_value);
     				let i;
 
-    				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
 
     					if (each_blocks[i]) {
     						each_blocks[i].p(child_ctx, dirty);
     					} else {
-    						each_blocks[i] = create_each_block_1(child_ctx);
+    						each_blocks[i] = create_each_block$1(child_ctx);
     						each_blocks[i].c();
     						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
     					}
@@ -9481,7 +9579,7 @@ var full = (function () {
     					each_blocks[i].d(1);
     				}
 
-    				each_blocks.length = each_value_1.length;
+    				each_blocks.length = each_value.length;
     			}
     		},
     		d: function destroy(detaching) {
@@ -9494,15 +9592,15 @@ var full = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(190:11) {#if cfg.show_data}",
+    		source: "(118:7) {#if cfg.show_data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (191:13) {#each plot.data() as [u,v], i}
-    function create_each_block_1(ctx) {
+    // (119:9) {#each plot.data() as [u,v], i}
+    function create_each_block$1(ctx) {
     	let circle;
     	let circle_cx_value;
     	let circle_cy_value;
@@ -9512,12 +9610,12 @@ var full = (function () {
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
-    			attr_dev(circle, "id", /*i*/ ctx[28]);
-    			attr_dev(circle, "class", "data svelte-1fi5an1");
-    			attr_dev(circle, "cx", circle_cx_value = /*u*/ ctx[29]);
-    			attr_dev(circle, "cy", circle_cy_value = /*v*/ ctx[30]);
+    			attr_dev(circle, "id", /*i*/ ctx[17]);
+    			attr_dev(circle, "class", "data svelte-h2llez");
+    			attr_dev(circle, "cx", circle_cx_value = /*u*/ ctx[14]);
+    			attr_dev(circle, "cy", circle_cy_value = /*v*/ ctx[15]);
     			attr_dev(circle, "r", "5");
-    			add_location(circle, file$1, 191, 15, 3502);
+    			add_location(circle, file$4, 119, 11, 2024);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
@@ -9528,11 +9626,11 @@ var full = (function () {
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot*/ 4 && circle_cx_value !== (circle_cx_value = /*u*/ ctx[29])) {
+    			if (dirty & /*plot*/ 2 && circle_cx_value !== (circle_cx_value = /*u*/ ctx[14])) {
     				attr_dev(circle, "cx", circle_cx_value);
     			}
 
-    			if (dirty[0] & /*plot*/ 4 && circle_cy_value !== (circle_cy_value = /*v*/ ctx[30])) {
+    			if (dirty & /*plot*/ 2 && circle_cy_value !== (circle_cy_value = /*v*/ ctx[15])) {
     				attr_dev(circle, "cy", circle_cy_value);
     			}
     		},
@@ -9545,29 +9643,854 @@ var full = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1.name,
+    		id: create_each_block$1.name,
     		type: "each",
-    		source: "(191:13) {#each plot.data() as [u,v], i}",
+    		source: "(119:9) {#each plot.data() as [u,v], i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (250:4) {#each plot.alpha as a, i}
+    function create_fragment$4(ctx) {
+    	let div;
+    	let svg;
+    	let each_1_anchor;
+    	let if_block0_anchor;
+    	let div_resize_listener;
+    	let mounted;
+    	let dispose;
+    	let each_value_1 = range(/*plot*/ ctx[1].n);
+    	validate_each_argument(each_value_1);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	let if_block0 = /*cfg*/ ctx[3].show_solution && create_if_block_1(ctx);
+    	let if_block1 = /*cfg*/ ctx[3].show_data && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			svg = svg_element("svg");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    			if (if_block0) if_block0.c();
+    			if_block0_anchor = empty();
+    			if (if_block1) if_block1.c();
+    			attr_dev(svg, "class", "inner-plot full svelte-h2llez");
+    			add_location(svg, file$4, 96, 2, 1411);
+    			attr_dev(div, "class", "svg-wrap svelte-h2llez");
+    			add_render_callback(() => /*div_elementresize_handler*/ ctx[8].call(div));
+    			add_location(div, file$4, 94, 0, 1330);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, svg);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(svg, null);
+    			}
+
+    			append_dev(svg, each_1_anchor);
+    			if (if_block0) if_block0.m(svg, null);
+    			append_dev(svg, if_block0_anchor);
+    			if (if_block1) if_block1.m(svg, null);
+    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[8].bind(div));
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(svg, "mousemove", /*onMouseMove*/ ctx[5], false, false, false),
+    					listen_dev(svg, "mouseup", /*onMouseUp*/ ctx[6], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*plot, range, cfg*/ 10) {
+    				each_value_1 = range(/*plot*/ ctx[1].n);
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(svg, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_1.length;
+    			}
+
+    			if (/*cfg*/ ctx[3].show_solution) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_1(ctx);
+    					if_block0.c();
+    					if_block0.m(svg, if_block0_anchor);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*cfg*/ ctx[3].show_data) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block(ctx);
+    					if_block1.c();
+    					if_block1.m(svg, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_each(each_blocks, detaching);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    			div_resize_listener();
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$4.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	let $sig,
+    		$$unsubscribe_sig = noop,
+    		$$subscribe_sig = () => ($$unsubscribe_sig(), $$unsubscribe_sig = subscribe(sig, $$value => $$invalidate(7, $sig = $$value)), sig);
+
+    	$$self.$$.on_destroy.push(() => $$unsubscribe_sig());
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("Curves", slots, []);
+    	let { sig } = $$props, { box } = $$props, { cfg } = $$props, { plot } = $$props;
+    	validate_store(sig, "sig");
+    	$$subscribe_sig();
+    	let drag_point = null;
+
+    	function update() {
+    		$$invalidate(1, plot.touch++, plot);
+    	}
+
+    	var [respond, notify] = make_sync(update, sig);
+
+    	function resize(width, height) {
+    		console.log(`in resize with ${width} x ${height}`);
+    		plot.resize(width, height);
+    		update();
+    	}
+
+    	onMount(() => {
+    		resize(box.w, box.h);
+    	});
+
+    	function onMouseDown(evt) {
+    		drag_point = evt.target;
+    	}
+
+    	function onMouseMove(evt) {
+    		if (drag_point == null) return;
+    		plot.setDataPoint(drag_point.id, evt.offsetX, evt.offsetY);
+    		if (cfg.auto_solve) $$invalidate(1, plot.alpha = plot.solutionAlpha(), plot);
+    		update();
+    	}
+
+    	function onMouseUp(evt) {
+    		drag_point = null;
+    	}
+
+    	const writable_props = ["sig", "box", "cfg", "plot"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Curves> was created with unknown prop '${key}'`);
+    	});
+
+    	function div_elementresize_handler() {
+    		box.w = this.clientWidth;
+    		box.h = this.clientHeight;
+    		$$invalidate(0, box);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("sig" in $$props) $$subscribe_sig($$invalidate(2, sig = $$props.sig));
+    		if ("box" in $$props) $$invalidate(0, box = $$props.box);
+    		if ("cfg" in $$props) $$invalidate(3, cfg = $$props.cfg);
+    		if ("plot" in $$props) $$invalidate(1, plot = $$props.plot);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		make_sync,
+    		range,
+    		onMount,
+    		sig,
+    		box,
+    		cfg,
+    		plot,
+    		drag_point,
+    		update,
+    		respond,
+    		notify,
+    		resize,
+    		onMouseDown,
+    		onMouseMove,
+    		onMouseUp,
+    		$sig
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("sig" in $$props) $$subscribe_sig($$invalidate(2, sig = $$props.sig));
+    		if ("box" in $$props) $$invalidate(0, box = $$props.box);
+    		if ("cfg" in $$props) $$invalidate(3, cfg = $$props.cfg);
+    		if ("plot" in $$props) $$invalidate(1, plot = $$props.plot);
+    		if ("drag_point" in $$props) drag_point = $$props.drag_point;
+    		if ("respond" in $$props) $$invalidate(11, respond = $$props.respond);
+    		if ("notify" in $$props) $$invalidate(12, notify = $$props.notify);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*box*/ 1) {
+    			resize(box.w, box.h);
+    		}
+
+    		if ($$self.$$.dirty & /*$sig*/ 128) {
+    			respond($sig);
+    		}
+
+    		if ($$self.$$.dirty & /*plot*/ 2) {
+    			notify(plot);
+    		}
+    	};
+
+    	return [
+    		box,
+    		plot,
+    		sig,
+    		cfg,
+    		onMouseDown,
+    		onMouseMove,
+    		onMouseUp,
+    		$sig,
+    		div_elementresize_handler
+    	];
+    }
+
+    class Curves extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { sig: 2, box: 0, cfg: 3, plot: 1 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Curves",
+    			options,
+    			id: create_fragment$4.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*sig*/ ctx[2] === undefined && !("sig" in props)) {
+    			console_1.warn("<Curves> was created without expected prop 'sig'");
+    		}
+
+    		if (/*box*/ ctx[0] === undefined && !("box" in props)) {
+    			console_1.warn("<Curves> was created without expected prop 'box'");
+    		}
+
+    		if (/*cfg*/ ctx[3] === undefined && !("cfg" in props)) {
+    			console_1.warn("<Curves> was created without expected prop 'cfg'");
+    		}
+
+    		if (/*plot*/ ctx[1] === undefined && !("plot" in props)) {
+    			console_1.warn("<Curves> was created without expected prop 'plot'");
+    		}
+    	}
+
+    	get sig() {
+    		throw new Error("<Curves>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set sig(value) {
+    		throw new Error("<Curves>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get box() {
+    		throw new Error("<Curves>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set box(value) {
+    		throw new Error("<Curves>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get cfg() {
+    		throw new Error("<Curves>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set cfg(value) {
+    		throw new Error("<Curves>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get plot() {
+    		throw new Error("<Curves>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set plot(value) {
+    		throw new Error("<Curves>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    function numberDisplay(n) {
+      var ns = Math.abs(n) > 1000 ? n.toExponential(2) : n.toFixed(2);
+      return ns;
+    }
+
+    /* src/LowPanelControls.svelte generated by Svelte v3.38.2 */
+    const file$3 = "src/LowPanelControls.svelte";
+
+    function create_fragment$3(ctx) {
+    	let div12;
+    	let div3;
+    	let div0;
+    	let button0;
+    	let t1;
+    	let div1;
+    	let label0;
+    	let t2;
+    	let input0;
+    	let t3_value = Math.pow(10, /*cfg*/ ctx[0].log_sigma).toFixed(3) + "";
+    	let t3;
+    	let t4;
+    	let div2;
+    	let d_math;
+    	let t6;
+
+    	let t7_value = (/*plot*/ ctx[1].validInv
+    	? numberDisplay(/*plot*/ ctx[1].functionNorm())
+    	: "Error: non-singular K") + "";
+
+    	let t7;
+    	let t8;
+    	let div6;
+    	let div4;
+    	let button1;
+    	let t10;
+    	let div5;
+    	let button2;
+    	let t11_value = (/*plot*/ ctx[1].scrambled() ? "Unscramble" : "Scramble") + "";
+    	let t11;
+    	let t12;
+    	let div11;
+    	let div7;
+    	let label1;
+    	let input1;
+    	let t13;
+    	let t14;
+    	let div8;
+    	let label2;
+    	let input2;
+    	let t15;
+    	let t16;
+    	let div9;
+    	let label3;
+    	let input3;
+    	let t17;
+    	let t18;
+    	let div10;
+    	let label4;
+    	let input4;
+    	let t19;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div12 = element("div");
+    			div3 = element("div");
+    			div0 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "New Data";
+    			t1 = space();
+    			div1 = element("div");
+    			label0 = element("label");
+    			t2 = text("Sigma: ");
+    			input0 = element("input");
+    			t3 = text(t3_value);
+    			t4 = space();
+    			div2 = element("div");
+    			d_math = element("d-math");
+    			d_math.textContent = "\\|f\\| =";
+    			t6 = space();
+    			t7 = text(t7_value);
+    			t8 = space();
+    			div6 = element("div");
+    			div4 = element("div");
+    			button1 = element("button");
+    			button1.textContent = "Solve";
+    			t10 = space();
+    			div5 = element("div");
+    			button2 = element("button");
+    			t11 = text(t11_value);
+    			t12 = space();
+    			div11 = element("div");
+    			div7 = element("div");
+    			label1 = element("label");
+    			input1 = element("input");
+    			t13 = text("points");
+    			t14 = space();
+    			div8 = element("div");
+    			label2 = element("label");
+    			input2 = element("input");
+    			t15 = text("curves");
+    			t16 = space();
+    			div9 = element("div");
+    			label3 = element("label");
+    			input3 = element("input");
+    			t17 = text("solution");
+    			t18 = space();
+    			div10 = element("div");
+    			label4 = element("label");
+    			input4 = element("input");
+    			t19 = text("auto solve");
+    			add_location(button0, file$3, 78, 27, 1336);
+    			attr_dev(div0, "class", "pad-small svelte-c2w33b");
+    			add_location(div0, file$3, 78, 4, 1313);
+    			attr_dev(input0, "type", "range");
+    			attr_dev(input0, "min", "-5");
+    			attr_dev(input0, "max", "2");
+    			attr_dev(input0, "step", "0.1");
+    			add_location(input0, file$3, 80, 20, 1467);
+    			add_location(label0, file$3, 80, 6, 1453);
+    			attr_dev(div1, "class", "pad-small svelte-c2w33b");
+    			add_location(div1, file$3, 79, 4, 1423);
+    			add_location(d_math, file$3, 83, 6, 1630);
+    			attr_dev(div2, "class", "pad-small svelte-c2w33b");
+    			add_location(div2, file$3, 82, 4, 1600);
+    			set_style(div3, "flex-grow", "1");
+    			add_location(div3, file$3, 77, 2, 1282);
+    			add_location(button1, file$3, 88, 27, 1818);
+    			attr_dev(div4, "class", "pad-small svelte-c2w33b");
+    			add_location(div4, file$3, 88, 4, 1795);
+    			add_location(button2, file$3, 89, 27, 1904);
+    			attr_dev(div5, "class", "pad-small svelte-c2w33b");
+    			add_location(div5, file$3, 89, 4, 1881);
+    			set_style(div6, "flex-grow", "1");
+    			add_location(div6, file$3, 87, 2, 1764);
+    			attr_dev(input1, "type", "checkbox");
+    			add_location(input1, file$3, 95, 16, 2104);
+    			add_location(label1, file$3, 95, 9, 2097);
+    			add_location(div7, file$3, 95, 4, 2092);
+    			attr_dev(input2, "type", "checkbox");
+    			add_location(input2, file$3, 96, 16, 2197);
+    			add_location(label2, file$3, 96, 9, 2190);
+    			add_location(div8, file$3, 96, 4, 2185);
+    			attr_dev(input3, "type", "checkbox");
+    			add_location(input3, file$3, 97, 16, 2290);
+    			add_location(label3, file$3, 97, 9, 2283);
+    			add_location(div9, file$3, 97, 4, 2278);
+    			attr_dev(input4, "type", "checkbox");
+    			add_location(input4, file$3, 98, 16, 2387);
+    			add_location(label4, file$3, 98, 9, 2380);
+    			add_location(div10, file$3, 98, 4, 2375);
+    			set_style(div11, "flex-grow", "1: align: right");
+    			add_location(div11, file$3, 94, 2, 2046);
+    			attr_dev(div12, "class", "row control pad svelte-c2w33b");
+    			add_location(div12, file$3, 76, 0, 1250);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div12, anchor);
+    			append_dev(div12, div3);
+    			append_dev(div3, div0);
+    			append_dev(div0, button0);
+    			append_dev(div3, t1);
+    			append_dev(div3, div1);
+    			append_dev(div1, label0);
+    			append_dev(label0, t2);
+    			append_dev(label0, input0);
+    			set_input_value(input0, /*cfg*/ ctx[0].log_sigma);
+    			append_dev(label0, t3);
+    			append_dev(div3, t4);
+    			append_dev(div3, div2);
+    			append_dev(div2, d_math);
+    			append_dev(div2, t6);
+    			append_dev(div2, t7);
+    			append_dev(div12, t8);
+    			append_dev(div12, div6);
+    			append_dev(div6, div4);
+    			append_dev(div4, button1);
+    			append_dev(div6, t10);
+    			append_dev(div6, div5);
+    			append_dev(div5, button2);
+    			append_dev(button2, t11);
+    			append_dev(div12, t12);
+    			append_dev(div12, div11);
+    			append_dev(div11, div7);
+    			append_dev(div7, label1);
+    			append_dev(label1, input1);
+    			input1.checked = /*cfg*/ ctx[0].show_points;
+    			append_dev(label1, t13);
+    			append_dev(div11, t14);
+    			append_dev(div11, div8);
+    			append_dev(div8, label2);
+    			append_dev(label2, input2);
+    			input2.checked = /*cfg*/ ctx[0].show_scaled;
+    			append_dev(label2, t15);
+    			append_dev(div11, t16);
+    			append_dev(div11, div9);
+    			append_dev(div9, label3);
+    			append_dev(label3, input3);
+    			input3.checked = /*cfg*/ ctx[0].show_solution;
+    			append_dev(label3, t17);
+    			append_dev(div11, t18);
+    			append_dev(div11, div10);
+    			append_dev(div10, label4);
+    			append_dev(label4, input4);
+    			input4.checked = /*cfg*/ ctx[0].auto_solve;
+    			append_dev(label4, t19);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*click_handler*/ ctx[6], false, false, false),
+    					listen_dev(input0, "change", /*input0_change_input_handler*/ ctx[7]),
+    					listen_dev(input0, "input", /*input0_change_input_handler*/ ctx[7]),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[8], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[9], false, false, false),
+    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[10]),
+    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[11]),
+    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[12]),
+    					listen_dev(input4, "change", /*input4_change_handler*/ ctx[13])
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*cfg*/ 1) {
+    				set_input_value(input0, /*cfg*/ ctx[0].log_sigma);
+    			}
+
+    			if (dirty & /*cfg*/ 1 && t3_value !== (t3_value = Math.pow(10, /*cfg*/ ctx[0].log_sigma).toFixed(3) + "")) set_data_dev(t3, t3_value);
+
+    			if (dirty & /*plot*/ 2 && t7_value !== (t7_value = (/*plot*/ ctx[1].validInv
+    			? numberDisplay(/*plot*/ ctx[1].functionNorm())
+    			: "Error: non-singular K") + "")) set_data_dev(t7, t7_value);
+
+    			if (dirty & /*plot*/ 2 && t11_value !== (t11_value = (/*plot*/ ctx[1].scrambled() ? "Unscramble" : "Scramble") + "")) set_data_dev(t11, t11_value);
+
+    			if (dirty & /*cfg*/ 1) {
+    				input1.checked = /*cfg*/ ctx[0].show_points;
+    			}
+
+    			if (dirty & /*cfg*/ 1) {
+    				input2.checked = /*cfg*/ ctx[0].show_scaled;
+    			}
+
+    			if (dirty & /*cfg*/ 1) {
+    				input3.checked = /*cfg*/ ctx[0].show_solution;
+    			}
+
+    			if (dirty & /*cfg*/ 1) {
+    				input4.checked = /*cfg*/ ctx[0].auto_solve;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div12);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$3.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let $sig,
+    		$$unsubscribe_sig = noop,
+    		$$subscribe_sig = () => ($$unsubscribe_sig(), $$unsubscribe_sig = subscribe(sig, $$value => $$invalidate(5, $sig = $$value)), sig);
+
+    	$$self.$$.on_destroy.push(() => $$unsubscribe_sig());
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("LowPanelControls", slots, []);
+    	let { sig } = $$props, { cfg } = $$props, { plot } = $$props;
+    	validate_store(sig, "sig");
+    	$$subscribe_sig();
+
+    	function update() {
+    		$$invalidate(1, plot.touch++, plot);
+    	}
+
+    	var [respond, notify] = make_sync(update, sig);
+
+    	function toggle_scramble() {
+    		plot.toggle_scramble();
+    		if (cfg.auto_solve) solve();
+    		$$invalidate(1, plot.touch++, plot);
+    	}
+
+    	function set_sigma(log_sigma) {
+    		plot.set_sigma(log_sigma);
+    		if (cfg.auto_solve) $$invalidate(1, plot.alpha = plot.solutionAlpha(), plot);
+    		$$invalidate(1, plot.touch++, plot);
+    	}
+
+    	function solve() {
+    		var start_alpha = plot.alpha;
+    		var end_alpha = plot.solutionAlpha();
+
+    		function transition(step, nsteps) {
+    			var delta = step / nsteps;
+
+    			for (let i = 0; i != plot.n; i++) {
+    				$$invalidate(1, plot.alpha[i] = delta * end_alpha[i] + (1 - delta) * start_alpha[i], plot);
+    			}
+
+    			if (step != nsteps) {
+    				setTimeout(() => transition(step + 1, nsteps), 10);
+    			}
+    		}
+
+    		transition(0, 100);
+    	}
+
+    	const writable_props = ["sig", "cfg", "plot"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<LowPanelControls> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => {
+    		plot.populate();
+    		$$invalidate(1, plot.touch++, plot);
+    	};
+
+    	function input0_change_input_handler() {
+    		cfg.log_sigma = to_number(this.value);
+    		$$invalidate(0, cfg);
+    	}
+
+    	const click_handler_1 = () => {
+    		solve();
+    	};
+
+    	const click_handler_2 = () => {
+    		toggle_scramble();
+    	};
+
+    	function input1_change_handler() {
+    		cfg.show_points = this.checked;
+    		$$invalidate(0, cfg);
+    	}
+
+    	function input2_change_handler() {
+    		cfg.show_scaled = this.checked;
+    		$$invalidate(0, cfg);
+    	}
+
+    	function input3_change_handler() {
+    		cfg.show_solution = this.checked;
+    		$$invalidate(0, cfg);
+    	}
+
+    	function input4_change_handler() {
+    		cfg.auto_solve = this.checked;
+    		$$invalidate(0, cfg);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("sig" in $$props) $$subscribe_sig($$invalidate(2, sig = $$props.sig));
+    		if ("cfg" in $$props) $$invalidate(0, cfg = $$props.cfg);
+    		if ("plot" in $$props) $$invalidate(1, plot = $$props.plot);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		make_sync,
+    		numberDisplay,
+    		sig,
+    		cfg,
+    		plot,
+    		update,
+    		respond,
+    		notify,
+    		toggle_scramble,
+    		set_sigma,
+    		solve,
+    		$sig
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("sig" in $$props) $$subscribe_sig($$invalidate(2, sig = $$props.sig));
+    		if ("cfg" in $$props) $$invalidate(0, cfg = $$props.cfg);
+    		if ("plot" in $$props) $$invalidate(1, plot = $$props.plot);
+    		if ("respond" in $$props) $$invalidate(15, respond = $$props.respond);
+    		if ("notify" in $$props) $$invalidate(16, notify = $$props.notify);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*cfg*/ 1) {
+    			set_sigma(cfg.log_sigma);
+    		}
+
+    		if ($$self.$$.dirty & /*$sig*/ 32) {
+    			respond($sig);
+    		}
+
+    		if ($$self.$$.dirty & /*plot*/ 2) {
+    			notify(plot);
+    		}
+    	};
+
+    	return [
+    		cfg,
+    		plot,
+    		sig,
+    		toggle_scramble,
+    		solve,
+    		$sig,
+    		click_handler,
+    		input0_change_input_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		input1_change_handler,
+    		input2_change_handler,
+    		input3_change_handler,
+    		input4_change_handler
+    	];
+    }
+
+    class LowPanelControls extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { sig: 2, cfg: 0, plot: 1 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "LowPanelControls",
+    			options,
+    			id: create_fragment$3.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*sig*/ ctx[2] === undefined && !("sig" in props)) {
+    			console.warn("<LowPanelControls> was created without expected prop 'sig'");
+    		}
+
+    		if (/*cfg*/ ctx[0] === undefined && !("cfg" in props)) {
+    			console.warn("<LowPanelControls> was created without expected prop 'cfg'");
+    		}
+
+    		if (/*plot*/ ctx[1] === undefined && !("plot" in props)) {
+    			console.warn("<LowPanelControls> was created without expected prop 'plot'");
+    		}
+    	}
+
+    	get sig() {
+    		throw new Error("<LowPanelControls>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set sig(value) {
+    		throw new Error("<LowPanelControls>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get cfg() {
+    		throw new Error("<LowPanelControls>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set cfg(value) {
+    		throw new Error("<LowPanelControls>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get plot() {
+    		throw new Error("<LowPanelControls>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set plot(value) {
+    		throw new Error("<LowPanelControls>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/SliderControls.svelte generated by Svelte v3.38.2 */
+    const file$2 = "src/SliderControls.svelte";
+
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[10] = list[i];
+    	child_ctx[11] = list;
+    	child_ctx[12] = i;
+    	return child_ctx;
+    }
+
+    // (52:2) {#each plot.alpha as a, i}
     function create_each_block(ctx) {
     	let div;
     	let input;
     	let t0;
     	let code;
-    	let t1_value = numberDisplay(/*a*/ ctx[26]) + "";
+    	let t1_value = numberDisplay(/*a*/ ctx[10]) + "";
     	let t1;
     	let t2;
     	let mounted;
     	let dispose;
 
     	function input_change_input_handler() {
-    		/*input_change_input_handler*/ ctx[20].call(input, /*each_value*/ ctx[27], /*i*/ ctx[28]);
+    		/*input_change_input_handler*/ ctx[6].call(input, /*each_value*/ ctx[11], /*i*/ ctx[12]);
     	}
 
     	const block = {
@@ -9582,16 +10505,16 @@ var full = (function () {
     			attr_dev(input, "min", "-10");
     			attr_dev(input, "max", "10");
     			attr_dev(input, "step", "0.01");
-    			add_location(input, file$1, 251, 8, 5873);
-    			attr_dev(code, "class", "alphas svelte-1fi5an1");
-    			add_location(code, file$1, 252, 8, 5940);
-    			attr_dev(div, "class", "row pad-small svelte-1fi5an1");
-    			add_location(div, file$1, 250, 6, 5837);
+    			add_location(input, file$2, 53, 6, 972);
+    			attr_dev(code, "class", "alphas svelte-eznsce");
+    			add_location(code, file$2, 54, 6, 1037);
+    			attr_dev(div, "class", "row pad-small svelte-eznsce");
+    			add_location(div, file$2, 52, 4, 938);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			append_dev(div, input);
-    			set_input_value(input, /*a*/ ctx[26]);
+    			set_input_value(input, /*a*/ ctx[10]);
     			append_dev(div, t0);
     			append_dev(div, code);
     			append_dev(code, t1);
@@ -9609,11 +10532,11 @@ var full = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty[0] & /*plot*/ 4) {
-    				set_input_value(input, /*a*/ ctx[26]);
+    			if (dirty & /*plot*/ 1) {
+    				set_input_value(input, /*a*/ ctx[10]);
     			}
 
-    			if (dirty[0] & /*plot*/ 4 && t1_value !== (t1_value = numberDisplay(/*a*/ ctx[26]) + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*plot*/ 1 && t1_value !== (t1_value = numberDisplay(/*a*/ ctx[10]) + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -9626,98 +10549,28 @@ var full = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(250:4) {#each plot.alpha as a, i}",
+    		source: "(52:2) {#each plot.alpha as a, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$1(ctx) {
-    	let div20;
-    	let div14;
-    	let div0;
-    	let svg;
-    	let each0_anchor;
-    	let if_block0_anchor;
-    	let div0_resize_listener;
-    	let t0;
-    	let div13;
+    function create_fragment$2(ctx) {
     	let div4;
-    	let div1;
+    	let div0;
     	let button0;
-    	let t2;
-    	let div2;
-    	let label0;
-    	let t3;
-    	let input0;
-    	let t4_value = Math.pow(10, /*cfg*/ ctx[1].log_sigma).toFixed(3) + "";
-    	let t4;
-    	let t5;
+    	let t1;
     	let div3;
-    	let d_math;
-    	let t7;
-
-    	let t8_value = (/*plot*/ ctx[2].validInv
-    	? numberDisplay(/*plot*/ ctx[2].functionNorm())
-    	: "Error: non-singular K") + "";
-
-    	let t8;
-    	let t9;
-    	let div7;
-    	let div5;
+    	let div1;
     	let button1;
-    	let t11;
-    	let div6;
+    	let t3;
+    	let div2;
     	let button2;
-    	let t12_value = (/*plot*/ ctx[2].scrambled() ? "Unscramble" : "Scramble") + "";
-    	let t12;
-    	let t13;
-    	let div12;
-    	let div8;
-    	let label1;
-    	let input1;
-    	let t14;
-    	let t15;
-    	let div9;
-    	let label2;
-    	let input2;
-    	let t16;
-    	let t17;
-    	let div10;
-    	let label3;
-    	let input3;
-    	let t18;
-    	let t19;
-    	let div11;
-    	let label4;
-    	let input4;
-    	let t20;
-    	let t21;
-    	let div19;
-    	let div15;
-    	let button3;
-    	let t23;
-    	let div18;
-    	let div16;
-    	let button4;
-    	let t25;
-    	let div17;
-    	let button5;
-    	let t27;
+    	let t5;
     	let mounted;
     	let dispose;
-    	let each_value_2 = range(/*plot*/ ctx[2].n);
-    	validate_each_argument(each_value_2);
-    	let each_blocks_1 = [];
-
-    	for (let i = 0; i < each_value_2.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
-    	}
-
-    	let if_block0 = /*cfg*/ ctx[1].show_solution && create_if_block_1(ctx);
-    	let if_block1 = /*cfg*/ ctx[1].show_data && create_if_block(ctx);
-    	let each_value = /*plot*/ ctx[2].alpha;
+    	let each_value = /*plot*/ ctx[0].alpha;
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -9727,341 +10580,72 @@ var full = (function () {
 
     	const block = {
     		c: function create() {
-    			div20 = element("div");
-    			div14 = element("div");
-    			div0 = element("div");
-    			svg = svg_element("svg");
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].c();
-    			}
-
-    			each0_anchor = empty();
-    			if (if_block0) if_block0.c();
-    			if_block0_anchor = empty();
-    			if (if_block1) if_block1.c();
-    			t0 = space();
-    			div13 = element("div");
     			div4 = element("div");
-    			div1 = element("div");
+    			div0 = element("div");
     			button0 = element("button");
-    			button0.textContent = "New Data";
-    			t2 = space();
-    			div2 = element("div");
-    			label0 = element("label");
-    			t3 = text("Sigma: ");
-    			input0 = element("input");
-    			t4 = text(t4_value);
-    			t5 = space();
+    			button0.textContent = "Reset Alpha";
+    			t1 = space();
     			div3 = element("div");
-    			d_math = element("d-math");
-    			d_math.textContent = "\\|f\\| =";
-    			t7 = space();
-    			t8 = text(t8_value);
-    			t9 = space();
-    			div7 = element("div");
-    			div5 = element("div");
+    			div1 = element("div");
     			button1 = element("button");
-    			button1.textContent = "Solve";
-    			t11 = space();
-    			div6 = element("div");
+    			button1.textContent = "Del Point";
+    			t3 = space();
+    			div2 = element("div");
     			button2 = element("button");
-    			t12 = text(t12_value);
-    			t13 = space();
-    			div12 = element("div");
-    			div8 = element("div");
-    			label1 = element("label");
-    			input1 = element("input");
-    			t14 = text("points");
-    			t15 = space();
-    			div9 = element("div");
-    			label2 = element("label");
-    			input2 = element("input");
-    			t16 = text("curves");
-    			t17 = space();
-    			div10 = element("div");
-    			label3 = element("label");
-    			input3 = element("input");
-    			t18 = text("solution");
-    			t19 = space();
-    			div11 = element("div");
-    			label4 = element("label");
-    			input4 = element("input");
-    			t20 = text("auto solve");
-    			t21 = space();
-    			div19 = element("div");
-    			div15 = element("div");
-    			button3 = element("button");
-    			button3.textContent = "Reset Alpha";
-    			t23 = space();
-    			div18 = element("div");
-    			div16 = element("div");
-    			button4 = element("button");
-    			button4.textContent = "Del Point";
-    			t25 = space();
-    			div17 = element("div");
-    			button5 = element("button");
-    			button5.textContent = "Add Point";
-    			t27 = space();
+    			button2.textContent = "Add Point";
+    			t5 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(svg, "class", "inner-plot full svelte-1fi5an1");
-    			add_location(svg, file$1, 168, 6, 2813);
-    			attr_dev(div0, "class", "svg-wrap svelte-1fi5an1");
-    			add_render_callback(() => /*div0_elementresize_handler*/ ctx[8].call(div0));
-    			add_location(div0, file$1, 166, 4, 2724);
-    			add_location(button0, file$1, 216, 31, 4147);
-    			attr_dev(div1, "class", "pad-small svelte-1fi5an1");
-    			add_location(div1, file$1, 216, 8, 4124);
-    			attr_dev(input0, "type", "range");
-    			attr_dev(input0, "min", "-5");
-    			attr_dev(input0, "max", "2");
-    			attr_dev(input0, "step", "0.1");
-    			add_location(input0, file$1, 218, 24, 4286);
-    			add_location(label0, file$1, 218, 10, 4272);
-    			attr_dev(div2, "class", "pad-small svelte-1fi5an1");
-    			add_location(div2, file$1, 217, 8, 4238);
-    			add_location(d_math, file$1, 221, 10, 4461);
-    			attr_dev(div3, "class", "pad-small svelte-1fi5an1");
-    			add_location(div3, file$1, 220, 8, 4427);
-    			set_style(div4, "flex-grow", "1");
-    			add_location(div4, file$1, 215, 6, 4089);
-    			add_location(button1, file$1, 226, 31, 4669);
-    			attr_dev(div5, "class", "pad-small svelte-1fi5an1");
-    			add_location(div5, file$1, 226, 8, 4646);
-    			add_location(button2, file$1, 227, 31, 4759);
-    			attr_dev(div6, "class", "pad-small svelte-1fi5an1");
-    			add_location(div6, file$1, 227, 8, 4736);
-    			set_style(div7, "flex-grow", "1");
-    			add_location(div7, file$1, 225, 6, 4611);
-    			attr_dev(input1, "type", "checkbox");
-    			add_location(input1, file$1, 233, 20, 4983);
-    			add_location(label1, file$1, 233, 13, 4976);
-    			add_location(div8, file$1, 233, 8, 4971);
-    			attr_dev(input2, "type", "checkbox");
-    			add_location(input2, file$1, 234, 20, 5080);
-    			add_location(label2, file$1, 234, 13, 5073);
-    			add_location(div9, file$1, 234, 8, 5068);
-    			attr_dev(input3, "type", "checkbox");
-    			add_location(input3, file$1, 235, 20, 5177);
-    			add_location(label3, file$1, 235, 13, 5170);
-    			add_location(div10, file$1, 235, 8, 5165);
-    			attr_dev(input4, "type", "checkbox");
-    			add_location(input4, file$1, 236, 20, 5278);
-    			add_location(label4, file$1, 236, 13, 5271);
-    			add_location(div11, file$1, 236, 8, 5266);
-    			set_style(div12, "flex-grow", "1: align: right");
-    			add_location(div12, file$1, 232, 6, 4921);
-    			attr_dev(div13, "class", "row control pad svelte-1fi5an1");
-    			add_location(div13, file$1, 214, 4, 4053);
-    			attr_dev(div14, "class", "col full svelte-1fi5an1");
-    			add_location(div14, file$1, 165, 2, 2697);
-    			add_location(button3, file$1, 243, 6, 5450);
-    			attr_dev(div15, "class", "pad-small svelte-1fi5an1");
-    			add_location(div15, file$1, 242, 4, 5420);
-    			add_location(button4, file$1, 246, 29, 5594);
-    			attr_dev(div16, "class", "pad-small svelte-1fi5an1");
-    			add_location(div16, file$1, 246, 6, 5571);
-    			add_location(button5, file$1, 247, 29, 5706);
-    			attr_dev(div17, "class", "pad-small svelte-1fi5an1");
-    			add_location(div17, file$1, 247, 6, 5683);
-    			attr_dev(div18, "class", "row svelte-1fi5an1");
-    			add_location(div18, file$1, 245, 4, 5547);
-    			attr_dev(div19, "class", "pad col svelte-1fi5an1");
-    			add_location(div19, file$1, 241, 2, 5394);
-    			attr_dev(div20, "class", "row full svelte-1fi5an1");
-    			add_location(div20, file$1, 164, 0, 2672);
+    			add_location(button0, file$2, 45, 4, 562);
+    			attr_dev(div0, "class", "pad-small svelte-eznsce");
+    			add_location(div0, file$2, 44, 2, 534);
+    			add_location(button1, file$2, 48, 27, 701);
+    			attr_dev(div1, "class", "pad-small svelte-eznsce");
+    			add_location(div1, file$2, 48, 4, 678);
+    			add_location(button2, file$2, 49, 27, 812);
+    			attr_dev(div2, "class", "pad-small svelte-eznsce");
+    			add_location(div2, file$2, 49, 4, 789);
+    			attr_dev(div3, "class", "row svelte-eznsce");
+    			add_location(div3, file$2, 47, 2, 656);
+    			attr_dev(div4, "class", "pad col svelte-eznsce");
+    			add_location(div4, file$2, 43, 0, 510);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div20, anchor);
-    			append_dev(div20, div14);
-    			append_dev(div14, div0);
-    			append_dev(div0, svg);
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(svg, null);
-    			}
-
-    			append_dev(svg, each0_anchor);
-    			if (if_block0) if_block0.m(svg, null);
-    			append_dev(svg, if_block0_anchor);
-    			if (if_block1) if_block1.m(svg, null);
-    			div0_resize_listener = add_resize_listener(div0, /*div0_elementresize_handler*/ ctx[8].bind(div0));
-    			append_dev(div14, t0);
-    			append_dev(div14, div13);
-    			append_dev(div13, div4);
-    			append_dev(div4, div1);
-    			append_dev(div1, button0);
-    			append_dev(div4, t2);
-    			append_dev(div4, div2);
-    			append_dev(div2, label0);
-    			append_dev(label0, t3);
-    			append_dev(label0, input0);
-    			set_input_value(input0, /*cfg*/ ctx[1].log_sigma);
-    			append_dev(label0, t4);
-    			append_dev(div4, t5);
+    			insert_dev(target, div4, anchor);
+    			append_dev(div4, div0);
+    			append_dev(div0, button0);
+    			append_dev(div4, t1);
     			append_dev(div4, div3);
-    			append_dev(div3, d_math);
-    			append_dev(div3, t7);
-    			append_dev(div3, t8);
-    			append_dev(div13, t9);
-    			append_dev(div13, div7);
-    			append_dev(div7, div5);
-    			append_dev(div5, button1);
-    			append_dev(div7, t11);
-    			append_dev(div7, div6);
-    			append_dev(div6, button2);
-    			append_dev(button2, t12);
-    			append_dev(div13, t13);
-    			append_dev(div13, div12);
-    			append_dev(div12, div8);
-    			append_dev(div8, label1);
-    			append_dev(label1, input1);
-    			input1.checked = /*cfg*/ ctx[1].show_points;
-    			append_dev(label1, t14);
-    			append_dev(div12, t15);
-    			append_dev(div12, div9);
-    			append_dev(div9, label2);
-    			append_dev(label2, input2);
-    			input2.checked = /*cfg*/ ctx[1].show_scaled;
-    			append_dev(label2, t16);
-    			append_dev(div12, t17);
-    			append_dev(div12, div10);
-    			append_dev(div10, label3);
-    			append_dev(label3, input3);
-    			input3.checked = /*cfg*/ ctx[1].show_solution;
-    			append_dev(label3, t18);
-    			append_dev(div12, t19);
-    			append_dev(div12, div11);
-    			append_dev(div11, label4);
-    			append_dev(label4, input4);
-    			input4.checked = /*cfg*/ ctx[1].auto_solve;
-    			append_dev(label4, t20);
-    			append_dev(div20, t21);
-    			append_dev(div20, div19);
-    			append_dev(div19, div15);
-    			append_dev(div15, button3);
-    			append_dev(div19, t23);
-    			append_dev(div19, div18);
-    			append_dev(div18, div16);
-    			append_dev(div16, button4);
-    			append_dev(div18, t25);
-    			append_dev(div18, div17);
-    			append_dev(div17, button5);
-    			append_dev(div19, t27);
+    			append_dev(div3, div1);
+    			append_dev(div1, button1);
+    			append_dev(div3, t3);
+    			append_dev(div3, div2);
+    			append_dev(div2, button2);
+    			append_dev(div4, t5);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div19, null);
+    				each_blocks[i].m(div4, null);
     			}
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(svg, "mousemove", /*onMouseMove*/ ctx[5], false, false, false),
-    					listen_dev(svg, "mouseup", /*onMouseUp*/ ctx[6], false, false, false),
-    					listen_dev(button0, "click", /*click_handler*/ ctx[9], false, false, false),
-    					listen_dev(input0, "change", /*input0_change_input_handler*/ ctx[10]),
-    					listen_dev(input0, "input", /*input0_change_input_handler*/ ctx[10]),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[11], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[12], false, false, false),
-    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[13]),
-    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[14]),
-    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[15]),
-    					listen_dev(input4, "change", /*input4_change_handler*/ ctx[16]),
-    					listen_dev(button3, "click", /*click_handler_3*/ ctx[17], false, false, false),
-    					listen_dev(button4, "click", /*click_handler_4*/ ctx[18], false, false, false),
-    					listen_dev(button5, "click", /*click_handler_5*/ ctx[19], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[3], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[4], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[5], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*plot, cfg*/ 6) {
-    				each_value_2 = range(/*plot*/ ctx[2].n);
-    				validate_each_argument(each_value_2);
-    				let i;
-
-    				for (i = 0; i < each_value_2.length; i += 1) {
-    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
-
-    					if (each_blocks_1[i]) {
-    						each_blocks_1[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks_1[i] = create_each_block_2(child_ctx);
-    						each_blocks_1[i].c();
-    						each_blocks_1[i].m(svg, each0_anchor);
-    					}
-    				}
-
-    				for (; i < each_blocks_1.length; i += 1) {
-    					each_blocks_1[i].d(1);
-    				}
-
-    				each_blocks_1.length = each_value_2.length;
-    			}
-
-    			if (/*cfg*/ ctx[1].show_solution) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_1(ctx);
-    					if_block0.c();
-    					if_block0.m(svg, if_block0_anchor);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (/*cfg*/ ctx[1].show_data) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block(ctx);
-    					if_block1.c();
-    					if_block1.m(svg, null);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-
-    			if (dirty[0] & /*cfg*/ 2) {
-    				set_input_value(input0, /*cfg*/ ctx[1].log_sigma);
-    			}
-
-    			if (dirty[0] & /*cfg*/ 2 && t4_value !== (t4_value = Math.pow(10, /*cfg*/ ctx[1].log_sigma).toFixed(3) + "")) set_data_dev(t4, t4_value);
-
-    			if (dirty[0] & /*plot*/ 4 && t8_value !== (t8_value = (/*plot*/ ctx[2].validInv
-    			? numberDisplay(/*plot*/ ctx[2].functionNorm())
-    			: "Error: non-singular K") + "")) set_data_dev(t8, t8_value);
-
-    			if (dirty[0] & /*plot*/ 4 && t12_value !== (t12_value = (/*plot*/ ctx[2].scrambled() ? "Unscramble" : "Scramble") + "")) set_data_dev(t12, t12_value);
-
-    			if (dirty[0] & /*cfg*/ 2) {
-    				input1.checked = /*cfg*/ ctx[1].show_points;
-    			}
-
-    			if (dirty[0] & /*cfg*/ 2) {
-    				input2.checked = /*cfg*/ ctx[1].show_scaled;
-    			}
-
-    			if (dirty[0] & /*cfg*/ 2) {
-    				input3.checked = /*cfg*/ ctx[1].show_solution;
-    			}
-
-    			if (dirty[0] & /*cfg*/ 2) {
-    				input4.checked = /*cfg*/ ctx[1].auto_solve;
-    			}
-
-    			if (dirty[0] & /*plot*/ 4) {
-    				each_value = /*plot*/ ctx[2].alpha;
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*numberDisplay, plot*/ 1) {
+    				each_value = /*plot*/ ctx[0].alpha;
     				validate_each_argument(each_value);
     				let i;
 
@@ -10073,7 +10657,7 @@ var full = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(div19, null);
+    						each_blocks[i].m(div4, null);
     					}
     				}
 
@@ -10087,14 +10671,242 @@ var full = (function () {
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div20);
-    			destroy_each(each_blocks_1, detaching);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    			div0_resize_listener();
+    			if (detaching) detach_dev(div4);
     			destroy_each(each_blocks, detaching);
     			mounted = false;
     			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let $sig,
+    		$$unsubscribe_sig = noop,
+    		$$subscribe_sig = () => ($$unsubscribe_sig(), $$unsubscribe_sig = subscribe(sig, $$value => $$invalidate(2, $sig = $$value)), sig);
+
+    	$$self.$$.on_destroy.push(() => $$unsubscribe_sig());
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("SliderControls", slots, []);
+    	let { sig } = $$props, { plot } = $$props;
+    	validate_store(sig, "sig");
+    	$$subscribe_sig();
+
+    	function update() {
+    		$$invalidate(0, plot.touch++, plot);
+    	}
+
+    	var [respond, notify] = make_sync(update, sig);
+    	const writable_props = ["sig", "plot"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<SliderControls> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => {
+    		plot.resetAlpha();
+    		$$invalidate(0, plot.touch++, plot);
+    	};
+
+    	const click_handler_1 = () => {
+    		plot.delPoint();
+    		$$invalidate(0, plot.touch++, plot);
+    	};
+
+    	const click_handler_2 = () => {
+    		plot.addPoint();
+    		$$invalidate(0, plot.touch++, plot);
+    	};
+
+    	function input_change_input_handler(each_value, i) {
+    		each_value[i] = to_number(this.value);
+    		$$invalidate(0, plot);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ("sig" in $$props) $$subscribe_sig($$invalidate(1, sig = $$props.sig));
+    		if ("plot" in $$props) $$invalidate(0, plot = $$props.plot);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		make_sync,
+    		numberDisplay,
+    		sig,
+    		plot,
+    		update,
+    		respond,
+    		notify,
+    		$sig
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("sig" in $$props) $$subscribe_sig($$invalidate(1, sig = $$props.sig));
+    		if ("plot" in $$props) $$invalidate(0, plot = $$props.plot);
+    		if ("respond" in $$props) $$invalidate(8, respond = $$props.respond);
+    		if ("notify" in $$props) $$invalidate(9, notify = $$props.notify);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*$sig*/ 4) {
+    			respond($sig);
+    		}
+
+    		if ($$self.$$.dirty & /*plot*/ 1) {
+    			notify(plot);
+    		}
+    	};
+
+    	return [
+    		plot,
+    		sig,
+    		$sig,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		input_change_input_handler
+    	];
+    }
+
+    class SliderControls extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { sig: 1, plot: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "SliderControls",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*sig*/ ctx[1] === undefined && !("sig" in props)) {
+    			console.warn("<SliderControls> was created without expected prop 'sig'");
+    		}
+
+    		if (/*plot*/ ctx[0] === undefined && !("plot" in props)) {
+    			console.warn("<SliderControls> was created without expected prop 'plot'");
+    		}
+    	}
+
+    	get sig() {
+    		throw new Error("<SliderControls>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set sig(value) {
+    		throw new Error("<SliderControls>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get plot() {
+    		throw new Error("<SliderControls>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set plot(value) {
+    		throw new Error("<SliderControls>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/Figure1.svelte generated by Svelte v3.38.2 */
+    const file$1 = "src/Figure1.svelte";
+
+    function create_fragment$1(ctx) {
+    	let div1;
+    	let div0;
+    	let curves;
+    	let t0;
+    	let lowpanelcontrols;
+    	let t1;
+    	let slidercontrols;
+    	let current;
+
+    	curves = new Curves({
+    			props: {
+    				sig: /*sig*/ ctx[3],
+    				box: /*box*/ ctx[0],
+    				cfg: /*cfg*/ ctx[1],
+    				plot: /*plot*/ ctx[2]
+    			},
+    			$$inline: true
+    		});
+
+    	lowpanelcontrols = new LowPanelControls({
+    			props: {
+    				sig: /*sig*/ ctx[3],
+    				cfg: /*cfg*/ ctx[1],
+    				plot: /*plot*/ ctx[2]
+    			},
+    			$$inline: true
+    		});
+
+    	slidercontrols = new SliderControls({
+    			props: {
+    				sig: /*sig*/ ctx[3],
+    				plot: /*plot*/ ctx[2]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			create_component(curves.$$.fragment);
+    			t0 = space();
+    			create_component(lowpanelcontrols.$$.fragment);
+    			t1 = space();
+    			create_component(slidercontrols.$$.fragment);
+    			attr_dev(div0, "class", "col full svelte-59d2b5");
+    			add_location(div0, file$1, 45, 2, 803);
+    			attr_dev(div1, "class", "row full svelte-59d2b5");
+    			add_location(div1, file$1, 44, 0, 778);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			mount_component(curves, div0, null);
+    			append_dev(div0, t0);
+    			mount_component(lowpanelcontrols, div0, null);
+    			append_dev(div1, t1);
+    			mount_component(slidercontrols, div1, null);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(curves.$$.fragment, local);
+    			transition_in(lowpanelcontrols.$$.fragment, local);
+    			transition_in(slidercontrols.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(curves.$$.fragment, local);
+    			transition_out(lowpanelcontrols.$$.fragment, local);
+    			transition_out(slidercontrols.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			destroy_component(curves);
+    			destroy_component(lowpanelcontrols);
+    			destroy_component(slidercontrols);
     		}
     	};
 
@@ -10109,237 +10921,66 @@ var full = (function () {
     	return block;
     }
 
-    function numberDisplay(n) {
-    	var ns = Math.abs(n) > 1000 ? n.toExponential(2) : n.toFixed(2);
-    	return ns;
-    }
-
     function instance$1($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots("MainPlot", slots, []);
-
-    	class Config {
-    		constructor() {
-    			this.show_data = true;
-    			this.show_scaled = true;
-    			this.show_solution = true;
-    			this.show_points = false;
-    			this.auto_solve = true;
-    			this.log_sigma = 0;
-    		}
-    	}
-
+    	validate_slots("Figure1", slots, []);
     	let box = { w: 10, h: 10 };
-    	let drag_point = null;
-    	let cfg = new Config();
+
+    	let cfg = {
+    		show_data: true,
+    		show_scaled: true,
+    		show_solution: true,
+    		show_points: false,
+    		auto_solve: true,
+    		log_sigma: 0
+    	};
+
     	let ctx = new Context(box.w, box.h, [-4, 4], [-4, 4]);
     	let plot = new Plot(ctx, 3);
-
-    	function resize(width, height) {
-    		console.log(`in resize with ${width} x ${height}`);
-    		ctx.setWidth(width);
-    		ctx.setHeight(height);
-    		plot.updateContext(ctx);
-    		$$invalidate(2, plot.nonce++, plot);
-    	}
-
-    	onMount(() => {
-    		resize(box.w, box.h);
-    	});
-
-    	function toggle_scramble() {
-    		plot.toggle_scramble();
-    		if (cfg.auto_solve) solve();
-    		$$invalidate(2, plot.nonce++, plot);
-    	}
-
-    	function set_sigma(log_sigma) {
-    		plot.set_sigma(log_sigma);
-    		if (cfg.auto_solve) $$invalidate(2, plot.alpha = plot.solutionAlpha(), plot);
-    		$$invalidate(2, plot.nonce++, plot);
-    	}
-
-    	function onMouseDown(evt) {
-    		drag_point = evt.target;
-    	}
-
-    	function onMouseMove(evt) {
-    		if (drag_point == null) return;
-    		plot.setDataPoint(drag_point.id, evt.offsetX, evt.offsetY);
-    		if (cfg.auto_solve) $$invalidate(2, plot.alpha = plot.solutionAlpha(), plot);
-    		$$invalidate(2, plot.nonce++, plot);
-    	}
-
-    	function onMouseUp(evt) {
-    		drag_point = null;
-    	}
-
-    	function solve() {
-    		var start_alpha = plot.alpha;
-    		var end_alpha = plot.solutionAlpha();
-
-    		function transition(step, nsteps) {
-    			var delta = step / nsteps;
-
-    			for (let i = 0; i != plot.n; i++) {
-    				$$invalidate(2, plot.alpha[i] = delta * end_alpha[i] + (1 - delta) * start_alpha[i], plot);
-    			}
-
-    			if (step != nsteps) {
-    				setTimeout(() => transition(step + 1, nsteps), 10);
-    			}
-    		}
-
-    		transition(0, 100);
-    	}
-
+    	let sig = writable(0);
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<MainPlot> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Figure1> was created with unknown prop '${key}'`);
     	});
 
-    	function div0_elementresize_handler() {
-    		box.w = this.clientWidth;
-    		box.h = this.clientHeight;
-    		$$invalidate(0, box);
-    	}
-
-    	const click_handler = () => {
-    		plot.populate();
-    		$$invalidate(2, plot.nonce++, plot);
-    	};
-
-    	function input0_change_input_handler() {
-    		cfg.log_sigma = to_number(this.value);
-    		$$invalidate(1, cfg);
-    	}
-
-    	const click_handler_1 = () => {
-    		solve();
-    	};
-
-    	const click_handler_2 = () => {
-    		toggle_scramble();
-    	};
-
-    	function input1_change_handler() {
-    		cfg.show_points = this.checked;
-    		$$invalidate(1, cfg);
-    	}
-
-    	function input2_change_handler() {
-    		cfg.show_scaled = this.checked;
-    		$$invalidate(1, cfg);
-    	}
-
-    	function input3_change_handler() {
-    		cfg.show_solution = this.checked;
-    		$$invalidate(1, cfg);
-    	}
-
-    	function input4_change_handler() {
-    		cfg.auto_solve = this.checked;
-    		$$invalidate(1, cfg);
-    	}
-
-    	const click_handler_3 = () => {
-    		plot.resetAlpha();
-    		$$invalidate(2, plot);
-    	};
-
-    	const click_handler_4 = () => {
-    		plot.delPoint();
-    		$$invalidate(2, plot);
-    	};
-
-    	const click_handler_5 = () => {
-    		plot.addPoint();
-    		$$invalidate(2, plot);
-    	};
-
-    	function input_change_input_handler(each_value, i) {
-    		each_value[i] = to_number(this.value);
-    		$$invalidate(2, plot);
-    	}
-
     	$$self.$capture_state = () => ({
+    		writable,
     		Plot,
     		Context,
-    		range,
-    		zip,
-    		onMount,
-    		Config,
+    		Curves,
+    		LowPanelControls,
+    		SliderControls,
     		box,
-    		drag_point,
     		cfg,
     		ctx,
     		plot,
-    		resize,
-    		toggle_scramble,
-    		set_sigma,
-    		numberDisplay,
-    		onMouseDown,
-    		onMouseMove,
-    		onMouseUp,
-    		solve
+    		sig
     	});
 
     	$$self.$inject_state = $$props => {
     		if ("box" in $$props) $$invalidate(0, box = $$props.box);
-    		if ("drag_point" in $$props) drag_point = $$props.drag_point;
     		if ("cfg" in $$props) $$invalidate(1, cfg = $$props.cfg);
     		if ("ctx" in $$props) ctx = $$props.ctx;
     		if ("plot" in $$props) $$invalidate(2, plot = $$props.plot);
+    		if ("sig" in $$props) $$invalidate(3, sig = $$props.sig);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*box*/ 1) {
-    			resize(box.w, box.h);
-    		}
-
-    		if ($$self.$$.dirty[0] & /*cfg*/ 2) {
-    			set_sigma(cfg.log_sigma);
-    		}
-    	};
-
-    	return [
-    		box,
-    		cfg,
-    		plot,
-    		toggle_scramble,
-    		onMouseDown,
-    		onMouseMove,
-    		onMouseUp,
-    		solve,
-    		div0_elementresize_handler,
-    		click_handler,
-    		input0_change_input_handler,
-    		click_handler_1,
-    		click_handler_2,
-    		input1_change_handler,
-    		input2_change_handler,
-    		input3_change_handler,
-    		input4_change_handler,
-    		click_handler_3,
-    		click_handler_4,
-    		click_handler_5,
-    		input_change_input_handler
-    	];
+    	return [box, cfg, plot, sig];
     }
 
-    class MainPlot extends SvelteComponentDev {
+    class Figure1 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {}, [-1, -1]);
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "MainPlot",
+    			tagName: "Figure1",
     			options,
     			id: create_fragment$1.name
     		});
@@ -10351,38 +10992,38 @@ var full = (function () {
 
     function create_fragment(ctx) {
     	let div;
-    	let mainplot;
+    	let figure1;
     	let current;
-    	mainplot = new MainPlot({ $$inline: true });
+    	figure1 = new Figure1({ $$inline: true });
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			create_component(mainplot.$$.fragment);
+    			create_component(figure1.$$.fragment);
     			attr_dev(div, "class", "view svelte-11vt6n");
-    			add_location(div, file, 15, 0, 153);
+    			add_location(div, file, 15, 0, 149);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			mount_component(mainplot, div, null);
+    			mount_component(figure1, div, null);
     			current = true;
     		},
     		p: noop,
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(mainplot.$$.fragment, local);
+    			transition_in(figure1.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(mainplot.$$.fragment, local);
+    			transition_out(figure1.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
-    			destroy_component(mainplot);
+    			destroy_component(figure1);
     		}
     	};
 
@@ -10406,7 +11047,7 @@ var full = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<FullPagePlot> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$capture_state = () => ({ MainPlot });
+    	$$self.$capture_state = () => ({ Figure1 });
     	return [];
     }
 
