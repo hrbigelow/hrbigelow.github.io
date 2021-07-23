@@ -78,21 +78,9 @@ $: notify(pp);
     fill: rgba(0,0,0,1);
   }
 
-  .target-y {
-    fill: transparent;
-  }
-
-  .proj {
-    fill: rgba(255,0,0,1);
-  }
-
   .perp {
     stroke: rgba(0,0,0,1);
     stroke-width: 2px;
-  }
-
-  .drag {
-    fill: transparent;
   }
 
   .grow {

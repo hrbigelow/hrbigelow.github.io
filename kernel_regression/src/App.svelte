@@ -1,6 +1,7 @@
 <script>
     import Figure1 from './Figure1.svelte';
     import Figure2 from './Figure2.svelte';
+    import KernelHeatmap from './KernelHeatmap.svelte';
 </script>
 
 <style>
@@ -35,6 +36,10 @@
 
         <figure class="l-page-outset" style="height: 500px;">
             <Figure1/>
+        </figure>
+
+        <figure class="l-page-outset">
+            <KernelHeatmap/>
         </figure>
 
         <figure class="l-page-outset" style="height: 500px;">

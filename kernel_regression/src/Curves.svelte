@@ -64,10 +64,6 @@ $: notify(plot);
     stroke-width: 1px;
   }
 
-  .pad {
-    padding: 10px;
-  }
-
   .full {
     width: 100%;
     height: 100%;

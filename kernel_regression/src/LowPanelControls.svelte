@@ -52,11 +52,6 @@ $: notify(plot);
     flex-direction: row;
   }
 
-  .col {
-    display: flex;
-    flex-direction: column;
-  }
-
   .pad-small {
     padding: 2px;
   }
