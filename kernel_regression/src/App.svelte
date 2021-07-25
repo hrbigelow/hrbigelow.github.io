@@ -1,4 +1,7 @@
 <script>
+    // import TextSection1 from './TextSection1.md';
+    // import TestDMath from './TestDMath.svelte';
+    import KernelMethods from './test.md'; 
     import Figure1 from './Figure1.svelte';
     import Figure2 from './Figure2.svelte';
     import KernelHeatmap from './KernelHeatmap.svelte';
@@ -32,7 +35,7 @@
 
 
     <d-article>
-        <h3>A problem for Kernel Regression to solve</h3>
+        <KernelMethods/>
 
         <figure class="l-page-outset" style="height: 500px;">
             <Figure1/>

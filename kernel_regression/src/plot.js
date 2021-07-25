@@ -175,9 +175,9 @@ export class Plot {
 
   functionNorm() {
     var a = new mat.Matrix([this.alpha]);
-    var norm = a.mmul(this.K).mmul(a.transpose()).flat()[0];
+    var norm2 = a.mmul(this.K).mmul(a.transpose()).flat()[0];
     // console.log(norm);
-    return norm;
+    return Math.sqrt(norm2);
   }
 
   resize(w, h) {
