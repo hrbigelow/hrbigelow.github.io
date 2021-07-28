@@ -100,6 +100,11 @@ $: notify(pp);
     height: 100%;
   }
 
+  .draggable:hover {
+    stroke: rgba(255,0,0,1);
+    fill: rgba(255,0,0,1);
+  }
+
 </style>
 
 <div class='col full'>
@@ -152,11 +157,11 @@ $: notify(pp);
                                                  
       {/each}
 
-      <circle id="fhat" class='perp-target' r="6" 
+      <circle id="fhat" class='perp-target draggable' r="6" 
                                             cx="{pp.fHat(0)}" cy="{pp.fHat(1)}" 
                                                               on:mousedown={onMouseDown}/>
 
-      <line class='solution-curve'
+      <line class='solution-curve draggable'
             x1="{pp.xTou(0)}"
             y1="{pp.yTov(0)}"
             x2="{pp.F(0)}" 

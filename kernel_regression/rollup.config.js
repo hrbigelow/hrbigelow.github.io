@@ -5,9 +5,8 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import glslify from 'rollup-plugin-glslify';
 import css from 'rollup-plugin-css-only';
-import marked from 'marked';
 
-import { macro_convert, parse_colab_math, convert_dmath_brackets, orig_parse_dmath } from './src/rollup_preprocess.js';
+import { preprocess_md, quote_dmath_html } from './src/rollup_preprocess.js';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -34,41 +33,21 @@ function serve() {
 
 const defaultPlugins = [
   svelte({
-    /*
-    preprocess: {
-      markup: ({ content }) => {
-        let rx = /(?<=\<d-math(| block)>)[\s\S]*?(?=<\/d-math>)/mg;
-        let code = content.replace(rx,
-          (inner) => inner.replace(/{/g, '&#123;')
-          .replace(/}/g, '&#125;'));
-        // console.log('replaced code');
-        // console.log(code);
-        return { code };
-      }
-    },
-    */
     extensions: ['.svelte', '.md'],
     preprocess: [
       { 
         markup: ({ content, filename }) => {
+          // console.log(`Processing ${filename}\n\n\n`);
           if (filename.slice(-2) == 'md') {
-            content = macro_convert(content);
-            console.log('After macro_convert');
-            console.log(content);
-
-            content = parse_colab_math(content);
-            console.log('After parse_colab');
-            console.log(content);
-
-            content = marked.parse(content);
-            console.log('After marked.parse');
-            console.log(content);
-          }
-          content = convert_dmath_brackets(content);
-          
-          if (filename.slice(-2) == 'md') {
-            console.log('After Convert dmath brackets');
-            console.log(content);
+            content = preprocess_md(content);
+          } else {
+            content = quote_dmath_html(content);
+            /*
+            if (filename == 'src/KernelHeatmap.svelte') { 
+              console.log('After quote_dmath_html');
+              console.log(content);
+            }
+            */
           }
 
           return { code: content };

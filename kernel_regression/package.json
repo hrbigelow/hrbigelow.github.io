@@ -17,18 +17,16 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0",
-    "svelte-preprocess-markdown": "^2.7.3"
+    "svelte": "^3.0.0"
   },
   "dependencies": {
     "d3": "^7.0.0",
     "glslCanvas": "^0.1.7",
+    "katex": "^0.13.13",
+    "marked": "^2.1.0",
     "ml-matrix": "^5.2.1",
     "random": "^2.0.12",
     "sirv-cli": "^1.0.0",
-    "svelte-moveable": "^0.17.3",
-    "twgl.js": "^4.19.2",
-    "visual-heatmap": "^1.0.4",
-    "webgl-heatmap": "^0.2.3"
+    "svelte-moveable": "^0.17.3"
   }
 }

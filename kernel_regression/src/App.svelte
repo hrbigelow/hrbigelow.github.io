@@ -1,7 +1,7 @@
 <script>
     // import TextSection1 from './TextSection1.md';
-    // import TestDMath from './TestDMath.svelte';
-    import KernelMethods from './test.md'; 
+    // import TestDMath from './TestDMatn.svelte';
+    import KernelMethods from './kernel_methods.md'; 
     import Figure1 from './Figure1.svelte';
     import Figure2 from './Figure2.svelte';
     import KernelHeatmap from './KernelHeatmap.svelte';

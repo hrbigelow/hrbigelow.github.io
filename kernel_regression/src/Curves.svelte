@@ -85,6 +85,11 @@ $: notify(plot);
     stroke-width: 2px;
   }
 
+  .draggable:hover {
+    stroke: rgba(255,0,0,1);
+    fill: rgba(255,0,0,1);
+  }
+
 
 </style>
 
@@ -115,7 +120,7 @@ $: notify(plot);
          {#each plot.data() as [u,v], i}
            <circle
              id={i} 
-             class="data" cx="{u}" cy="{v}" r="5"
+             class="data draggable" cx="{u}" cy="{v}" r="5"
                                             on:mousedown={onMouseDown}
                                             />
          {/each}
