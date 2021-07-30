@@ -8,10 +8,10 @@ function update() {
   plot.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig);
+var [ respond, notify ] = make_sync(update, sig, 'SliderControls');
 
 $: respond($sig);
-$: notify(plot);
+// $: notify(plot);
 
 </script>
 
@@ -43,11 +43,11 @@ $: notify(plot);
 
 <div class="pad col">
   <div class="pad-small">
-    <button on:click={() => { plot.resetAlpha(); plot.touch++;}}>Reset Alpha</button>
+    <button on:click={() => { plot.resetAlpha(); notify()}}>Reset Alpha</button>
   </div> 
   <div class="row">
-    <div class="pad-small"><button on:click={() => { plot.delPoint(); plot.touch++;}}>Del Point</button></div>
-    <div class="pad-small"><button on:click={() => { plot.addPoint(); plot.touch++;}}>Add Point</button></div>
+    <div class="pad-small"><button on:click={() => { plot.delPoint(); notify()}}>Del Point</button></div>
+    <div class="pad-small"><button on:click={() => { plot.addPoint(); notify()}}>Add Point</button></div>
   </div>
   {#each plot.alpha as a, i}
     <div class="row pad-small">

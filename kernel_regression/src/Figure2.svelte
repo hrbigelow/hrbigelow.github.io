@@ -48,7 +48,7 @@ let sig = writable(0);
     <Curves sig={sig} box={box} cfg={cfg} plot={pp.plot} />
     <LowPanelControls sig={sig} cfg={cfg} plot={pp.plot} />
   </div>
-  <PhiSpace sig={sig} pp={pp} />
+  <!-- <PhiSpace sig={sig} pp={pp} /> -->
 </div>
 
 

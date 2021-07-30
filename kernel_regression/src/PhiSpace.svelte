@@ -12,7 +12,7 @@ function update() {
   pp.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig);
+var [ respond, notify ] = make_sync(update, sig, 'PhiSpace');
 
 let phi_width, phi_height;
 let vis_width, vis_height;

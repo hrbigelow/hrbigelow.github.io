@@ -4,13 +4,16 @@ uniform vec2 u_resolution;
 uniform float u_sigma;
 uniform float cut_size;
 uniform bool u_do_scramble;
+uniform float u_xmin;
+uniform float u_xmax;
 
 const vec3 blue = vec3(0.0,0.0,1.0);
 const vec3 white = vec3(1.0,1.0,1.0);
 const float pi = 3.1415926539;
-const float slope = 8.0;
-const float intercept = -4.0;
-const vec2 domain = vec2(-4.0, 4.0);
+
+float slope = u_xmax - u_xmin;
+float intercept = u_xmin;
+
 
 float scramble(float x) {
     float d = floor(x / cut_size);
@@ -28,7 +31,7 @@ float kernel(vec2 st) {
 
 void main() {
   vec2 st = gl_FragCoord.xy / u_resolution;
-  st = st * slope + intercept;
+  st = vec2(st.x, 1.0 - st.y) * slope + intercept;
   if (u_do_scramble) {
     st = vec2(scramble(st.x), st.y);
   }

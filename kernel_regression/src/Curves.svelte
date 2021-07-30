@@ -11,7 +11,7 @@ function update() {
   plot.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig);
+var [ respond, notify ] = make_sync(update, sig, 'Curves');
 
 
 function resize(width, height) {
@@ -28,9 +28,17 @@ function onMouseDown(evt) {
   drag_point = evt.target;
 }
 
+
 function onMouseMove(evt) {
   if (drag_point == null) return;
-  plot.setDataPoint(drag_point.id, evt.offsetX, evt.offsetY);
+  var g = drag_point.id.match(/(?<code>\D+)(?<num>\d+)/).groups
+  if (g.code == 'mu')
+    plot.setMu(g.num, evt.offsetX);
+  else if (g.code == 'xy') 
+    plot.setDataPoint(g.num, evt.offsetX, evt.offsetY);
+  else 
+    console.log(`got drag_point id ${drag_point.id}`);
+
   if (cfg.auto_solve) 
     plot.alpha = plot.solutionAlpha(); 
   update();
@@ -48,7 +56,7 @@ $: notify(plot);
 
 <style>
 
-  .data {
+  .marker {
     fill: #000000;
     stroke: #000000;
   }
@@ -77,6 +85,7 @@ $: notify(plot);
 
   .inner-plot {
     border: 1px solid gray;
+    min-height: 300px;
   }
 
   .solution-curve {
@@ -99,6 +108,15 @@ $: notify(plot);
        on:mousemove={onMouseMove}
        on:mouseup={onMouseUp}
        >
+     <defs>
+     <polygon id='mu-select' points="-5,0 5,0 0,10"/>
+     </defs>
+       {#each plot.getMuX() as [mu,x], i}
+         <use class='marker draggable' 
+         id='mu{i}' x="{mu}" y="0" xlink:href='#mu-select' 
+                                    on:mousedown={onMouseDown}/>
+
+       {/each}
 
        {#each range(plot.n) as i}
          {#if cfg.show_scaled}
@@ -119,8 +137,8 @@ $: notify(plot);
        {#if cfg.show_data}
          {#each plot.data() as [u,v], i}
            <circle
-             id={i} 
-             class="data draggable" cx="{u}" cy="{v}" r="5"
+             id='xy{i}'
+             class="marker draggable" cx="{u}" cy="{v}" r="5"
                                             on:mousedown={onMouseDown}
                                             />
          {/each}

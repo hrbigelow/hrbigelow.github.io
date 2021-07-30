@@ -1,33 +1,56 @@
 <script>
   import { onMount } from 'svelte';
-  // import { twgl } from 'twgl.gs';
   import GlslCanvas from 'glslCanvas';
   import { RBFKernel, RBFShuffleKernel } from './kernel'; 
   import kernel_frag from './shaders/kernel_frag.glsl';
-
+  import { make_sync } from './component_sync';
   import * as d3 from 'd3';
 
-  let cut_size = 8;
-  let log_sigma = 0;
-  let do_scramble = false;
+  export let sig, plot;
+  let xmin, xmax;
+  let w, sandbox;
 
-  let sandbox;
+  function webgl_supported() {
+    var canvas = document.createElement('canvas');
+  }
 
-  function update_uniforms(log_sigma, cut_size, do_scramble) {
+  function xTou(x) {
+    return w * (x - xmin) / (xmax - xmin);
+  }
+
+  function yTov(y) {
+    return xTou(y);
+  }
+
+  function update() {
     if (sandbox == null) return;
-    sandbox.setUniform("u_sigma", Math.pow(10, log_sigma));
+    var sigma = Math.sqrt(plot.get_sigma2());
+    var do_scramble = plot.scrambled();
+    var cut_size = plot.cut_size(); 
+    [xmin, xmax] = plot.get_xrange();
+
+    sandbox.setUniform("u_sigma", sigma);
     sandbox.setUniform("cut_size", cut_size);
     sandbox.setUniform("u_do_scramble", do_scramble ? 1 : 0);
+    sandbox.setUniform("u_xmin", xmin); 
+    sandbox.setUniform("u_xmax", xmax); 
+    plot.touch++;
   }
 
   onMount(() => {
     const canvas = document.getElementById('glslCanvas');
-    sandbox = new GlslCanvas(canvas);
-    sandbox.load(kernel_frag);
-    update_uniforms(log_sigma, cut_size, do_scramble);
+    console.log('here in onMount');
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    console.log('gl is ', gl);
+    if (gl && gl instanceof WebGLRenderingContext) {
+      sandbox = new GlslCanvas(canvas);
+      sandbox.load(kernel_frag);
+    }
+    update();
   });
 
-  $: update_uniforms(log_sigma, cut_size, do_scramble); 
+  var [ respond, notify ] = make_sync(update, sig, 'KernelHeatmap');
+  $: respond($sig)
 
 </script>
 
@@ -47,49 +70,55 @@
   }
 
   .pad-small {
-    padding: 2px;
+    padding: 3px;
   }
 
   .inner-plot {
     border: 1px solid gray;
   }
 
+  .full {
+    width: 100%;
+    height: 100%;
+  }
+
   .square {
-    max-width: 500px;
-    max-height: 500px;
+    max-width: 300px;
+    max-height: 300px;
   }
 
   .center {
     align-items: center;
   }
 
+  .overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+
 </style>
 
 <div class="pad col">
   <div class='row center'>
-    <div class='col'>
-      <d-math>\uparrow</d-math>
-      <d-math>\mathcal{X}</d-math>
-      <d-math>\downarrow</d-math>
+    <div class='col pad-small'>
+      <d-math>\mu</d-math>
     </div>
     <div class='col center'>
-      <div class='square inner-plot'>
-        <canvas id='glslCanvas' width="500" height="500"></canvas>
+      <div class='square inner-plot' bind:clientWidth={w}>
+        <canvas id='glslCanvas' width="{w}" height="{w}"></canvas>
+        <svg class='overlay' width="{w}" height="{w}">
+          {#each plot.x as x}
+            {#each plot.mu as mu} 
+              <circle cx="{xTou(x)}" cy="{yTov(mu)}" r="2" fill="rgba(255,0,0,1)" />
+            {/each}
+          {/each}
+        </svg> 
       </div>
-      <div>
-        <d-math>\longleftarrow \mathcal{X} \longrightarrow</d-math>
+      <div class='pad-small'>
+        <d-math>x</d-math>
       </div>
-    </div>
-  </div>
-  <div class="pad-small col">
-    <div class='row pad-small'>
-      <label>sigma: <input type="range" bind:value={log_sigma} min=-3 max=1 step=0.1>{Math.pow(10, log_sigma).toFixed(3)}</label>
-    </div>
-    <div class='row pad-small'>
-      <label>cut size: <input type="range" bind:value={cut_size} min=0.01 max=8 step=0.1>{cut_size}</label>
-    </div>
-    <div class='row pad-small'>
-      <label><input type="checkbox" bind:checked={do_scramble}>scramble</label>
+      <p>Each row is the Gaussian at <d-math>\mu</d-math></p>
     </div>
   </div>
 </div>

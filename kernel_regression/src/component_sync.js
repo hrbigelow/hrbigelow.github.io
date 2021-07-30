@@ -1,5 +1,6 @@
-export function make_sync(updater, sig) {
-	var flag = false;
+export function make_sync(updater, sig, owner_component) {
+  var ready = true;
+  var source = owner_component;
 
   /* Synopsis: 
    * import { writable } from 'svelte/store';
@@ -9,18 +10,28 @@ export function make_sync(updater, sig) {
    * $: notify(obj);
    *
    */
-	var respond = (val) => {
-			updater();
-			flag = true;
-	};
+  function respond(val) {
+    console.log(`in ${source} respond(${val})`);
+    if (val != source && ready) {
+      ready = false;
+      updater();
+      ready = true;
+    }
+    // flag = true;
+  };
 
-	var notify = (val) => {
-		 if (flag) {
-			 flag = false;
-			 return;
-		 } 
-		 sig.update(n => n + 1);
-	};
-	return [respond, notify];
+  function notify(debug_msg) {
+    if (! ready) return;
+    /*
+    if (flag) {
+      flag = false;
+      return;
+    } 
+    */
+    if (debug_msg)
+      console.log(`in ${source}'s notify: ${debug_msg}`);
+    sig.update(() => source);
+  };
+  return [respond, notify];
 }
 

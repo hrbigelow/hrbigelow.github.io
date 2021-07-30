@@ -5,7 +5,7 @@ import * as mat from 'ml-matrix';
 
 const STEP = 0.0125;
 // const STEP = 0.5;
-const CUT_SIZE = 1;
+const CUT_SIZE = 2;
 const ALPHA_RANGE = 5;
 
 export class Plot {
@@ -30,13 +30,16 @@ export class Plot {
 
   }
 
+  get_xrange() {
+    return [this.ctx.xmin, this.ctx.xmax];
+  }
 
   initK() {
     var n = this.n, v;
     this.K = mat.Matrix.zeros(this.n, this.n);
     for (let i = 0; i != n; i++) {
       for (let j = 0; j != n; j++) {
-        v = this.kernel(this.x[i], this.x[j]);
+        v = this.kernel(this.mu[i], this.x[j]);
         this.K.set(i,j,v);
       }
     }
@@ -51,16 +54,6 @@ export class Plot {
     } catch(err) {
       console.log('could not invert K.  leaving as-is');
       this.validInv = false;
-    }
-  }
-
-  // updates i'th row/column of K
-  updateK(i) {
-    var v;
-    for (let k = 0; k != this.n; k++) {
-      v = this.kernel(this.x[i], this.x[k]);
-      this.K.set(k,i,v);
-      this.K.set(i,k,v);
     }
   }
 
@@ -91,7 +84,7 @@ export class Plot {
     var seg;
     this.curveCache[ci] = new Array();
     for (let si = 0; si != this.xCache.length; si++) {
-      seg = this.xCache[si].map(x => this.kernel(this.x[ci], x));
+      seg = this.xCache[si].map(x => this.kernel(this.mu[ci], x));
       this.curveCache[ci].push(...seg);
     }
   }
@@ -104,6 +97,10 @@ export class Plot {
 
   scrambled() {
     return this.active_ker == 1;
+  }
+
+  cut_size() {
+    return CUT_SIZE;
   }
 
   resetAlpha() {
@@ -120,6 +117,15 @@ export class Plot {
     this.initK();
   }
 
+  recenter_mu() {
+    for (let i = 0; i != this.n; i++) {
+      this.mu[i] = this.x[i];
+    }
+    this.initK();
+    this.initInvK();
+    this.initCurveCache();
+  }
+
   get_sigma2() {
     return this.kernels[this.active_ker].get_sigma2();
   }
@@ -128,10 +134,12 @@ export class Plot {
     var n = this.n;
     this.x = new Array(n);
     this.y = new Array(n);
+    this.mu = new Array(n);
     this.alpha = new Array(n); 
 
     for (let i = 0; i != n; i++) {
       this.x[i] = this.ctx.unitToX(Math.random());
+      this.mu[i] = this.x[i];
       this.alpha[i] = this.unitToAlpha(Math.random());
     }
     this.initK();
@@ -147,6 +155,13 @@ export class Plot {
     // update the value of the i'th data point
     this.x[i] = this.ctx.x(u);
     this.y[i] = this.ctx.y(v);
+    this.initK();
+    this.initInvK();
+    this.updateCurveCache(i);
+  }
+
+  setMu(i, u) {
+    this.mu[i] = this.ctx.x(u);
     this.initK();
     this.initInvK();
     this.updateCurveCache(i);
@@ -175,7 +190,16 @@ export class Plot {
 
   functionNorm() {
     var a = new mat.Matrix([this.alpha]);
-    var norm2 = a.mmul(this.K).mmul(a.transpose()).flat()[0];
+    var n = this.n, v;
+    var tmp = mat.Matrix.zeros(this.n, this.n);
+    for (let i = 0; i != n; i++) {
+      for (let j = 0; j != n; j++) {
+        v = this.kernel(this.mu[i], this.mu[j]);
+        tmp.set(i,j,v);
+        tmp.set(j,i,v);
+      }
+    }
+    var norm2 = a.mmul(tmp).mmul(a.transpose()).flat()[0];
     // console.log(norm);
     return Math.sqrt(norm2);
   }
@@ -263,6 +287,11 @@ export class Plot {
     );
   }
 
+  getMuX() {
+    return d3.zip(this.mu, this.x).map(([mu,x]) => 
+      [this.ctx.u(mu), this.ctx.u(x)]
+    );
+  }
 
   // return the y value for the solution at the i'th x location
   // unused currently
