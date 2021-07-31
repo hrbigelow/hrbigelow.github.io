@@ -46,14 +46,14 @@
 <div class='col full'>
   <div class='row full'>
     <div class='col full'>
-      <Curves sig={sig} box={box} cfg={cfg} plot={plot} />
-      <LowPanelControls sig={sig} cfg={cfg} plot={plot} />
+      <Curves sig={sig} cn=1 box={box} cfg={cfg} plot={plot} />
+       <LowPanelControls sig={sig} cn=2 cfg={cfg} plot={plot} />
     </div>
-    <SliderControls sig={sig} plot={plot} />
+    <SliderControls sig={sig} cn=3 plot={plot} />
   </div>
   <div class='row full'>
-    <KernelHeatmap sig={sig} plot={plot}/>
-    <KernelMatrix sig={sig} plot={plot}/>
+    <KernelHeatmap sig={sig} cn=4 plot={plot}/>
+    <KernelMatrix sig={sig} cn=5 plot={plot}/>
   </div>
 </div>
 

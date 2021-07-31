@@ -36,13 +36,11 @@
 
     <d-article>
 
-        <!--
         <figure class="l-page-outset" >
             <Figure1/>
             <figcaption>Interactive plot.  You can drag the black points
             </figcaption>
         </figure>
-        -->
 
         <figure class="l-page-outset" style="height: 500px;">
             <Figure2/>

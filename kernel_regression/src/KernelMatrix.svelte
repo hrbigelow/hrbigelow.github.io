@@ -1,9 +1,9 @@
 <script>
-import { make_sync } from './component_sync';
+import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 import { onMount } from 'svelte';
 
-export let sig, plot;
+export let sig, cn, plot;
 export let space = 10;
 let rad, w;
 
@@ -31,9 +31,7 @@ function update() {
   rad = (w - (plot.n - 1) * space) / plot.n / 2;
 }
 
-var [ respond, notify ] = make_sync(update, sig, 'KernelMatrix');
-
-$: respond($sig)
+var s = new Sync(sig, cn, update);
 
 onMount(() => {
   update();

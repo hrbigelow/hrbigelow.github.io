@@ -1,10 +1,10 @@
 <script>
-import { make_sync } from './component_sync';
+import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 import * as d3 from 'd3';
 import { onMount } from 'svelte';
 
-export let sig, pp;
+export let sig, cn, pp;
 
 function update() {
   pp.updateBasis();
@@ -12,7 +12,7 @@ function update() {
   pp.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig, 'PhiSpace');
+var s = new Sync(sig, cn, update);
 
 let phi_width, phi_height;
 let vis_width, vis_height;
@@ -36,14 +36,12 @@ function onMouseMove(evt) {
   else 
     pp.updateF(evt.offsetX, evt.offsetY);
   update();
+  s.notify();
 }
 
 function onMouseUp(evt) {
   drag_point = null;
 }
-
-$: respond($sig);
-$: notify(pp);
 
 </script>
 

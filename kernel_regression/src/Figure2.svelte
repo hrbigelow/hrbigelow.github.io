@@ -45,10 +45,10 @@ let sig = writable(0);
 
 <div class='row full'>
   <div class='col full'>
-    <Curves sig={sig} box={box} cfg={cfg} plot={pp.plot} />
-    <LowPanelControls sig={sig} cfg={cfg} plot={pp.plot} />
+    <Curves sig={sig} box={box} cfg={cfg} cn=1 plot={pp.plot} />
+    <LowPanelControls sig={sig} cfg={cfg} cn=2 plot={pp.plot} />
   </div>
-  <!-- <PhiSpace sig={sig} pp={pp} /> -->
+  <PhiSpace sig={sig} cn=3 pp={pp} />
 </div>
 
 

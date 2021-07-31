@@ -1,9 +1,9 @@
 <script>
-import { make_sync } from './component_sync';
+import { Sync } from './sync';
 import { range } from 'd3';
 import { onMount } from 'svelte';
 
-export let sig, box, cfg, plot;
+export let sig, box, cfg, plot, cn;
 let drag_point = null;
 
 
@@ -11,8 +11,7 @@ function update() {
   plot.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig, 'Curves');
-
+var s = new Sync(sig, cn, update);
 
 function resize(width, height) {
   console.log(`in resize with ${width} x ${height}`);
@@ -42,6 +41,7 @@ function onMouseMove(evt) {
   if (cfg.auto_solve) 
     plot.alpha = plot.solutionAlpha(); 
   update();
+  s.notify();
 }
 
 function onMouseUp(evt) {
@@ -49,8 +49,8 @@ function onMouseUp(evt) {
 }
 
 $: resize(box.w, box.h);
-$: respond($sig);
-$: notify(plot);
+// $: respond($sig);
+// $: notify(plot);
 
 </script>
 

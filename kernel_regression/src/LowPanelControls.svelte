@@ -1,27 +1,28 @@
 <script>
-import { make_sync } from './component_sync';
+import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 
-export let sig, cfg, plot;
+export let sig, cn, cfg, plot;
 let l_log_sigma = 0;
 
 function update() {
   plot.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig, 'LowPanelControls');
+var s = new Sync(sig, cn, update);
 
-const NSTEPS = 10;
+const NSTEPS = 50;
 
+// catch-all event handler
 function h(e) {
   var id = e.target.id;
   if (id == 'solve') solve(true);
   if (id == 'recenter_mu') recenter_mu();
   if (id == 'scramble') toggle_scramble(); 
-  if (id == 'newdata') {
-    plot.populate();
-    notify();
-  }
+  if (id == 'newdata') plot.populate();
+  if (id == 'sigma') set_sigma(l_log_sigma);
+  update();
+  s.notify();
 }
 
 
@@ -29,19 +30,17 @@ function toggle_scramble() {
   // console.log('in toggle_scramble');
   plot.toggle_scramble();
   solve(cfg.auto_solve, 'in toggle');
-  notify();
 }
 
 function set_sigma(log_sigma) {
   plot.set_sigma(log_sigma);
   if (cfg.auto_solve)
     plot.alpha = plot.solutionAlpha();
-  notify();
 }
 
 function recenter_mu() {
   plot.recenter_mu();
-  notify('in recenter_mu');
+  solve(cfg.auto_solve);
 }
 
 
@@ -57,21 +56,13 @@ function solve(do_solve, msg) {
       plot.alpha[i] = delta * end_alpha[i] + (1 - delta) * start_alpha[i];
       // must call notify within the callback, since it is async
     } 
-    notify(`in transition step ${step}`);
+    s.notify();
     if (step != nsteps) {
       setTimeout(() => transition(step+1, nsteps), 10);
     }
   }
   transition(0, NSTEPS);
 }
-
-
-$: solve(cfg.auto_solve, 'reactive statement');
-$: set_sigma(l_log_sigma); 
-
-// necessary for function norm to update
-$: respond($sig);
-// $: notify(plot);
 
 </script>
 
@@ -103,7 +94,9 @@ $: respond($sig);
     <div class="pad-small"><button id='newdata' on:click={h}>New Data</button></div>
     <div class="pad-small">
       <label>Sigma: 
-        <input type="range" bind:value={l_log_sigma} 
+        <input id='sigma' type="range"
+               bind:value={l_log_sigma} 
+               on:input={h}
                min=-5 max=2 step=0.1>
                {Math.pow(10, l_log_sigma).toFixed(3)}
       </label>

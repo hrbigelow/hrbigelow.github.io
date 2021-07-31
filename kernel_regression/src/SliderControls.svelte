@@ -1,17 +1,28 @@
 <script>
-import { make_sync } from './component_sync';
+import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 
-export let sig, plot;
+export let sig, cn, plot;
 
 function update() {
   plot.touch++;
 }
 
-var [ respond, notify ] = make_sync(update, sig, 'SliderControls');
+var s = new Sync(sig, cn, update);
 
-$: respond($sig);
-// $: notify(plot);
+// generic handler
+function h(e) {
+  var id = e.target.id;
+  if (id == 'reset-alpha') plot.resetAlpha(); 
+  if (id == 'del-point') plot.delPoint();
+  if (id == 'add-point') plot.addPoint();
+  if (id.match(/update-alpha/)) { 
+    // no need to do anything since plot.alpha member gets updated through bound
+    // value
+  } 
+  update();
+  s.notify();
+}
 
 </script>
 
@@ -43,15 +54,18 @@ $: respond($sig);
 
 <div class="pad col">
   <div class="pad-small">
-    <button on:click={() => { plot.resetAlpha(); notify()}}>Reset Alpha</button>
+    <button id='reset-alpha' on:click={h}>Reset Alpha</button>
   </div> 
   <div class="row">
-    <div class="pad-small"><button on:click={() => { plot.delPoint(); notify()}}>Del Point</button></div>
-    <div class="pad-small"><button on:click={() => { plot.addPoint(); notify()}}>Add Point</button></div>
+    <div class="pad-small"><button id='del-point' on:click={h}>Del Point</button></div>
+    <div class="pad-small"><button id='add-point' on:click={h}>Add Point</button></div>
   </div>
   {#each plot.alpha as a, i}
     <div class="row pad-small">
-      <input type=range bind:value={a} min=-10 max=10 step=0.01>
+      <input id='update-alpha{i}' type=range
+             bind:value={a}
+             on:input={h}
+             min=-10 max=10 step=0.01>
       <code class="alphas">{numberDisplay(a)}</code>
     </div>
   {/each}
