@@ -3,7 +3,8 @@ import { Sync } from './sync';
 import { range } from 'd3';
 import { onMount } from 'svelte';
 
-export let sig, box, cfg, plot, cn;
+export let sig, cfg, plot, cn;
+let w=0, h=0;
 let drag_point = null;
 
 
@@ -14,13 +15,13 @@ function update() {
 var s = new Sync(sig, cn, update);
 
 function resize(width, height) {
-  console.log(`in resize with ${width} x ${height}`);
+  // console.log(`in resize with ${width} x ${height}`);
   plot.resize(width, height);
   update();
 }
 
 onMount(() => {
-  resize(box.w, box.h);
+  resize(w, h);
 });
   
 function onMouseDown(evt) {
@@ -33,10 +34,11 @@ function onMouseMove(evt) {
   var g = drag_point.id.match(/(?<code>\D+)(?<num>\d+)/).groups
   if (g.code == 'mu')
     plot.setMu(g.num, evt.offsetX);
-  else if (g.code == 'xy') 
+  else if (g.code == 'xy') {
     plot.setDataPoint(g.num, evt.offsetX, evt.offsetY);
-  else 
-    console.log(`got drag_point id ${drag_point.id}`);
+    if (cfg.mu_tracks_x)
+      plot.setMu(g.num, evt.offsetX);
+  }
 
   if (cfg.auto_solve) 
     plot.alpha = plot.solutionAlpha(); 
@@ -48,11 +50,54 @@ function onMouseUp(evt) {
   drag_point = null;
 }
 
-$: resize(box.w, box.h);
-// $: respond($sig);
-// $: notify(plot);
+$: resize(w, h);
 
 </script>
+<div class='full'
+     bind:clientWidth={w} bind:clientHeight={h}>
+  <svg class='framed full'
+       on:mousemove={onMouseMove}
+       on:mouseup={onMouseUp}
+       >
+     <defs>
+     <polygon id='mu-select' points="-5,0 5,0 0,10"/>
+     </defs>
+       {#each plot.getMuX() as [mu,x], i}
+         <use class='marker draggable' 
+         id='mu{i}' x="{mu}" y="0" xlink:href='#mu-select' 
+                                    on:mousedown={onMouseDown}/>
+
+       {/each}
+
+       {#each range(plot.n) as i}
+         {#if cfg.curves}
+           <path class="curve" d="{plot.curve(i)}"/>
+         {/if}
+
+         {#if cfg.points}
+           {#each plot.points(i) as [u,v]}
+             <circle class="point" cx="{u}" cy="{v}" r="4"/>
+           {/each}
+         {/if}
+       {/each}
+
+       {#if cfg.solution}
+         <path class="solution-curve" d="{plot.solutionCurve()}"/>
+       {/if}
+
+       {#if cfg.show_data}
+         {#each plot.data() as [u,v], i}
+           <circle
+             id='xy{i}'
+             class="marker draggable" cx="{u}" cy="{v}" r="5"
+                                            on:mousedown={onMouseDown}
+                                            />
+         {/each}
+       {/if}
+
+  </svg>
+</div>
+
 
 <style>
 
@@ -77,15 +122,13 @@ $: resize(box.w, box.h);
     height: 100%;
   }
 
-
-  .svg-wrap {
+  .grow {
     flex-grow: 1;
   }
 
 
-  .inner-plot {
+  .framed {
     border: 1px solid gray;
-    min-height: 300px;
   }
 
   .solution-curve {
@@ -101,50 +144,4 @@ $: resize(box.w, box.h);
 
 
 </style>
-
-<div class="svg-wrap"
-     bind:clientWidth={box.w} bind:clientHeight={box.h}>
-  <svg class="inner-plot full"
-       on:mousemove={onMouseMove}
-       on:mouseup={onMouseUp}
-       >
-     <defs>
-     <polygon id='mu-select' points="-5,0 5,0 0,10"/>
-     </defs>
-       {#each plot.getMuX() as [mu,x], i}
-         <use class='marker draggable' 
-         id='mu{i}' x="{mu}" y="0" xlink:href='#mu-select' 
-                                    on:mousedown={onMouseDown}/>
-
-       {/each}
-
-       {#each range(plot.n) as i}
-         {#if cfg.show_scaled}
-           <path class="curve" d="{plot.curve(i)}"/>
-         {/if}
-
-         {#if cfg.show_points}
-           {#each plot.points(i) as [u,v]}
-             <circle class="point" cx="{u}" cy="{v}" r="4"/>
-           {/each}
-         {/if}
-       {/each}
-
-       {#if cfg.show_solution}
-         <path class="solution-curve" d="{plot.solutionCurve()}"/>
-       {/if}
-
-       {#if cfg.show_data}
-         {#each plot.data() as [u,v], i}
-           <circle
-             id='xy{i}'
-             class="marker draggable" cx="{u}" cy="{v}" r="5"
-                                            on:mousedown={onMouseDown}
-                                            />
-         {/each}
-       {/if}
-
-  </svg>
-</div>
-
 

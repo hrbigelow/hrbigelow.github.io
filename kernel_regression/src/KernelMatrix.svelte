@@ -3,93 +3,79 @@ import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 import { onMount } from 'svelte';
 
-export let sig, cn, plot;
-export let space = 10;
-let rad, w;
-
+export let sig, cn, plot, klass, divh;
+let s;
+let sqr_frac = 0.9;
+let svg;
+let mounted = false;
 
 function color(s) {
   var i = 255*s;
   return `rgba(${255-i}, ${255-i}, 255)`;
 }
 
-// calculate the center coordinate
-function corner(i) {
-  return (2 * rad + space) * i;
+function get_mat(plot) {
+  var dat = [];
+  if (plot.n == 0) return dat;
+  var h = svg.clientHeight;
+  var fill = plot.n == 1 ? h : sqr_frac * h;
+  var blank = h - fill;
+  var side = fill / plot.n;
+  var gap = plot.n > 1 ? blank / (plot.n - 1) : 0;
+  var stride = side + gap;
+
+  for (let i = 0; i != plot.n; i++) {
+    for (let j = 0; j != plot.n; j++) {
+      dat.push({ 
+        x: stride * i, 
+        y: stride * j, 
+        v: plot.pft[i][j], 
+        side: side 
+      });
+    }
+  }
+  return dat;
 }
 
-function center(i) {
-  return rad + (2 * rad + space) * i;
+
+function resize(dummy) {
+  if (! mounted) return;
+  var h = svg.clientHeight;
+  svg.setAttribute('width', h);
+  update();
 }
 
-function range(n) {
-  return [...Array(n).keys()];
-}
 
 function update() {
+  console.log(`in update with ${plot.n}`);
   plot.touch++;
-  rad = (w - (plot.n - 1) * space) / plot.n / 2;
 }
 
-var s = new Sync(sig, cn, update);
-
 onMount(() => {
-  update();
-  console.log(`Matrix w=${w}`);
+  s = new Sync(sig, cn, update);
+  // console.log(plot.n);
+  mounted = true;
+  resize(divh);
 });
 
 
+$: resize(divh);
+
 </script>
+
+<svg bind:this={svg} class='framed {klass}'>
+  {#if mounted}
+    {#each get_mat(plot) as {x, y, v, side}}
+      <rect width="{side}" height="{side}"
+            x="{x}" y="{y}" style='fill: {color(v)}' />
+    {/each}
+  {/if}
+  </svg>
 
 <style>
 
-  .col {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .square {
-    width: 300px;
-    height: 300px;
-  }
-
-  .full {
-    width: 100%;
-    height: 100%;
-  }
-
-  .inner-plot {
+  .framed {
     border: 1px solid gray;
   }
 
-  .pad {
-    padding: 10px;
-  }
-
-  .center {
-    align-items: center;
-  }
-
 </style>
-
-<div class='pad'>
-  <div class='col center'>
-    <div class='square' bind:clientWidth={w}>
-      <svg class='inner-plot full'>
-        {#each range(plot.n) as i}
-          {#each range(plot.n) as j}
-            <rect width="{rad*2}" height="{rad*2}"
-                    x="{corner(i)}"
-                    y="{corner(j)}" 
-                    style='fill: {color(plot.K[i][j])}' />
-          {/each}
-        {/each}
-      </svg>
-    </div>
-    <div><p>The <d-math>i</d-math>'th row is the vector of evaluation 
-      <d-math>(f_i(x_1), f_i(x_2), \cdots, f_i(x_n))</d-math>
-      </p>
-    </div>
-  </div>
-</div>
-

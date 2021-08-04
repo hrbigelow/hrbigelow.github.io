@@ -21,15 +21,22 @@ function h(e) {
   if (id == 'scramble') toggle_scramble(); 
   if (id == 'newdata') plot.populate();
   if (id == 'sigma') set_sigma(l_log_sigma);
+  if (id.slice(0,5) == 'check') {
+    cfg[id.slice(7)] = e.target.value;
+    console.log(cfg);
+  }
+
   update();
   s.notify();
 }
+
+$: if (cfg) s.notify();
 
 
 function toggle_scramble() {
   // console.log('in toggle_scramble');
   plot.toggle_scramble();
-  solve(cfg.auto_solve, 'in toggle');
+  solve(cfg.auto_solve);
 }
 
 function set_sigma(log_sigma) {
@@ -97,13 +104,13 @@ function solve(do_solve, msg) {
         <input id='sigma' type="range"
                bind:value={l_log_sigma} 
                on:input={h}
-               min=-5 max=2 step=0.1>
+               min=-5 max=2 step=0.01>
                {Math.pow(10, l_log_sigma).toFixed(3)}
       </label>
     </div>
     <div class="pad-small">
       <d-math>\|f\| = </d-math>
-      {plot.validInv ?  numberDisplay(plot.functionNorm()) : 'Error: non-singular K'}
+      {plot.invertible ?  numberDisplay(plot.functionNorm()) : 'Could not solve'}
     </div>
   </div>
   <div style="flex-grow: 1">
@@ -115,10 +122,9 @@ function solve(do_solve, msg) {
     </div>
   </div>
   <div style="flex-grow: 1: align: right;">
-    <div><label><input type="checkbox" bind:checked="{cfg.show_points}">points</label></div>
-    <div><label><input type="checkbox" bind:checked="{cfg.show_scaled}">curves</label></div>
-    <div><label><input type="checkbox" bind:checked="{cfg.show_solution}">solution</label></div>
-    <div><label><input type="checkbox" bind:checked="{cfg.auto_solve}">auto solve</label></div>
+    {#each ['points', 'curves', 'solution', 'auto_solve', 'mu_tracks_x'] as k}
+      <div><label><input type="checkbox" bind:checked={cfg[k]}>{k}</label></div>
+    {/each}
   </div>
 </div>
 

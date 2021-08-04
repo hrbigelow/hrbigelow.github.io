@@ -4,7 +4,8 @@
     import KernelMethods from './kernel_methods.md'; 
     import Figure1 from './Figure1.svelte';
     import Figure2 from './Figure2.svelte';
-    import KernelHeatmap from './KernelHeatmap.svelte';
+    // import KernelHeatmap from './KernelHeatmap.svelte';
+    import KernelMatrix from './KernelMatrix.svelte';
 </script>
 
 <style>
@@ -37,16 +38,18 @@
     <d-article>
 
         <figure class="l-page-outset" >
-            <Figure1/>
+            <Figure1/> 
             <figcaption>Interactive plot.  You can drag the black points
             </figcaption>
         </figure>
 
-        <figure class="l-page-outset" style="height: 500px;">
+        <!-- 
+        <figure class="l-page-outset">
             <Figure2/>
         </figure>
+        -->
 
-        <KernelMethods/>
+        <!-- <KernelMethods/> -->
 
     </d-article>
 

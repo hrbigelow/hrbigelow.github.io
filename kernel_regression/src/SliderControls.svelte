@@ -46,7 +46,7 @@ function h(e) {
   }
 
   .alphas {
-    min-width: 7em;
+    min-width: 4em;
   }
 
 </style>

@@ -20,11 +20,17 @@ export class Plot {
     this.kernels[0] = new ker.RBFKernel();
     this.kernels[1] = new ker.RBFShuffleKernel(CUT_SIZE);
     this.active_ker = 0;
-    this.K = mat.Matrix.zeros(this.n, this.n);
-    this.invK = mat.Matrix.zeros(this.n, this.n);
-    this.validInv = true;
+
+    // matrix p = row i is phi(mu_i)
+    // matrix f = row i is phi(x_i)
+    // pft means P F^T, ppt means P P^T
+    // when mu_i = x_i, then P = F, and PF^T = FF^T = K
+    this.pft = mat.Matrix.zeros(this.n, this.n);
+    this.ppt = mat.Matrix.zeros(this.n, this.n);
+    this.invpft = mat.Matrix.zeros(this.n, this.n);
     this.curveCache = null; // cc[ci][xi] = y.  (curve_idx, x_idx)
     this.xCache = null;
+    this.invertible = true;
 
     this.populate();
 
@@ -34,26 +40,44 @@ export class Plot {
     return [this.ctx.xmin, this.ctx.xmax];
   }
 
-  initK() {
-    var n = this.n, v;
-    this.K = mat.Matrix.zeros(this.n, this.n);
-    for (let i = 0; i != n; i++) {
-      for (let j = 0; j != n; j++) {
-        v = this.kernel(this.mu[i], this.x[j]);
-        this.K.set(i,j,v);
-      }
-    }
-    this.initInvK();
+  // if i is undefined, initialize the whole matrix
+  // otherwise, initialize i'th row and column only
+  init_metrics() {
+    this.init_ppt();
+    this.init_pft();
   }
 
-  initInvK() {
-    try {
-      var inv = mat.inverse(this.K); 
-      this.invK = inv;
-      this.validInv = true;
-    } catch(err) {
-      console.log('could not invert K.  leaving as-is');
-      this.validInv = false;
+  init_ppt() {
+    var n = this.n;
+    this.ppt = mat.Matrix.zeros(this.n, this.n);
+    for (let i = 0; i != n; i++) {
+      for (let j = 0; j != n; j++) {
+        this.ppt[i][j] = this.kernel(this.mu[i], this.mu[j]); 
+      }
+    }
+  }
+
+  update_ppt(i) {
+    for (let j = 0; j != this.n; j++){
+      this.ppt[i][j] = this.kernel(this.mu[i], this.mu[j]);
+      this.ppt[j][i] = this.kernel(this.mu[j], this.mu[i]);
+    }
+  }
+
+  init_pft() {
+    var n = this.n;
+    this.pft = mat.Matrix.zeros(this.n, this.n);
+    for (let i = 0; i != n; i++) {
+      for (let j = 0; j != n; j++) {
+        this.pft[i][j] = this.kernel(this.mu[i], this.x[j]); 
+      }
+    }
+  }
+
+  update_pft(i) {
+    for (let j = 0; j != this.n; j++){
+      this.pft[i][j] = this.kernel(this.mu[i], this.x[j]);
+      this.pft[j][i] = this.kernel(this.mu[j], this.x[i]);
     }
   }
 
@@ -91,7 +115,7 @@ export class Plot {
 
   toggle_scramble() {
     this.active_ker = 1 - this.active_ker;
-    this.initK();
+    this.init_metrics();
     this.initCurveCache();
   }
 
@@ -114,15 +138,14 @@ export class Plot {
     for (let ci = 0; ci != this.n; ci++)
       this.updateCurveCache(ci);
 
-    this.initK();
+    this.init_metrics();
   }
 
   recenter_mu() {
     for (let i = 0; i != this.n; i++) {
       this.mu[i] = this.x[i];
     }
-    this.initK();
-    this.initInvK();
+    this.init_metrics();
     this.initCurveCache();
   }
 
@@ -142,7 +165,7 @@ export class Plot {
       this.mu[i] = this.x[i];
       this.alpha[i] = this.unitToAlpha(Math.random());
     }
-    this.initK();
+    this.init_metrics();
     this.initCurveCache();
 
     for (let i = 0; i != n; i++) 
@@ -155,24 +178,19 @@ export class Plot {
     // update the value of the i'th data point
     this.x[i] = this.ctx.x(u);
     this.y[i] = this.ctx.y(v);
-    this.initK();
-    this.initInvK();
+    this.init_pft(i);
     this.updateCurveCache(i);
   }
 
   setMu(i, u) {
     this.mu[i] = this.ctx.x(u);
-    this.initK();
-    this.initInvK();
+    this.update_ppt(i);
+    this.update_pft(i);
     this.updateCurveCache(i);
   }
 
   kernel(x1, x2) {
     return this.kernels[this.active_ker].call(x1, x2);
-  }
-
-  kernelInv0(y) {
-    return this.kernels[this.active_ker].inv0(y);
   }
 
   jumps(x) {
@@ -181,15 +199,27 @@ export class Plot {
   }
 
 
+  // return the solution, or if failed,
+  // plot.alpha
   solutionAlpha() {
     var y = new mat.Matrix([this.y]);
-    var alpha = y.mmul(this.invK).flat();
-    return alpha;
+    try {
+      var inv = mat.inverse(this.pft); 
+      var alpha = y.mmul(inv).flat();
+      self.invertible = true;
+      return alpha;
+
+    } catch(err) {
+      // console.log('could not invert.  leaving as-is');
+      self.invertible = false;
+      return plot.alpha;
+    }
 
   }
 
   functionNorm() {
     var a = new mat.Matrix([this.alpha]);
+    /*
     var n = this.n, v;
     var tmp = mat.Matrix.zeros(this.n, this.n);
     for (let i = 0; i != n; i++) {
@@ -199,7 +229,8 @@ export class Plot {
         tmp.set(j,i,v);
       }
     }
-    var norm2 = a.mmul(tmp).mmul(a.transpose()).flat()[0];
+    */
+    var norm2 = a.mmul(this.ppt).mmul(a.transpose()).flat()[0];
     // console.log(norm);
     return Math.sqrt(norm2);
   }
@@ -223,7 +254,7 @@ export class Plot {
   }
 
   delPoint() {
-    if (this.n == 0) return;
+    if (this.n == 1) return;
     this.n--;
     this.populate();
   }
@@ -276,7 +307,7 @@ export class Plot {
     var a = this.alpha[i];
     var pts = d3.range(this.n).map(j => [
       this.ctx.u(this.x[j]), 
-      this.ctx.v(a * this.K.get(i,j))
+      this.ctx.v(a * this.pft.get(i,j))
     ]);
     return pts;
   }
@@ -296,7 +327,7 @@ export class Plot {
   // return the y value for the solution at the i'th x location
   // unused currently
   solutionPoint(i) {
-    var y = d3.range(this.n).map(j => this.alpha[j] * this.K.get(i,j))
+    var y = d3.range(this.n).map(j => this.alpha[j] * this.pft.get(i,j))
       .reduce((y1, y2) => y1 + y2, 0);
     return y;
   }

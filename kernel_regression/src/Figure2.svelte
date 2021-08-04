@@ -11,11 +11,10 @@ let box = { w: 10, h: 10 };
 
 let cfg = {
   show_data: true,
-  show_scaled: true,
-  show_solution: true,
-  show_points: false,
-  auto_solve: true,
-  log_sigma: 0
+  curves: true,
+  solution: true,
+  points: false,
+  auto_solve: true
 };
 
 var max_alpha = 4;
@@ -43,8 +42,8 @@ let sig = writable(0);
 </style>
 
 
-<div class='row full'>
-  <div class='col full'>
+<div class='row'>
+  <div class='col'>
     <Curves sig={sig} box={box} cfg={cfg} cn=1 plot={pp.plot} />
     <LowPanelControls sig={sig} cfg={cfg} cn=2 plot={pp.plot} />
   </div>

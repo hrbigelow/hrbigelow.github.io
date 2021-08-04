@@ -14,13 +14,13 @@ function update() {
 
 var s = new Sync(sig, cn, update);
 
-let phi_width, phi_height;
+let phi_side;
 let vis_width, vis_height;
 let drag_point = null;
 let log_sigma=0;
 
 onMount(() => {
-  pp.resizePhi(phi_width, phi_height);
+  pp.resizePhi(phi_side, phi_side);
   pp.resizeCtx(vis_width, vis_height);
   update();
 });
@@ -37,6 +37,7 @@ function onMouseMove(evt) {
     pp.updateF(evt.offsetX, evt.offsetY);
   update();
   s.notify();
+  
 }
 
 function onMouseUp(evt) {
@@ -64,6 +65,7 @@ function onMouseUp(evt) {
 
   .solution-arrow {
     fill: rgba(0,0,255,1);
+    stroke: rgba(0,0,255,1);
   }
 
   .solution-curve {
@@ -105,20 +107,13 @@ function onMouseUp(evt) {
 
 </style>
 
-<div class='col full'>
-  <div class='grow pad'
-       bind:clientWidth={phi_width} bind:clientHeight={phi_height}>
-    <svg class='inner-plot full' 
+<div class='grow col'>
+  <div class='pad' bind:clientWidth={phi_side}>
+    <svg class='inner-plot' 
+         width="{phi_side}" height="{phi_side}"
          on:mousemove={onMouseMove}
          on:mouseup={onMouseUp}>
       <defs>
-        <marker id="solution-arrow" 
-          class='solution-arrow'
-          viewBox="0 0 10 10" refX="10" refY="5"
-          markerWidth="6" markerHeight="6"
-          orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" />
-        </marker>
 
         <marker id="basis-arrow"
           class='basis-arrow'
@@ -128,54 +123,57 @@ function onMouseUp(evt) {
           <path d="M 0 0 L 10 5 L 0 10 z" />
         </marker>
 
-        <marker id="flat-head"
-          class='flat-head'
-          viewBox="0 0 10 10" refX="5" refY="5"
-          markerWidth="10" markerHeight="10"
-          orient="auto-start-reverse">
-          <path d="M 3 0 L 6 0 L 6 10 L 3 10 z" />
-        </marker>
+        <polygon id='pointer' points="-10,-5 0,0 -10,5"/>
 
       </defs>
 
 
-      {#each [0, 1] as i}
-        <line class='basis' x1="{pp.xTou(0)}"
-                            y1="{pp.yTov(0)}" 
-                            x2="{pp.scr(i,0)}"
-                            y2="{pp.scr(i,1)}" 
-                            marker-end="url(#basis-arrow)" />
-
-        <line class='perp' 
-              x1="{pp.fHat(0)}"
-              y1="{pp.fHat(1)}"
-              x2="{pp.fHatProj(i,0)}"
-              y2="{pp.fHatProj(i,1)}" 
-              stroke-dasharray="4 4" />
-                                                 
+      {#each [pp.toUV([0,0])] as [x1, y1]}
+        {#each [pp.scr(0),pp.scr(1)] as [x2,y2]}
+        <line class='basis' x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}"
+            marker-end="url(#basis-arrow)" />
+        {/each}
       {/each}
 
-      <circle id="fhat" class='perp-target draggable' r="6" 
-                                            cx="{pp.fHat(0)}" cy="{pp.fHat(1)}" 
-                                                              on:mousedown={onMouseDown}/>
+      {#if 1}
+      {#each [pp.fHat()] as [x1, y1]}
+        {#each [pp.fHatProj(0), pp.fHatProj(1)] as [x2, y2]}
+        <line class='perp' x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}"
+              stroke-dasharray="4 4" />
 
-      <line class='solution-curve draggable'
-            x1="{pp.xTou(0)}"
-            y1="{pp.yTov(0)}"
-            x2="{pp.F(0)}" 
-            y2="{pp.F(1)}" 
-            marker-end="url(#solution-arrow)" 
-            on:mousedown={onMouseDown} />
+        <circle id="fhat" class='perp-target draggable' r="6" 
+              cx="{x1}" cy="{y1}" 
+              on:mousedown={onMouseDown}/>
+        {/each}
+      {/each}
+      {/if}
+
+      {#each [{ p1: pp.toUV([0,0]), p2: pp.F()} ] as {p1, p2}}
+        <line class='solution-curve'
+              x1="{p1[0]}" y1="{p1[1]}" x2="{p2.u}" y2="{p2.v}" />
+
+        <use class='solution-arrow draggable'
+             xlink:href='#pointer'
+             id='f' x="{p2.u}" y="{p2.v}" 
+             transform="rotate({p2.deg}, {p2.u}, {p2.v})"
+             on:mousedown={onMouseDown} />
+      {/each}
 
     </svg>
   </div>
-  <div class=''>
-    <p>Plane spanned by vectors 
-    <d-math>\phi</d-math>({numberDisplay(pp.plot.x[0])}; <d-math>\sigma</d-math>={numberDisplay(Math.sqrt(pp.plot.get_sigma2()))}) and
-    <d-math>\phi</d-math>({numberDisplay(pp.plot.x[1])}; <d-math>\sigma</d-math>={numberDisplay(Math.sqrt(pp.plot.get_sigma2()))})
-    </p>
+  <div class='pad'>
+    {#each [numberDisplay([...pp.plot.mu, Math.sqrt(pp.plot.get_sigma2())])] as
+      [mu1, mu2, sigma]}
+
+      <div>
+      Plane spanned by vectors
+        <d-math>\vec{\phi_{\sigma}}(\mu_1)</d-math> and 
+        <d-math>\vec{\phi_{\sigma}}(\mu_2)</d-math>
+      </div>
+      <div><d-math>\sigma = </d-math>{sigma}</div>
+      <div><d-math>\mu_1 = </d-math>{mu1}</div> 
+      <div><d-math>\mu_2 = </d-math>{mu2}</div>
+    {/each}
   </div>
 </div>
-
-
 
