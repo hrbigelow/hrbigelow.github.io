@@ -41,13 +41,14 @@ function get_mat(plot) {
 function resize(dummy) {
   if (! mounted) return;
   var h = svg.clientHeight;
+  console.log(`in KernelMatrix resize with dummy=${dummy}, svg.clientHeight=${h}`);
   svg.setAttribute('width', h);
   update();
 }
 
 
 function update() {
-  console.log(`in update with ${plot.n}`);
+  // console.log(`in KernelMatrix update with ${plot.n}`);
   plot.touch++;
 }
 

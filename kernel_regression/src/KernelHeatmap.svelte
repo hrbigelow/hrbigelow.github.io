@@ -24,6 +24,7 @@ function yTov(y) {
 function resize(dummy) {
   if (! mounted) return;
   var h = svg.clientHeight; // excludes border
+  console.log(`in KernelHeatmap resize with dummy=${dummy}, svg.clientHeight=${h}`);
   svg.setAttribute('width', h);
   can.setAttribute('width', h);
   update();
@@ -42,7 +43,6 @@ function update() {
     sandbox.setUniform("u_xmin", xmin); 
     sandbox.setUniform("u_xmax", xmax); 
   }
-
   plot.touch++;
 }
 

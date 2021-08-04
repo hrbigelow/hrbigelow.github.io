@@ -113,8 +113,8 @@ export class Plot {
     }
   }
 
-  toggle_scramble() {
-    this.active_ker = 1 - this.active_ker;
+  set_scramble(flag) {
+    this.active_ker = flag ? 1 : 0;
     this.init_metrics();
     this.initCurveCache();
   }
@@ -163,13 +163,15 @@ export class Plot {
     for (let i = 0; i != n; i++) {
       this.x[i] = this.ctx.unitToX(Math.random());
       this.mu[i] = this.x[i];
-      this.alpha[i] = this.unitToAlpha(Math.random());
+      this.y[i] = this.ctx.unitToY(Math.random());
     }
     this.init_metrics();
     this.initCurveCache();
 
+    /*
     for (let i = 0; i != n; i++) 
       this.y[i] = this.solutionPoint(i);
+      */
 
     this.alpha.fill(1.0);
   }
@@ -212,24 +214,13 @@ export class Plot {
     } catch(err) {
       // console.log('could not invert.  leaving as-is');
       self.invertible = false;
-      return plot.alpha;
+      return this.alpha;
     }
 
   }
 
   functionNorm() {
     var a = new mat.Matrix([this.alpha]);
-    /*
-    var n = this.n, v;
-    var tmp = mat.Matrix.zeros(this.n, this.n);
-    for (let i = 0; i != n; i++) {
-      for (let j = 0; j != n; j++) {
-        v = this.kernel(this.mu[i], this.mu[j]);
-        tmp.set(i,j,v);
-        tmp.set(j,i,v);
-      }
-    }
-    */
     var norm2 = a.mmul(this.ppt).mmul(a.transpose()).flat()[0];
     // console.log(norm);
     return Math.sqrt(norm2);

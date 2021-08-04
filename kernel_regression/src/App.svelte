@@ -39,7 +39,7 @@
 
         <figure class="l-page-outset" >
             <Figure1/> 
-            <figcaption>Interactive plot.  You can drag the black points
+            <figcaption>Interactive plot.  You can drag the black points and triangles
             </figcaption>
         </figure>
 

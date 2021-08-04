@@ -6,21 +6,67 @@ import { onMount } from 'svelte';
 export let sig, cfg, plot, cn;
 let w=0, h=0;
 let drag_point = null;
+let s, mounted = false;
+
+
+function solve(do_solve, msg) {
+  // console.log(`in solve: ${msg}, do_solve=${do_solve}`);
+  if (! do_solve) return;
+  const NSTEPS = 50;
+  var start_alpha = plot.alpha;
+  var end_alpha = plot.solutionAlpha();
+
+  function transition(step, nsteps) {
+    var delta = step / nsteps;
+    for (let i = 0; i != plot.n; i++) {
+      plot.alpha[i] = delta * end_alpha[i] + (1 - delta) * start_alpha[i];
+    } 
+    if (step != nsteps) {
+      setTimeout(() => transition(step+1, nsteps), 10);
+    }
+  }
+  transition(0, NSTEPS);
+}
 
 
 function update() {
+  if (! mounted) return;
+  var cmd = cfg.cmd;
+  if (cmd == 'reset_alpha') plot.resetAlpha(); 
+  if (cmd == 'del_point') plot.delPoint();
+  if (cmd == 'add_point') plot.addPoint();
+  if (cmd == 'new_data') plot.populate();
+  if (cmd == 'auto_solve') solve(cfg.auto_solve);
+  if (cmd == 'mu_tracks_x' && cfg.mu_tracks_x) plot.recenter_mu();
+  if (cmd == 'scramble') plot.set_scramble(cfg.scramble);
+  if (cmd == 'set_sigma') plot.set_sigma(cfg.log_sigma);
+  if (cmd && cmd.match(/update_alpha/)) { } // svelte updates plot.alpha through binding
+
+  if (cmd == 'set_sigma' || cmd == 'mu_x_changed') {
+    if (cfg.auto_solve)
+      plot.alpha = plot.solutionAlpha();
+  } else if (cmd != 'reset_alpha') {
+    solve(cfg.auto_solve);
+  }
+
   plot.touch++;
+  cfg.cmd = null;
+  s.notify();
 }
 
-var s = new Sync(sig, cn, update);
 
 function resize(width, height) {
+  if (! mounted) return;
   // console.log(`in resize with ${width} x ${height}`);
   plot.resize(width, height);
   update();
 }
 
+
+
 onMount(() => {
+  s = new Sync(sig, cn, update);
+  mounted = true;
   resize(w, h);
 });
   
@@ -39,11 +85,9 @@ function onMouseMove(evt) {
     if (cfg.mu_tracks_x)
       plot.setMu(g.num, evt.offsetX);
   }
-
-  if (cfg.auto_solve) 
-    plot.alpha = plot.solutionAlpha(); 
+  cfg.cmd = 'mu_x_changed'; 
   update();
-  s.notify();
+  // s.notify();
 }
 
 function onMouseUp(evt) {
