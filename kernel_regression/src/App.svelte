@@ -1,11 +1,9 @@
 <script>
-    // import TextSection1 from './TextSection1.md';
-    // import TestDMath from './TestDMatn.svelte';
     import KernelMethods from './kernel_methods.md'; 
     import Figure1 from './Figure1.svelte';
     import Figure2 from './Figure2.svelte';
-    // import KernelHeatmap from './KernelHeatmap.svelte';
-    import KernelMatrix from './KernelMatrix.svelte';
+    import SourceChecksums from './SourceChecksums.svelte';
+
 </script>
 
 <style>
@@ -36,6 +34,8 @@
 
 
     <d-article>
+
+        <SourceChecksums/>
 
         <figure class="l-page-outset" >
             <Figure1/> 
