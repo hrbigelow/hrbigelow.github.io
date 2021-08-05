@@ -6,10 +6,10 @@ import kernel_frag from './shaders/kernel_frag.glsl';
 import { Sync } from './sync';
 import * as d3 from 'd3';
 
-export let sig, cn, plot, klass, divh;
+export let sig, cn, plot, klass;
 let xmin, xmax, mounted = false;
 let sandbox;
-let svg, can;
+let svg, can, divh;
 let s;
 
 function xTou(x) {
@@ -61,6 +61,7 @@ $: resize(divh);
 
 </script>
 
+<div class='{klass} invis-framed' bind:clientHeight={divh}></div>
 <canvas class='{klass} framed z1' bind:this={can}></canvas>
 <svg class='{klass} framed z2' bind:this={svg}>
   {#if mounted}
@@ -76,6 +77,10 @@ $: resize(divh);
 
   .framed {
     border: 1px solid gray;
+  }
+
+  .invis-framed {
+    border: 1px solid transparent;
   }
 
   .z1 {

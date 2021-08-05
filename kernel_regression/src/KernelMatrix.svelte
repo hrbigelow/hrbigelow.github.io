@@ -3,8 +3,8 @@ import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 import { onMount } from 'svelte';
 
-export let sig, cn, plot, klass, divh;
-let s;
+export let sig, cn, plot, klass;
+let s, divh;
 let sqr_frac = 0.9;
 let svg;
 let mounted = false;
@@ -64,6 +64,7 @@ $: resize(divh);
 
 </script>
 
+<div class='invis-framed {klass}' bind:clientHeight={divh}></div>
 <svg bind:this={svg} class='framed {klass}'>
   {#if mounted}
     {#each get_mat(plot) as {x, y, v, side}}
@@ -77,6 +78,10 @@ $: resize(divh);
 
   .framed {
     border: 1px solid gray;
+  }
+
+  .invis-framed {
+    border: 1px solid transparent;
   }
 
 </style>
