@@ -8,6 +8,9 @@
   import KernelHeatmap from './KernelHeatmap.svelte';
   import KernelMatrix from './KernelMatrix.svelte';
 
+  export let fullscreen = false;
+  let topclass = fullscreen ? 'screen100' : 'screen80';
+
   let cfg = {
     cmd: null,
     points: false,
@@ -26,7 +29,7 @@
   let h;
 
 </script>
-<div class='screen fb-vert'>
+<div class='{topclass} fb-vert'>
   <div class='fi-upper gbox-upper'>
     <Curves sig={sig} cn=1 cfg={cfg} plot={plot} klass='curves-plot'/>
     <SliderControls sig={sig} cn=3 cfg={cfg} plot={plot}/>
@@ -140,9 +143,14 @@
 	}
 
 
-	.screen {
+	.screen80 {
     height: 80vh;
   }
+
+  .screen100 {
+    height: 95vh;
+  }
+
 
 </style>
 

@@ -5,7 +5,7 @@
 <style>
 
   .view {
-    padding: 3%;
+    padding: 2%;
     height: 100%;
     width: 100%;
   }
@@ -13,8 +13,8 @@
 </style>
 
 
-<div class="view"> 
-  <Figure1/> 
+<div class='view'>
+  <Figure1 fullscreen=true/> 
 </div>
 
 

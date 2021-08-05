@@ -251,13 +251,17 @@ export class Plot {
   }
 
   updateAlpha(delta, index) {
+    if (isNaN(delta + this.alpha[index])) {
+      console.log(`updateAlpha got ${delta} and ${this.alpha[index]}`);
+      return;
+    }
     this.alpha[index] += delta;
   }
 
   makeLine(xs, ys) {
-    const path = d3.line()
-      .x(d => this.ctx.u(d[0]))
-      .y(d => this.ctx.v(d[1]))(d3.zip(xs,ys));
+    var x2u = this.ctx.xToViewport;
+    var y2v = this.ctx.yToViewport;
+    const path = d3.line()(d3.zip(xs.map(x2u), ys.map(y2v)));
     return path || '';
   }
 

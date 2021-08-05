@@ -21,15 +21,15 @@ function h(evt) {
 
 <div class='gb'>
   {#each plot.alpha as a, i}
-    <div class='slider'>
-      <label><d-math plain>{@html '\\alpha_'}{i}</d-math>
+    <div class='alpha'>
+      <label class='ib'><d-math plain>{@html '\\alpha_'}{i}</d-math>
         <input id='update_alpha{i}'
-               class='short'
+               class='ib slider'
                type=range
                bind:value={a}
                on:input={h}
                min=-10 max=10 step=0.01>
-      <div class="alphas">{numberDisplay(a)}</div>
+      <div class='ib'>{numberDisplay(a)}</div>
       </label>
     </div>
   {/each}
@@ -54,15 +54,18 @@ function h(evt) {
     grid-template-rows: min-content;
   }
 
-  .slider {
-    grid-column: 1/3;
+  .ib {
     display: inline-block;
+  }
+
+  .alpha {
+    grid-column: 1/3;
     white-space: nowrap;
     overflow: hidden;
-    justify-self: stretch;
+    width: 12em;
   } 
 
-  .short {
+  .slider {
     width: 8em;
   }
 

@@ -41,9 +41,10 @@ function update() {
   if (cmd == 'mu_tracks_x' && cfg.mu_tracks_x) plot.recenter_mu();
   if (cmd == 'scramble') plot.set_scramble(cfg.scramble);
   if (cmd == 'set_sigma') plot.set_sigma(cfg.log_sigma);
-  if (cmd && cmd.match(/update_alpha/)) { } // svelte updates plot.alpha through binding
-
-  if (cmd == 'set_sigma' || cmd == 'mu_x_changed') {
+  if (cmd && cmd.match(/update_alpha/)) { 
+    // do nothing
+  } 
+  else if (cmd == 'set_sigma' || cmd == 'mu_x_changed') {
     if (cfg.auto_solve)
       plot.alpha = plot.solutionAlpha();
   } else if (cmd != 'reset_alpha') {
