@@ -3,23 +3,28 @@ import { Sync } from './sync';
 import { range } from 'd3';
 import { onMount } from 'svelte';
 
-export let sig, cfg, plot, cn, klass;
+export let sig, cfg, plot, cn, gridarea;
 let w=0, h=0;
 let drag_point = null;
 let s, mounted = false;
 
 
 function solve(do_solve, msg) {
-  // console.log(`in solve: ${msg}, do_solve=${do_solve}`);
+  console.log(`in solve: ${msg}, do_solve=${do_solve}`);
   if (! do_solve) return;
   const NSTEPS = 50;
   var start_alpha = plot.alpha;
   var end_alpha = plot.solutionAlpha();
+  console.log(`in solve: ${end_alpha}`);
 
   function transition(step, nsteps) {
-    var delta = step / nsteps;
-    for (let i = 0; i != plot.n; i++) {
-      plot.alpha[i] = delta * end_alpha[i] + (1 - delta) * start_alpha[i];
+    if (step == nsteps) {
+      plot.alpha = end_alpha;
+    } else {
+      var delta = step / nsteps;
+      for (let i = 0; i != plot.n; i++) {
+        plot.alpha[i] = delta * end_alpha[i] + (1 - delta) * start_alpha[i];
+      }
     }
     s.notify();
     if (step != nsteps) {
@@ -33,6 +38,8 @@ function solve(do_solve, msg) {
 function update() {
   if (! mounted) return;
   var cmd = cfg.cmd;
+  // console.log(cfg);
+  if (cmd == null) throw 'got null cfg.cmd in Curves update';
   if (cmd == 'reset_alpha') plot.resetAlpha();
   if (cmd == 'del_point') plot.delPoint();
   if (cmd == 'add_point') plot.addPoint();
@@ -41,10 +48,10 @@ function update() {
   if (cmd == 'mu_tracks_x' && cfg.mu_tracks_x) plot.recenter_mu();
   if (cmd == 'scramble') plot.set_scramble(cfg.scramble);
   if (cmd == 'set_sigma') plot.set_sigma(cfg.log_sigma);
-  if (cmd && cmd.match(/update_alpha/)) { 
+  if (cmd.match(/update_alpha/)) { 
     // do nothing
-  } 
-  else if (cmd == 'set_sigma' || cmd == 'mu_x_changed') {
+  }
+  else if (cmd == 'set_sigma' || cmd == 'mu_xy_changed') {
     if (cfg.auto_solve)
       plot.alpha = plot.solutionAlpha();
   } else if (cmd != 'reset_alpha') {
@@ -59,9 +66,9 @@ function update() {
 
 function resize(width, height) {
   if (! mounted) return;
-  console.log(`in resize with ${width} x ${height}`);
+  // console.log(`in resize with ${width} x ${height}`);
   plot.resize(width, height);
-  update();
+  plot.touch++;
 }
 
 
@@ -87,7 +94,7 @@ function onMouseMove(evt) {
     if (cfg.mu_tracks_x)
       plot.setMu(g.num, evt.offsetX);
   }
-  cfg.cmd = 'mu_x_changed';
+  cfg.cmd = 'mu_xy_changed';
   update();
   // s.notify();
 }
@@ -100,13 +107,21 @@ $: resize(w, h);
 
 </script>
 
-<div class='framed {klass} z3' bind:clientWidth={w} bind:clientHeight={h}></div>
-<svg class='framed {klass}'
+<!--
+  This component must be placed in a grid, which controls the size.
+  gridarea is a global CSS rule applied from the parent element which should
+  specify grid-area, align-self and justify-self properties.  When the grid
+  layout changes, the div is resized, and this component reacts via the bound
+  w and h variables.  Since both div and svg elements are placed in the same
+  grid cell via the 'gridarea' class, the dimensions are the same.
+-->
+<div class='framed {gridarea} z3' bind:clientWidth={w} bind:clientHeight={h}></div>
+<svg class='framed {gridarea}'
      on:mousemove={onMouseMove}
      on:mouseup={onMouseUp}
      >
      <defs>
-     <polygon id='mu-select' points="-5,0 5,0 0,10"/>
+     <polygon id='mu-select' points="-6,0 6,0 0,12"/>
      </defs>
   {#each plot.getMuX() as [mu,x], i}
     <use class='marker draggable'

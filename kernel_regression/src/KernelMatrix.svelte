@@ -3,7 +3,7 @@ import { Sync } from './sync';
 import { numberDisplay } from './presentation';
 import { onMount } from 'svelte';
 
-export let sig, cn, plot, klass;
+export let sig, cn, plot, gridarea;
 let s, divh;
 let sqr_frac = 0.9;
 let svg;
@@ -41,7 +41,7 @@ function get_mat(plot) {
 function resize(dummy) {
   if (! mounted) return;
   var h = svg.clientHeight;
-  console.log(`in KernelMatrix resize with dummy=${dummy}, svg.clientHeight=${h}`);
+  // console.log(`in KernelMatrix resize with dummy=${dummy}, svg.clientHeight=${h}`);
   svg.setAttribute('width', h);
   update();
 }
@@ -64,8 +64,8 @@ $: resize(divh);
 
 </script>
 
-<div class='invis-framed {klass}' bind:clientHeight={divh}></div>
-<svg bind:this={svg} class='framed {klass}'>
+<div class='invis-framed {gridarea}' bind:clientHeight={divh}></div>
+<svg bind:this={svg} class='framed {gridarea}'>
   {#if mounted}
     {#each get_mat(plot) as {x, y, v, side}}
       <rect width="{side}" height="{side}"

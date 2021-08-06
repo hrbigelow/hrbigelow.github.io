@@ -23,15 +23,15 @@ function h(e) {
 <div class='gb gi'>
   <div class='col1 line'>
     <d-math>\|f\| = </d-math>
-    {plot.invertible ?  numberDisplay(plot.functionNorm()) : 'Could not solve'}
+    {plot.invertible ?  numberDisplay(plot.fNorm()) : 'Could not solve'}
   </div>
   <div class='col2 line'>
     <d-math>\|f_\parallel\| = </d-math>
-    {plot.invertible ?  numberDisplay(plot.functionNorm()) : 'Could not solve'}
+    {plot.invertible ?  numberDisplay(plot.fNormParallel()) : 'Could not solve'}
   </div>
   <div class='col2 row2 line'>
     <d-math>\|f_\perp\| = </d-math>
-    {plot.invertible ?  numberDisplay(plot.functionNorm()) : 'Could not solve'}
+    {plot.invertible ?  numberDisplay(plot.fNormPerp()) : 'Could not solve'}
   </div>
   <div class='col4 row1 line'>
     <label class='ib'>
@@ -39,7 +39,7 @@ function h(e) {
              type="checkbox" 
              bind:checked={cfg.auto_solve}
              on:change={h}>
-      Auto solve
+      auto solve
     </label>
   </div>
   <div class='col4 row2 line'>
@@ -57,7 +57,7 @@ function h(e) {
              type="checkbox" 
              bind:checked={cfg.scramble}
              on:change={h}>
-      Scramble
+      scramble
     </label>
   </div>
   <div class='col5 row2 line'>

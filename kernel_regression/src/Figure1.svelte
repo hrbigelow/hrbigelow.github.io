@@ -29,18 +29,19 @@
   let h;
 
 </script>
+
 <div class='{topclass} fb-vert'>
   <div class='fi-upper gbox-upper'>
-    <Curves sig={sig} cn=1 cfg={cfg} plot={plot} klass='curves-plot'/>
+    <Curves sig={sig} cn=1 cfg={cfg} plot={plot} gridarea='curves'/>
     <SliderControls sig={sig} cn=3 cfg={cfg} plot={plot}/>
     <LowPanelControls sig={sig} cn=2 cfg={cfg} plot={plot}/> 
   </div>
 
 	<div class='fi-lower gbox-lower'>
     <div class='y1'><d-math>\mu</d-math></div>
-    <KernelHeatmap sig={sig} cn=4 plot={plot} klass='cell2'/>
+    <KernelHeatmap sig={sig} cn=4 plot={plot} gridarea='cell2'/>
 		<div class='y2'><d-math>\mu_i</d-math></div>
-    <KernelMatrix sig={sig} cn=5 plot={plot} klass='cell6'/>
+    <KernelMatrix sig={sig} cn=5 plot={plot} gridarea='cell6'/>
     <div class='x1'><d-math>x</d-math></div>
     <div class='x2'><d-math>x_i</d-math></div>
     <div class='cap1'>
@@ -76,7 +77,7 @@
     align-content: center;
 	}
 
-  .gbox-upper :global(.curves-plot) {
+  .gbox-upper :global(.curves) {
     grid-area: 1/1/2/2;
     align-self: stretch;
     justify-self: stretch;

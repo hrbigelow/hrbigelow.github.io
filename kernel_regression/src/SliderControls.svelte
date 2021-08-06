@@ -69,10 +69,5 @@ function h(evt) {
     width: 8em;
   }
 
-  .alphas {
-    display: inline-block;
-    min-width: 4em;
-  }
-
 </style>
 

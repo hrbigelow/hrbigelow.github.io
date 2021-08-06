@@ -45,12 +45,9 @@ export class PhiSpace {
     return [this.xTou.invert(val[0]), this.yTov.invert(val[1])];
   }
 
-  resizePhi(w, h) {
+  resize(w, h) {
     this.xTou.range([0, w]);
     this.yTov.range([h, 0]);
-  }
-
-  resizeCtx(w, h) {
     this.plot.resize(w, h);
   }
 

@@ -27,6 +27,7 @@ export class Plot {
     // when mu_i = x_i, then P = F, and PF^T = FF^T = K
     this.pft = mat.Matrix.zeros(this.n, this.n);
     this.ppt = mat.Matrix.zeros(this.n, this.n);
+    this.fft = mat.Matrix.zeros(this.n, this.n);
     this.invpft = mat.Matrix.zeros(this.n, this.n);
     this.curveCache = null; // cc[ci][xi] = y.  (curve_idx, x_idx)
     this.xCache = null;
@@ -43,42 +44,35 @@ export class Plot {
   // if i is undefined, initialize the whole matrix
   // otherwise, initialize i'th row and column only
   init_metrics() {
-    this.init_ppt();
-    this.init_pft();
+    this.init_mat('ppt');
+    this.init_mat('pft');
+    this.init_mat('fft');
   }
 
-  init_ppt() {
-    var n = this.n;
-    this.ppt = mat.Matrix.zeros(this.n, this.n);
-    for (let i = 0; i != n; i++) {
-      for (let j = 0; j != n; j++) {
-        this.ppt[i][j] = this.kernel(this.mu[i], this.mu[j]); 
-      }
-    }
+  _init_mat(row, col, type) {
+    var m = mat.Matrix.zeros(this.n, this.n);
+    for (let i = 0; i != this.n; i++) 
+      for (let j = 0; j != this.n; j++)
+        m[i][j] = this.kernel(row[i], col[j]); 
+    this[type] = m;
   }
 
-  update_ppt(i) {
+  _update_mat(row, col, i, type) {
     for (let j = 0; j != this.n; j++){
-      this.ppt[i][j] = this.kernel(this.mu[i], this.mu[j]);
-      this.ppt[j][i] = this.kernel(this.mu[j], this.mu[i]);
+      this[type][i][j] = this.kernel(row[i], col[j]);
+      this[type][j][i] = this.kernel(row[j], col[i]);
     }
   }
 
-  init_pft() {
-    var n = this.n;
-    this.pft = mat.Matrix.zeros(this.n, this.n);
-    for (let i = 0; i != n; i++) {
-      for (let j = 0; j != n; j++) {
-        this.pft[i][j] = this.kernel(this.mu[i], this.x[j]); 
-      }
-    }
-  }
+  init_mat(type, i) {
+    var row, col;
+    if (type == 'ppt') [row, col] = [this.mu, this.mu];
+    else if (type == 'pft') [row, col] = [this.mu, this.x];
+    else if (type == 'fft') [row, col] = [this.x, this.x];
+    else throw `init_mat: invalid type ${type}`;
 
-  update_pft(i) {
-    for (let j = 0; j != this.n; j++){
-      this.pft[i][j] = this.kernel(this.mu[i], this.x[j]);
-      this.pft[j][i] = this.kernel(this.mu[j], this.x[i]);
-    }
+    if (i === undefined) this._init_mat(row, col, type);
+    else this._update_mat(row, col, i, type);
   }
 
   initXCache() {
@@ -180,14 +174,15 @@ export class Plot {
     // update the value of the i'th data point
     this.x[i] = this.ctx.x(u);
     this.y[i] = this.ctx.y(v);
-    this.init_pft(i);
+    this.init_mat('pft', i);
+    this.init_mat('fft', i);
     this.updateCurveCache(i);
   }
 
   setMu(i, u) {
     this.mu[i] = this.ctx.x(u);
-    this.update_ppt(i);
-    this.update_pft(i);
+    this.init_mat('ppt', i);
+    this.init_mat('pft', i);
     this.updateCurveCache(i);
   }
 
@@ -219,12 +214,45 @@ export class Plot {
 
   }
 
-  functionNorm() {
+  _fNorm2() {
     var a = new mat.Matrix([this.alpha]);
-    var norm2 = a.mmul(this.ppt).mmul(a.transpose()).flat()[0];
-    // console.log(norm);
+    return a.mmul(this.ppt).mmul(a.transpose()).flat()[0];
+  }
+
+  fNorm() {
+    return Math.sqrt(this._fNorm2());
+  }
+
+  _fNormParallel2() {
+    var a = new mat.Matrix([this.alpha]);
+    var b;
+    try {
+      var fft_inv = mat.inverse(this.fft);
+      b = a
+        .mmul(this.pft)
+        .mmul(fft_inv);
+    } catch (err) {
+      console.log(`Could not invert matrix`);
+      return NaN;
+    }
+
+    var norm2 = b.mmul(this.fft).mmul(b.transpose());
+    return norm2;
+  }
+
+  fNormParallel() {
+    return Math.sqrt(this._fNormParallel2());
+  }
+
+  fNormPerp() {
+    var fnorm2 = this._fNorm2();
+    var fparnorm2 = this._fNormParallel2(); 
+    var norm2 = fnorm2 - fparnorm2;
+    if (norm2 > -1e-8) norm2 = Math.max(0, norm2);
+
     return Math.sqrt(norm2);
   }
+
 
   resize(w, h) {
     this.ctx.setWidth(w);
@@ -260,7 +288,9 @@ export class Plot {
 
   makeLine(xs, ys) {
     var x2u = this.ctx.xToViewport;
-    var y2v = this.ctx.yToViewport;
+    var [ymin, ymax] = [this.ctx.ymin, this.ctx.ymax];
+
+    var y2v = (y) => this.ctx.yToViewport(Math.max(ymin - 1, Math.min(ymax + 1, y)));
     const path = d3.line()(d3.zip(xs.map(x2u), ys.map(y2v)));
     return path || '';
   }

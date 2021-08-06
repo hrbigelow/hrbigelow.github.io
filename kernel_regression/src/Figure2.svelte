@@ -6,15 +6,20 @@ import * as phi from './phi_space';
 import Curves from './Curves.svelte';
 import PhiSpace from './PhiSpace.svelte';
 import LowPanelControls from './LowPanelControls.svelte';
+import { numberDisplay } from './presentation';
 
 let box = { w: 10, h: 10 };
 
 let cfg = {
-  show_data: true,
+  cmd: null,
+  points: false,
   curves: true,
   solution: true,
-  points: false,
-  auto_solve: true
+  auto_solve: false, 
+  mu_tracks_x: true,
+  scramble: false,
+  log_sigma: 0,
+  show_data: true
 };
 
 var max_alpha = 4;
@@ -23,31 +28,43 @@ let sig = writable(0);
 
 </script>
 
+<div class='gb screen'>
+    <Curves sig={sig} cfg={cfg} cn=1 plot={pp.plot} gridarea='curves'/>
+    <PhiSpace sig={sig} cn=2 cfg={cfg} pp={pp} gridarea='phi'/>
+    <LowPanelControls sig={sig} cfg={cfg} cn=3 plot={pp.plot} />
+    <div>Plane spanned by <d-math>\vec\phi_\sigma(\mu_1)</d-math> and
+      <d-math>\vec\phi_\sigma(\mu_2)</d-math>.
+    </div>
+</div>
+
+
 <style>
-  .row {
-    display: flex;
-    flex-direction: row;
+
+  .screen {
+    height: 60vh;
   }
 
-  .col {
-    display: flex;
-    flex-direction: column;
+  .gb {
+    display: grid;
+    grid-template-columns: auto min-content;
+    grid-template-rows: auto min-content;
+    row-gap: 5px;
+    column-gap: 10px;
+    justify-items: center;
+    align-items: start;
   }
 
-  .full {
-    width: 100%;
-    height: 100%;
+  .gb :global(.curves) {
+    grid-area: 1/1/1/1;
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  .gb :global(.phi) {
+    grid-area: 1/2/1/2;
+    align-self: stretch;
+    justify-self: stretch;
   }
 
 </style>
-
-
-<div class='row'>
-  <div class='col'>
-    <Curves sig={sig} box={box} cfg={cfg} cn=1 plot={pp.plot} />
-    <LowPanelControls sig={sig} cfg={cfg} cn=2 plot={pp.plot} />
-  </div>
-  <PhiSpace sig={sig} cn=3 pp={pp} />
-</div>
-
 

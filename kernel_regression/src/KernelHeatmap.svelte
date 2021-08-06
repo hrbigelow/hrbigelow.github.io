@@ -6,7 +6,7 @@ import kernel_frag from './shaders/kernel_frag.glsl';
 import { Sync } from './sync';
 import * as d3 from 'd3';
 
-export let sig, cn, plot, klass;
+export let sig, cn, plot, gridarea;
 let xmin, xmax, mounted = false;
 let sandbox;
 let svg, can, divh;
@@ -24,7 +24,7 @@ function yTov(y) {
 function resize(dummy) {
   if (! mounted) return;
   var h = svg.clientHeight; // excludes border
-  console.log(`in KernelHeatmap resize with dummy=${dummy}, svg.clientHeight=${h}`);
+  // console.log(`in KernelHeatmap resize with dummy=${dummy}, svg.clientHeight=${h}`);
   svg.setAttribute('width', h);
   can.setAttribute('width', h);
   update();
@@ -61,9 +61,15 @@ $: resize(divh);
 
 </script>
 
-<div class='{klass} invis-framed' bind:clientHeight={divh}></div>
-<canvas class='{klass} framed z1' bind:this={can}></canvas>
-<svg class='{klass} framed z2' bind:this={svg}>
+<!-- This component must be placed in a grid.  The 'gridarea' class
+  must have properties grid-area, align-self and justify-self.  When the
+  grid resizes, this component senses the change via the divh variable.
+  This component keeps itself square shaped, so only needs to respond to
+  height change.
+-->
+<div class='{gridarea} invis-framed' bind:clientHeight={divh}></div>
+<canvas class='{gridarea} framed z1' bind:this={can}></canvas>
+<svg class='{gridarea} framed z2' bind:this={svg}>
   {#if mounted}
     {#each plot.x as x}
       {#each plot.mu as mu} 
