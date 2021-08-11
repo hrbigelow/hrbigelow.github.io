@@ -120,7 +120,7 @@ function h(e) {
   .line {
     display: inline-block;
     white-space: nowrap;
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 8em;
   }
 

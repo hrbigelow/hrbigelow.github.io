@@ -60,7 +60,7 @@
             </figcaption>
         </figure>
 
-        <!-- <KernelMethods/> -->
+        <KernelMethods/>
 
     </d-article>
 

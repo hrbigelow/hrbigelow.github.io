@@ -67,43 +67,36 @@ function quote_dmath_html(content) {
 }
 
 
-function make_latex_macro_convert(macros) {
-  var rx = '';
-  var mx = /\\newcommand(?<cmd>\\.+?)(\[(?<num_pars>.+?)\])*{(?<replace>.+)}/;
-  var argpat = '{(.+?)}';
-  var qrpats = [];
+function macro_convert(code) {
+  // first pass: collect the macros
   var qpat, rpat, g;
-  for (let m of macros) {
-    var g = m.match(mx).groups;
+  var qrpats = [];
+  var argpat = '{(.+?)}';
+  const mx = /\\newcommand(?<cmd>\\.+?)(\[(?<num_pars>.+?)\])*{(?<replace>.+)}/;
+  const mxg = RegExp(mx, 'g'); 
+  const macros = code.matchAll(mxg);
+  console.log('got macros: ', macros);
+  for (const match of macros) {
+    const macro = match[0].replace(/\\/g, '\\\\');
+    var g = macro.match(mx).groups;
     qpat = g.cmd + argpat.repeat(g.num_pars || 0);
     rpat = g.replace.replace('#','$');
     qrpats.push({ qpat: new RegExp(qpat, 'g'), rpat: rpat });
   }
-  function macro_convert(code) {
-    for (let qr of qrpats) {
-      console.log(qr);
-      // console.log(qr.qpat.source);
-      code = code.replace(qr.qpat, qr.rpat);
-    }
-    // console.log(code);
-    return code;
+
+  console.log(qrpats[0]);
+
+  const mxs = /\$\n*(\\newcommand\\.+\n)*\n*\$/;
+  code = code.replace(mxs, '');
+
+  for (let qr of qrpats) {
+    console.log(qr.qpat.source);
+    code = code.replace(qr.qpat, qr.rpat);
   }
-  return macro_convert;
+  return code;
 }
-    
 
-const macros = [
-/\newcommand\\B[1]{\bold{#1}}/.source,
-/\newcommand\\bp[1]{\bold{\phi}_{#1}}/.source,
-/\newcommand\\len[1]{\|#1\|}/.source,
-/\newcommand\\ang[1]{\theta_{#1}}/.source,
-/\newcommand\\dist{\mathrm{dist}}/.source,
-/\newcommand\\proj{\mathrm{proj}}/.source,
-/\newcommand\\half{{\small {1 \over 2}}}/.source
-];
-
-
-var macro_convert = make_latex_macro_convert(macros);
+  
 
 
 function preprocess_md(content) {
@@ -113,5 +106,5 @@ function preprocess_md(content) {
 }
 
 
-export { quote_dmath_html, preprocess_md };
+export { macro_convert, quote_dmath_html, preprocess_md };
 
