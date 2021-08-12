@@ -1,17 +1,13 @@
 <script>
     import KernelMethods from './kernel_methods.md'; 
-    import Figure1 from './Figure1.svelte';
-    import Figure2 from './Figure2.svelte';
-    import SourceChecksums from './SourceChecksums.svelte';
 
 </script>
 
-<style>
-
-</style>
-
 <main>
 
+  <KernelMethods/>
+
+  <!--
     <d-front-matter>
     <script type="text/json">{
         "title": "Introduction to Kernel Regression",
@@ -29,8 +25,6 @@
 
 
     <d-article>
-
-        <!-- <SourceChecksums/> -->
 
         <figure class="l-page-outset" >
             <Figure1/> 
@@ -63,8 +57,17 @@
         <KernelMethods/>
 
     </d-article>
-
-    <d-appendix>
-    </d-appendix>
+    -->
 
 </main>
+
+<style>
+
+  main {
+    max-width: 50vw;
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    align: center;
+  }
+
+</style>

@@ -1,19 +1,22 @@
 $
 \newcommand\B[1]{\boldsymbol{#1}}
-\newcommand\bp[1]{\boldsymbol{\phi}_{#1}}
 \newcommand\norm[1]{\|#1\|}
 \newcommand\ang[1]{\theta_{#1}}
 \newcommand\dist{\mathrm{dist}}
-\newcommand\proj{\mathrm{proj}}
 \newcommand\half{{\small {1 \over 2}}}
 \newcommand\FeatSpace{\mathcal{\Phi}}
 \newcommand\GSpace{\mathcal{G}_\sigma}
 \newcommand\proj[2]{#1_{\small \parallel #2}}
 \newcommand\rej[2]{#1_{\small \perp #2}}
-\newcommand\v[1]{\vec{#1}}
+\newcommand\V[1]{\vec{#1}}
 \newcommand\len[1]{\mathrm{len}(#1)}
 \newcommand\disp[1]{\mathrm{disp}(#1)}
 $
+
+<script>
+import Figure1 from './Figure1.svelte';
+import Figure2 from './Figure2.svelte';
+</script>
 
 
 # Introduction
@@ -28,7 +31,7 @@ There are two interactive visualizations in this article, using the 1-D Gaussian
 
 All Kernel methods, such as Kernel Regression, Kernel SVM, PCA, CCA, K-means use the same mathematical apparatus at the core, but solve a different linear problem.  In this article, I use the simplest among these, the perfect-fit Kernel Regression, as a worked example.  Since it is perfect-fit, it has the drawback of not using regularization.  Instead, I introduce the concept of regularization through function norm reduction while considering the design of the Kernel Method itself.   Imperfect-fit (least squares) regression, and other variations serve to further decrease the function norm, or achieve other objectives such as classification.
 
-A core concept of Kernel Methods is he so-called "feature space" - a (possibly) infinite dimensional vector space, whose points correspond one-to-one with functions.  There is a distinct concept called the Reproducing Kernel Hilbert Space.  The RKHS is a more abstract concept; it is also a vector space whose points correspond to the points in the feature space, and the functions.  The feature space and the RKHS are distinct, but represent aspects of the same underlying mathematical object.  But often in the literature, they are spoken about interchangeably, which was a major source of confusion.  I only mention them here to help the reader avoid the same confusion.
+A core concept of Kernel Methods is the so-called "feature space" - a (possibly) infinite dimensional vector space, whose points correspond one-to-one with functions.  There is a distinct concept called the Reproducing Kernel Hilbert Space.  The RKHS is a more abstract concept; it is also a vector space whose points correspond to the points in the feature space, and the functions.  The feature space and the RKHS are distinct, but represent aspects of the same underlying mathematical object.  But often in the literature, they are spoken about interchangeably, which was a major source of confusion.  I only mention them here to help the reader avoid the same confusion.
 
 Kernel methods, particularly SVMs, were for a time a dominant model used in Machine Learning, but have been eclipsed by deep Neural networks trained by stochastic gradient descent.  More recently, it was recognized that NNs trained by SGD approximate Kernel methods, and this has led to increased interest and new applications.
 
@@ -40,6 +43,8 @@ You can adjust the sliders to make the blue curve perfectly fit the $y_i$.  It m
 
 To see why, note that each gray curve's set of values along the $x_i$ produces a vector, which I call the function's *vector of evaluation*.  Denoting the j'th curve as $k_j(x)$, its vector of evaluation is $(k_j(x_1), k_j(x_2), \cdots, k_j(x_n))$, where the order of components is always the order of the $(x_1, x_2, \cdots, x_n)$.  
 
+<Figure1 />
+
 Note that there isn't any rule that the $x_i$ need be monotonically increasing.  They are simply given in some arbitrary order from the dataset. In the plot, they aren't labeled.  You can adjust the i'th slider and see which curve moves.  The point located horizontally at the peak of that curve is $(x_i, y_i)$.  Ultimately it doesn't matter for the purposes of illustration.  The important thing is that all the gray functions' vectors of evaluation are in the same order.
 
 Also note, although Gaussians are most often interpreted as probability distributions, in this article, there is no such interpretation, and there is no process of sampling from Gaussians.  We are simply using them as curves, like splines, to generate more complex shapes.  So, there is no requirement that they be normalized.
@@ -48,14 +53,14 @@ Particularly for a collection of Gaussians all with the same $\sigma$, the set o
 
 Explicitly:
 
-$
+$$
 \begin{aligned}
 k_j(x) & & \mbox{Gaussians centered at $x_j$, $j = 1 .. n$} \\
 f(x) & \equiv \sum_j { \alpha_j k_j(x) } & \mbox{the blue curve}\\
 f(x_i) & = \sum_j { \alpha_j k_j(x_i) } = y_i & \mbox{fitting the blue curve to the black points} \\
 \B{\alpha K} & = \B{y} , & \mbox{$\B{K}$: rows are vectors of evaluation} \\
 \end{aligned}
-$
+$$
 
 The $\B{\alpha}$ that fits the data perfectly is found by inverting $\B{K}$, which is possible because $\B{K}$ is full-rank.  That is, its rows are linearly independent, due to the property of a collections of Gaussians of the same $\sigma$.  Even though we are taking linear combinations of functions, it is only the vectors of evaluation $(f_j(x_1), \cdots, f_j(x_n))$ which affect the choice of $\B{\alpha}$.
 
@@ -90,7 +95,7 @@ Underlying all Kernel methods are three choices for how to construct the functio
 
 ### Third design choice
 
-***The functions are in the form of dot products of feature vectors***.  This is the biggest leap.  The members of the set are of the form:  $f_i(x) \equiv \v{\phi_f}_i \cdot \B{\phi}(x)$.  That is, each function is identified by a distinct "parameter vector" $\v{\phi_f}_i$, and the function is defined as the dot product between its parameter vector and some as-yet undefined vector-valued function of the input.  As I will show soon, this third choice provides a way to regularize the method, and makes finding the solution function readily computable.  It also maintains the first goal of having arbitrary capacity to fit any data.  For readers already familiar with literature on Kernel methods, the notion of a "parameter vector" is not conventional, but it is my device for motivating Kernels.
+***The functions are in the form of dot products of feature vectors***.  This is the biggest leap.  The members of the set are of the form:  $f_i(x) \equiv \V{\phi_f}_i \cdot \B{\phi}(x)$.  That is, each function is identified by a distinct "parameter vector" $\V{\phi_f}_i$, and the function is defined as the dot product between its parameter vector and some as-yet undefined vector-valued function of the input.  As I will show soon, this third choice provides a way to regularize the method, and makes finding the solution function readily computable.  It also maintains the first goal of having arbitrary capacity to fit any data.  For readers already familiar with literature on Kernel methods, the notion of a "parameter vector" is not conventional, but it is my device for motivating Kernels.
 
 To motivate these ideas and make the discussion more concrete, I first show that the Gaussian set of functions, all with the same $\sigma$ and indexed over $\mu \in \mathcal{X}$, fit these three design choices.
 
@@ -102,18 +107,18 @@ The values of the Gaussian function turn out to be a dot product between two inf
 
 To show this, we first show how the simpler formula $e^{axy}$ can be written as a dot product.  Then, using this first result, we show that $e^{-\half a(x-y)^2}$ can also be written as a dot product.  The Gaussian is just a scaled version with a special choice for $a$.
 
-$
+$$
 \begin{aligned}
 e^{axy} & = \sum_{i=0} { \dfrac{a^i(xy)^i}{i!} } & \mbox{Taylor expansion} \\
 & = \sum_{i=0} { \dfrac{(a^\half x)^i}{(i!)^\half} \dfrac{(a^\half y)^i}{(i!)^\half} } & \mbox{Separate $x$ and $y$ terms to symmetric roles} \\
 & = \sum_{i=0} { \psi_{a,i}(x) \psi_{a,i}(y) } & \mbox{Let $\psi_{a,i}(p) \equiv \dfrac{(a^\half p)^i}{(i!)^\half}$ }\\
 & = \vec{\psi_a}(x) \cdot \vec{\psi_a}(y) & \mbox{Let $\vec{\psi_a}(p) \equiv (\psi_{a,1}(p), \psi_{a,2}(p), \cdots)$ } \\
 \end{aligned}
-$
+$$
 
 Now, using the first result for $e^{axy}$, and letting $y = \mu$:
 
-$
+$$
 \begin{aligned}
 e^{-\half a(x-\mu)^2} & = e^{-\half a(x^2-2x\mu+\mu^2)} \\[1em]
 & = e^{-\half a x^2} e^{ax\mu} e^{-\half a \mu^2} \\[1em]
@@ -121,7 +126,7 @@ e^{-\half a(x-\mu)^2} & = e^{-\half a(x^2-2x\mu+\mu^2)} \\[1em]
 & = (e^{-\half a x^2} \vec{\psi_a}(x) \cdot e^{-\half a \mu^2} \vec{\psi_a}(\mu)) & \mbox{By bilinearity of dot product} \\[1em]
 & = \vec{\phi_{\sigma}}(x) \cdot \vec{\phi_{\sigma}}(\mu) & \mbox{Let $\vec{\phi_{\sigma}}(p) \equiv e^{-\half a p^2} \vec{\psi_a}(p)$ with $a = {\small 1 \over \sigma^2}$} \\
 \end{aligned}
-$
+$$
 
 So we have $e^{-\tfrac{1}{2} {(\tfrac{x - \mu}{\sigma})}^2 }$ and all that remains is to scale both vectors by $\dfrac{1}{\sigma^\half (2 \pi)^{\small 1 \over 4}}$
 
@@ -155,7 +160,7 @@ And, some consequences from this:
 
 5. **Every linear combination of those functions is a point in the $\mu$-span**.  The $\vec{\alpha}$ linear combination of functions $f_{\mu_i}(\cdot) \in \GSpace$ corresponds to the *same* $\vec{\alpha}$ linear combination of feature vectors $\vec{\phi_\sigma}(\mu_i)$.  Although the family functions all have the same feature vector length, in general a linear combination will not.  The goal is to find a single point in the $\mu$-span which fits the data and has other desirable properties.
 
-6. **A set of inputs defines a linear subspace in feature space**.  For short, one could call this subspace the $x$-span.  It can be thought of as an empirical estimate of the data manifold.
+6. **A set of inputs defines a linear subspace in feature space**.  For short, one could call this subspace the $x$-span.
 
 7. **A set of input labels defines a point in that linear subspace**.  Every point $f$ in the $\mu$-span induces a tuple of dot-product values with the $\vec{\phi_\sigma}(x_i)$ of the $x$-span, which also corresponds to its projection $f_\parallel$ onto the $x$-span.  Those dot-product values correspond to the labels ($y_i$ values).
 
@@ -180,7 +185,7 @@ Notice that if all $\mu_i = x_i$ (check $\mu$ tracks $x$), then the diagonals of
 
 ### Some experiments
 
-Here are some experiments that I found are useful to build intuition.  In the experiments where $\sigma$ is not the focus, I'll omit the mention of $\sigma$ and abbreviate the feature vector notation $\vec{\phi_\sigma}(x)$ as $\vec{\phi_x}$.  For linear combinations of feature vectors, I'll use the name of the corresponding function.  For example, $f = \sum_i { \alpha_i f_{\mu_i} }$, with feature vector $\sum_i { \alpha_i \v{\phi_{\mu_i}}}$ will be simply notated $\vec{\phi_f}$.
+Here are some experiments that I found are useful to build intuition.  In the experiments where $\sigma$ is not the focus, I'll omit the mention of $\sigma$ and abbreviate the feature vector notation $\vec{\phi_\sigma}(x)$ as $\vec{\phi_x}$.  For linear combinations of feature vectors, I'll use the name of the corresponding function.  For example, $f = \sum_i { \alpha_i f_{\mu_i} }$, with feature vector $\sum_i { \alpha_i \V{\phi_{\mu_i}}}$ will be simply notated $\vec{\phi_f}$.
 
 **Interpolation behavior from a single point**.  Click 'Del Point' until there is a single gray curve.  With 'auto solve' checked, drag the black point up and down, and observe how the other values change.  Obviously, points x near $\mu$ change almost the same, while more distant points don't change much.  The central idea here is that height of the gray curve at arbitrary $x$ defines defines a kind of similarity with $\mu_i$.  The $\alpha_i$ scaled gray curve corresponds to the scaled feature vector $\alpha_i \vec{\phi_\sigma}(\mu_i)$.  Because the evaluations are dot products, and the dot product is linear in each argument, the values of the function at every $x$ scale as well.
 
@@ -194,7 +199,7 @@ The notion that a similarity measure on pairs of points in $\mathcal{X}$ may not
 
 Now increase to two points.  With '$\mu$ tracks $x$' and 'auto solve' checked, move the two data points well apart, and adjust $\sigma$ so the two gray curves are well separated - that is, such that the height at $\mu_2$ of $f_1$ is near zero, and vice versa.  The off-diagonal elements of the matrix at the bottom right should be nearly white.  The feature vectors $\vec{\phi_{\mu_1}}$ and $\vec{\phi_{\mu_1}}$ corresponding to these two functions are approaching right angles with each other.
 
-Now drag one of the data points up and down.  You'll notice that only one of the $\alpha_i$ components moves to solve the curve.  In feature space terms, $\vec{\phi_{\mu_1}}$ and $\vec{\phi_{\mu_1}}$ are nearly orthogonal.  The goal is to find some linear combination $\vec{\phi_f}$ of them such that the signed length (displacement) of the projections $\disp{\proj{\v{\phi_f}}{\v{\phi_{x_i}}}} = y_i$.   Since the $x_i = \mu_i$, $\vec{\phi_{x_1}}$ and $\vec{\phi_{x_2}}$ are the same.  So, scaling one component $\alpha_1$ doesn't affect $\disp{\proj{\v{\phi_f}}{\v{\phi_{x_2}}}}$ and vice versa.  
+Now drag one of the data points up and down.  You'll notice that only one of the $\alpha_i$ components moves to solve the curve.  In feature space terms, $\vec{\phi_{\mu_1}}$ and $\vec{\phi_{\mu_1}}$ are nearly orthogonal.  The goal is to find some linear combination $\vec{\phi_f}$ of them such that the signed length (displacement) of the projections $\disp{\proj{\V{\phi_f}}{\V{\phi_{x_i}}}} = y_i$.   Since the $x_i = \mu_i$, $\vec{\phi_{x_1}}$ and $\vec{\phi_{x_2}}$ are the same.  So, scaling one component $\alpha_1$ doesn't affect $\disp{\proj{\V{\phi_f}}{\V{\phi_{x_2}}}}$ and vice versa.  
 
 
 Now move the points closer together, or increase $\sigma$, so that the off-diagonal elements are bluish.  Then, moving one of the points influences the other, and both $\alpha_i$ need to be adjusted to find the solution.  A limited visualizatoin of this is available in the second interactive figure.
@@ -206,7 +211,7 @@ The blue curve $f$'s associated parameter vector's norm is also called the *func
 
 If you move one of the points very close to the other in the $x$ direction, but differing in height, the slope of the curve explodes, as does the magnitude of the $\alpha_i$ and $\|f\|$.  At a given setting for the $(x_i, y_i)$ with high norm, try reducing $\sigma$ until the curves are again well separated, and the function norm will shrink.
 
-In feature space terms, this situation is the opposite of when $\v{\phi_{\mu_1}}$ and $\v{\phi_{\mu_2}}$ were nearly orthogonal.  Now, they are nearly parallel.  In order for some solution vector $\v{\phi_f}$ to achieve very different projection lengths against nearly parallel vectors, it has to be very long to exploit the slight difference in angle.
+In feature space terms, this situation is the opposite of when $\V{\phi_{\mu_1}}$ and $\V{\phi_{\mu_2}}$ were nearly orthogonal.  Now, they are nearly parallel.  In order for some solution vector $\V{\phi_f}$ to achieve very different projection lengths against nearly parallel vectors, it has to be very long to exploit the slight difference in angle.
 
 In semantic terms, one interpretation is, an exploding norm indicates the individual component curves overestimate the degree of similarity of that pair of data points, relative to their *actual* similarity which is a function of their $y_i$ values.  Adjusting $\sigma$ remedies this problem, at the expense of less interpolation.
 
@@ -214,8 +219,8 @@ Since this worked example is doing exact-fit linear regression, we aren't consid
 
 **Changing $\mu$-span away from $x$-span**
 
-Recall that $\v{\phi_f}$ resides in the $\mu$-span, the $n$-dimensional linear subspace $\mathbb{span}(\v{\phi_{\mu_i}})$.   and its projection, $\proj{\v{\phi_f}}{\mathbb{x-span}}$ resides in the $x$-span, $\mathbb{span}(\v{\phi_{x_i}})$.  Up until now, $\mu_i = x_i$ and the two spans coincide.  In that case, $\v{\phi_f} = \v{\phi_{f_\parallel}}$, and $\v{\phi_{f_\perp}} = \v{0}$.
-If you unlock '$\mu$ tracks x', you can drag the triangles ($\mu_i$) or the data points and the two spans are allowed to differ, and the orthogonal decomposition of $f$ starts to show.  $\norm{f}$ still shows the length of $\v{\phi_f}$ which exists in the $\mu$-span, but the lengths of orthogonal decomposition $\v{\phi_f} = \v{\phi_{f_\parallel}} + \v{\phi_{f_\perp}}$ taken relative to the $x$-span is also shown.  In the limit, the spans are nearly orthogonal, and the parallel component is extremely small, forcing $\norm{f}$ to grow without bound in order to project onto the $x$-span any particular solution.
+Recall that $\V{\phi_f}$ resides in the $\mu$-span, the $n$-dimensional linear subspace $\mathbb{span}(\V{\phi_{\mu_i}})$.   and its projection, $\proj{\V{\phi_f}}{\mathbb{x-span}}$ resides in the $x$-span, $\mathbb{span}(\V{\phi_{x_i}})$.  Up until now, $\mu_i = x_i$ and the two spans coincide.  In that case, $\V{\phi_f} = \V{\phi_{f_\parallel}}$, and $\V{\phi_{f_\perp}} = \V{0}$.
+If you unlock '$\mu$ tracks x', you can drag the triangles ($\mu_i$) or the data points and the two spans are allowed to differ, and the orthogonal decomposition of $f$ starts to show.  $\norm{f}$ still shows the length of $\V{\phi_f}$ which exists in the $\mu$-span, but the lengths of orthogonal decomposition $\V{\phi_f} = \V{\phi_{f_\parallel}} + \V{\phi_{f_\perp}}$ taken relative to the $x$-span is also shown.  In the limit, the spans are nearly orthogonal, and the parallel component is extremely small, forcing $\norm{f}$ to grow without bound in order to project onto the $x$-span any particular solution.
 
 As mentioned before, this experiment is only for didactic purposes since Kernel methods assign the $\mu$-span to the $x$-span.  But, it is worth noting that any new unseen data resides in general outside of the $x$-span which is derived from the dataset.  This is a good illustration of why off-manifold data is hard to predict.
 
@@ -223,47 +228,53 @@ As mentioned before, this experiment is only for didactic purposes since Kernel 
 
 # Experiments to try with Figure 2
 
-Figure 2 left panel shows the same plot with just two functions.  The right panel shows the 2d $\mu$-span, with the gray vectors denoting $\v{\phi_{\mu_1}}$ and $\v{\phi_{\mu_2}}$, and the blue vector $\v{\phi_f} = \sum_i { \alpha_i \v{\phi_{\mu_i}}}$.  The black dot on the right panel shows the parameter vector which fits the data.  Not shown are the $x$-span or the $\v{\phi_{x_i}}$.  However, when $\mu_i = x_i$, they coincide.  In this case, the black dotted lines show the length of the projection of $\v{\phi_f}$ onto each of the $\v{\phi_{\mu_i}}$, which equals $f(x_i)$.  There are a few informative experiments to try.
+<Figure2 />
+<caption>
+Interctive plot.  You can drag the black $(x_i, y_i)$ data points and triangles
+($\mu_i$ values).  <b>Top</b>: gray curves are Gaussians centered at the <d-math>\mu_i</d-math>.  Blue curve is the $\vec\alpha4 linear combination of the gray curves.  <b>Bottom left</b>: A heatmap showing the family of Gaussians with the same $\sigma$ at every $\mu$ value.  Red dots show the locations of evaluation points.  <b>Bottom right</b>:  The matrix of values of evaluation points organized by $\mu_i$ and $x_i$.  Other details provided in text.  <a href="full.html">Full Page Figure</a>.
+</caption>
 
-**Changing the angle between $\v{\phi_{\mu_1}}$ and $\v{\phi_{\mu_2}}$**.  If you drag one of the $\mu_i$ close to the other one, notice the angle between the gray vectors change.  Dragging them apart causes the gray vectors to asymptotically approach right angles.
+Figure 2 left panel shows the same plot with just two functions.  The right panel shows the 2d $\mu$-span, with the gray vectors denoting $\V{\phi_{\mu_1}}$ and $\V{\phi_{\mu_2}}$, and the blue vector $\V{\phi_f} = \sum_i { \alpha_i \V{\phi_{\mu_i}}}$.  The black dot on the right panel shows the parameter vector which fits the data.  Not shown are the $x$-span or the $\V{\phi_{x_i}}$.  However, when $\mu_i = x_i$, they coincide.  In this case, the black dotted lines show the length of the projection of $\V{\phi_f}$ onto each of the $\V{\phi_{\mu_i}}$, which equals $f(x_i)$.  There are a few informative experiments to try.
 
-**Nearly orthogonal $\v{\phi_{\mu_1}}$ and $\v{\phi_{\mu_2}}$ have independent contributions to the values of $f(\cdot)$ at each $\mu_i$**.  With 'auto solve' and '$\mu$ tracks x' checked, on the left panel, drag the black dots well apart on the $x$ axis.  Then, drag one dot up and down, observing the motion of the blue arrow on the right panel.  It moves back and forth in the direction of one of the $\v{\phi_{\mu_i}}$ while its projection against the other gray arrow remains nearly constant.
+**Changing the angle between $\V{\phi_{\mu_1}}$ and $\V{\phi_{\mu_2}}$**.  If you drag one of the $\mu_i$ close to the other one, notice the angle between the gray vectors change.  Dragging them apart causes the gray vectors to asymptotically approach right angles.
 
-**Nearly parallel $\v{\phi_{\mu_1}}$ and $\v{\phi_{\mu_2}}$ have highly dependent contributions to the values of $f(\cdot)$ at each $\mu_i$**.  With 'auto solve' and '$\mu$ tracks x' checked, on the left panel, drag the black dots close together on the $x$ axis.  Now, move one of the dots up and down.  Observe that as the $y$ values of the dots widen, the blue vector on the right panel must grow very long to achieve the differing projection lengths.
+**Nearly orthogonal $\V{\phi_{\mu_1}}$ and $\V{\phi_{\mu_2}}$ have independent contributions to the values of $f(\cdot)$ at each $\mu_i$**.  With 'auto solve' and '$\mu$ tracks x' checked, on the left panel, drag the black dots well apart on the $x$ axis.  Then, drag one dot up and down, observing the motion of the blue arrow on the right panel.  It moves back and forth in the direction of one of the $\V{\phi_{\mu_i}}$ while its projection against the other gray arrow remains nearly constant.
+
+**Nearly parallel $\V{\phi_{\mu_1}}$ and $\V{\phi_{\mu_2}}$ have highly dependent contributions to the values of $f(\cdot)$ at each $\mu_i$**.  With 'auto solve' and '$\mu$ tracks x' checked, on the left panel, drag the black dots close together on the $x$ axis.  Now, move one of the dots up and down.  Observe that as the $y$ values of the dots widen, the blue vector on the right panel must grow very long to achieve the differing projection lengths.
 
 ## Proof that $\mu_i = x_i$ is optimal
 
 Having highlighted the separate notions of the $\mu$-span and $x$-span for conceptual reasons, we now show that the optimal choice is to set the $\mu$-span equal to it.
 
-The matrix form for a function $f$'s associated parameter vector $\v{\phi_f} = \B{\alpha M}$, with $\B{M}$ the matrix of row vectors $\v{\phi_{\mu_i}}$.  $f$'s *vector of evaluation* on the $x_i$ is then given by $\B{\alpha M X}^T$, where $\B{X}$ is similarly the matrix of row vectors $\v{\phi_{x_i}}$.  We now show why $\B{M} = \B{X}$ is the optimal choice.
+The matrix form for a function $f$'s associated parameter vector $\V{\phi_f} = \B{\alpha M}$, with $\B{M}$ the matrix of row vectors $\V{\phi_{\mu_i}}$.  $f$'s *vector of evaluation* on the $x_i$ is then given by $\B{\alpha M X}^T$, where $\B{X}$ is similarly the matrix of row vectors $\V{\phi_{x_i}}$.  We now show why $\B{M} = \B{X}$ is the optimal choice.
 
 Suppose $\B{\alpha M X}^T = \B{y}$ for some $\B{\alpha}$.  By the property of dot products:
 
-$
+$$
 \begin{aligned}
 \B{a} \cdot \B{b} & = (\proj{\B{a}}{\B{b}} + \rej{\B{a}}{\B{b}}) \cdot \B{b} & \mbox{orthogonal decomposition}\\
 & = \proj{\B{a}}{\B{b}} \cdot \B{b} + \rej{\B{a}}{\B{b}} \cdot \B{b} & \mbox{linearity of dot product}\\
 & = \proj{\B{a}}{\B{b}} \cdot \B{b} & \mbox{zero orthogonal contribution} \\
 \end{aligned}
-$
+$$
 
 In matrix form:
 
-$
+$$
 \begin{aligned}
 \B{\alpha M X}^T & = \B{\alpha} (\proj{\B{M}}{\texttt{span}(\B{X})} + \rej{\B{M}}{\texttt{span}(\B{X})}) \B{X}^T \\
 & = \B{\alpha} \proj{\B{M}}{\texttt{span}(\B{X})} \B{X}^T
 \end{aligned}
-$
+$$
 
 $\proj{\B{M}}{}$ spans either the same subspace as $\texttt{span}(\B{X})$, or a subspace of it.  Thus, the choice of $\mu_i = x_i$ (or any choice of $\mu_i$ such that $\texttt{span}(\B{M}) = \texttt{span}(\B{X})$) will be able to fit any set of labels $\B{y}$ that any other choice of $\mu_i$ can fit, but possibly more.
 
-Furthermore, as will be argued in the next section, any two functions having the same vector of evaluation, the one with smaller parameter norm is preferable.  The squared norm $\norm{\v{\phi_f}}^2$ is given by:
+Furthermore, as will be argued in the next section, any two functions having the same vector of evaluation, the one with smaller parameter norm is preferable.  The squared norm $\norm{\V{\phi_f}}^2$ is given by:
 
-$
+$$
 \begin{aligned}
 \B{\alpha M X}^T & = \B{\beta X X}^T = \B{y} &\mbox{a $\B{\beta}$ exists, by previous argument}\\
-\norm{\v{\phi_f}}^2 & = \B{\alpha M M}^T \B{\alpha}^T \\
+\norm{\V{\phi_f}}^2 & = \B{\alpha M M}^T \B{\alpha}^T \\
 & = \B{\alpha} (\proj{\B{M}}{} + \rej{\B{M}}{}) (\proj{\B{M}}{} + \rej{\B{M}}{})^T \B{\alpha}^T \\
 & = \B{\alpha} \proj{\B{M}}{} \proj{\B{M}}{}^T \B{\alpha}^T
 + 2 \B{\alpha} \proj{\B{M}}{} \rej{\B{M}}{}^T \B{\alpha}^T
@@ -271,102 +282,102 @@ $
 & \ge \B{\alpha} \proj{\B{M}}{} \proj{\B{M}}{}^T \B{\alpha}^T \\[1em]
 & = \B{\beta X X}^T \B{\beta}^T & \mbox{by uniqueness of span}\\
 \end{aligned}
-$
+$$
 
 
 
 ## Regularizing by Minimizing the Function Norm
 
-There are two properties a function $f$ has related to its parameter vector norm $\norm{\v{\phi_f}}$.  The first is the overall magnitude (positive and negative) of its values.  The second is the magnitude of the difference between pairs of points, relative to how similar those points are by the measure of the family of functions.
+There are two properties a function $f$ has related to its parameter vector norm $\norm{\V{\phi_f}}$.  The first is the overall magnitude (positive and negative) of its values.  The second is the magnitude of the difference between pairs of points, relative to how similar those points are by the measure of the family of functions.
 
 To illustrate, consider two arbitrary inputs $a, b \in \mathcal{X}$.  How do  the magnitudes of values $|f(a)|$ and difference in values $|f(a) - f(b)|$ relate to the norm of its parameter vector?
 
-$
+$$
 \begin{aligned}
-f(a) & = \v{\phi_f} \cdot \v{\phi_a} & \mbox{definition of $f(x)$} \\
-& = \norm{\v{\phi_f}} \|\v{\phi_a}\| \cos \theta_{\v{\phi_f},\v{\phi_a}} & \mbox{definition of dot product} \\
-\implies |f(a)| & \le \norm{\v{\phi_f}}\|\v{\phi_a}\| & \mbox{Cauchy Schwarz inequality} \\[2em]
-f(a) - f(b) & = \v{\phi_f} \cdot \v{\phi_a} - \v{\phi_f} \cdot \v{\phi_b} &\mbox{definition of $f(x)$} \\
-& = \v{\phi_f} \cdot (\v{\phi_a} - \v{\phi_b}) & \mbox{bilinearity of dot product} \\
-& = \norm{\v{\phi_f}} \|\v{\phi_a} - \v{\phi_b}\| \cos \theta_{\v{\phi_f}, \v{\phi_a} - \v{\phi_b}} & \mbox{definition of dot product} \\
-\implies |f(a) - f(b)| & \le \norm{\v{\phi_f}} \|\v{\phi_a} - \v{\phi_b}\| & \mbox{Cauchy Schwarz inequality} \\
+f(a) & = \V{\phi_f} \cdot \V{\phi_a} & \mbox{definition of $f(x)$} \\
+& = \norm{\V{\phi_f}} \|\V{\phi_a}\| \cos \theta_{\V{\phi_f},\V{\phi_a}} & \mbox{definition of dot product} \\
+\implies |f(a)| & \le \norm{\V{\phi_f}}\|\V{\phi_a}\| & \mbox{Cauchy Schwarz inequality} \\[2em]
+f(a) - f(b) & = \V{\phi_f} \cdot \V{\phi_a} - \V{\phi_f} \cdot \V{\phi_b} &\mbox{definition of $f(x)$} \\
+& = \V{\phi_f} \cdot (\V{\phi_a} - \V{\phi_b}) & \mbox{bilinearity of dot product} \\
+& = \norm{\V{\phi_f}} \|\V{\phi_a} - \V{\phi_b}\| \cos \theta_{\V{\phi_f}, \V{\phi_a} - \V{\phi_b}} & \mbox{definition of dot product} \\
+\implies |f(a) - f(b)| & \le \norm{\V{\phi_f}} \|\V{\phi_a} - \V{\phi_b}\| & \mbox{Cauchy Schwarz inequality} \\
 \end{aligned}
-$
+$$
 
-The first inequality tells us that the magnitude of values of the function $f$ is bounded by a fixed multiple of $\norm{\v{\phi_f}}$.  The multiple itself, $\norm{\v{\phi_a}}$ we have no control over - it is determined by the choice of $\B{\phi}(\cdot)$.  But by controlling $\norm{\v{\phi_f}}$ we can control the range of values of $f$.
+The first inequality tells us that the magnitude of values of the function $f$ is bounded by a fixed multiple of $\norm{\V{\phi_f}}$.  The multiple itself, $\norm{\V{\phi_a}}$ we have no control over - it is determined by the choice of $\B{\phi}(\cdot)$.  But by controlling $\norm{\V{\phi_f}}$ we can control the range of values of $f$.
 
-The second inequality tells us that the absolute difference in value between any two points is proportional to $\norm{\v{\phi_a} - \v{\phi_b}}$.  As the distance shrinks, the values will be equal.  By bounding $\norm{\v{\phi_f}}$, we can control how sensitive the function could be to distance between input feature vectors.
+The second inequality tells us that the absolute difference in value between any two points is proportional to $\norm{\V{\phi_a} - \V{\phi_b}}$.  As the distance shrinks, the values will be equal.  By bounding $\norm{\V{\phi_f}}$, we can control how sensitive the function could be to distance between input feature vectors.
 
-Conversely, if you demand the solution function fit a particular set of fixed $y_a$ and $y_b$ values, that is, $|f(a) - f(b)| = |y_a - y_b|$, then $\|\v{\phi_f}\|$ must grow to compensate for small $\|\v{\phi_a} - \v{\phi_b}\|$.  This is the behavior you observe by dragging one of the black dots close on the $x$ axis in 'auto solve' mode, while maintaining a fixed gap in height.  The norm of the function explodes.
+Conversely, if you demand the solution function fit a particular set of fixed $y_a$ and $y_b$ values, that is, $|f(a) - f(b)| = |y_a - y_b|$, then $\|\V{\phi_f}\|$ must grow to compensate for small $\|\V{\phi_a} - \V{\phi_b}\|$.  This is the behavior you observe by dragging one of the black dots close on the $x$ axis in 'auto solve' mode, while maintaining a fixed gap in height.  The norm of the function explodes.
 
-It also says something about the choice of $\B{\phi}(\cdot)$.  Ideally, we would like to choose a $\B{\phi}(\cdot)$ such that $\norm{\v{\phi_a} - \v{\phi_b}}$ is roughy proportional to $|y_a - y_b|$ in the data set for all pairs $(a, b) \in \mathcal{X}$.
+It also says something about the choice of $\B{\phi}(\cdot)$.  Ideally, we would like to choose a $\B{\phi}(\cdot)$ such that $\norm{\V{\phi_a} - \V{\phi_b}}$ is roughy proportional to $|y_a - y_b|$ in the data set for all pairs $(a, b) \in \mathcal{X}$.
 
 
 ## Finally, enter the Kernel
 
 Recall from the previous section that using $\B{M} \equiv \B{X}$ as the set of parameter vectors ensures 1) the method has arbitrary fitting capacity and 2) the solution will be the lowest norm solution possible.  So we have the following:
 
-$
+$$
 \begin{aligned}
-\B{X} & & \mbox{matrix of rows of $\v{\phi_{x_i}}$ as defined before} \\
-\v{\phi_f} & = \B{\alpha X} & \mbox{$f$'s parameter vector}\\
+\B{X} & & \mbox{matrix of rows of $\V{\phi_{x_i}}$ as defined before} \\
+\V{\phi_f} & = \B{\alpha X} & \mbox{$f$'s parameter vector}\\
 (f(x_i))_{(1..n)} &= \B{\alpha X X}^T & \mbox{$f$'s vector of evaluation } \\
 \end{aligned}
-$
+$$
 
 To find $\B{\hat \alpha}$, solve:
 
-$
+$$
 \begin{aligned}
 \B{\hat{\alpha}} & = \min_{\alpha} { \norm{\B{\alpha X X}^T - \B{y}}^2 }
 \end{aligned}
-$
+$$
 
 This will minimize to zero if the assumptions above hold.  To compromise between a perfectly fitting function and the bounds the norm provides, instead solve:
 
-$
+$$
 \begin{aligned}
-\B{\hat{\alpha}} & = \min_{\alpha} ( \norm{\B{\alpha X X}^T - \B{y}}^2 + \lambda \norm{\B{\alpha X}}^2 ) & \mbox{sum of squared error, regularized by norm of $\v{\phi_f}$}\\
+\B{\hat{\alpha}} & = \min_{\alpha} ( \norm{\B{\alpha X X}^T - \B{y}}^2 + \lambda \norm{\B{\alpha X}}^2 ) & \mbox{sum of squared error, regularized by norm of $\V{\phi_f}$}\\
 & = \min_{\alpha} ( \norm{\B{\alpha X X}^T - \B{y}}^2 + \lambda \B{\alpha X X}^T \B{\alpha}^T )
 \end{aligned}
-$
+$$
 
 Finally, to evaluate the function on new data:
 
-$
+$$
 \begin{aligned}
-f(x) & = \v{\phi_f} \cdot \v{\phi_x} \\
-& = \B{\hat{\alpha} X} \cdot \v{\phi_x} \\
-& = \sum_i { \hat{\alpha}_i \v{\phi_{x_i}} \cdot \v{\phi_x} } \\
+f(x) & = \V{\phi_f} \cdot \V{\phi_x} \\
+& = \B{\hat{\alpha} X} \cdot \V{\phi_x} \\
+& = \sum_i { \hat{\alpha}_i \V{\phi_{x_i}} \cdot \V{\phi_x} } \\
 \end{aligned}
-$
+$$
 
 
-So we see that the only quantities dependent on the $\mathcal{X}$ data are dot products $\v{\phi_{x_i}} \cdot \v{\phi_{x_j}}$, appearing in the $\B{X X}^T$ terms or the solution function.  Finally, we define a function called the "kernel" as:
+So we see that the only quantities dependent on the $\mathcal{X}$ data are dot products $\V{\phi_{x_i}} \cdot \V{\phi_{x_j}}$, appearing in the $\B{X X}^T$ terms or the solution function.  Finally, we define a function called the "kernel" as:
 
-$
+$$
 \begin{aligned}
-k(x,x') & \equiv \v{\phi_x} \cdot \v{\phi_{x'}} & \mbox{The kernel function} \\
+k(x,x') & \equiv \V{\phi_x} \cdot \V{\phi_{x'}} & \mbox{The kernel function} \\
 \B{K} & \equiv [ \B{K}_{ij} = k(x_i, x_j) ] & \mbox{The Kernel matrix, metric matrix or Gram matrix} \\
 & = \B{X X}^T & \mbox{from above}
 \end{aligned}
-$
+$$
 
 Then, the general optimization formula simplifies to:
 
-$
+$$
 \begin{aligned}
 \B{\hat{\alpha}} & = \min_{\alpha} ( \norm{\B{\alpha K}- \B{y}}^2 + \lambda \B{\alpha K} \B{\alpha}^T )
 \end{aligned}
-$
+$$
 
 and evaluating the solution function is now written as:
 
-$
+$$
 \begin{aligned}
 f(x) & = \sum_i { \hat{\alpha}_i k(x_i, x) } \\
 \end{aligned}
-$
+$$
 
 Returning back to the plot, you can see that the blue curve evaluated at any given $x$ is the $\B{\alpha}$ weighted sum of scaled gray curves - individual Gaussians with means equal to the $x_i$'s.  Since $k(x, x') \equiv \mathcal{N}(x; x', \sigma) = \mathcal{N}(x'; x, \sigma)$, the expression above is precisely that.
 
@@ -376,7 +387,7 @@ The Kernel Method allow discovering a function to fit an arbitrary data relation
 
 Kernel methods achieve this by automatically providing a library of functions, one for each $x_i$ in the data set.  When each is evaluated on the $x_i$, they provide linearly independent sets of values.  Thus a unique linear combination of these functions exists to fit any set of target values $y_i$ at the $x_i$.
 
-The functions are defined as dot products between "feature vectors": $f_{x_i}(x) \equiv \v{\phi_{x_i}} \cdot \v{\phi_x}$.  This has three main benefits:
+The functions are defined as dot products between "feature vectors": $f_{x_i}(x) \equiv \V{\phi_{x_i}} \cdot \V{\phi_x}$.  This has three main benefits:
 
 1. It is possible to prove, using linear algebra alone, that a perfect-fitting solution exists and is of minimal norm.
 
@@ -398,16 +409,16 @@ It turns out that all square matrices, if they can be written as the product $XX
 
 ## The Kernel Trick
 
-The "kernel trick" is the idea that a kernel function $k(x, x') \equiv \v{\phi_x} \cdot \v{\phi_x'}$ can be evaluated without actually evaluating the feature vectors and taking their dot product.  While this is important for computational efficiency, it ultimately is uninformative for the purposes of understanding Kernel methods.  Indeed, the Kernel trick doesn't magically allow one to compute exact Gaussian values - doing so would require an infinite amount of computation.  So, whether or not a given kernel has an infinite or finite dimensional feature space, and whether it is implemented approximately or exactly, doesn't really decide its usefulness as a kernel.  In short, the kernel trick is just one form of mathematical shortcut (if it exists), and doesn't really enlighten one as to the nature of Kernel methods.  One could use a Kernel that has only finite capacity and no known Kernel trick, and it could still be a valid Kernel.
+The "kernel trick" is the idea that a kernel function $k(x, x') \equiv \V{\phi_x} \cdot \V{\phi_x'}$ can be evaluated without actually evaluating the feature vectors and taking their dot product.  While this is important for computational efficiency, it ultimately is uninformative for the purposes of understanding Kernel methods.  Indeed, the Kernel trick doesn't magically allow one to compute exact Gaussian values - doing so would require an infinite amount of computation.  So, whether or not a given kernel has an infinite or finite dimensional feature space, and whether it is implemented approximately or exactly, doesn't really decide its usefulness as a kernel.  In short, the kernel trick is just one form of mathematical shortcut (if it exists), and doesn't really enlighten one as to the nature of Kernel methods.  One could use a Kernel that has only finite capacity and no known Kernel trick, and it could still be a valid Kernel.
 
 
 ## Distinct between Feature Space and Reproducing Kernel Hilbert Space
 
 In my reading, I found the discussion of feature space and the 'Hilbert space' (from the RHKS) blurred together.  They are distinct mathematical entities.  Although more subtle results in Kernel research are proved with the help of the RKHS, I didn't feel the basics were much helped by them.  But, in the theory elements in the RKHS map one-to-one to elements in feature space and to functions in input space, so they are sometimes spoken of interchangeably.
 
-In an effort to disambiguate them, here is a summary.  In Kernel Methods, functions $f_{x_i}(\cdot): \mathcal{X} \mapsto \mathbb{R}$ *correspond one-to-one* with feature vectors $\v{\phi_{x_i}}: \mathbb{R}^\infty \equiv \mathcal{F}$, because of their definition as a dot product.  As any vector space, the feature space has an inner product defined on it, which is the simple dot product, and the *kernel matrix* $K$ is the matrix of inner products on a basis $(\v{\phi_{x_i}})$, the $x_i$ from the dataset, in this feature space.
+In an effort to disambiguate them, here is a summary.  In Kernel Methods, functions $f_{x_i}(\cdot): \mathcal{X} \mapsto \mathbb{R}$ *correspond one-to-one* with feature vectors $\V{\phi_{x_i}}: \mathbb{R}^\infty \equiv \mathcal{F}$, because of their definition as a dot product.  As any vector space, the feature space has an inner product defined on it, which is the simple dot product, and the *kernel matrix* $K$ is the matrix of inner products on a basis $(\V{\phi_{x_i}})$, the $x_i$ from the dataset, in this feature space.
 
-Separately from this, the function itself, $f_{x_i}(\cdot)$ associates one real value for each $x \in \mathcal{X}$.  This collection of values could be viewed as the components of *another* infinite-dimensional vector.  In conventional notation, $f_{x_i}(\cdot): \mathbb{R}^\mathcal{X}$.  This is like $\mathbb{R}^3$,  but instead of 3 real components, $|\mathcal{X}|$ components.  Then, the function is not merely *corresponding to a vector* but *is* a vector.  The space $\mathbb{R}^\mathcal{X}$ of such functions-as-vectors is known as the Hilbert Space $\mathcal{H}$.  It has a specific inner product defined on it which links it up to the original feature space: $\langle f_{x_i}, f_{x_j} \rangle \equiv \v{\phi_{x_i}} \cdot \v{\phi_{x_j}} \equiv f_{x_i}(x_j) \equiv f_{x_j}(x_i)$.
+Separately from this, the function itself, $f_{x_i}(\cdot)$ associates one real value for each $x \in \mathcal{X}$.  This collection of values could be viewed as the components of *another* infinite-dimensional vector.  In conventional notation, $f_{x_i}(\cdot): \mathbb{R}^\mathcal{X}$.  This is like $\mathbb{R}^3$,  but instead of 3 real components, $|\mathcal{X}|$ components.  Then, the function is not merely *corresponding to a vector* but *is* a vector.  The space $\mathbb{R}^\mathcal{X}$ of such functions-as-vectors is known as the Hilbert Space $\mathcal{H}$.  It has a specific inner product defined on it which links it up to the original feature space: $\langle f_{x_i}, f_{x_j} \rangle \equiv \V{\phi_{x_i}} \cdot \V{\phi_{x_j}} \equiv f_{x_i}(x_j) \equiv f_{x_j}(x_i)$.
 
 Now that the Hilbert space has a set of basis vectors $(f_{x_i})$, and an inner product, a Kernel matrix $K:[K_{ij} = f_{x_i}(x_j)]$ can be defined.  But now, note that the rows and columns of the Kernel matrix are vectors of values.  Unlike the feature space, where the rows of the kernel matrix were not of the same type as the vectors in the space itself, in the Hilbert space they are.  Therefore, $KK^T = K$, because this is just a set of inner products between two rows.   This is what gives rise to the phrase "Reproducing Kernel".  See https://arxiv.org/pdf/1408.0952.pdf.
 
@@ -416,80 +427,4 @@ Now that the Hilbert space has a set of basis vectors $(f_{x_i})$, and an inner 
 In the parlance of RHKS theory, the point $f_x \in \mathcal{H}$ corresponding to a given $x \in \mathcal{X}$ is called $x$'s *representer* of evaluation, and more generally, any point in $\mathcal{H}$ is a *representation* of some function in an abstract way.  So, the Representer Theorem asserts that an optimal solution to a data fitting problem exists in the span of the representers of the data.  That is, in the span of $(f_{x_i})$.  The section on this article proving through orthogonal decomposition, that setting $\B{M} = \B{X}$ results in the minimum norm solution without any loss of expressive power, is a simplified version of this theorem.  For more detail, see:  https://alex.smola.org/papers/2001/SchHerSmo01.pdf
 
 
-
-
-## Part 2 - Examples of linear problems
-
-Kernel methods are used for PCA, CCA, K-means, Regression, separating hyperplanes (SVM).  All of these involve finding an optimal point in a space using linear optimization methods.  If possible, show how the inner product is used in some of these formulas.
-
-## Kernel Ridge Regression
-
-## Kernel Linear Regression
-
-## Kernel PCA
-
-Mairal Lecture 9
-
-## Kernel K-means and CCA
-
-Mairal Lecture 10
-
-$\max\limits_{\alpha \in \mathbb{R}^n, \beta \in \mathbb{R}^n} \dfrac{\alpha^T K_\alpha K_\beta \beta}{(\alpha^TK_\alpha^2 \alpha)^{\frac{1}{2}} (\beta^T K_\beta^2 \beta)^{\frac{1}{2}} }$
-
-See Gong and Lazebnik:  https://arxiv.org/pdf/1212.4522.pdf
-
-## Large Margin Classifiers
-
-In binary classification, the *margin* of the function $f$ for $(x, y)$ is $\mu = y f(x)$.  The loss is a decreasing function of the margin: $\phi(\mu)$.
-
-Method | $\phi(\mu)$
---------| -------------
-Kernel Logistic Regression | $\log(1 + e^{-\mu}$
-1-SVM (hinge loss) | $\max(1-\mu, 0)$
-2-SVM | $ \max(1-\mu, 0)^2$
-Boosting | $e^{-\mu}$
-
-In all these, we solve:
-
-$
-\begin{aligned}
-& \min_{f \in \mathcal{H}} { \dfrac{1}{\mu} \sum { \phi(y_i f(x_i)) + \lambda \|f\|^2_{\mathcal{H}} } } \\
-f(x) & = \sum { \alpha_i K(x_i, x) } & \mbox{By representer theorem}\\
-& \min_{\alpha \in \mathbb{R}^n} { \dfrac{1}{n} \sum { \phi(y_i [K\alpha]_i) + \lambda \alpha^T K \alpha } } & \mbox{plugging in}\\
-\end{aligned}
-$
-
-The idea of support vectors is to make $\alpha$ sparse, and only non-zero components for samples that are hard to classify (close to the separating hyperplane):
-
-$f(x) = \sum { \alpha_i K(x_i, x) } = \sum\limits_{i \in SV} { \alpha_i K(x_i, x) }$
-
-
-Kernel Logistic Regression is a large-margin classifier.
-
-## Neural Tangent Kernel
-
-See https://arxiv.org/abs/1806.07572
-
-
-
-
-## Geometric Considerations of choice of Kernel
-
-To apply a Kernel method to data $\mathcal{X} \times \mathcal{Y}$ is to adopt the assumption that there is a metric defined on the input domain $\mathcal{X}$.  *Metric* means a definition of distances and angles between any two points in $\mathcal{X}$.  This idea in itself is remarkable.  Although we are used to thinking of the vectors in $\mathbb{R}^n$ as having lengths, and pairs of vectors having an angle between them, this idea is even more general.  It does not require $\mathcal{X}$ to have any particular structure at all.  $\mathcal{X}$ may be continuous or discrete, or mixed.  And it can have any natural ordering of its elements, or none.  And, even if $\mathcal{X}$ is naturally ordered, such as $\mathbb{R}^n$, the metric need not be consistent with that ordering at all.
-
-Indeed, the very notion of "ordering" itself is a weak concept once you go past one dimension.  Ordering of elements in $\mathbb{R}$ is simply a result of a notion of the length of each element.  Although, the angle is always either zero or $\pi$.
-
-But, this is worth meditating on, because it is precisely this notion which is the foundation of kernel methods.  A Kernel merely quantifies this intuitive notion.  Most discussions about Kernels say they are a measure of "similarity" between two points.  However, I don't like that word since it has no standing in geometry.  It is possible, for instance for $K(a,b) \gt K(a,a)$ for some $a$ and $b$.  If we called $K(\cdot, \cdot)$ a "similarity measure", then $a$ would be more similar to $b$ than to itself.
-
-Rather, a kernel defines the *inner product* on a set $\mathcal{X}$, and the notions of length and angle follow indirectly from that:
-
-$
-\begin{aligned}
-a, b \in \mathcal{X} \\
-K(a, b) & \equiv \norm{a} \norm{b} \cos\ang{ab} & \mbox{The Kernel defines the value of the inner product} \\
-\implies \norm{a} & = K(a,a)^\half \\
-\implies \cos \ang{ab} & = \dfrac{K(a, b)}{K(a, a)^\frac{1}{2} K(b, b)^\frac{1}{2}} \\[1em]
-\implies \dist(a, b)^2 & = K(a, a) - 2K(a, b) + K(b, b) \\
-\end{aligned}
-$
 

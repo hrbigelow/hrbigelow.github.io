@@ -22,7 +22,7 @@ function h(evt) {
 <div class='gb'>
   {#each plot.alpha as a, i}
     <div class='alpha'>
-      <label class='ib'><d-math plain>{@html '\\alpha_'}{i}</d-math>
+      <label class='ib'><span>$\alpha_{i}$</span>
         <input id='update_alpha{i}'
                class='ib slider'
                type=range

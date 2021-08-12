@@ -38,18 +38,14 @@
   </div>
 
 	<div class='fi-lower gbox-lower'>
-    <div class='y1'><d-math>\mu</d-math></div>
+    <div class='y1'>$\mu$</div>
     <KernelHeatmap sig={sig} cn=4 plot={plot} gridarea='cell2'/>
-		<div class='y2'><d-math>\mu_i</d-math></div>
+		<div class='y2'>$\mu_i$</div>
     <KernelMatrix sig={sig} cn=5 plot={plot} gridarea='cell6'/>
-    <div class='x1'><d-math>x</d-math></div>
-    <div class='x2'><d-math>x_i</d-math></div>
-    <div class='cap1'>
-      <d-math>\mathcal{N}(x; \mu, \sigma)</d-math>
-    </div>
-    <div class='cap2'>
-      <d-math>\mathcal{N}(x_i; \mu_i, \sigma)</d-math>
-    </div>
+    <div class='x1'>$x$</div>
+    <div class='x2'>$x_i$</div>
+    <div class='cap1'>$\mathcal{N}(x; \mu, \sigma)$</div>
+    <div class='cap2'>$\mathcal{N}(x_i; \mu_i, \sigma)$</div>
   </div>
 </div>
 

@@ -32,9 +32,7 @@ let sig = writable(0);
     <Curves sig={sig} cfg={cfg} cn=1 plot={pp.plot} gridarea='curves'/>
     <PhiSpace sig={sig} cn=2 cfg={cfg} pp={pp} gridarea='phi'/>
     <LowPanelControls sig={sig} cfg={cfg} cn=3 plot={pp.plot} />
-    <div>Plane spanned by <d-math>\vec\phi_\sigma(\mu_1)</d-math> and
-      <d-math>\vec\phi_\sigma(\mu_2)</d-math>.
-    </div>
+    <div>Plane spanned by $\vec\phi_\sigma(\mu_1)$ and $\vec\phi_\sigma(\mu_2)$</div>
 </div>
 
 

@@ -22,15 +22,15 @@ function h(e) {
 
 <div class='gb gi'>
   <div class='col1 line'>
-    <d-math>\|f\| = </d-math>
+    <span>$\|f\| = $</span>
     {plot.invertible ?  numberDisplay(plot.fNorm()) : 'Could not solve'}
   </div>
   <div class='col2 line'>
-    <d-math>\|f_\parallel\| = </d-math>
+    <span>$\|f_\parallel\| = $</span>
     {plot.invertible ?  numberDisplay(plot.fNormParallel()) : 'Could not solve'}
   </div>
   <div class='col2 row2 line'>
-    <d-math>\|f_\perp\| = </d-math>
+    <span>$\|f_\perp\| = $</span>
     {plot.invertible ?  numberDisplay(plot.fNormPerp()) : 'Could not solve'}
   </div>
   <div class='col4 row1 line'>
@@ -48,7 +48,7 @@ function h(e) {
              type="checkbox"
              bind:checked={cfg.mu_tracks_x}
              on:change={h}>
-      <d-math>\mu</d-math> tracks <d-math>x</d-math>
+      <span>$\mu$ tracks $x$</span>
     </label>
   </div>
   <div class='col5 row1 line'>
@@ -61,7 +61,7 @@ function h(e) {
     </label>
   </div>
   <div class='col5 row2 line'>
-    <label class='ib'><d-math>\sigma</d-math>: 
+    <label class='ib'><span>$\sigma$</span>: 
       <input id='set_sigma'
              class='short'
              type="range"
