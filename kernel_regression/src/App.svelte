@@ -3,48 +3,73 @@
 
 </script>
 
-<KernelMethods/>
-<!--
-  <figure class="l-page-outset" >
-  <Figure1/> 
-  <figcaption>Interctive plot.  You can drag the black 
-  <d-math>(x_i, y_i)</d-math> data points and triangles
-  (<d-math>\mu_i</d-math> values).  <b>Top</b>: gray curves are
-  Gaussians centered at the <d-math>\mu_i</d-math>.  Blue curve is the
-  <d-math>\vec\alpha</d-math> linear combination of the gray curves.
-  <b>Bottom left</b>: A heatmap showing the family of Gaussians
-  with the same <d-math>\sigma</d-math> at every
-  <d-math>\mu</d-math> value.  Red dots show the locations of evaluation points.
-  <b>Bottom right</b>:  The matrix of values of evaluation
-  points organized by <d-math>\mu_i</d-math> and <d-math>x_i</d-math>.
-  Other details provided in text.  <a href="full.html">Full Page Figure</a>.
-  </figcaption>
-  </figure>
-
-  <figure class="l-page-outset">
-  <Figure2/>
-  <figcaption>
-  <b>Left</b>: The curves plot as before with only two curves.
-  <b>Right</b>: The plane in feature space spanned by vectors
-  <d-math>\vec\phi(\mu_1)</d-math> and
-  <d-math>\vec\phi(\mu_2)</d-math> The blue arrow is
-  <d-math>\alpha_1 \vec\phi(\mu_1) + \alpha_2
-  \vec\phi(\mu_2)</d-math>.  
-  </figcaption>
-  </figure>
-
+<article>
   <KernelMethods/>
-
-  </d-article>
--->
+</article>
 
 <style>
 
-  main {
-    max-width: 50vw;
+@supports not (display: grid) {
+  article
+  {
+    display: block;
+    padding: 8px;
+  }
+}
+
+article {
+  display: grid;
+  justify-items: stretch;
+  grid-template-columns: [screen-start] 8px [page-start kicker-start text-start gutter-start middle-start] 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr [text-end page-end gutter-end kicker-end middle-end] 8px [screen-end];
+  grid-column-gap: 8px;
+}
+
+article {
+  contain: layout style;
+}
+
+@media(min-width: 768px) {
+  article {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start middle-start text-start] 45px 45px 45px 45px 45px 45px 45px 45px [ kicker-end text-end gutter-start] 45px [middle-end] 45px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+    font-size: 16px;
+  }
+}
+
+@media(min-width: 1000px) {
+  article {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 50px [middle-start] 50px [text-start kicker-end] 50px 50px 50px 50px 50px 50px 50px 50px [text-end gutter-start] 50px [middle-end] 50px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+}
+
+@media(min-width: 1180px) {
+  article {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
     font-size: 1.06rem;
     line-height: 1.7em;
-    align: center;
   }
+}
+
+:global(article > *) {
+  grid-column: text;
+}
+
+:global(figure) {
+  grid-column: page; 
+  contain: layout style;
+}
+
+:global(figcaption) {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+:global(html) {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
 
 </style>
+

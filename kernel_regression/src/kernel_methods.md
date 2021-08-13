@@ -45,6 +45,8 @@ To see why, note that each gray curve's set of values along the $x_i$ produces a
 
 <Figure1 />
 
+
+
 Note that there isn't any rule that the $x_i$ need be monotonically increasing.  They are simply given in some arbitrary order from the dataset. In the plot, they aren't labeled.  You can adjust the i'th slider and see which curve moves.  The point located horizontally at the peak of that curve is $(x_i, y_i)$.  Ultimately it doesn't matter for the purposes of illustration.  The important thing is that all the gray functions' vectors of evaluation are in the same order.
 
 Also note, although Gaussians are most often interpreted as probability distributions, in this article, there is no such interpretation, and there is no process of sampling from Gaussians.  We are simply using them as curves, like splines, to generate more complex shapes.  So, there is no requirement that they be normalized.
@@ -179,7 +181,7 @@ The heatmap at the lower left is a complete space showing where the information 
 
 The red dots show the current locations of all combinations of $\mu_i$ and $x_i$.  The heatmap values at the dots in a particular row denote the *vector of evaluation* of Gaussian at $\mu_i$ - that is, height of the gray curve if its $\alpha_i$ were set to 1.  The matrix at the lower right shows these values, organized in the same way.  The same values can be seen as heights of the gray curves at each $x_i$.  Letting the matrix be $\mathrm{K}$, the vector of evalution of the blue curve is just $\alpha \mathrm{K}$.
 
-Notice that if all $\mu_i = x_i$ (check $\mu$ tracks $x$), then the diagonals of this matrix are equal to 1 since each unscaled curve has a peak height of 1 at $x_i = \mu_i$.  Furthermore the matrix is symmetric since $\mathcal{N}(x; \mu, \sigma) = \mathcal{N}(\mu; x, \sigma)$.  It is not symmetric when $\mu_i \ne x_i$ in general.
+Notice that if all $\mu_i = x_i$ (check $\mu$ tracks $x$s), then the diagonals of this matrix are equal to 1 since each unscaled curve has a peak height of 1 at $x_i = \mu_i$.  Furthermore the matrix is symmetric since $\mathcal{N}(x; \mu, \sigma) = \mathcal{N}(\mu; x, \sigma)$.  It is not symmetric when $\mu_i \ne x_i$ in general.
 
 
 
@@ -229,10 +231,6 @@ As mentioned before, this experiment is only for didactic purposes since Kernel 
 # Experiments to try with Figure 2
 
 <Figure2 />
-<caption>
-Interctive plot.  You can drag the black $(x_i, y_i)$ data points and triangles
-($\mu_i$ values).  <b>Top</b>: gray curves are Gaussians centered at the <d-math>\mu_i</d-math>.  Blue curve is the $\vec\alpha4 linear combination of the gray curves.  <b>Bottom left</b>: A heatmap showing the family of Gaussians with the same $\sigma$ at every $\mu$ value.  Red dots show the locations of evaluation points.  <b>Bottom right</b>:  The matrix of values of evaluation points organized by $\mu_i$ and $x_i$.  Other details provided in text.  <a href="full.html">Full Page Figure</a>.
-</caption>
 
 Figure 2 left panel shows the same plot with just two functions.  The right panel shows the 2d $\mu$-span, with the gray vectors denoting $\V{\phi_{\mu_1}}$ and $\V{\phi_{\mu_2}}$, and the blue vector $\V{\phi_f} = \sum_i { \alpha_i \V{\phi_{\mu_i}}}$.  The black dot on the right panel shows the parameter vector which fits the data.  Not shown are the $x$-span or the $\V{\phi_{x_i}}$.  However, when $\mu_i = x_i$, they coincide.  In this case, the black dotted lines show the length of the projection of $\V{\phi_f}$ onto each of the $\V{\phi_{\mu_i}}$, which equals $f(x_i)$.  There are a few informative experiments to try.
 
@@ -412,7 +410,7 @@ It turns out that all square matrices, if they can be written as the product $XX
 The "kernel trick" is the idea that a kernel function $k(x, x') \equiv \V{\phi_x} \cdot \V{\phi_x'}$ can be evaluated without actually evaluating the feature vectors and taking their dot product.  While this is important for computational efficiency, it ultimately is uninformative for the purposes of understanding Kernel methods.  Indeed, the Kernel trick doesn't magically allow one to compute exact Gaussian values - doing so would require an infinite amount of computation.  So, whether or not a given kernel has an infinite or finite dimensional feature space, and whether it is implemented approximately or exactly, doesn't really decide its usefulness as a kernel.  In short, the kernel trick is just one form of mathematical shortcut (if it exists), and doesn't really enlighten one as to the nature of Kernel methods.  One could use a Kernel that has only finite capacity and no known Kernel trick, and it could still be a valid Kernel.
 
 
-## Distinct between Feature Space and Reproducing Kernel Hilbert Space
+## Distinction between Feature Space and Reproducing Kernel Hilbert Space
 
 In my reading, I found the discussion of feature space and the 'Hilbert space' (from the RHKS) blurred together.  They are distinct mathematical entities.  Although more subtle results in Kernel research are proved with the help of the RKHS, I didn't feel the basics were much helped by them.  But, in the theory elements in the RKHS map one-to-one to elements in feature space and to functions in input space, so they are sometimes spoken of interchangeably.
 

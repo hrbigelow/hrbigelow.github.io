@@ -17,7 +17,6 @@ const math_block = {
     // that the tokenizer is called with different slices of the source
     const rule = /^\$\$(.+?)\$\$/s;
     const match = rule.exec(src); // returns a weird array/object hybrid thing 
-    // console.log(`in math_block: match = ${match}`);
 
     if (match) {
       var token = {
@@ -74,7 +73,6 @@ function parse(toks) {
 
 function pre_md(content) {
   content = marked(content);
-  console.log(`preprocess_md output:\n\n-------------\n${content}\n-----------\n\n`);
   return content;
 }
 

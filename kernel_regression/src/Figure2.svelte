@@ -28,12 +28,19 @@ let sig = writable(0);
 
 </script>
 
-<div class='gb screen'>
-    <Curves sig={sig} cfg={cfg} cn=1 plot={pp.plot} gridarea='curves'/>
-    <PhiSpace sig={sig} cn=2 cfg={cfg} pp={pp} gridarea='phi'/>
-    <LowPanelControls sig={sig} cfg={cfg} cn=3 plot={pp.plot} />
-    <div>Plane spanned by $\vec\phi_\sigma(\mu_1)$ and $\vec\phi_\sigma(\mu_2)$</div>
-</div>
+<figure>
+  <div class='gb screen'>
+      <Curves sig={sig} cfg={cfg} cn=1 plot={pp.plot} gridarea='curves'/>
+      <PhiSpace sig={sig} cn=2 cfg={cfg} pp={pp} gridarea='phi'/>
+      <LowPanelControls sig={sig} cfg={cfg} cn=3 plot={pp.plot} />
+      <div>Plane spanned by $\vec\phi_\sigma(\mu_1)$ and $\vec\phi_\sigma(\mu_2)$</div>
+  </div>
+  <figcaption> <b>Left</b>: The curves plot as before with only two curves.
+    <b>Right</b>: The plane in feature space spanned by vectors $\vec\phi(\mu_1)$
+    and $\vec\phi(\mu_2)$ The blue arrow is $\alpha_1 \vec\phi(\mu_1) + \alpha_2
+    \vec\phi(\mu_2)$.
+  </figcaption>
+</figure>
 
 
 <style>

@@ -30,6 +30,7 @@
 
 </script>
 
+<figure>
 <div class='{topclass} fb-vert'>
   <div class='fi-upper gbox-upper'>
     <Curves sig={sig} cn=1 cfg={cfg} plot={plot} gridarea='curves'/>
@@ -48,6 +49,18 @@
     <div class='cap2'>$\mathcal{N}(x_i; \mu_i, \sigma)$</div>
   </div>
 </div>
+<figcaption>
+  Interctive plot.  You can drag the black $(x_i, y_i)$ data points and triangles
+  ($\mu_i$ values).  <b>Top</b>: gray curves are Gaussians centered at the
+  $\mu_i$.  Blue curve is the $\V{\alpha}$ linear combination of the gray curves.
+  <b>Bottom left</b>: A heatmap showing the family of Gaussians with the same
+  $\sigma$ at every $\mu$ value.  Red dots show the locations of evaluation
+  points.  <b>Bottom right</b>:  The matrix of values of evaluation points
+  organized by $\mu_i$ and $x_i$.  Other details provided in text.  
+    <a href="full.html">Full Page Figure</a>.
+</figcaption>
+</figure>
+
 
 <style>
   .gbox-upper {

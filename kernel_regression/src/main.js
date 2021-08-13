@@ -3,9 +3,9 @@ import App from './App.svelte';
 function get_target() {
   var sel;
   if (location.hostname.endsWith('ghost.io'))
-    sel = 'main > article > section';
+    sel = 'main -> article > section';
   else
-    sel = 'main';
+    sel = 'body';
 
   return document.querySelector(sel);
 }
