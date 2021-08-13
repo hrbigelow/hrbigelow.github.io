@@ -1,7 +1,18 @@
 import App from './App.svelte';
 
+function get_target() {
+  var sel;
+  if (location.hostname.endsWith('ghost.io'))
+    sel = 'main > article > section';
+  else
+    sel = 'main';
+
+  return document.querySelector(sel);
+}
+
 const app = new App({
-	target: document.getElementsByTagName('MAIN')[0]
+	target: get_target(),
+  props: { }
 });
 
 export default app;
